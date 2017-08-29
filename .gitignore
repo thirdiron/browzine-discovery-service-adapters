@@ -1,0 +1,10 @@
+/node_modules
+/bower_component
+/tmp
+/logs
+
+.DS_Store
+.git
+.npm
+.eslintcache
+*.log
