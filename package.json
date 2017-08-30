@@ -16,6 +16,8 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "http-server": "^0.10.0",
+    "jasmine": "^2.8.0",
+    "jasmine-jquery": "^2.1.1",
     "ngrok": "^2.2.21"
   }
 }
