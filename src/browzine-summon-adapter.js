@@ -1,6 +1,7 @@
 angular.module('summonApp.directives')
 .constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118")
-.directive("documentSummary", ["$http", "$sce", "api", ($http, $sce, api) => {
+.constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
+.directive("documentSummary", ["$http", "$sce", "api", "bookIcon", ($http, $sce, api, bookIcon) => {
   function isArticle(scope) {
     return scope.document.content_type.trim() === "Journal Article";
   };
@@ -58,6 +59,19 @@ angular.module('summonApp.directives')
       $http.get($sce.trustAsResourceUrl(endpoint)).then((response) => {
         console.log("endpoint", endpoint);
         console.dir(response);
+        console.log("element", element);
+        //console.log(response.data);
+        const data = response.data;
+
+        const type = data.data[0].type;
+        const browzineWebLink = data.data[0].browzineWebLink;
+
+        element.find(".docFooter .row:first").append(`
+          <div>View Complete Issue: <a href='${browzineWebLink}' target='_blank'>Browse Now</a> <img src='${bookIcon}'/></div>
+        `);
+
+        //element.find(".docFooter .row:first").append("<a>Hello World!</a>");
+        //console.log(element.find(".docFooter .row:first"));
       });
     }
   };
