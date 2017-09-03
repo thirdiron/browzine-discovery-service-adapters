@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('summonApp.directives').constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118").constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png").directive("documentSummary", ["$http", "$sce", "api", "bookIcon", function ($http, $sce, api, bookIcon) {
+angular.module('summonApp.directives').constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118").constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png").directive("documentSummary", ["$http", "$sce", "api", "bookIcon", function (http, sce, api, bookIcon) {
   function isArticle(data) {
     if (typeof data.document !== "undefined" && data.document !== null) {
       return data.document.content_type.trim() === "Journal Article";
@@ -69,18 +69,28 @@ angular.module('summonApp.directives').constant("api", "https://apiconnector.thi
     return browzineWebLink;
   };
 
+  function getCoverImageUrl(data) {
+    var coverImageUrl = null;
+
+    if (typeof data.coverImageUrl !== "undefined" && data.coverImageUrl !== null) {
+      coverImageUrl = data.coverImageUrl;
+    }
+
+    return coverImageUrl;
+  };
+
   function buildTemplate(data, browzineWebLink, bookIcon) {
-    var assetPrefix = "";
+    var assetClass = "";
 
     if (isJournal(data)) {
-      assetPrefix = "View the Journal";
+      assetClass = "View the Journal";
     }
 
     if (isArticle(data)) {
-      assetPrefix = "View Complete Issue";
+      assetClass = "View Complete Issue";
     }
 
-    return "<div>" + assetPrefix + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
+    return "<div>" + assetClass + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
   };
 
   return {
@@ -91,17 +101,23 @@ angular.module('summonApp.directives').constant("api", "https://apiconnector.thi
 
       var endpoint = getEndpoint(scope);
 
-      $http.get($sce.trustAsResourceUrl(endpoint)).then(function (response) {
+      http.get(sce.trustAsResourceUrl(endpoint)).then(function (response) {
         console.log("endpoint", endpoint);
+        console.log("scope", scope);
         console.dir(response);
         console.log("element", element);
 
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
+        var coverImageUrl = getCoverImageUrl(data);
 
         if (browzineWebLink) {
           var template = buildTemplate(data, browzineWebLink, bookIcon);
           element.find(".docFooter .row:first").append(template);
+        }
+
+        if (coverImageUrl) {
+          element.find(".coverImage img").attr("src", coverImageUrl);
         }
       });
     }

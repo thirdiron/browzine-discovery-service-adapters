@@ -1,7 +1,7 @@
 angular.module('summonApp.directives')
 .constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118")
 .constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
-.directive("documentSummary", ["$http", "$sce", "api", "bookIcon", ($http, $sce, api, bookIcon) => {
+.directive("documentSummary", ["$http", "$sce", "api", "bookIcon", (http, sce, api, bookIcon) => {
   function isArticle(data) {
     if(typeof data.document !== "undefined" && data.document !== null) {
       return data.document.content_type.trim() === "Journal Article";
@@ -70,18 +70,28 @@ angular.module('summonApp.directives')
     return browzineWebLink;
   };
 
+  function getCoverImageUrl(data) {
+    let coverImageUrl = null;
+
+    if(typeof data.coverImageUrl !== "undefined" && data.coverImageUrl !== null) {
+      coverImageUrl = data.coverImageUrl;
+    }
+
+    return coverImageUrl;
+  };
+
   function buildTemplate(data, browzineWebLink, bookIcon) {
-    let assetPrefix = "";
+    let assetClass = "";
 
     if(isJournal(data)) {
-      assetPrefix = "View the Journal";
+      assetClass = "View the Journal";
     }
 
     if(isArticle(data)) {
-      assetPrefix = "View Complete Issue";
+      assetClass = "View Complete Issue";
     }
 
-    return `<div>${assetPrefix}: <a href='${browzineWebLink}' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='${bookIcon}'/></div>`;
+    return `<div>${assetClass}: <a href='${browzineWebLink}' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='${bookIcon}'/></div>`;
   };
 
   return {
@@ -92,17 +102,23 @@ angular.module('summonApp.directives')
 
       const endpoint = getEndpoint(scope);
 
-      $http.get($sce.trustAsResourceUrl(endpoint)).then((response) => {
+      http.get(sce.trustAsResourceUrl(endpoint)).then((response) => {
         console.log("endpoint", endpoint);
+        console.log("scope", scope);
         console.dir(response);
         console.log("element", element);
 
         const data = getData(response);
         const browzineWebLink = getBrowZineWebLink(data);
+        const coverImageUrl = getCoverImageUrl(data);
 
         if(browzineWebLink) {
           const template = buildTemplate(data, browzineWebLink, bookIcon);
           element.find(".docFooter .row:first").append(template);
+        }
+
+        if(coverImageUrl) {
+          element.find(".coverImage img").attr("src", coverImageUrl);
         }
       });
     }
