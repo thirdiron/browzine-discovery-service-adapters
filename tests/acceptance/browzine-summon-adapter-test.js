@@ -2,11 +2,11 @@ describe("documentSummary", function() {
   var compile, scope, directiveElem;
 
   beforeEach(function() {
-    angular.module("summonApp.directives", []).directive("documentSummary", function() {
-      return function(scope, elem) {
-        elem.append('<span>This span is appended from directive.</span>');
-      };
-    });
+    // angular.module("summonApp.directives", []).directive("documentSummary", function() {
+    //   return function(scope, elem) {
+    //     elem.append('<span>This span is appended from directive.</span>');
+    //   };
+    // });
   });
 
   beforeEach(function() {

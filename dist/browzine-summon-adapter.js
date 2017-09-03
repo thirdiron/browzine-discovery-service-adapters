@@ -90,7 +90,7 @@ angular.module("summonApp.directives").constant("api", "https://apiconnector.thi
       assetClass = "View Complete Issue";
     }
 
-    return "<div class='browzine'>" + assetClass + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
+    return "<div class='browzine' data-browzine-message='Enhanced with BrowZine'>" + assetClass + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
   };
 
   return {
@@ -102,10 +102,10 @@ angular.module("summonApp.directives").constant("api", "https://apiconnector.thi
       var endpoint = getEndpoint(scope);
 
       http.get(sce.trustAsResourceUrl(endpoint)).then(function (response) {
-        console.log("endpoint", endpoint);
-        console.log("scope", scope);
-        console.dir(response);
-        console.log("element", element);
+        // console.log("endpoint", endpoint);
+        // console.log("scope", scope);
+        // console.dir(response);
+        // console.log("element", element);
 
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);

@@ -17,6 +17,8 @@ module.exports = function(config) {
       'node_modules/angular-animate/angular-animate.js',
       'node_modules/angular-route/angular-route.js',
       'node_modules/angular-mocks/angular-mocks.js',
+      'tests/summon-app-directives.js',
+      'dist/*.js',
       'tests/**/*.js'
     ],
 
