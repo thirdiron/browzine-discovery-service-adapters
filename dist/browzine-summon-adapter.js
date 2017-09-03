@@ -1,12 +1,20 @@
 "use strict";
 
 angular.module('summonApp.directives').constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118").constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png").directive("documentSummary", ["$http", "$sce", "api", "bookIcon", function ($http, $sce, api, bookIcon) {
-  function isArticle(scope) {
-    return scope.document.content_type.trim() === "Journal Article";
+  function isArticle(data) {
+    if (typeof data.document !== "undefined" && data.document !== null) {
+      return data.document.content_type.trim() === "Journal Article";
+    } else {
+      return data.type === "articles";
+    }
   };
 
-  function isJournal(scope) {
-    return scope.document.content_type.trim() === "Journal";
+  function isJournal(data) {
+    if (typeof data.document !== "undefined" && data.document !== null) {
+      return data.document.content_type.trim() === "Journal";
+    } else {
+      return data.type === "journals";
+    }
   };
 
   function getIssn(scope) {
@@ -47,6 +55,34 @@ angular.module('summonApp.directives').constant("api", "https://apiconnector.thi
     return isJournal(scope) && getIssn(scope) || isArticle(scope) && getDoi(scope);
   };
 
+  function getData(response) {
+    return Array.isArray(response.data.data) ? response.data.data[0] : response.data.data;
+  };
+
+  function getBrowZineWebLink(data) {
+    var browzineWebLink = null;
+
+    if (typeof data.browzineWebLink !== "undefined" && data.browzineWebLink !== null) {
+      browzineWebLink = data.browzineWebLink;
+    }
+
+    return browzineWebLink;
+  };
+
+  function buildTemplate(data, browzineWebLink, bookIcon) {
+    var assetPrefix = "";
+
+    if (isJournal(data)) {
+      assetPrefix = "View the Journal";
+    }
+
+    if (isArticle(data)) {
+      assetPrefix = "View Complete Issue";
+    }
+
+    return "<div>" + assetPrefix + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
+  };
+
   return {
     link: function link(scope, element, attributes) {
       if (!shouldEnhance(scope)) {
@@ -59,16 +95,14 @@ angular.module('summonApp.directives').constant("api", "https://apiconnector.thi
         console.log("endpoint", endpoint);
         console.dir(response);
         console.log("element", element);
-        //console.log(response.data);
-        var data = response.data;
 
-        var type = data.data[0].type;
-        var browzineWebLink = data.data[0].browzineWebLink;
+        var data = getData(response);
+        var browzineWebLink = getBrowZineWebLink(data);
 
-        element.find(".docFooter .row:first").append("\n          <div>View Complete Issue: <a href='" + browzineWebLink + "' target='_blank'>Browse Now</a> <img src='" + bookIcon + "'/></div>\n        ");
-
-        //element.find(".docFooter .row:first").append("<a>Hello World!</a>");
-        //console.log(element.find(".docFooter .row:first"));
+        if (browzineWebLink) {
+          var template = buildTemplate(data, browzineWebLink, bookIcon);
+          element.find(".docFooter .row:first").append(template);
+        }
       });
     }
   };
