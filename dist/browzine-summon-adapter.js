@@ -20,8 +20,8 @@ angular.module('summonApp.directives').constant("api", "https://apiconnector.thi
   function getIssn(scope) {
     var issn = "";
 
-    if (typeof scope.document.eissns !== "undefined" && scope.document.eissns !== null) {
-      issn = scope.document.eissns[0].trim().replace('-', '');
+    if (typeof scope.document.issns !== "undefined" && scope.document.issns !== null) {
+      issn = scope.document.issns[0].trim().replace('-', '');
     }
 
     return encodeURIComponent(issn);
