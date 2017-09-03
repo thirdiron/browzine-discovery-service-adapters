@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('summonApp.directives').constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118").constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png").directive("documentSummary", ["$http", "$sce", "api", "bookIcon", function (http, sce, api, bookIcon) {
+angular.module("summonApp.directives").constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118").constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png").directive("documentSummary", ["$http", "$sce", "api", "bookIcon", function (http, sce, api, bookIcon) {
   function isArticle(data) {
     if (typeof data.document !== "undefined" && data.document !== null) {
       return data.document.content_type.trim() === "Journal Article";
@@ -90,7 +90,7 @@ angular.module('summonApp.directives').constant("api", "https://apiconnector.thi
       assetClass = "View Complete Issue";
     }
 
-    return "<div>" + assetClass + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
+    return "<div class='browzine'>" + assetClass + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
   };
 
   return {

@@ -1,4 +1,4 @@
-angular.module('summonApp.directives')
+angular.module("summonApp.directives")
 .constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118")
 .constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
 .directive("documentSummary", ["$http", "$sce", "api", "bookIcon", (http, sce, api, bookIcon) => {
@@ -91,7 +91,7 @@ angular.module('summonApp.directives')
       assetClass = "View Complete Issue";
     }
 
-    return `<div>${assetClass}: <a href='${browzineWebLink}' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='${bookIcon}'/></div>`;
+    return `<div class='browzine'>${assetClass}: <a href='${browzineWebLink}' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='${bookIcon}'/></div>`;
   };
 
   return {
