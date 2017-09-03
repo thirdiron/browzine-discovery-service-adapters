@@ -15,13 +15,18 @@ describe("documentSummary", function() {
     inject(function ($compile, $rootScope) {
       compile = $compile;
       scope = $rootScope.$new();
+
+      scope.document = {
+        content_type: "Journal",
+        issns: ["0028-4793"]
+      };
     });
 
     directiveElem = getCompiledElement();
   });
 
   function getCompiledElement() {
-    var compiledDirective = compile(angular.element('<div document-summary></div>'))(scope);
+    var compiledDirective = compile(angular.element("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>"))(scope);
     scope.$digest();
     return compiledDirective;
   }

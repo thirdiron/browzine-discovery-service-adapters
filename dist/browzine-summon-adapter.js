@@ -96,16 +96,18 @@ angular.module("summonApp.directives").constant("api", "https://apiconnector.thi
   return {
     link: function link(scope, element, attributes) {
       if (!shouldEnhance(scope)) {
+        console.log("!shouldEnhance");
+        console.log(scope.document);
         return;
       }
 
       var endpoint = getEndpoint(scope);
 
       http.get(sce.trustAsResourceUrl(endpoint)).then(function (response) {
-        // console.log("endpoint", endpoint);
-        // console.log("scope", scope);
-        // console.dir(response);
-        // console.log("element", element);
+        console.log("endpoint", endpoint);
+        console.log("scope", scope);
+        console.dir(response);
+        console.log("element", element);
 
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
