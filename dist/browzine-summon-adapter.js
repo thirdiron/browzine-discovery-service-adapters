@@ -90,7 +90,7 @@ angular.module("summonApp.directives").constant("api", "https://apiconnector.thi
       assetClass = "View Complete Issue";
     }
 
-    return "<div class='browzine' data-browzine-message='Enhanced with BrowZine'>" + assetClass + ": <a href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img src='" + bookIcon + "'/></div>";
+    return "<div class='browzine'>" + assetClass + ": <a class='browzine-web-link' href='" + browzineWebLink + "' target='_blank' style='text-decoration: underline; color:#333'>Browse Now</a> <img class=\"browzine-book-icon\" src='" + bookIcon + "'/></div>";
   };
 
   return {
