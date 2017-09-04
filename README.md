@@ -14,7 +14,7 @@
 
 ### Running Tests
 
-TBD
+* `npm test` (Runs the Karma automated acceptance tests)
 
 ### Deploying
 

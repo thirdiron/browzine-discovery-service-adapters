@@ -59,4 +59,61 @@ describe("BrowZine Summon Adapter", function() {
       expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
   });
+
+  describe("search results article", function() {
+    beforeEach(function() {
+      module('summonApp.directives');
+
+      inject(function ($compile, $rootScope, $httpBackend) {
+        compile = $compile;
+        scope = $rootScope.$new();
+        httpBackend = $httpBackend;
+
+        scope.document = {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        };
+
+        var url = "https://apiconnector.thirdiron.com/v1/libraries/118/articles?DOI=10.1136%2Fbmj.h2575";
+
+        httpBackend.whenGET(url).respond({
+          "data": [{
+            "id": 55134408,
+            "type": "articles",
+            "title": "New England Journal of Medicine reconsiders relationship with industry",
+            "date": "2015-05-12",
+            "authors": "McCarthy, M.",
+            "inPress": false,
+            "availableThroughBrowzine": true,
+            "startPage": "h2575",
+            "endPage": "h2575",
+            "browzineWebLink": "https://browzine.com/libraries/118/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
+          }]
+        });
+      });
+
+      directiveElement = getCompiledElement();
+    });
+
+    it("should have an enhanced browse article in browzine option", function() {
+      httpBackend.flush();
+
+      var template = directiveElement.find(".browzine");
+      expect(template).toBeDefined();
+      expect(template.text().trim()).toEqual("View Complete Issue: Browse Now");
+      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/118/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+      expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+    });
+
+    it("should have an enhanced browzine journal cover", function() {
+      httpBackend.flush();
+
+      var coverImage = directiveElement.find(".coverImage img");
+      expect(coverImage).toBeDefined();
+      //TODO: Create JIRA to have public API Article method return ISSN coverImageUrl for Journal
+      //expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      expect(coverImage.attr("src")).toEqual("");
+    });
+  });
 });

@@ -97,19 +97,12 @@ angular.module("summonApp.directives")
   return {
     link: (scope, element, attributes) => {
       if(!shouldEnhance(scope)) {
-        console.log("!shouldEnhance");
-        console.log(scope.document);
         return;
       }
 
       const endpoint = getEndpoint(scope);
 
       http.get(sce.trustAsResourceUrl(endpoint)).then((response) => {
-        console.log("endpoint", endpoint);
-        console.log("scope", scope);
-        console.dir(response);
-        console.log("element", element);
-
         const data = getData(response);
         const browzineWebLink = getBrowZineWebLink(data);
         const coverImageUrl = getCoverImageUrl(data);
