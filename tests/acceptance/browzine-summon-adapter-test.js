@@ -111,7 +111,7 @@ describe("BrowZine Summon Adapter", function() {
 
       var coverImage = directiveElement.find(".coverImage img");
       expect(coverImage).toBeDefined();
-      //TODO: Create JIRA to have public API Article method return ISSN coverImageUrl for Journal
+      //TODO: Create JIRA to have public API Article method return ISSN coverImageUrl for its Journal
       //expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
       expect(coverImage.attr("src")).toEqual("");
     });
