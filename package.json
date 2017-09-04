@@ -11,7 +11,9 @@
     "tunnel": "ngrok http 8080",
     "compile": "babel src/ -d dist/ --watch --presets env",
     "compile-ci": "babel src/ -d dist/ --presets env",
-    "test": "karma start"
+    "test": "karma start",
+    "deploy-staging": "dploy staging",
+    "deploy-production": "dploy production"
   },
   "dependencies": {},
   "devDependencies": {
@@ -22,6 +24,7 @@
     "angular-route": "~1.3.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "dploy": "^1.2.0",
     "http-server": "^0.10.0",
     "jquery": "^2.1.3",
     "karma": "^0.12.25",

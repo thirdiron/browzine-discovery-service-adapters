@@ -11,17 +11,13 @@ dependencies:
 deployment:
   hotfix:
     branch: /hotfix\/.*/
-    commands:
-      - npm run compile-ci
   feature:
     branch: /feature\/.*/
-    commands:
-      - npm run compile-ci
   develop:
     branch: develop
     commands:
-      - npm run compile-ci
+      - npm run deploy-staging
   master:
     branch: master
     commands:
-      - npm run compile-ci
+      - npm run deploy-production

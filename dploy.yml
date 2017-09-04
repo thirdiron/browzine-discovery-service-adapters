@@ -1,0 +1,18 @@
+staging:
+  host: ${FTP_DOMAIN}
+  user: ${FTP_USERNAME}
+  pass: ${FTP_PASSWORD}
+  path:
+    local: "dist/"
+    remote: ${FTP_PATH_STAGING}
+
+production:
+  host: ${FTP_DOMAIN}
+  user: ${FTP_USERNAME}
+  pass: ${FTP_PASSWORD}
+  path:
+    local: "dist/"
+    remote: ${FTP_PATH_PRODUCTION}
+
+include:
+  "dist/**/*.js": "/"
