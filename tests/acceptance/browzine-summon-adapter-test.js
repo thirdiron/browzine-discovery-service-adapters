@@ -77,7 +77,7 @@ describe("BrowZine Summon Adapter", function() {
         var url = "https://apiconnector.thirdiron.com/v1/libraries/118/articles?DOI=10.1136%2Fbmj.h2575";
 
         httpBackend.whenGET(url).respond({
-          "data": [{
+          "data": {
             "id": 55134408,
             "type": "articles",
             "title": "New England Journal of Medicine reconsiders relationship with industry",
@@ -88,6 +88,16 @@ describe("BrowZine Summon Adapter", function() {
             "startPage": "h2575",
             "endPage": "h2575",
             "browzineWebLink": "https://browzine.com/libraries/118/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
+          },
+          "included": [{
+            "id": 18126,
+            "type": "journals",
+            "title": "theBMJ",
+            "issn": "09598138",
+            "sjrValue": 2.567,
+            "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+            "browzineEnabled": true,
+            "browzineWebLink": "https://develop.browzine.com/libraries/118/journals/18126"
           }]
         });
       });
@@ -111,9 +121,7 @@ describe("BrowZine Summon Adapter", function() {
 
       var coverImage = directiveElement.find(".coverImage img");
       expect(coverImage).toBeDefined();
-      //TODO: Create JIRA to have public API Article method return ISSN coverImageUrl for its Journal
-      //expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
-      expect(coverImage.attr("src")).toEqual("");
+      expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
     });
   });
 });

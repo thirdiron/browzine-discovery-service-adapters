@@ -71,11 +71,21 @@ angular.module("summonApp.directives")
     return browzineWebLink;
   };
 
-  function getCoverImageUrl(data) {
+  function getCoverImageUrl(data, response) {
     let coverImageUrl = null;
 
     if(typeof data.coverImageUrl !== "undefined" && data.coverImageUrl !== null) {
       coverImageUrl = data.coverImageUrl;
+    }
+
+    if(isArticle(data)) {
+      if(typeof response.data.included[0] !== "undefined" && response.data.included[0] !== null) {
+        const journal = response.data.included[0];
+
+        if(typeof journal.coverImageUrl !== "undefined" && journal.coverImageUrl !== null) {
+          coverImageUrl = journal.coverImageUrl;
+        }
+      }
     }
 
     return coverImageUrl;
@@ -106,7 +116,7 @@ angular.module("summonApp.directives")
       http.get(sce.trustAsResourceUrl(endpoint)).then((response) => {
         const data = getData(response);
         const browzineWebLink = getBrowZineWebLink(data);
-        const coverImageUrl = getCoverImageUrl(data);
+        const coverImageUrl = getCoverImageUrl(data, response);
 
         if(browzineWebLink) {
           const template = buildTemplate(data, browzineWebLink, bookIcon);

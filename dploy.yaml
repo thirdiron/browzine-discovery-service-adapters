@@ -1,18 +1,18 @@
 staging:
-  host: ${FTP_DOMAIN}
-  user: ${FTP_USERNAME}
-  pass: ${FTP_PASSWORD}
+  host: $FTP_HOST
+  user: $FTP_USER
+  pass: $FTP_PASS
   path:
     local: "dist/"
-    remote: ${FTP_PATH_STAGING}
+    remote: "public_html/summon/staging/"
 
 production:
-  host: ${FTP_DOMAIN}
-  user: ${FTP_USERNAME}
-  pass: ${FTP_PASSWORD}
+  host: $FTP_HOST
+  user: $FTP_USER
+  pass: $FTP_PASS
   path:
     local: "dist/"
-    remote: ${FTP_PATH_PRODUCTION}
+    remote: "public_html/summon/"
 
 include:
   "dist/**/*.js": "/"

@@ -30,6 +30,7 @@
     "karma": "^0.12.25",
     "karma-jasmine": "^0.2.3",
     "karma-phantomjs-launcher": "^0.1.4",
-    "ngrok": "^2.2.21"
+    "ngrok": "^2.2.21",
+    "recursive-replace": "^1.0.1"
   }
 }
