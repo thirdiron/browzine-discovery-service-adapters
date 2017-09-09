@@ -22,7 +22,6 @@ angular.module("summonApp.directives")
     let issn = "";
 
     if(typeof scope.document.issns !== "undefined" && scope.document.issns !== null) {
-      //TODO: Create JIRA so we don't have to strip characters from issn to get a result from BrowZine Public API
       issn = scope.document.issns[0].trim().replace('-', '');
     }
 
