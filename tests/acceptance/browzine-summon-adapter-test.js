@@ -124,4 +124,63 @@ describe("BrowZine Summon Adapter", function() {
       expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
     });
   });
+
+  describe("search results article with no browzineWebLink", function() {
+    beforeEach(function() {
+      module('summonApp.directives');
+
+      inject(function ($compile, $rootScope, $httpBackend) {
+        compile = $compile;
+        scope = $rootScope.$new();
+        httpBackend = $httpBackend;
+
+        scope.document = {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        };
+
+        var url = "https://apiconnector.thirdiron.com/v1/libraries/118/articles?DOI=10.1136%2Fbmj.h2575";
+
+        httpBackend.whenGET(url).respond({
+          "data": {
+            "id": 55134408,
+            "type": "articles",
+            "title": "Adefovir Dipivoxil for the Treatment of Hepatitis B e Antigen–Negative Chronic Hepatitis B",
+            "date": "2015-05-12",
+            "authors": "McCarthy, M.",
+            "inPress": false,
+            "availableThroughBrowzine": true,
+            "startPage": "h2575",
+            "endPage": "h2575"
+          },
+          "included": [{
+            "id": 18126,
+            "type": "journals",
+            "title": "theBMJ",
+            "issn": "09598138",
+            "sjrValue": 2.567,
+            "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+            "browzineEnabled": true,
+            "browzineWebLink": "https://develop.browzine.com/libraries/118/journals/18126"
+          }]
+        });
+      });
+
+      directiveElement = getCompiledElement();
+    });
+
+    it("should not have an enhanced browse article in browzine option", function() {
+      httpBackend.flush();
+
+      var template = directiveElement.find(".browzine");
+      expect(template.text().trim()).toEqual("");
+    });
+
+    it("should not have an enhanced browzine journal cover", function() {
+      httpBackend.flush();
+
+      var coverImage = directiveElement.find(".coverImage img");
+      expect(coverImage.attr("src")).toEqual("");
+    });
+  });
 });

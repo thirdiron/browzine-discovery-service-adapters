@@ -61,6 +61,10 @@ angular.module("summonApp.directives")
     return Array.isArray(response.data.data) ? response.data.data[0] : response.data.data;
   };
 
+  function getIncludedJournal(response) {
+    return Array.isArray(response.data.included) ? response.data.included[0] : response.data.included;
+  };
+
   function getBrowZineWebLink(data) {
     let browzineWebLink = null;
 
@@ -79,8 +83,8 @@ angular.module("summonApp.directives")
     }
 
     if(isArticle(data)) {
-      if(typeof response.data.included[0] !== "undefined" && response.data.included[0] !== null) {
-        const journal = response.data.included[0];
+      if(typeof response.data.included !== "undefined" && response.data.included !== null) {
+        const journal = getIncludedJournal(response);
 
         if(typeof journal.coverImageUrl !== "undefined" && journal.coverImageUrl !== null) {
           coverImageUrl = journal.coverImageUrl;
@@ -121,10 +125,10 @@ angular.module("summonApp.directives")
         if(browzineWebLink) {
           const template = buildTemplate(data, browzineWebLink, bookIcon);
           element.find(".docFooter .row:first").append(template);
-        }
 
-        if(coverImageUrl) {
-          element.find(".coverImage img").attr("src", coverImageUrl);
+          if(coverImageUrl) {
+            element.find(".coverImage img").attr("src", coverImageUrl);
+          }
         }
       });
     }

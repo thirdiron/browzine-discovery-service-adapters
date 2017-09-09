@@ -60,6 +60,10 @@ angular.module("summonApp.directives").constant("api", "https://apiconnector.thi
     return Array.isArray(response.data.data) ? response.data.data[0] : response.data.data;
   };
 
+  function getIncludedJournal(response) {
+    return Array.isArray(response.data.included) ? response.data.included[0] : response.data.included;
+  };
+
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
@@ -78,8 +82,8 @@ angular.module("summonApp.directives").constant("api", "https://apiconnector.thi
     }
 
     if (isArticle(data)) {
-      if (typeof response.data.included[0] !== "undefined" && response.data.included[0] !== null) {
-        var journal = response.data.included[0];
+      if (typeof response.data.included !== "undefined" && response.data.included !== null) {
+        var journal = getIncludedJournal(response);
 
         if (typeof journal.coverImageUrl !== "undefined" && journal.coverImageUrl !== null) {
           coverImageUrl = journal.coverImageUrl;
@@ -120,10 +124,10 @@ angular.module("summonApp.directives").constant("api", "https://apiconnector.thi
         if (browzineWebLink) {
           var template = buildTemplate(data, browzineWebLink, bookIcon);
           element.find(".docFooter .row:first").append(template);
-        }
 
-        if (coverImageUrl) {
-          element.find(".coverImage img").attr("src", coverImageUrl);
+          if (coverImageUrl) {
+            element.find(".coverImage img").attr("src", coverImageUrl);
+          }
         }
       });
     }
