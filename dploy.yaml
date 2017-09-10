@@ -1,15 +1,15 @@
 staging:
-  host: $FTP_HOST
-  user: $FTP_USER
-  pass: $FTP_PASS
+  host: <%= ENV["FTP_HOST"] %>
+  user: <%= ENV["FTP_USER"] %>
+  pass: <%= ENV["FTP_PASS"] %>
   path:
     local: "dist/"
     remote: "public_html/summon/staging/"
 
 production:
-  host: $FTP_HOST
-  user: $FTP_USER
-  pass: $FTP_PASS
+  host: <%= ENV["FTP_HOST"] %>
+  user: <%= ENV["FTP_USER"] %>
+  pass: <%= ENV["FTP_PASS"] %>
   path:
     local: "dist/"
     remote: "public_html/summon/"
