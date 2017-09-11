@@ -12,8 +12,8 @@
     "compile": "babel src/ -d dist/ --watch --presets env",
     "compile-ci": "babel src/ -d dist/ --presets env",
     "test": "karma start",
-    "deploy-staging": "AWS_BUCKET_FOLDER=summon-staging deploy-web-to-s3 dist/*.js",
-    "deploy-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 dist/*.js"
+    "deploy-staging": "AWS_BUCKET_FOLDER=summon-staging deploy-web-to-s3 dist",
+    "deploy-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 dist"
   },
   "dependencies": {},
   "devDependencies": {
