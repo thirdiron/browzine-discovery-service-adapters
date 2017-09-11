@@ -23,7 +23,7 @@ CircleCI executes deployments to S3 using the deploy-staging and deploy-producti
 The Summon/BrowZine adapter can be found here:
 
 Staging
-https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js
+https://s3.amazonaws.com/browzine-adapters/summon-staging/browzine-summon-adapter.js
 
 Production
 https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js
