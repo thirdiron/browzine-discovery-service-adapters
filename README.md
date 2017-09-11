@@ -18,4 +18,12 @@
 
 ### Deploying
 
-TBD
+CircleCI executes deployments to S3 using the deploy-staging and deploy-production npm commands. Neither feature branches nor hotfix branches are deployed to S3.
+
+The Summon/BrowZine adapter can be found here:
+
+Staging
+https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js
+
+Production
+https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js
