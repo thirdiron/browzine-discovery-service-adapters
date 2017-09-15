@@ -1,4 +1,18 @@
-#browzine-summon-adapter
+# Library Developers
+
+## Overview
+Use `browzine-summon-adapter` to enhance Summon search results with BrowZine data; Adds links to Journal and Article content in BrowZine; Uses BrowZine Journal covers.
+
+## How to request your library API endpoint
+Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
+
+## What source code to use?
+Generally, use the source code found in `/dist/browzine-summon-adapter.js` because it has the broadest Internet Explorer support.
+
+However, if your institution has discontinued support for Internet Explorer and has instead focused on Microsoft Edge support, then feel free to use the source code directly found in `/src/browzine-summon-adapter.js` as it uses the latest JavaScript es6 features.
+
+
+# Contributors
 
 ## Installation
 
