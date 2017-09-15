@@ -1,8 +1,8 @@
 machine:
   node:
-    version: 4.2.6
+    version: 6.11.2
   npm:
-    version: 2.14.12
+    version: 5.2.0
 
 dependencies:
   post:

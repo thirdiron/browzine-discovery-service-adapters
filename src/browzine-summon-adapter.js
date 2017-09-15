@@ -124,10 +124,10 @@ angular.module("summonApp.directives")
         if(browzineWebLink) {
           const template = buildTemplate(data, browzineWebLink, bookIcon);
           element.find(".docFooter .row:first").append(template);
+        }
 
-          if(coverImageUrl) {
-            element.find(".coverImage img").attr("src", coverImageUrl);
-          }
+        if(coverImageUrl) {
+          element.find(".coverImage img").attr("src", coverImageUrl);
         }
       });
     }
