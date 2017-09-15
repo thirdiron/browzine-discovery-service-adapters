@@ -1,0 +1,23 @@
+machine:
+  node:
+    version: 6.11.2
+  npm:
+    version: 5.2.0
+
+dependencies:
+  post:
+    - npm run compile-ci
+
+deployment:
+  hotfix:
+    branch: /hotfix\/.*/
+  feature:
+    branch: /feature\/.*/
+  develop:
+    branch: develop
+    commands:
+      - npm run deploy-staging
+  master:
+    branch: master
+    commands:
+      - npm run deploy-production
