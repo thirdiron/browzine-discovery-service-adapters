@@ -21,9 +21,9 @@ describe("BrowZine Summon Adapter", function() {
           issns: ["0028-4793"]
         };
 
-        var url = "https://apiconnector.thirdiron.com/v1/libraries/118/journals?ISSN=00284793";
+        var url = "https://apiconnector.thirdiron.com/v1/libraries/XXX/journals?ISSN=00284793";
 
-        httpBackend.whenGET(url).respond({
+        httpBackend.whenGET(/\.*/).respond({
           "data": [{
             "id": 10292,
             "type": "journals",
@@ -32,7 +32,7 @@ describe("BrowZine Summon Adapter", function() {
             "sjrValue": 14.619,
             "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
             "browzineEnabled": true,
-            "browzineWebLink": "https://browzine.com/libraries/118/journals/10292"
+            "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
           }]
         });
       });
@@ -46,7 +46,7 @@ describe("BrowZine Summon Adapter", function() {
       var template = documentSummaryElement.find(".browzine");
       expect(template).toBeDefined();
       expect(template.text().trim()).toEqual("View the Journal: Browse Now");
-      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/118/journals/10292");
+      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
       expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
       expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
     });
@@ -74,9 +74,8 @@ describe("BrowZine Summon Adapter", function() {
           dois: ["10.1136/bmj.h2575"]
         };
 
-        var url = "https://apiconnector.thirdiron.com/v1/libraries/118/articles?DOI=10.1136%2Fbmj.h2575";
-
-        httpBackend.whenGET(url).respond({
+        //https://apiconnector.thirdiron.com/v1/libraries/XXX/articles?DOI=10.1136%2Fbmj.h2575
+        httpBackend.whenGET(/\.*/).respond({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -87,7 +86,7 @@ describe("BrowZine Summon Adapter", function() {
             "availableThroughBrowzine": true,
             "startPage": "h2575",
             "endPage": "h2575",
-            "browzineWebLink": "https://browzine.com/libraries/118/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
+            "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
           },
           "included": [{
             "id": 18126,
@@ -97,7 +96,7 @@ describe("BrowZine Summon Adapter", function() {
             "sjrValue": 2.567,
             "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
             "browzineEnabled": true,
-            "browzineWebLink": "https://develop.browzine.com/libraries/118/journals/18126"
+            "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
           }]
         });
       });
@@ -111,7 +110,7 @@ describe("BrowZine Summon Adapter", function() {
       var template = documentSummaryElement.find(".browzine");
       expect(template).toBeDefined();
       expect(template.text().trim()).toEqual("View Complete Issue: Browse Now");
-      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/118/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
       expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
       expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
     });
@@ -139,9 +138,8 @@ describe("BrowZine Summon Adapter", function() {
           dois: ["10.1136/bmj.h2575"]
         };
 
-        var url = "https://apiconnector.thirdiron.com/v1/libraries/118/articles?DOI=10.1136%2Fbmj.h2575";
-
-        httpBackend.whenGET(url).respond({
+        //https://apiconnector.thirdiron.com/v1/libraries/XXX/articles?DOI=10.1136%2Fbmj.h2575
+        httpBackend.whenGET(/\.*/).respond({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -161,7 +159,7 @@ describe("BrowZine Summon Adapter", function() {
             "sjrValue": 2.567,
             "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
             "browzineEnabled": true,
-            "browzineWebLink": "https://develop.browzine.com/libraries/118/journals/18126"
+            "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
           }]
         });
       });

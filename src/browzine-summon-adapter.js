@@ -1,5 +1,5 @@
 angular.module("summonApp.directives")
-.constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118")
+.constant("api", "VISIT THIRD IRON SUPPORT TO REQUEST YOUR LIBRARY API ENDPOINT - http://support.thirdiron.com/")
 .constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
 .directive("documentSummary", ["$http", "$sce", "api", "bookIcon", (http, sce, api, bookIcon) => {
   function isArticle(data) {
