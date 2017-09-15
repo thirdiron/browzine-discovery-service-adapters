@@ -13,8 +13,6 @@ deployment:
     branch: /hotfix\/.*/
   feature:
     branch: /feature\/.*/
-    commands:
-      - npm run deploy-staging
   develop:
     branch: develop
     commands:

@@ -16,7 +16,7 @@
 
 * `npm test` (Runs the Karma automated acceptance tests)
 
-### Deploying
+### Deploying (Internal Use Only)
 
 CircleCI executes deployments to S3 using the deploy-staging and deploy-production npm commands. Neither feature branches nor hotfix branches are deployed to S3.
 

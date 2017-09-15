@@ -2,7 +2,6 @@
 /bower_component
 /tmp
 /logs
-/dist
 
 .DS_Store
 .git
