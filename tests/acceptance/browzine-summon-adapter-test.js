@@ -21,9 +21,7 @@ describe("BrowZine Summon Adapter", function() {
           issns: ["0028-4793"]
         };
 
-        var url = "https://apiconnector.thirdiron.com/v1/libraries/XXX/journals?ISSN=00284793";
-
-        httpBackend.whenGET(/\.*/).respond({
+        httpBackend.whenGET(/journals\?ISSN=00284793/).respond({
           "data": [{
             "id": 10292,
             "type": "journals",
@@ -74,8 +72,7 @@ describe("BrowZine Summon Adapter", function() {
           dois: ["10.1136/bmj.h2575"]
         };
 
-        //https://apiconnector.thirdiron.com/v1/libraries/XXX/articles?DOI=10.1136%2Fbmj.h2575
-        httpBackend.whenGET(/\.*/).respond({
+        httpBackend.whenGET(/articles\?DOI=10.1136%2Fbmj.h2575/).respond({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -138,8 +135,7 @@ describe("BrowZine Summon Adapter", function() {
           dois: ["10.1136/bmj.h2575"]
         };
 
-        //https://apiconnector.thirdiron.com/v1/libraries/XXX/articles?DOI=10.1136%2Fbmj.h2575
-        httpBackend.whenGET(/\.*/).respond({
+        httpBackend.whenGET(/articles\?DOI=10.1136%2Fbmj.h2575/).respond({
           "data": {
             "id": 55134408,
             "type": "articles",
