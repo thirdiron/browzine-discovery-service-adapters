@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module("summonApp.directives")
 .constant("api", "VISIT THIRD IRON SUPPORT TO REQUEST YOUR LIBRARY API ENDPOINT - http://support.thirdiron.com/")
 .constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
