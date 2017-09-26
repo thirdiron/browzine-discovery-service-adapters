@@ -1,3 +1,12 @@
+// Include the below "use strict"; line at the TOP of your External Script File unless...
+//   1) You already have a custom script file which HAS "use strict"; at the top, in which case you do not need to add this.
+//   2) You already have a custom script file which does NOT have "use strict"; but adding this line causes problems.  In which case
+//         try removing the "use strict"; line.
+  
+  "use strict";
+
+// Begin BrowZine-Summon Integration Code
+
 angular.module("summonApp.directives")
 .constant("api", "VISIT THIRD IRON SUPPORT TO REQUEST YOUR LIBRARY API ENDPOINT - http://support.thirdiron.com/")
 .constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
@@ -97,6 +106,9 @@ angular.module("summonApp.directives")
   function buildTemplate(data, browzineWebLink, bookIcon) {
     let assetClass = "";
 
+// Customize the naming conventions for each type of item - Journal/Article - by changing the wording in the quotes below
+//   on lines 113 and 117.
+     
     if(isJournal(data)) {
       assetClass = "View the Journal";
     }
@@ -105,6 +117,8 @@ angular.module("summonApp.directives")
       assetClass = "View Complete Issue";
     }
 
+// You can change the underlined "Browse Now" link name on line 122 below.    
+    
     return `<div class='browzine'>${assetClass}: <a class='browzine-web-link' href='${browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class="browzine-book-icon" src='${bookIcon}'/></div>`;
   };
 
@@ -133,3 +147,5 @@ angular.module("summonApp.directives")
     }
   };
 }]);
+
+// End BrowZine-Summon Integration Code
