@@ -1,19 +1,18 @@
 {
   "name": "browzine-summon-adapter",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Summon adapter to augment journal results with custom BrowZine API data.",
   "engines": {
     "node": "0.10.32"
   },
-  "main": "server.js",
   "scripts": {
     "server": "http-server --cors -p 8080",
     "tunnel": "ngrok http 8080",
     "compile": "babel src/ -d dist/ --watch --presets env",
     "compile-ci": "babel src/ -d dist/ --presets env",
     "test": "karma start",
-    "deploy-staging": "AWS_BUCKET_FOLDER=summon-staging deploy-web-to-s3 dist",
-    "deploy-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 dist"
+    "deploy-staging": "AWS_BUCKET_FOLDER=summon-staging deploy-web-to-s3 src",
+    "deploy-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 src"
   },
   "dependencies": {},
   "devDependencies": {

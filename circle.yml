@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   post:
-    - npm run compile-ci
+    #- npm run compile-ci
 
 deployment:
   hotfix:
