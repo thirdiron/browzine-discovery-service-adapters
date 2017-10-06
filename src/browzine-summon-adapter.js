@@ -110,13 +110,13 @@ angular.module("summonApp.directives")
 
     // You can change the underlined "Browse Now" link name on line 122 below.
     var template = "<div class='browzine'>" +
-                     "assetClass: <a class='browzine-web-link' href='browzineWebLink' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a>" +
-                     "<img class='browzine-book-icon' src='bookIcon'/>" +
+                     "{{assetClass}}: <a class='browzine-web-link' href='{{browzineWebLink}}' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a>" +
+                     "<img class='browzine-book-icon' src='{{bookIcon}}'/>" +
                    "</div>";
 
-    template = template.replace(/assetClass/g, assetClass);
-    template = template.replace(/browzineWebLink/g, browzineWebLink);
-    template = template.replace(/bookIcon/g, bookIcon);
+    template = template.replace(/{{assetClass}}/g, assetClass);
+    template = template.replace(/{{browzineWebLink}}/g, browzineWebLink);
+    template = template.replace(/{{bookIcon}}/g, bookIcon);
 
     return template;
   };
