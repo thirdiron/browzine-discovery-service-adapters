@@ -21,7 +21,7 @@ describe("BrowZine Summon Adapter", function() {
           issns: ["0028-4793"]
         };
 
-        httpBackend.whenGET(/journals\?ISSN=00284793/).respond({
+        httpBackend.whenGET(/search\?issns=00284793/).respond({
           "data": [{
             "id": 10292,
             "type": "journals",
@@ -72,7 +72,7 @@ describe("BrowZine Summon Adapter", function() {
           dois: ["10.1136/bmj.h2575"]
         };
 
-        httpBackend.whenGET(/articles\?DOI=10.1136%2Fbmj.h2575/).respond({
+        httpBackend.whenGET(/articles\/doi\/10.1136%2Fbmj.h2575/).respond({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -135,7 +135,7 @@ describe("BrowZine Summon Adapter", function() {
           dois: ["10.1136/bmj.h2575"]
         };
 
-        httpBackend.whenGET(/articles\?DOI=10.1136%2Fbmj.h2575/).respond({
+        httpBackend.whenGET(/articles\/doi\/10.1136%2Fbmj.h2575/).respond({
           "data": {
             "id": 55134408,
             "type": "articles",

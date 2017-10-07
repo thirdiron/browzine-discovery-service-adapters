@@ -1,8 +1,9 @@
 // Begin BrowZine-Summon Integration Code
 angular.module("summonApp.directives")
-.constant("api", "https://apiconnector.thirdiron.com/v1/libraries/118")
+.constant("api", "https://api.thirdiron.com/public/v1/libraries/XXX")
+.constant("apiKey", "ENTER API KEY")
 .constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
-.directive("documentSummary", ["$http", "$sce", "api", "bookIcon", function(http, sce, api, bookIcon) {
+.directive("documentSummary", ["$http", "$sce", "api", "apiKey", "bookIcon", function(http, sce, api, apiKey, bookIcon) {
   function isArticle(data) {
     if(typeof data.document !== "undefined" && data.document !== null) {
       return data.document.content_type.trim() === "Journal Article";
@@ -44,11 +45,13 @@ angular.module("summonApp.directives")
 
     if(isArticle(scope)) {
       var doi = getDoi(scope);
-      endpoint = api + "/articles?DOI=" + doi;
+      endpoint = api + "/articles/doi/" + doi + "?include=journal";
     } else if(isJournal(scope)) {
       var issn = getIssn(scope);
-      endpoint = api + "/journals?ISSN=" + issn;
+      endpoint = api + "/search?issns=" + issn;
     }
+
+    endpoint += "&access_token=" + apiKey;
 
     return endpoint;
   };
