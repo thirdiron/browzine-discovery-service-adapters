@@ -1,6 +1,6 @@
 // Begin BrowZine-Summon Integration Code
 angular.module("summonApp.directives")
-.constant("api", "https://api.thirdiron.com/public/v1/libraries/XXX")
+.constant("api", "http://localhost:3000/public/v1/libraries/XXX")
 .constant("apiKey", "ENTER API KEY")
 .constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
 .directive("documentSummary", ["$http", "$sce", "api", "apiKey", "bookIcon", function(http, sce, api, apiKey, bookIcon) {
@@ -138,7 +138,7 @@ angular.module("summonApp.directives")
         var coverImageUrl = getCoverImageUrl(data, response);
 
         if(browzineWebLink) {
-          template = buildTemplate(data, browzineWebLink, bookIcon);
+          var template = buildTemplate(data, browzineWebLink, bookIcon);
           element.find(".docFooter .row:first").append(template);
         }
 

@@ -8,8 +8,10 @@ Use `browzine-summon-adapter` to enhance Summon search results with BrowZine dat
 ## How to request your library API endpoint
 Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
 
+You will receive your `api` endpoint and your `apiKey`, update the Summon script with these values.
+
 ## What source code to use?
-Use `/src/browzine-summon-adapter.js`, we support IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
+Use `/src/browzine-summon-adapter.js`, we support IE10+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
 
 
 # Contributors
@@ -23,7 +25,7 @@ Use `/src/browzine-summon-adapter.js`, we support IE11+ and evergreen browsers (
 ## Running / Development
 
 * `npm run server` (Runs a local webserver, visit http://localhost:8080)
-* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/dist/browzine-summon-adapter.js)
+* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/browzine-summon-adapter.js)
 
 ### Running Tests
 

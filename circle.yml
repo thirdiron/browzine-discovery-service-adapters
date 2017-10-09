@@ -4,10 +4,6 @@ machine:
   npm:
     version: 5.2.0
 
-dependencies:
-  post:
-    #- npm run compile-ci
-
 deployment:
   hotfix:
     branch: /hotfix\/.*/
