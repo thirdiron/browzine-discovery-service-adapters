@@ -19,8 +19,6 @@
     "angular-mocks": "1.6.4",
     "angular-resource": "1.6.4",
     "angular-route": "1.6.4",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
     "deploy-web-to-s3": "^1.2.1",
     "http-server": "^0.10.0",
     "jquery": "^2.1.3",
