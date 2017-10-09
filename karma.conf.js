@@ -16,7 +16,7 @@ module.exports = function(config) {
       'node_modules/angular-route/angular-route.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'tests/**/*.js',
-      'dist/**/*.js'
+      'src/**/*.js'
     ],
 
     // list of files to exclude
