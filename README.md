@@ -8,10 +8,10 @@ Use `browzine-summon-adapter` to enhance Summon search results with BrowZine dat
 ## How to request your library API endpoint
 Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
 
-## What source code to use?
-Generally, use the source code found in `/dist/browzine-summon-adapter.js` because it has the broadest Internet Explorer support.
+You will receive your `api` endpoint and your `apiKey`, update the Summon script with these values.
 
-However, if your institution has discontinued support for Internet Explorer and has instead focused on Microsoft Edge support, then feel free to use the source code directly found in `/src/browzine-summon-adapter.js` as it uses the latest JavaScript es6 features.
+## What source code to use?
+Use `/src/browzine-summon-adapter.js`, we support IE10+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
 
 
 # Contributors
@@ -24,9 +24,8 @@ However, if your institution has discontinued support for Internet Explorer and 
 
 ## Running / Development
 
-* `npm run compile` (Runs the sourcecode through babel and watches for changes)
 * `npm run server` (Runs a local webserver, visit http://localhost:8080)
-* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/dist/browzine-summon-adapter.js)
+* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/browzine-summon-adapter.js)
 
 ### Running Tests
 
@@ -37,7 +36,6 @@ However, if your institution has discontinued support for Internet Explorer and 
 Contributors should:
 
 - Make the needed changes in `/src/browzine-summon-adapter.js`.
-- Then run the `npm compile-ci` command to create what's in `dist/browzine-summon-adapter.js` for IE11 and below support.
 - Add a test for the change in `/tests/browzine-summon-adapter.js`.
 
 ### Deploying (Internal Use Only)
