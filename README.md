@@ -1,17 +1,29 @@
 # Library Developers
 
 ## Overview
-Use `browzine-summon-adapter` to enhance Summon search results with BrowZine data; Adds links to Journal and Article content in BrowZine; Uses BrowZine Journal covers.
+Use `browzine-summon-adapter` to enhance Summon search results with BrowZine data; Adds links to Journal and Article content in BrowZine; Uses BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
+
 
 ![Article in Context links in Summon results](https://i.imgur.com/B34LEec.png "Article in Context links in Summon results")
 
 ## How to request your library API endpoint
 Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
 
-You will receive your `api` endpoint and your `apiKey`, update the Summon script with these values.
+You will receive your `api` endpoint and your `apiKey`, update the following code snippet with these values and add to your Summon Custom Script:
 
-## What source code to use?
-Use `/src/browzine-summon-adapter.js`, we support IE10+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY"
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
+document.head.appendChild(browzine.script);
+```
+
+Summon 2.0 External Script
+![Summon 2.0 External Script](https://i.imgur.com/piLMSic.png "Summon 2.0 External Script")
 
 
 # Contributors

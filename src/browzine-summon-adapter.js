@@ -1,9 +1,8 @@
-// Begin BrowZine-Summon Integration Code
-angular.module("summonApp.directives")
-.constant("api", "https://api.thirdiron.com/public/v1/libraries/XXX")
-.constant("apiKey", "ENTER API KEY")
-.constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
-.directive("documentSummary", ["$http", "$sce", "api", "apiKey", "bookIcon", function(http, sce, api, apiKey, bookIcon) {
+$(function() {
+  var api = browzine.api;
+  var apiKey = browzine.apiKey;
+  var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
+
   function isArticle(data) {
     if(typeof data.document !== "undefined" && data.document !== null) {
       return data.document.content_type.trim() === "Journal Article";
@@ -25,6 +24,12 @@ angular.module("summonApp.directives")
 
     if(typeof scope.document.issns !== "undefined" && scope.document.issns !== null) {
       issn = scope.document.issns[0].trim().replace('-', '');
+    }
+
+    if(issn === "") {
+      if(typeof scope.document.eissns !== "undefined" && scope.document.eissns !== null) {
+        issn = scope.document.eissns[0].trim().replace('-', '');
+      }
     }
 
     return encodeURIComponent(issn);
@@ -61,11 +66,11 @@ angular.module("summonApp.directives")
   };
 
   function getData(response) {
-    return Array.isArray(response.data.data) ? response.data.data[0] : response.data.data;
+    return Array.isArray(response.data) ? response.data[0] : response.data;
   };
 
   function getIncludedJournal(response) {
-    return Array.isArray(response.data.included) ? response.data.included[0] : response.data.included;
+    return Array.isArray(response.included) ? response.included[0] : response.included;
   };
 
   function getBrowZineWebLink(data) {
@@ -81,12 +86,14 @@ angular.module("summonApp.directives")
   function getCoverImageUrl(data, response) {
     var coverImageUrl = null;
 
-    if(typeof data.coverImageUrl !== "undefined" && data.coverImageUrl !== null) {
-      coverImageUrl = data.coverImageUrl;
+    if(isJournal(data)) {
+      if(typeof data.coverImageUrl !== "undefined" && data.coverImageUrl !== null) {
+        coverImageUrl = data.coverImageUrl;
+      }
     }
 
     if(isArticle(data)) {
-      if(typeof response.data.included !== "undefined" && response.data.included !== null) {
+      if(typeof response.included !== "undefined" && response.included !== null) {
         var journal = getIncludedJournal(response);
 
         if(typeof journal.coverImageUrl !== "undefined" && journal.coverImageUrl !== null) {
@@ -124,30 +131,63 @@ angular.module("summonApp.directives")
     return template;
   };
 
-  return {
-    link: function(scope, element, attributes) {
-      if(!shouldEnhance(scope)) {
-        return;
+  function documentSummary(scope, element) {
+    if(!shouldEnhance(scope)) {
+      return;
+    }
+
+    var endpoint = getEndpoint(scope);
+
+    $.getJSON(endpoint, function(response) {
+      var data = getData(response);
+      var browzineWebLink = getBrowZineWebLink(data);
+      var coverImageUrl = getCoverImageUrl(data, response);
+
+      if(browzineWebLink) {
+        var template = buildTemplate(data, browzineWebLink, bookIcon);
+        $(element).find(".docFooter .row:first").append(template);
       }
 
-      var endpoint = getEndpoint(scope);
-
-      http.get(sce.trustAsResourceUrl(endpoint)).then(function(response) {
-        var data = getData(response);
-        var browzineWebLink = getBrowZineWebLink(data);
-        var coverImageUrl = getCoverImageUrl(data, response);
-
-        if(browzineWebLink) {
-          var template = buildTemplate(data, browzineWebLink, bookIcon);
-          element.find(".docFooter .row:first").append(template);
-        }
-
-        if(coverImageUrl) {
-          element.find(".coverImage img").attr("src", coverImageUrl);
-        }
-      });
-    }
+      if(coverImageUrl) {
+        $(element).find(".coverImage img").attr("src", coverImageUrl);
+      }
+    });
   };
-}]);
 
-// End BrowZine-Summon Integration Code
+  function browZineEnhance(element) {
+    var secret = Object.getOwnPropertyNames(element).filter(function(property) {
+      property = property.replace(/[^a-z]/gi, "");
+      return property.indexOf("jQuery") === 0;
+    });
+
+    var scope = element[secret].$scope;
+
+    documentSummary(scope, element);
+  };
+
+  var results = document.querySelector("#results");
+  var config = {
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true,
+  };
+
+  //Enhance any documentSummary elements present before the observer starts
+  var documentSummaries = results.querySelectorAll(".documentSummary");
+
+  Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
+    browZineEnhance(documentSummary);
+  });
+
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if(mutation.attributeName === "document-summary") {
+        var documentSummary = mutation.target;
+        browZineEnhance(documentSummary);
+      }
+    });
+  });
+
+  observer.observe(results, config);
+});
