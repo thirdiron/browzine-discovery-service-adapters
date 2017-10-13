@@ -154,7 +154,7 @@ $(function() {
     });
   };
 
-  function browZineEnhance(element) {
+  function browzineEnhance(element) {
     var secret = Object.getOwnPropertyNames(element).filter(function(property) {
       property = property.replace(/[^a-z]/gi, "");
       return property.indexOf("jQuery") === 0;
@@ -177,14 +177,14 @@ $(function() {
   var documentSummaries = results.querySelectorAll(".documentSummary");
 
   Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
-    browZineEnhance(documentSummary);
+    browzineEnhance(documentSummary);
   });
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       if(mutation.attributeName === "document-summary") {
         var documentSummary = mutation.target;
-        browZineEnhance(documentSummary);
+        browzineEnhance(documentSummary);
       }
     });
   });
