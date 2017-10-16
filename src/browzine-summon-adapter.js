@@ -1,3 +1,8 @@
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY"
+};
+
 $(function() {
   var api = browzine.api;
   var apiKey = browzine.apiKey;
