@@ -22,7 +22,10 @@ browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzin
 document.head.appendChild(browzine.script);
 ```
 
-Summon 2.0 External Script
+Summon Custom Scripts are added in the Summon 2.0 External Script portion of the Summon Editor Settings:
+![Summon 2.0 Editor Link](https://i.imgur.com/HJFpDGm.png "Summon 2.0 Editor Link")
+
+As a Custom Script Url:
 ![Summon 2.0 External Script](https://i.imgur.com/piLMSic.png "Summon 2.0 External Script")
 
 
