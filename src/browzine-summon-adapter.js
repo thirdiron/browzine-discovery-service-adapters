@@ -135,7 +135,9 @@ $(function() {
     return template;
   };
 
-  function documentSummary(scope, element) {
+  function searchResultsWithBrowZine(documentSummary) {
+    var scope = angular.element(documentSummary).scope();
+
     if(!shouldEnhance(scope)) {
       return;
     }
@@ -149,18 +151,13 @@ $(function() {
 
       if(browzineWebLink) {
         var template = buildTemplate(data, browzineWebLink, bookIcon);
-        $(element).find(".docFooter .row:eq(0)").append(template);
+        $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
       if(coverImageUrl) {
-        $(element).find(".coverImage img").attr("src", coverImageUrl);
+        $(documentSummary).find(".coverImage img").attr("src", coverImageUrl);
       }
     });
-  };
-
-  function browzineEnhance(element) {
-    var scope = angular.element(element).scope();
-    documentSummary(scope, element);
   };
 
   var results = document.querySelector("#results");
@@ -175,14 +172,14 @@ $(function() {
   var documentSummaries = results.querySelectorAll(".documentSummary");
 
   Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
-    browzineEnhance(documentSummary);
+    searchResultsWithBrowZine(documentSummary);
   });
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       if(mutation.attributeName === "document-summary") {
         var documentSummary = mutation.target;
-        browzineEnhance(documentSummary);
+        searchResultsWithBrowZine(documentSummary);
       }
     });
   });
