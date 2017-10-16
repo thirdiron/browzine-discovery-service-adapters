@@ -110,26 +110,28 @@ $(function() {
   };
 
   function buildTemplate(data, browzineWebLink, bookIcon) {
-    var assetClass = "";
+    var wording = "";
+    var browzineWebLinkText = "";
 
-    // Customize the naming conventions for each type of item - Journal/Article - by changing the wording in the quotes below:
-    // E.g. You can customize "View the Journal" and "View Complete Issue".
     if(isJournal(data)) {
-      assetClass = "View the Journal";
+      wording = browzine.journalWording || "View the Journal";
+      browzineWebLinkText = browzine.journalBrowZineWebLinkText || "Browse Now";
     }
 
     if(isArticle(data)) {
-      assetClass = "View Complete Issue";
+      wording = browzine.articleWording || "View Complete Issue";
+      browzineWebLinkText = browzine.articleBrowZineWebLinkText || "Browse Now";
     }
 
     // You can change the underlined "Browse Now" link name on line 122 below.
     var template = "<div class='browzine'>" +
-                     "{{assetClass}}: <a class='browzine-web-link' href='{{browzineWebLink}}' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> " +
+                     "{{wording}}: <a class='browzine-web-link' href='{{browzineWebLink}}' target='_blank' style='text-decoration: underline; color: #333;'>{{browzineWebLinkText}}</a> " +
                      "<img class='browzine-book-icon' src='{{bookIcon}}'/>" +
                    "</div>";
 
-    template = template.replace(/{{assetClass}}/g, assetClass);
+    template = template.replace(/{{wording}}/g, wording);
     template = template.replace(/{{browzineWebLink}}/g, browzineWebLink);
+    template = template.replace(/{{browzineWebLinkText}}/g, browzineWebLinkText);
     template = template.replace(/{{bookIcon}}/g, bookIcon);
 
     return template;

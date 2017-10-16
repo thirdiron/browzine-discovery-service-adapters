@@ -14,7 +14,7 @@ You will receive your `api` endpoint and your `apiKey`, update the following cod
 ```
 var browzine = {
   api: "https://api.thirdiron.com/public/v1/libraries/XXX",
-  apiKey: "ENTER API KEY"
+  apiKey: "ENTER API KEY",
 };
 
 browzine.script = document.createElement("script");
@@ -28,6 +28,22 @@ Summon Custom Scripts are added in the Summon 2.0 External Script portion of the
 As a Custom Script Url:
 ![Summon 2.0 External Script](https://i.imgur.com/piLMSic.png "Summon 2.0 External Script")
 
+## Customize The BrowZine Enhancement
+
+Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
+
+E.g. You can customize "View the Journal" and "View Complete Issue" or "Browse Now". These customizations are optional and the defaults are shown below.
+
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
+  journalWording: "View the Journal",
+  articleWording: "View Complete Issue",
+  journalBrowZineWebLinkText: "Browse Now",
+  articleBrowZineWebLinkText: "Browse Now",
+};
+```
 
 # Contributors
 
@@ -53,7 +69,7 @@ Contributors should:
 - Make the needed changes in `/src/browzine-summon-adapter.js`.
 - Add a test for the change in `/tests/browzine-summon-adapter.js`.
 
-### Deploying (Internal Use Only)
+### Deploying
 
 CircleCI executes deployments to S3 using the deploy-staging and deploy-production npm commands. Neither feature branches nor hotfix branches are deployed to S3.
 
