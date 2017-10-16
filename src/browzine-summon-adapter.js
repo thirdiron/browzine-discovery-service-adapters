@@ -145,7 +145,7 @@ $(function() {
 
       if(browzineWebLink) {
         var template = buildTemplate(data, browzineWebLink, bookIcon);
-        $(element).find(".docFooter .row:first").append(template);
+        $(element).find(".docFooter .row:eq(0)").append(template);
       }
 
       if(coverImageUrl) {
@@ -155,13 +155,7 @@ $(function() {
   };
 
   function browzineEnhance(element) {
-    var secret = Object.getOwnPropertyNames(element).filter(function(property) {
-      property = property.replace(/[^a-z]/gi, "");
-      return property.indexOf("jQuery") === 0;
-    });
-
-    var scope = element[secret].$scope;
-
+    var scope = angular.element(element).scope();
     documentSummary(scope, element);
   };
 
