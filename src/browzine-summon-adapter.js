@@ -1,9 +1,8 @@
-var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
-  apiKey: "ENTER API KEY"
-};
-
 $(function() {
+  if(typeof browzine === "undefined" || browzine === null) {
+    return;
+  }
+
   var api = browzine.api;
   var apiKey = browzine.apiKey;
   var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
