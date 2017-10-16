@@ -9,7 +9,8 @@ $(function() {
 
   function isArticle(data) {
     if(typeof data.document !== "undefined" && data.document !== null) {
-      return data.document.content_type.trim() === "Journal Article";
+      var contentType = data.document.content_type.trim();
+      return contentType === "Journal Article";
     } else {
       return data.type === "articles";
     }
@@ -17,7 +18,8 @@ $(function() {
 
   function isJournal(data) {
     if(typeof data.document !== "undefined" && data.document !== null) {
-      return data.document.content_type.trim() === "Journal";
+      var contentType = data.document.content_type.trim();
+      return contentType === "Journal" || contentType === "eJournal";
     } else {
       return data.type === "journals";
     }
@@ -30,10 +32,8 @@ $(function() {
       issn = scope.document.issns[0].trim().replace('-', '');
     }
 
-    if(issn === "") {
-      if(typeof scope.document.eissns !== "undefined" && scope.document.eissns !== null) {
-        issn = scope.document.eissns[0].trim().replace('-', '');
-      }
+    if(typeof scope.document.eissns !== "undefined" && scope.document.eissns !== null && issn === "") {
+      issn = scope.document.eissns[0].trim().replace('-', '');
     }
 
     return encodeURIComponent(issn);
