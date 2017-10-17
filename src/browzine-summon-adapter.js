@@ -140,14 +140,14 @@ browzine.search = (function() {
     }
 
     var template = "<div class='browzine'>" +
-                     "{{wording}}: <a class='browzine-web-link' href='{{browzineWebLink}}' target='_blank' style='text-decoration: underline; color: #333;'>{{browzineWebLinkText}}</a> " +
-                     "<img class='browzine-book-icon' src='{{bookIcon}}'/>" +
+                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> " +
+                     "<img class='browzine-book-icon' src='{bookIcon}'/>" +
                    "</div>";
 
-    template = template.replace(/{{wording}}/g, wording);
-    template = template.replace(/{{browzineWebLink}}/g, browzineWebLink);
-    template = template.replace(/{{browzineWebLinkText}}/g, browzineWebLinkText);
-    template = template.replace(/{{bookIcon}}/g, bookIcon);
+    template = template.replace(/{wording}/g, wording);
+    template = template.replace(/{browzineWebLink}/g, browzineWebLink);
+    template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
+    template = template.replace(/{bookIcon}/g, bookIcon);
 
     return template;
   };

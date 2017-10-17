@@ -57,7 +57,7 @@ describe("Search Model", function() {
     expect(search.shouldEnhance(scope)).toEqual(false);
   });
 
-  it("should detect whether a journal search result can be enhanced", function() {
+  it("should enhance a journal search result with an issn", function() {
     var scope = {
       document: {
         content_type: "Journal",
@@ -68,7 +68,7 @@ describe("Search Model", function() {
     expect(search.shouldEnhance(scope)).toEqual(true);
   });
 
-  it("should detect whether a eJournal search result can be enhanced", function() {
+  it("should enhance an eJournal search result with an issn", function() {
     var scope = {
       document: {
         content_type: "eJournal",
@@ -79,7 +79,7 @@ describe("Search Model", function() {
     expect(search.shouldEnhance(scope)).toEqual(true);
   });
 
-  it("should detect whether an article search result can be enhanced", function() {
+  it("should enhance an article search result with a doi", function() {
     var scope = {
       document: {
         content_type: "Journal Article",
