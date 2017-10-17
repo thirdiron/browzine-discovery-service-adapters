@@ -235,4 +235,22 @@ describe("Search Model", function() {
     expect(template).toContain("text-decoration: underline;");
     expect(template).toContain("color: #333;");
   });
+
+  it("should build an enhancement template for article search results", function() {
+    var data = search.getData(articleResponse);
+    var browzineWebLink = search.getBrowZineWebLink(data);
+    var template = search.buildTemplate(data, browzineWebLink);
+
+    expect(data).toBeDefined();
+    expect(browzineWebLink).toBeDefined();
+    expect(template).toBeDefined();
+
+    expect(template).toEqual("<div class='browzine'>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png'/></div>");
+    expect(template).toContain("View Complete Issue");
+    expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+    expect(template).toContain("Browse Now");
+    expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+    expect(template).toContain("text-decoration: underline;");
+    expect(template).toContain("color: #333;");
+  });
 });
