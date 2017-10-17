@@ -1,33 +1,27 @@
-//Note: We may not be able to use this test suite until Summon fixes
-//its LABjs use to bootstrap Angular once all scripts (3rd-party, custom) are loaded.
-//Even after getting the tests to run w/ MutationObserver, running into
-//async timing issue where the enahncement updates are nondeterministic.
 describe("BrowZine Summon Adapter", function() {
-  var compile, scope, documentSummaryElement, resultsElement, httpBackend;
+  var search = {}, documentSummary = {};
 
   $("body").append("<div id='results'></div>");
 
-  function getCompiledDocumentSummaryDirective() {
-    var compiledDirective = compile(angular.element("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>"))(scope);
-    scope.$digest();
-    return compiledDirective;
-  }
-
   describe("search results journal", function() {
     beforeEach(function() {
-      module('summonApp.directives');
+      search = browzine.search;
 
-      inject(function ($compile, $rootScope, $httpBackend) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        httpBackend = $httpBackend;
+      documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-        scope.document = {
-          content_type: "Journal",
-          issns: ["0028-4793"]
-        };
+      $.extend(documentSummary, {
+        "jQuery321088802690231186742": {
+          "$scope": {
+            "document": {
+              content_type: "Journal",
+              issns: ["0028-4793"]
+            }
+          }
+        }
+      });
 
-        httpBackend.whenGET(/search\?issns=00284793/).respond({
+      $.getJSON = function(endpoint, callback) {
+        return callback({
           "data": [{
             "id": 10292,
             "type": "journals",
@@ -39,46 +33,50 @@ describe("BrowZine Summon Adapter", function() {
             "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
           }]
         });
-      });
+      };
 
-      documentSummaryElement = getCompiledDocumentSummaryDirective();
+      search.resultsWithBrowZine(documentSummary);
+    });
+
+    afterEach(function() {
+
     });
 
     it("should have an enhanced browse journal in browzine option", function() {
-      // httpBackend.flush();
-      //
-      // var template = documentSummaryElement.find(".browzine");
-      // expect(template).toBeDefined();
-      // expect(template.text().trim()).toEqual("View the Journal: Browse Now");
-      // expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
-      // expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      // expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      var template = documentSummary.find(".browzine");
+      expect(template).toBeDefined();
+      expect(template.text().trim()).toEqual("View the Journal: Browse Now");
+      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
+      expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
     });
 
     it("should have an enhanced browzine journal cover", function() {
-      // httpBackend.flush();
-      //
-      // var coverImage = documentSummaryElement.find(".coverImage img");
-      // expect(coverImage).toBeDefined();
-      // expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      var coverImage = documentSummary.find(".coverImage img");
+      expect(coverImage).toBeDefined();
+      expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
   });
 
   describe("search results article", function() {
     beforeEach(function() {
-      module('summonApp.directives');
+      search = browzine.search;
 
-      inject(function ($compile, $rootScope, $httpBackend) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        httpBackend = $httpBackend;
+      documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-        scope.document = {
-          content_type: "Journal Article",
-          dois: ["10.1136/bmj.h2575"]
-        };
+      $.extend(documentSummary, {
+        "jQuery321088802690231186742": {
+          "$scope": {
+            "document": {
+              content_type: "Journal Article",
+              dois: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      });
 
-        httpBackend.whenGET(/articles\/doi\/10.1136%2Fbmj.h2575/).respond({
+      $.getJSON = function(endpoint, callback) {
+        return callback({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -102,46 +100,50 @@ describe("BrowZine Summon Adapter", function() {
             "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
           }]
         });
-      });
+      };
 
-      documentSummaryElement = getCompiledDocumentSummaryDirective();
+      search.resultsWithBrowZine(documentSummary);
+    });
+
+    afterEach(function() {
+
     });
 
     it("should have an enhanced browse article in browzine option", function() {
-      // httpBackend.flush();
-      //
-      // var template = documentSummaryElement.find(".browzine");
-      // expect(template).toBeDefined();
-      // expect(template.text().trim()).toEqual("View Complete Issue: Browse Now");
-      // expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
-      // expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      // expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      var template = documentSummary.find(".browzine");
+      expect(template).toBeDefined();
+      expect(template.text().trim()).toEqual("View Complete Issue: Browse Now");
+      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+      expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
     });
 
     it("should have an enhanced browzine journal cover", function() {
-      // httpBackend.flush();
-      //
-      // var coverImage = documentSummaryElement.find(".coverImage img");
-      // expect(coverImage).toBeDefined();
-      // expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+      var coverImage = documentSummary.find(".coverImage img");
+      expect(coverImage).toBeDefined();
+      expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
     });
   });
 
   describe("search results article with no browzineWebLink", function() {
     beforeEach(function() {
-      module('summonApp.directives');
+      search = browzine.search;
 
-      inject(function ($compile, $rootScope, $httpBackend) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        httpBackend = $httpBackend;
+      documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-        scope.document = {
-          content_type: "Journal Article",
-          dois: ["10.1136/bmj.h2575"]
-        };
+      $.extend(documentSummary, {
+        "jQuery321088802690231186742": {
+          "$scope": {
+            "document": {
+              content_type: "Journal Article",
+              dois: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      });
 
-        httpBackend.whenGET(/articles\/doi\/10.1136%2Fbmj.h2575/).respond({
+      $.getJSON = function(endpoint, callback) {
+        return callback({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -164,16 +166,18 @@ describe("BrowZine Summon Adapter", function() {
             "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
           }]
         });
-      });
+      };
 
-      documentSummaryElement = getCompiledDocumentSummaryDirective();
+      search.resultsWithBrowZine(documentSummary);
+    });
+
+    afterEach(function() {
+
     });
 
     it("should not have an enhanced browse article in browzine option", function() {
-      // httpBackend.flush();
-      //
-      // var template = documentSummaryElement.find(".browzine");
-      // expect(template.text().trim()).toEqual("");
+      var template = documentSummary.find(".browzine");
+      expect(template.text().trim()).toEqual("");
     });
   });
 });

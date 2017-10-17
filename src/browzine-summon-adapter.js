@@ -135,7 +135,6 @@ browzine.search = (function() {
       browzineWebLinkText = browzine.articleBrowZineWebLinkText || "Browse Now";
     }
 
-    // You can change the underlined "Browse Now" link name on line 122 below.
     var template = "<div class='browzine'>" +
                      "{{wording}}: <a class='browzine-web-link' href='{{browzineWebLink}}' target='_blank' style='text-decoration: underline; color: #333;'>{{browzineWebLinkText}}</a> " +
                      "<img class='browzine-book-icon' src='{{bookIcon}}'/>" +
@@ -149,8 +148,19 @@ browzine.search = (function() {
     return template;
   };
 
+  function getScope(documentSummary) {
+    var token = Object.getOwnPropertyNames(documentSummary).filter(function(property) {
+      property = property.replace(/[^a-z]/gi, "");
+      return property.indexOf("jQuery") === 0;
+    });
+
+    var scope = documentSummary[token].$scope;
+
+    return scope;
+  };
+
   function resultsWithBrowZine(documentSummary) {
-    var scope = angular.element(documentSummary).scope();
+    var scope = getScope(documentSummary);
 
     if(!shouldEnhance(scope)) {
       return;
@@ -176,6 +186,7 @@ browzine.search = (function() {
 
   return {
     resultsWithBrowZine: resultsWithBrowZine,
+    getScope: getScope,
     shouldEnhance: shouldEnhance,
     getEndpoint: getEndpoint,
     getData: getData,

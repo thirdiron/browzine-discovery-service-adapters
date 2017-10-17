@@ -253,4 +253,29 @@ describe("Search Model", function() {
     expect(template).toContain("text-decoration: underline;");
     expect(template).toContain("color: #333;");
   });
+
+  it("should retrieve the scope from a search result", function() {
+    var documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+    $.extend(documentSummary, {
+      "jQuery321088802690231186742": {
+        "$scope": {
+          "document": {
+            content_type: "Journal",
+            issns: ["0028-4793"]
+          }
+        }
+      }
+    });
+
+    var scope = search.getScope(documentSummary);
+
+    expect(scope).toBeDefined();
+    expect(scope.document).toBeDefined();
+    expect(scope.document.content_type).toBeDefined();
+    expect(scope.document.issns).toBeDefined();
+
+    expect(scope.document.content_type).toEqual("Journal");
+    expect(scope.document.issns).toEqual(["0028-4793"]);
+  });
 });
