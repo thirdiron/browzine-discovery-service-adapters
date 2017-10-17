@@ -51,6 +51,12 @@ describe("Search Model", function() {
     expect(search).toBeDefined();
   });
 
+  it("should not enhance a search result without a document", function() {
+    var scope = {};
+
+    expect(search.shouldEnhance(scope)).toEqual(false);
+  });
+
   it("should detect whether a journal search result can be enhanced", function() {
     var scope = {
       document: {

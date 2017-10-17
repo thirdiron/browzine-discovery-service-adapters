@@ -39,12 +39,14 @@ browzine.search = (function() {
   function getIssn(scope) {
     var issn = "";
 
-    if(scope.document.issns) {
-      issn = scope.document.issns[0].trim().replace('-', '');
-    }
+    if(scope.document) {
+      if(scope.document.issns) {
+        issn = scope.document.issns[0].trim().replace('-', '');
+      }
 
-    if(scope.document.eissns && issn === "") {
-      issn = scope.document.eissns[0].trim().replace('-', '');
+      if(scope.document.eissns && issn === "") {
+        issn = scope.document.eissns[0].trim().replace('-', '');
+      }
     }
 
     return encodeURIComponent(issn);
@@ -53,8 +55,10 @@ browzine.search = (function() {
   function getDoi(scope) {
     var doi = "";
 
-    if(scope.document.dois) {
-      doi = scope.document.dois[0].trim();
+    if(scope.document) {
+      if(scope.document.dois) {
+        doi = scope.document.dois[0].trim();
+      }
     }
 
     return encodeURIComponent(doi);
