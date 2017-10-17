@@ -5,14 +5,14 @@ browzine.search = (function() {
   function isArticle(data) {
     var result = false;
 
-    if(typeof data.document !== "undefined" && data.document !== null) {
-      if(typeof data.document.content_type !== "undefined" && data.document.content_type !== null) {
+    if(data.document) {
+      if(data.document.content_type) {
         var contentType = data.document.content_type.trim();
         result = (contentType === "Journal Article");
       }
     }
 
-    if(typeof data.type !== "undefined" && data.type !== null) {
+    if(data.type) {
       result = (data.type === "articles");
     }
 
@@ -22,14 +22,14 @@ browzine.search = (function() {
   function isJournal(data) {
     var result = false;
 
-    if(typeof data.document !== "undefined" && data.document !== null) {
-      if(typeof data.document.content_type !== "undefined" && data.document.content_type !== null) {
+    if(data.document) {
+      if(data.document.content_type) {
         var contentType = data.document.content_type.trim();
         result = (contentType === "Journal" || contentType === "eJournal");
       }
     }
 
-    if(typeof data.type !== "undefined" && data.type !== null) {
+    if(data.type) {
       result = (data.type === "journals");
     }
 
@@ -39,11 +39,11 @@ browzine.search = (function() {
   function getIssn(scope) {
     var issn = "";
 
-    if(typeof scope.document.issns !== "undefined" && scope.document.issns !== null) {
+    if(scope.document.issns) {
       issn = scope.document.issns[0].trim().replace('-', '');
     }
 
-    if(typeof scope.document.eissns !== "undefined" && scope.document.eissns !== null && issn === "") {
+    if(scope.document.eissns && issn === "") {
       issn = scope.document.eissns[0].trim().replace('-', '');
     }
 
@@ -53,7 +53,7 @@ browzine.search = (function() {
   function getDoi(scope) {
     var doi = "";
 
-    if(typeof scope.document.dois !== "undefined" && scope.document.dois !== null) {
+    if(scope.document.dois) {
       doi = scope.document.dois[0].trim();
     }
 
@@ -91,7 +91,7 @@ browzine.search = (function() {
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
-    if(typeof data.browzineWebLink !== "undefined" && data.browzineWebLink !== null) {
+    if(data.browzineWebLink) {
       browzineWebLink = data.browzineWebLink;
     }
 
@@ -102,16 +102,16 @@ browzine.search = (function() {
     var coverImageUrl = null;
 
     if(isJournal(data)) {
-      if(typeof data.coverImageUrl !== "undefined" && data.coverImageUrl !== null) {
+      if(data.coverImageUrl) {
         coverImageUrl = data.coverImageUrl;
       }
     }
 
     if(isArticle(data)) {
-      if(typeof response.included !== "undefined" && response.included !== null) {
+      if(response.included) {
         var journal = getIncludedJournal(response);
 
-        if(typeof journal.coverImageUrl !== "undefined" && journal.coverImageUrl !== null) {
+        if(journal.coverImageUrl) {
           coverImageUrl = journal.coverImageUrl;
         }
       }
