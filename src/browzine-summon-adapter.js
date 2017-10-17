@@ -1,28 +1,39 @@
-$(function() {
-  if(typeof browzine === "undefined" || browzine === null) {
-    return;
-  }
-
+browzine.search = (function() {
   var api = browzine.api;
   var apiKey = browzine.apiKey;
-  var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
 
   function isArticle(data) {
+    var result = false;
+
     if(typeof data.document !== "undefined" && data.document !== null) {
-      var contentType = data.document.content_type.trim();
-      return contentType === "Journal Article";
-    } else {
-      return data.type === "articles";
+      if(typeof data.document.content_type !== "undefined" && data.document.content_type !== null) {
+        var contentType = data.document.content_type.trim();
+        result = (contentType === "Journal Article");
+      }
     }
+
+    if(typeof data.type !== "undefined" && data.type !== null) {
+      result = (data.type === "articles");
+    }
+
+    return result;
   };
 
   function isJournal(data) {
+    var result = false;
+
     if(typeof data.document !== "undefined" && data.document !== null) {
-      var contentType = data.document.content_type.trim();
-      return contentType === "Journal" || contentType === "eJournal";
-    } else {
-      return data.type === "journals";
+      if(typeof data.document.content_type !== "undefined" && data.document.content_type !== null) {
+        var contentType = data.document.content_type.trim();
+        result = (contentType === "Journal" || contentType === "eJournal");
+      }
     }
+
+    if(typeof data.type !== "undefined" && data.type !== null) {
+      result = (data.type === "journals");
+    }
+
+    return result;
   };
 
   function getIssn(scope) {
@@ -66,7 +77,7 @@ $(function() {
   };
 
   function shouldEnhance(scope) {
-    return (isJournal(scope) && getIssn(scope)) || (isArticle(scope) && getDoi(scope));
+    return !!((isJournal(scope) && getIssn(scope)) || (isArticle(scope) && getDoi(scope)));
   };
 
   function getData(response) {
@@ -109,9 +120,10 @@ $(function() {
     return coverImageUrl;
   };
 
-  function buildTemplate(data, browzineWebLink, bookIcon) {
+  function buildTemplate(data, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
+    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
 
     if(isJournal(data)) {
       wording = browzine.journalWording || "View the Journal";
@@ -137,7 +149,7 @@ $(function() {
     return template;
   };
 
-  function searchResultsWithBrowZine(documentSummary) {
+  function resultsWithBrowZine(documentSummary) {
     var scope = angular.element(documentSummary).scope();
 
     if(!shouldEnhance(scope)) {
@@ -152,7 +164,7 @@ $(function() {
       var coverImageUrl = getCoverImageUrl(data, response);
 
       if(browzineWebLink) {
-        var template = buildTemplate(data, browzineWebLink, bookIcon);
+        var template = buildTemplate(data, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
@@ -161,6 +173,22 @@ $(function() {
       }
     });
   };
+
+  return {
+    resultsWithBrowZine: resultsWithBrowZine,
+    shouldEnhance: shouldEnhance,
+    getEndpoint: getEndpoint,
+    getData: getData,
+    getBrowZineWebLink: getBrowZineWebLink,
+    getCoverImageUrl: getCoverImageUrl,
+    buildTemplate: buildTemplate,
+  };
+}());
+
+$(function() {
+  if(typeof browzine === "undefined" || browzine === null) {
+    return;
+  }
 
   var results = document.querySelector("#results");
   var config = {
@@ -174,14 +202,14 @@ $(function() {
   var documentSummaries = results.querySelectorAll(".documentSummary");
 
   Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
-    searchResultsWithBrowZine(documentSummary);
+    browzine.search.resultsWithBrowZine(documentSummary);
   });
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       if(mutation.attributeName === "document-summary") {
         var documentSummary = mutation.target;
-        searchResultsWithBrowZine(documentSummary);
+        browzine.search.resultsWithBrowZine(documentSummary);
       }
     });
   });
