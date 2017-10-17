@@ -149,14 +149,7 @@ browzine.search = (function() {
   };
 
   function getScope(documentSummary) {
-    var token = Object.getOwnPropertyNames(documentSummary).filter(function(property) {
-      property = property.replace(/[^a-z]/gi, "");
-      return property.indexOf("jQuery") === 0;
-    });
-
-    var scope = documentSummary[token].$scope;
-
-    return scope;
+    return angular.element(documentSummary).scope();
   };
 
   function resultsWithBrowZine(documentSummary) {

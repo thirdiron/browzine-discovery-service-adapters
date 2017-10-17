@@ -257,15 +257,15 @@ describe("Search Model", function() {
   it("should retrieve the scope from a search result", function() {
     var documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-    $.extend(documentSummary, {
-      "jQuery321088802690231186742": {
-        "$scope": {
-          "document": {
-            content_type: "Journal",
-            issns: ["0028-4793"]
-          }
-        }
-      }
+    inject(function ($compile, $rootScope) {
+      $scope = $rootScope.$new();
+
+      $scope.document = {
+        content_type: "Journal",
+        issns: ["0028-4793"]
+      };
+
+      documentSummary = $compile(documentSummary)($scope);
     });
 
     var scope = search.getScope(documentSummary);

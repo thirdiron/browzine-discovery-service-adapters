@@ -9,15 +9,15 @@ describe("BrowZine Summon Adapter", function() {
 
       documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-      $.extend(documentSummary, {
-        "jQuery321088802690231186742": {
-          "$scope": {
-            "document": {
-              content_type: "Journal",
-              issns: ["0028-4793"]
-            }
-          }
-        }
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.document = {
+          content_type: "Journal",
+          issns: ["0028-4793"]
+        };
+
+        documentSummary = $compile(documentSummary)($scope);
       });
 
       $.getJSON = function(endpoint, callback) {
@@ -64,15 +64,15 @@ describe("BrowZine Summon Adapter", function() {
 
       documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-      $.extend(documentSummary, {
-        "jQuery321088802690231186742": {
-          "$scope": {
-            "document": {
-              content_type: "Journal Article",
-              dois: ["10.1136/bmj.h2575"]
-            }
-          }
-        }
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.document = {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        };
+
+        documentSummary = $compile(documentSummary)($scope);
       });
 
       $.getJSON = function(endpoint, callback) {
@@ -131,15 +131,15 @@ describe("BrowZine Summon Adapter", function() {
 
       documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-      $.extend(documentSummary, {
-        "jQuery321088802690231186742": {
-          "$scope": {
-            "document": {
-              content_type: "Journal Article",
-              dois: ["10.1136/bmj.h2575"]
-            }
-          }
-        }
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.document = {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        };
+
+        documentSummary = $compile(documentSummary)($scope);
       });
 
       $.getJSON = function(endpoint, callback) {
