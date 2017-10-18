@@ -21,6 +21,8 @@ describe("BrowZine Summon Adapter", function() {
       });
 
       $.getJSON = function(endpoint, callback) {
+        expect(endpoint).toMatch(/search\?issns=00284793/);
+
         return callback({
           "data": [{
             "id": 10292,
@@ -76,6 +78,8 @@ describe("BrowZine Summon Adapter", function() {
       });
 
       $.getJSON = function(endpoint, callback) {
+        expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+
         return callback({
           "data": {
             "id": 55134408,
@@ -136,13 +140,15 @@ describe("BrowZine Summon Adapter", function() {
 
         $scope.document = {
           content_type: "Journal Article",
-          dois: ["10.1136/bmj.h2575"]
+          dois: ["02.2016/bmj.h0830"]
         };
 
         documentSummary = $compile(documentSummary)($scope);
       });
 
       $.getJSON = function(endpoint, callback) {
+        expect(endpoint).toMatch(/articles\/doi\/02.2016%2Fbmj.h0830/);
+
         return callback({
           "data": {
             "id": 55134408,
