@@ -194,7 +194,7 @@ browzine.search = (function() {
 }());
 
 $(function() {
-  if(typeof browzine === "undefined" || browzine === null) {
+  if(!browzine) {
     return;
   }
 
