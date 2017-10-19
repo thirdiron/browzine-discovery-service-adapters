@@ -2,35 +2,31 @@ browzine.search = (function() {
   var api = browzine.api;
   var apiKey = browzine.apiKey;
 
-  function isArticle(data) {
+  function isArticle(scope) {
     var result = false;
 
-    if(data.document) {
-      if(data.document.content_type) {
-        var contentType = data.document.content_type.trim();
-        result = (contentType === "Journal Article");
+    if(scope.document) {
+      if(scope.document.content_type) {
+        var contentType = scope.document.content_type.trim().toLowerCase();
+        if(contentType === "journal article") {
+          result = true;
+        }
       }
-    }
-
-    if(data.type) {
-      result = (data.type === "articles");
     }
 
     return result;
   };
 
-  function isJournal(data) {
+  function isJournal(scope) {
     var result = false;
 
-    if(data.document) {
-      if(data.document.content_type) {
-        var contentType = data.document.content_type.trim();
-        result = (contentType === "Journal" || contentType === "eJournal");
+    if(scope.document) {
+      if(scope.document.content_type) {
+        var contentType = scope.document.content_type.trim().toLowerCase();
+        if(contentType === "journal" || contentType === "ejournal") {
+          result = true;
+        }
       }
-    }
-
-    if(data.type) {
-      result = (data.type === "journals");
     }
 
     return result;
@@ -41,11 +37,11 @@ browzine.search = (function() {
 
     if(scope.document) {
       if(scope.document.issns) {
-        issn = scope.document.issns[0].trim().replace('-', '');
+        issn = scope.document.issns[0].trim().replace("-", "");
       }
 
-      if(scope.document.eissns && issn === "") {
-        issn = scope.document.eissns[0].trim().replace('-', '');
+      if(scope.document.eissns && !issn) {
+        issn = scope.document.eissns[0].trim().replace("-", "");
       }
     }
 
@@ -70,7 +66,9 @@ browzine.search = (function() {
     if(isArticle(scope)) {
       var doi = getDoi(scope);
       endpoint = api + "/articles/doi/" + doi + "?include=journal";
-    } else if(isJournal(scope)) {
+    }
+
+    if(isJournal(scope)) {
       var issn = getIssn(scope);
       endpoint = api + "/search?issns=" + issn;
     }
@@ -89,7 +87,13 @@ browzine.search = (function() {
   };
 
   function getIncludedJournal(response) {
-    return Array.isArray(response.included) ? response.included[0] : response.included;
+    var journal = null;
+
+    if(response.included) {
+      journal = Array.isArray(response.included) ? response.included[0] : response.included;
+    }
+
+    return journal;
   };
 
   function getBrowZineWebLink(data) {
@@ -102,19 +106,17 @@ browzine.search = (function() {
     return browzineWebLink;
   };
 
-  function getCoverImageUrl(data, response) {
+  function getCoverImageUrl(scope, data, journal) {
     var coverImageUrl = null;
 
-    if(isJournal(data)) {
+    if(isJournal(scope)) {
       if(data.coverImageUrl) {
         coverImageUrl = data.coverImageUrl;
       }
     }
 
-    if(isArticle(data)) {
-      if(response.included) {
-        var journal = getIncludedJournal(response);
-
+    if(isArticle(scope)) {
+      if(journal) {
         if(journal.coverImageUrl) {
           coverImageUrl = journal.coverImageUrl;
         }
@@ -124,17 +126,17 @@ browzine.search = (function() {
     return coverImageUrl;
   };
 
-  function buildTemplate(data, browzineWebLink) {
+  function buildTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
     var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
 
-    if(isJournal(data)) {
+    if(isJournal(scope)) {
       wording = browzine.journalWording || "View the Journal";
       browzineWebLinkText = browzine.journalBrowZineWebLinkText || "Browse Now";
     }
 
-    if(isArticle(data)) {
+    if(isArticle(scope)) {
       wording = browzine.articleWording || "View Complete Issue";
       browzineWebLinkText = browzine.articleBrowZineWebLinkText || "Browse Now";
     }
@@ -167,11 +169,13 @@ browzine.search = (function() {
 
     $.getJSON(endpoint, function(response) {
       var data = getData(response);
+      var journal = getIncludedJournal(response);
+
       var browzineWebLink = getBrowZineWebLink(data);
-      var coverImageUrl = getCoverImageUrl(data, response);
+      var coverImageUrl = getCoverImageUrl(scope, data, journal);
 
       if(browzineWebLink) {
-        var template = buildTemplate(data, browzineWebLink);
+        var template = buildTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
@@ -187,6 +191,7 @@ browzine.search = (function() {
     shouldEnhance: shouldEnhance,
     getEndpoint: getEndpoint,
     getData: getData,
+    getIncludedJournal: getIncludedJournal,
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     buildTemplate: buildTemplate,

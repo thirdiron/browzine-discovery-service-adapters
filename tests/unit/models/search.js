@@ -1,4 +1,4 @@
-describe("Search Model", function() {
+describe("Search Model >", function() {
   var search = {}, journalResponse = {}, articleResponse = {};
 
   beforeEach(function() {
@@ -51,7 +51,7 @@ describe("Search Model", function() {
     expect(search).toBeDefined();
   });
 
-  describe("search model getScope method", function() {
+  describe("search model getScope method >", function() {
     it("should retrieve the scope from a search result", function() {
       var documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
@@ -78,7 +78,7 @@ describe("Search Model", function() {
     });
   });
 
-  describe("search model shouldEnhance method", function() {
+  describe("search model shouldEnhance method >", function() {
     it("should not enhance a search result without a document", function() {
       var scope = {};
 
@@ -89,6 +89,17 @@ describe("Search Model", function() {
       var scope = {
         document: {
           content_type: "Journal",
+          issns: ["0028-4793"]
+        }
+      };
+
+      expect(search.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should enhance a journal search result with a lowercase content type", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
           issns: ["0028-4793"]
         }
       };
@@ -111,6 +122,17 @@ describe("Search Model", function() {
       var scope = {
         document: {
           content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      expect(search.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should enhance an article search result with a lowercase content type", function() {
+      var scope = {
+        document: {
+          content_type: "journal article",
           dois: ["10.1136/bmj.h2575"]
         }
       };
@@ -159,7 +181,7 @@ describe("Search Model", function() {
     });
   });
 
-  describe("search model getEndpoint method", function() {
+  describe("search model getEndpoint method >", function() {
     it("should build a journal endpoint for a journal search result", function() {
       var scope = {
         document: {
@@ -217,7 +239,7 @@ describe("Search Model", function() {
     });
   });
 
-  describe("search model getBrowZineWebLink method", function() {
+  describe("search model getBrowZineWebLink method >", function() {
     it("should include a browzineWebLink in the BrowZine API response for a journal", function() {
       var data = search.getData(journalResponse);
       expect(data).toBeDefined();
@@ -231,39 +253,54 @@ describe("Search Model", function() {
     });
   });
 
-  describe("search model getCoverImageUrl method", function() {
+  describe("search model getCoverImageUrl method >", function() {
     it("should include a coverImageUrl in the BrowZine API response for a journal", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
       var data = search.getData(journalResponse);
+      var journal = search.getIncludedJournal(journalResponse);
+
       expect(data).toBeDefined();
-      expect(search.getCoverImageUrl(data, journalResponse)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      expect(journal).toBeNull();
+
+      expect(search.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
 
     it("should include a coverImageUrl in the BrowZine API response for an article", function() {
-      var data = search.getData(articleResponse);
-      expect(data).toBeDefined();
-      expect(search.getCoverImageUrl(data, articleResponse)).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
-    });
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
 
-    it("should not build a coverImageUrl when the BrowZine API response is missing the journal data type", function() {
-      var data = search.getData(journalResponse);
-      delete data.type;
-      expect(data).toBeDefined();
-      expect(search.getCoverImageUrl(data, journalResponse)).toBeNull();
-    });
-
-    it("should not build a coverImageUrl when the BrowZine API response is missing the article data type", function() {
       var data = search.getData(articleResponse);
-      delete data.type;
+      var journal = search.getIncludedJournal(articleResponse);
+
       expect(data).toBeDefined();
-      expect(search.getCoverImageUrl(data, journalResponse)).toBeNull();
+      expect(journal).toBeDefined();
+
+      expect(search.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
     });
   });
 
-  describe("search model buildTemplate method", function() {
+  describe("search model buildTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
       var data = search.getData(journalResponse);
       var browzineWebLink = search.getBrowZineWebLink(data);
-      var template = search.buildTemplate(data, browzineWebLink);
+      var template = search.buildTemplate(scope, browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();
@@ -279,9 +316,16 @@ describe("Search Model", function() {
     });
 
     it("should build an enhancement template for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
       var data = search.getData(articleResponse);
       var browzineWebLink = search.getBrowZineWebLink(data);
-      var template = search.buildTemplate(data, browzineWebLink);
+      var template = search.buildTemplate(scope, browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();

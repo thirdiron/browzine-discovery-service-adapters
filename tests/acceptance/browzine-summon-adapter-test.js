@@ -1,9 +1,9 @@
-describe("BrowZine Summon Adapter", function() {
+describe("BrowZine Summon Adapter >", function() {
   var search = {}, documentSummary = {};
 
   $("body").append("<div id='results'></div>");
 
-  describe("search results journal", function() {
+  describe("search results journal >", function() {
     beforeEach(function() {
       search = browzine.search;
 
@@ -60,7 +60,7 @@ describe("BrowZine Summon Adapter", function() {
     });
   });
 
-  describe("search results article", function() {
+  describe("search results article >", function() {
     beforeEach(function() {
       search = browzine.search;
 
@@ -129,7 +129,7 @@ describe("BrowZine Summon Adapter", function() {
     });
   });
 
-  describe("search results article with no browzineWebLink", function() {
+  describe("search results article with no browzineWebLink >", function() {
     beforeEach(function() {
       search = browzine.search;
 
