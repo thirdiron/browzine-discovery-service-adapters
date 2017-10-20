@@ -1,27 +1,29 @@
-describe("BrowZine Summon Adapter", function() {
-  var compile, scope, documentSummaryElement, httpBackend;
+describe("BrowZine Summon Adapter >", function() {
+  var search = {}, documentSummary = {};
 
-  function getCompiledDocumentSummaryDirective() {
-    var compiledDirective = compile(angular.element("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>"))(scope);
-    scope.$digest();
-    return compiledDirective;
-  }
+  $("body").append("<div id='results'></div>");
 
-  describe("search results journal", function() {
+  describe("search results journal >", function() {
     beforeEach(function() {
-      module('summonApp.directives');
+      search = browzine.search;
 
-      inject(function ($compile, $rootScope, $httpBackend) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        httpBackend = $httpBackend;
+      documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-        scope.document = {
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.document = {
           content_type: "Journal",
           issns: ["0028-4793"]
         };
 
-        httpBackend.whenGET(/search\?issns=00284793/).respond({
+        documentSummary = $compile(documentSummary)($scope);
+      });
+
+      $.getJSON = function(endpoint, callback) {
+        expect(endpoint).toMatch(/search\?issns=00284793/);
+
+        return callback({
           "data": [{
             "id": 10292,
             "type": "journals",
@@ -33,15 +35,17 @@ describe("BrowZine Summon Adapter", function() {
             "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
           }]
         });
-      });
+      };
 
-      documentSummaryElement = getCompiledDocumentSummaryDirective();
+      search.resultsWithBrowZine(documentSummary);
+    });
+
+    afterEach(function() {
+
     });
 
     it("should have an enhanced browse journal in browzine option", function() {
-      httpBackend.flush();
-
-      var template = documentSummaryElement.find(".browzine");
+      var template = documentSummary.find(".browzine");
       expect(template).toBeDefined();
       expect(template.text().trim()).toEqual("View the Journal: Browse Now");
       expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
@@ -50,29 +54,33 @@ describe("BrowZine Summon Adapter", function() {
     });
 
     it("should have an enhanced browzine journal cover", function() {
-      httpBackend.flush();
-
-      var coverImage = documentSummaryElement.find(".coverImage img");
+      var coverImage = documentSummary.find(".coverImage img");
       expect(coverImage).toBeDefined();
       expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
   });
 
-  describe("search results article", function() {
+  describe("search results article >", function() {
     beforeEach(function() {
-      module('summonApp.directives');
+      search = browzine.search;
 
-      inject(function ($compile, $rootScope, $httpBackend) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        httpBackend = $httpBackend;
+      documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-        scope.document = {
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.document = {
           content_type: "Journal Article",
           dois: ["10.1136/bmj.h2575"]
         };
 
-        httpBackend.whenGET(/articles\/doi\/10.1136%2Fbmj.h2575/).respond({
+        documentSummary = $compile(documentSummary)($scope);
+      });
+
+      $.getJSON = function(endpoint, callback) {
+        expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+
+        return callback({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -96,15 +104,17 @@ describe("BrowZine Summon Adapter", function() {
             "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
           }]
         });
-      });
+      };
 
-      documentSummaryElement = getCompiledDocumentSummaryDirective();
+      search.resultsWithBrowZine(documentSummary);
+    });
+
+    afterEach(function() {
+
     });
 
     it("should have an enhanced browse article in browzine option", function() {
-      httpBackend.flush();
-
-      var template = documentSummaryElement.find(".browzine");
+      var template = documentSummary.find(".browzine");
       expect(template).toBeDefined();
       expect(template.text().trim()).toEqual("View Complete Issue: Browse Now");
       expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
@@ -113,29 +123,33 @@ describe("BrowZine Summon Adapter", function() {
     });
 
     it("should have an enhanced browzine journal cover", function() {
-      httpBackend.flush();
-
-      var coverImage = documentSummaryElement.find(".coverImage img");
+      var coverImage = documentSummary.find(".coverImage img");
       expect(coverImage).toBeDefined();
       expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
     });
   });
 
-  describe("search results article with no browzineWebLink", function() {
+  describe("search results article with no browzineWebLink >", function() {
     beforeEach(function() {
-      module('summonApp.directives');
+      search = browzine.search;
 
-      inject(function ($compile, $rootScope, $httpBackend) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        httpBackend = $httpBackend;
+      documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-        scope.document = {
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.document = {
           content_type: "Journal Article",
-          dois: ["10.1136/bmj.h2575"]
+          dois: ["02.2016/bmj.h0830"]
         };
 
-        httpBackend.whenGET(/articles\/doi\/10.1136%2Fbmj.h2575/).respond({
+        documentSummary = $compile(documentSummary)($scope);
+      });
+
+      $.getJSON = function(endpoint, callback) {
+        expect(endpoint).toMatch(/articles\/doi\/02.2016%2Fbmj.h0830/);
+
+        return callback({
           "data": {
             "id": 55134408,
             "type": "articles",
@@ -158,15 +172,17 @@ describe("BrowZine Summon Adapter", function() {
             "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
           }]
         });
-      });
+      };
 
-      documentSummaryElement = getCompiledDocumentSummaryDirective();
+      search.resultsWithBrowZine(documentSummary);
+    });
+
+    afterEach(function() {
+
     });
 
     it("should not have an enhanced browse article in browzine option", function() {
-      httpBackend.flush();
-
-      var template = documentSummaryElement.find(".browzine");
+      var template = documentSummary.find(".browzine");
       expect(template.text().trim()).toEqual("");
     });
   });
