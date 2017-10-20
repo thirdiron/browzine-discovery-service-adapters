@@ -1,30 +1,48 @@
-// Begin BrowZine-Summon Integration Code
-angular.module("summonApp.directives")
-.constant("api", "https://api.thirdiron.com/public/v1/libraries/XXX")
-.constant("apiKey", "ENTER API KEY")
-.constant("bookIcon", "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png")
-.directive("documentSummary", ["$http", "$sce", "api", "apiKey", "bookIcon", function(http, sce, api, apiKey, bookIcon) {
-  function isArticle(data) {
-    if(typeof data.document !== "undefined" && data.document !== null) {
-      return data.document.content_type.trim() === "Journal Article";
-    } else {
-      return data.type === "articles";
+browzine.search = (function() {
+  var api = browzine.api;
+  var apiKey = browzine.apiKey;
+
+  function isArticle(scope) {
+    var result = false;
+
+    if(scope.document) {
+      if(scope.document.content_type) {
+        var contentType = scope.document.content_type.trim().toLowerCase();
+        if(contentType === "journal article") {
+          result = true;
+        }
+      }
     }
+
+    return result;
   };
 
-  function isJournal(data) {
-    if(typeof data.document !== "undefined" && data.document !== null) {
-      return data.document.content_type.trim() === "Journal";
-    } else {
-      return data.type === "journals";
+  function isJournal(scope) {
+    var result = false;
+
+    if(scope.document) {
+      if(scope.document.content_type) {
+        var contentType = scope.document.content_type.trim().toLowerCase();
+        if(contentType === "journal" || contentType === "ejournal") {
+          result = true;
+        }
+      }
     }
+
+    return result;
   };
 
   function getIssn(scope) {
     var issn = "";
 
-    if(typeof scope.document.issns !== "undefined" && scope.document.issns !== null) {
-      issn = scope.document.issns[0].trim().replace('-', '');
+    if(scope.document) {
+      if(scope.document.issns) {
+        issn = scope.document.issns[0].trim().replace("-", "");
+      }
+
+      if(scope.document.eissns && !issn) {
+        issn = scope.document.eissns[0].trim().replace("-", "");
+      }
     }
 
     return encodeURIComponent(issn);
@@ -33,8 +51,10 @@ angular.module("summonApp.directives")
   function getDoi(scope) {
     var doi = "";
 
-    if(typeof scope.document.dois !== "undefined" && scope.document.dois !== null) {
-      doi = scope.document.dois[0].trim();
+    if(scope.document) {
+      if(scope.document.dois) {
+        doi = scope.document.dois[0].trim();
+      }
     }
 
     return encodeURIComponent(doi);
@@ -46,7 +66,9 @@ angular.module("summonApp.directives")
     if(isArticle(scope)) {
       var doi = getDoi(scope);
       endpoint = api + "/articles/doi/" + doi + "?include=journal";
-    } else if(isJournal(scope)) {
+    }
+
+    if(isJournal(scope)) {
       var issn = getIssn(scope);
       endpoint = api + "/search?issns=" + issn;
     }
@@ -57,39 +79,45 @@ angular.module("summonApp.directives")
   };
 
   function shouldEnhance(scope) {
-    return (isJournal(scope) && getIssn(scope)) || (isArticle(scope) && getDoi(scope));
+    return !!((isJournal(scope) && getIssn(scope)) || (isArticle(scope) && getDoi(scope)));
   };
 
   function getData(response) {
-    return Array.isArray(response.data.data) ? response.data.data[0] : response.data.data;
+    return Array.isArray(response.data) ? response.data[0] : response.data;
   };
 
   function getIncludedJournal(response) {
-    return Array.isArray(response.data.included) ? response.data.included[0] : response.data.included;
+    var journal = null;
+
+    if(response.included) {
+      journal = Array.isArray(response.included) ? response.included[0] : response.included;
+    }
+
+    return journal;
   };
 
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
-    if(typeof data.browzineWebLink !== "undefined" && data.browzineWebLink !== null) {
+    if(data.browzineWebLink) {
       browzineWebLink = data.browzineWebLink;
     }
 
     return browzineWebLink;
   };
 
-  function getCoverImageUrl(data, response) {
+  function getCoverImageUrl(scope, data, journal) {
     var coverImageUrl = null;
 
-    if(typeof data.coverImageUrl !== "undefined" && data.coverImageUrl !== null) {
-      coverImageUrl = data.coverImageUrl;
+    if(isJournal(scope)) {
+      if(data.coverImageUrl) {
+        coverImageUrl = data.coverImageUrl;
+      }
     }
 
-    if(isArticle(data)) {
-      if(typeof response.data.included !== "undefined" && response.data.included !== null) {
-        var journal = getIncludedJournal(response);
-
-        if(typeof journal.coverImageUrl !== "undefined" && journal.coverImageUrl !== null) {
+    if(isArticle(scope)) {
+      if(journal) {
+        if(journal.coverImageUrl) {
           coverImageUrl = journal.coverImageUrl;
         }
       }
@@ -98,56 +126,106 @@ angular.module("summonApp.directives")
     return coverImageUrl;
   };
 
-  function buildTemplate(data, browzineWebLink, bookIcon) {
-    var assetClass = "";
+  function buildTemplate(scope, browzineWebLink) {
+    var wording = "";
+    var browzineWebLinkText = "";
+    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
 
-    // Customize the naming conventions for each type of item - Journal/Article - by changing the wording in the quotes below:
-    // E.g. You can customize "View the Journal" and "View Complete Issue".
-    if(isJournal(data)) {
-      assetClass = "View the Journal";
+    if(isJournal(scope)) {
+      wording = browzine.journalWording || "View the Journal";
+      browzineWebLinkText = browzine.journalBrowZineWebLinkText || "Browse Now";
     }
 
-    if(isArticle(data)) {
-      assetClass = "View Complete Issue";
+    if(isArticle(scope)) {
+      wording = browzine.articleWording || "View Complete Issue";
+      browzineWebLinkText = browzine.articleBrowZineWebLinkText || "Browse Now";
     }
 
-    // You can change the underlined "Browse Now" link name on line 122 below.
     var template = "<div class='browzine'>" +
-                     "{{assetClass}}: <a class='browzine-web-link' href='{{browzineWebLink}}' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> " +
-                     "<img class='browzine-book-icon' src='{{bookIcon}}'/>" +
+                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> " +
+                     "<img class='browzine-book-icon' src='{bookIcon}'/>" +
                    "</div>";
 
-    template = template.replace(/{{assetClass}}/g, assetClass);
-    template = template.replace(/{{browzineWebLink}}/g, browzineWebLink);
-    template = template.replace(/{{bookIcon}}/g, bookIcon);
+    template = template.replace(/{wording}/g, wording);
+    template = template.replace(/{browzineWebLink}/g, browzineWebLink);
+    template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
+    template = template.replace(/{bookIcon}/g, bookIcon);
 
     return template;
   };
 
-  return {
-    link: function(scope, element, attributes) {
-      if(!shouldEnhance(scope)) {
-        return;
+  function getScope(documentSummary) {
+    return angular.element(documentSummary).scope();
+  };
+
+  function resultsWithBrowZine(documentSummary) {
+    var scope = getScope(documentSummary);
+
+    if(!shouldEnhance(scope)) {
+      return;
+    }
+
+    var endpoint = getEndpoint(scope);
+
+    $.getJSON(endpoint, function(response) {
+      var data = getData(response);
+      var journal = getIncludedJournal(response);
+
+      var browzineWebLink = getBrowZineWebLink(data);
+      var coverImageUrl = getCoverImageUrl(scope, data, journal);
+
+      if(browzineWebLink) {
+        var template = buildTemplate(scope, browzineWebLink);
+        $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
-      var endpoint = getEndpoint(scope);
-
-      http.get(sce.trustAsResourceUrl(endpoint)).then(function(response) {
-        var data = getData(response);
-        var browzineWebLink = getBrowZineWebLink(data);
-        var coverImageUrl = getCoverImageUrl(data, response);
-
-        if(browzineWebLink) {
-          var template = buildTemplate(data, browzineWebLink, bookIcon);
-          element.find(".docFooter .row:first").append(template);
-        }
-
-        if(coverImageUrl) {
-          element.find(".coverImage img").attr("src", coverImageUrl);
-        }
-      });
-    }
+      if(coverImageUrl) {
+        $(documentSummary).find(".coverImage img").attr("src", coverImageUrl);
+      }
+    });
   };
-}]);
 
-// End BrowZine-Summon Integration Code
+  return {
+    resultsWithBrowZine: resultsWithBrowZine,
+    getScope: getScope,
+    shouldEnhance: shouldEnhance,
+    getEndpoint: getEndpoint,
+    getData: getData,
+    getIncludedJournal: getIncludedJournal,
+    getBrowZineWebLink: getBrowZineWebLink,
+    getCoverImageUrl: getCoverImageUrl,
+    buildTemplate: buildTemplate,
+  };
+}());
+
+$(function() {
+  if(!browzine) {
+    return;
+  }
+
+  var results = document.querySelector("#results");
+  var config = {
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true,
+  };
+
+  //Enhance any documentSummary elements present before the observer starts
+  var documentSummaries = results.querySelectorAll(".documentSummary");
+
+  Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
+    browzine.search.resultsWithBrowZine(documentSummary);
+  });
+
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if(mutation.attributeName === "document-summary") {
+        var documentSummary = mutation.target;
+        browzine.search.resultsWithBrowZine(documentSummary);
+      }
+    });
+  });
+
+  observer.observe(results, config);
+});
