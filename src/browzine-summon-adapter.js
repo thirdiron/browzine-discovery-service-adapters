@@ -209,121 +209,33 @@ browzine.search = (function() {
 }());
 
 $(function() {
-
-  //http://underscorejs.org/#debounce
-  var debounce = function(func, wait, immediate) {
-    var timeout, args, context, timestamp, result;
-
-    var later = function() {
-      var last = Date.now() - timestamp;
-
-      if (last < wait && last >= 0) {
-        timeout = setTimeout(later, wait - last);
-      } else {
-        timeout = null;
-        if (!immediate) {
-          result = func.apply(context, args);
-          if (!timeout) context = args = null;
-        }
-      }
-    };
-
-    return function() {
-      context = this;
-      args = arguments;
-      timestamp = Date.now();
-      var callNow = immediate && !timeout;
-      if (!timeout) timeout = setTimeout(later, wait);
-      if (callNow) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-
-      return result;
-    };
-  };
-
   if(!browzine) {
     return;
   }
 
-  // $(document).on('DOMNodeInserted', function(e) {
-  //   //console.log(e.target);
-  //   if ($(e.target).hasClass('results-title-data') && !$(e.target).hasClass('ng-scope') && e.target.id === "results-data-with-results") {
-  //     console.log(e.target);
-  //     var documentSummary = e.target;
-  //     browzine.search.resultsWithBrowZine(documentSummary);
-  //   }
-  // });
-
-  // document.addEventListener("DOMNodeInserted", function (e) {
-  //   if ($(e.target).hasClass('results-title-data') && !$(e.target).hasClass('ng-scope') && e.target.id === "results-data-with-results") {
-  //     console.log(e.target);
-  //     var documentSummary = e.target;
-  //     browzine.search.resultsWithBrowZine(documentSummary);
-  //   }
-  // }, false);
-
   var results = document.querySelector("#results") || document;
 
   //Enhance any documentSummary elements present before the observer starts
-  // var documentSummaries = results.querySelectorAll(".documentSummary") || results.querySelectorAll(".results-title-row");
-  //
-  // Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
-  //   browzine.search.resultsWithBrowZine(documentSummary);
-  // });
+  var documentSummaries = results.querySelectorAll(".documentSummary");
+
+  Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
+    browzine.search.resultsWithBrowZine(documentSummary);
+  });
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-      //console.log("mutation", mutation, mutation.target, $(mutation.target).attr('id'));
       if(mutation.attributeName === "document-summary") {
         var documentSummary = mutation.target;
         browzine.search.resultsWithBrowZine(documentSummary);
       }
 
-      //if(mutation.target.classList.contains("results-title-data") && !mutation.target.classList.contains("ng-scope") && mutation.target.id === "results-data-with-results") {
-      //if ($(mutation.target).hasClass('results-title-data') && !$(mutation.target).hasClass('ng-scope') && $(mutation.target).attr('id') === "results-data-with-results") {
-      // if ($(mutation.target).hasClass('results-title-data') && $(mutation.target).attr('id') === "results-data-with-results") {
-      //   //console.log("SerSol Mutation", mutation.target);
-      //   //var documentSummary = mutation.target;
-      //   //browzine.search.resultsWithBrowZine(documentSummary);
-      //
-      //   (debounce(function() {
-      //     var documentSummary = mutation.target;
-      //     console.log("SerSol 360", documentSummary);
-      //     browzine.search.resultsWithBrowZine(documentSummary);
-      //   }, 3000))();
-      // }
-
-      // if(mutation.target.querySelector && mutation.target.querySelector(".results-title-details")) {
-      //   //console.log("SerSol 360", mutation);
-      //   var documentSummary = mutation.target;
-      //   //console.log(debounce);
-      //
-      //   (debounce(function() {
-      //     console.log("SerSol 360", documentSummary);
-      //     browzine.search.resultsWithBrowZine(documentSummary);
-      //   }, 3000))();
-      // }
-
       if(mutation.target.querySelector && mutation.target.querySelector(".results-title-data")) {
-        //console.log("SerSol 360", mutation);
         var documentSummary = mutation.target;
         console.log("SerSol 360", documentSummary);
         browzine.search.resultsWithBrowZine(documentSummary);
       }
-
-      // if(mutation.attributeName === "ui-view") {
-      //   var documentSummary = mutation.target;
-      //   console.log("SerSol 360", documentSummary);
-      //   browzine.search.resultsWithBrowZine(documentSummary);
-      // }
-
-      //row results-title-row
     });
   });
-
-  console.log("results", results);
 
   observer.observe(results, {
     attributes: true,
