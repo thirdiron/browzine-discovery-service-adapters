@@ -1,13 +1,4 @@
-var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/118",
-  apiKey: "9445d61e-9601-48fa-b29e-4faa00f73bf1",
-};
-
-// browzine.script = document.createElement("script");
-// browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
-// document.head.appendChild(browzine.script);
-
-browzine.search = (function() {
+browzine.summon = (function() {
   var api = browzine.api;
   var apiKey = browzine.apiKey;
 
@@ -167,7 +158,7 @@ browzine.search = (function() {
     return angular.element(documentSummary).scope();
   };
 
-  function resultsWithBrowZine(documentSummary) {
+  function adapter(documentSummary) {
     var scope = getScope(documentSummary);
     console.log("scope", scope);
 
@@ -196,7 +187,7 @@ browzine.search = (function() {
   };
 
   return {
-    resultsWithBrowZine: resultsWithBrowZine,
+    adapter: adapter,
     getScope: getScope,
     shouldEnhance: shouldEnhance,
     getEndpoint: getEndpoint,
@@ -205,6 +196,36 @@ browzine.search = (function() {
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     buildTemplate: buildTemplate,
+  };
+}());
+
+browzine.serialSolutions360Core = (function() {
+  function convertToSummon(searchResults) {
+    var documentSummaries = [];
+
+    //Get the title documents
+    //When this is done, we need to create an object that we can hook into like this....
+
+    var documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+    inject(function ($compile, $rootScope) {
+      $scope = $rootScope.$new();
+
+      $scope.document = {
+        content_type: "Journal",
+        issns: ["0028-4793"]
+      };
+
+      documentSummary = $compile(documentSummary)($scope);
+    });
+
+    documentSummaries.push(documentSummary);
+
+    return documentSummaries;
+  };
+
+  return {
+    convertToSummon: convertToSummon,
   };
 }());
 
@@ -219,20 +240,23 @@ $(function() {
   var documentSummaries = results.querySelectorAll(".documentSummary");
 
   Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
-    browzine.search.resultsWithBrowZine(documentSummary);
+    browzine.summon.adapter(documentSummary);
   });
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       if(mutation.attributeName === "document-summary") {
         var documentSummary = mutation.target;
-        browzine.search.resultsWithBrowZine(documentSummary);
+        browzine.summon.adapter(documentSummary);
       }
 
       if(mutation.target.querySelector && mutation.target.querySelector(".results-title-data")) {
-        var documentSummary = mutation.target;
-        console.log("SerSol 360", documentSummary);
-        browzine.search.resultsWithBrowZine(documentSummary);
+        var searchResults = mutation.target;
+        console.log("SerSol 360", searchResults);
+        var documentSummaries = browzine.serialSolutions360Core.convertToSummon(searchResults);
+        documentSummaries.forEach(function(documentSummary) {
+          browzine.summon.adapter(documentSummary);
+        });
       }
     });
   });
