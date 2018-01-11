@@ -1,7 +1,7 @@
 # Library Developers
 
 ## Overview
-Use `browzine-summon-adapter` to enhance Summon search results with BrowZine data; Adds links to Journal and Article content in BrowZine; Uses BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
+Use `browzine-summon-adapter` to enhance Summon or 360 Core search results with BrowZine data; Adds links to Journal and Article content in BrowZine; Uses BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
 
 
 ![Article in Context links in Summon results](https://i.imgur.com/B34LEec.png "Article in Context links in Summon results")
@@ -42,6 +42,7 @@ var browzine = {
   articleWording: "View Complete Issue",
   journalBrowZineWebLinkText: "Browse Now",
   articleBrowZineWebLinkText: "Browse Now",
+  serSol360CoreJournalBrowZineWebLinkText: "View Journal in BrowZine",
 };
 ```
 

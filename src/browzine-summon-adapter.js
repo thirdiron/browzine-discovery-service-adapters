@@ -255,18 +255,73 @@ browzine.serSol360Core = (function() {
     return angular.element(searchResults).scope();
   };
 
+  function getData(response) {
+    return Array.isArray(response.data) ? response.data[0] : response.data;
+  };
+
+  function getBrowZineWebLink(data) {
+    var browzineWebLink = null;
+
+    if(data.browzineWebLink) {
+      browzineWebLink = data.browzineWebLink;
+    }
+
+    return browzineWebLink;
+  };
+
+  function getCoverImageUrl(data) {
+    var coverImageUrl = null;
+
+    if(data.coverImageUrl) {
+      coverImageUrl = data.coverImageUrl;
+    }
+
+    return coverImageUrl;
+  };
+
+  function buildTemplate(browzineWebLink) {
+    var browzineWebLinkText = "";
+    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
+
+    browzineWebLinkText = browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
+
+    var template = "<div class='browzine' style='margin: 5px 0;'>" +
+                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px;'/> " +
+                     "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='font-weight: 300;'>{browzineWebLinkText}</a>" +
+                   "</div>";
+
+    template = template.replace(/{browzineWebLink}/g, browzineWebLink);
+    template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
+    template = template.replace(/{bookIcon}/g, bookIcon);
+
+    return template;
+  };
+
   function adapter(searchResults) {
     var scope = getScope(searchResults);
     console.log("scope", scope);
 
     var titles = addTargets(getTitles(scope));
-    console.log("titles", titles);
+    //console.log("titles", titles);
 
     (function poll(titles) {
       var title = titles.shift();
 
       $.getJSON(title.endpoint, function(response) {
-        console.log("response", response);
+        //console.log("response", response);
+        var data = getData(response);
+        console.log("data", data);
+        var browzineWebLink = getBrowZineWebLink(data);
+        var coverImageUrl = getCoverImageUrl(data);
+
+        if(browzineWebLink) {
+          var template = buildTemplate(browzineWebLink);
+          $(title.target).find(".results-identifier").append(template);
+        }
+
+        if(coverImageUrl) {
+
+        }
 
         if(titles.length > 0) {
           poll(titles);
