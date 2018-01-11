@@ -160,7 +160,6 @@ browzine.summon = (function() {
 
   function adapter(documentSummary) {
     var scope = getScope(documentSummary);
-    console.log("scope", scope);
 
     if(!shouldEnhance(scope)) {
       return;
@@ -199,33 +198,81 @@ browzine.summon = (function() {
   };
 }());
 
-browzine.serialSolutions360Core = (function() {
-  function convertToSummon(searchResults) {
-    var documentSummaries = [];
+browzine.serSol360Core = (function() {
+  var api = browzine.api;
+  var apiKey = browzine.apiKey;
 
-    //Get the title documents
-    //When this is done, we need to create an object that we can hook into like this....
+  function getIssn(title) {
+    var issn = "";
 
-    var documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
-
-    inject(function ($compile, $rootScope) {
-      $scope = $rootScope.$new();
-
-      $scope.document = {
-        content_type: "Journal",
-        issns: ["0028-4793"]
-      };
-
-      documentSummary = $compile(documentSummary)($scope);
+    title.identifiers.forEach(function(identifier) {
+      if(identifier.type === "ISSN" && identifier.value) {
+        issn = identifier.value
+      }
     });
 
-    documentSummaries.push(documentSummary);
+    return encodeURIComponent(issn);
+  };
 
-    return documentSummaries;
+  function getTarget(issn) {
+    var element = $(".results-identifier:contains('" + issn + "')").closest(".results-title-row");
+    var target = element.length > 0 ? element[0] : undefined;
+    return target;
+  };
+
+  function getEndpoint(issn) {
+    var endpoint = api + "/search?issns=" + issn;
+    endpoint += "&access_token=" + apiKey;
+
+    return endpoint;
+  };
+
+  function addTargets(titles) {
+    titles.forEach(function(title) {
+      var issn = getIssn(title);
+      title.target = getTarget(issn);
+      title.endpoint = getEndpoint(issn);
+    });
+
+    return titles;
+  };
+
+  function getTitles(scope) {
+    var titles = [];
+
+    if(scope.searchResultsCtrl) {
+      if(scope.searchResultsCtrl.titleData) {
+        if(scope.searchResultsCtrl.titleData.titles) {
+          titles = scope.searchResultsCtrl.titleData.titles;
+        }
+      }
+    }
+
+    return titles;
+  };
+
+  function getScope(searchResults) {
+    return angular.element(searchResults).scope();
+  };
+
+  function adapter(searchResults) {
+    var scope = getScope(searchResults);
+    console.log("scope", scope);
+
+    var titles = addTargets(getTitles(scope));
+    console.log("titles", titles);
+
+    //Recursive call to get Journal details for each title
   };
 
   return {
-    convertToSummon: convertToSummon,
+    adapter: adapter,
+    getScope: getScope,
+    getTitles: getTitles,
+    addTargets: addTargets,
+    getTarget: getTarget,
+    getIssn: getIssn,
+    getEndpoint: getEndpoint,
   };
 }());
 
@@ -253,10 +300,7 @@ $(function() {
       if(mutation.target.querySelector && mutation.target.querySelector(".results-title-data")) {
         var searchResults = mutation.target;
         console.log("SerSol 360", searchResults);
-        var documentSummaries = browzine.serialSolutions360Core.convertToSummon(searchResults);
-        documentSummaries.forEach(function(documentSummary) {
-          browzine.summon.adapter(documentSummary);
-        });
+        browzine.serSol360Core.adapter(searchResults);
       }
     });
   });
