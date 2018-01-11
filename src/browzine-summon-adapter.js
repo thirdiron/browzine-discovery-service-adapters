@@ -202,14 +202,31 @@ browzine.serSol360Core = (function() {
   var api = browzine.api;
   var apiKey = browzine.apiKey;
 
+  function getQueryVariable(variable, url) {
+    var query = url.split("?")[1];
+    var parameters = query.split("&");
+
+    for(var i = 0; i < parameters.length; i++) {
+      var pair = parameters[i].split("=");
+
+      if(pair[0] == variable) {
+        return pair[1];
+      }
+    }
+
+    return;
+  }
+
   function getIssn(title) {
     var issn = "";
 
-    title.identifiers.forEach(function(identifier) {
-      if(identifier.type === "ISSN" && identifier.value) {
-        issn = identifier.value
-      }
-    });
+    //Using the base image url, if an issn exists, then the issn query parameter will be the issn.
+    //However, if only an eissn exists, then the issn query parameter value will be the eissn.
+    //This way we're able to account for both issn and eissn journal identifiers.
+    //e.g. "History matters (Boone, N.C.)"
+    if(title.syndeticsImageUrl) {
+      issn = getQueryVariable("issn", title.syndeticsImageUrl);
+    }
 
     return encodeURIComponent(issn);
   };
