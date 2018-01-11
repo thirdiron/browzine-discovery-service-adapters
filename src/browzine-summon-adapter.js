@@ -221,7 +221,7 @@ browzine.serSol360Core = (function() {
   };
 
   function getEndpoint(issn) {
-    var endpoint = api + "/search?issns=" + issn;
+    var endpoint = api + "/search?issns=" + issn.trim().replace("-", "");
     endpoint += "&access_token=" + apiKey;
 
     return endpoint;
@@ -262,7 +262,17 @@ browzine.serSol360Core = (function() {
     var titles = addTargets(getTitles(scope));
     console.log("titles", titles);
 
-    //Recursive call to get Journal details for each title
+    (function poll(titles) {
+      var title = titles.shift();
+
+      $.getJSON(title.endpoint, function(response) {
+        console.log("response", response);
+
+        if(titles.length > 0) {
+          poll(titles);
+        }
+      });
+    }(titles));
   };
 
   return {
