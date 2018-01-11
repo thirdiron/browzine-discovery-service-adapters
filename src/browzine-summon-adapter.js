@@ -302,7 +302,7 @@ browzine.serSol360Core = (function() {
     console.log("scope", scope);
 
     var titles = addTargets(getTitles(scope));
-    //console.log("titles", titles);
+    console.log("titles", titles);
 
     (function poll(titles) {
       var title = titles.shift();
@@ -320,7 +320,8 @@ browzine.serSol360Core = (function() {
         }
 
         if(coverImageUrl) {
-
+          $(title.target).find("img.results-title-image").attr("src", coverImageUrl);
+          $(title.target).find("img.results-title-image").attr("ng-src", coverImageUrl);
         }
 
         if(titles.length > 0) {
