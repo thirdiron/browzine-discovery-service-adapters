@@ -243,7 +243,7 @@ browzine.serSol360Core = (function() {
     if(scope.searchResultsCtrl) {
       if(scope.searchResultsCtrl.titleData) {
         if(scope.searchResultsCtrl.titleData.titles) {
-          titles = scope.searchResultsCtrl.titleData.titles;
+          titles = angular.copy(scope.searchResultsCtrl.titleData.titles);
         }
       }
     }
