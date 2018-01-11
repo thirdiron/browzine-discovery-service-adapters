@@ -227,11 +227,16 @@ browzine.serSol360Core = (function() {
     return endpoint;
   };
 
+  function shouldEnhance(issn) {
+    return !!issn;
+  };
+
   function addTargets(titles) {
     titles.forEach(function(title) {
       var issn = getIssn(title);
       title.target = getTarget(issn);
       title.endpoint = getEndpoint(issn);
+      title.shouldEnhance = shouldEnhance(issn);
     });
 
     return titles;
@@ -240,10 +245,12 @@ browzine.serSol360Core = (function() {
   function getTitles(scope) {
     var titles = [];
 
-    if(scope.searchResultsCtrl) {
-      if(scope.searchResultsCtrl.titleData) {
-        if(scope.searchResultsCtrl.titleData.titles) {
-          titles = angular.copy(scope.searchResultsCtrl.titleData.titles);
+    if(scope) {
+      if(scope.searchResultsCtrl) {
+        if(scope.searchResultsCtrl.titleData) {
+          if(scope.searchResultsCtrl.titleData.titles) {
+            titles = angular.copy(scope.searchResultsCtrl.titleData.titles);
+          }
         }
       }
     }
@@ -305,7 +312,20 @@ browzine.serSol360Core = (function() {
     console.log("titles", titles);
 
     (function poll(titles) {
+      console.log("top", titles.length);
+      if(titles.length === 0) {
+        return;
+      }
       var title = titles.shift();
+      console.log(title);
+
+      if(!title.shouldEnhance) {
+        if(titles.length > 0) {
+          poll(titles);
+        }
+
+        return;
+      }
 
       $.getJSON(title.endpoint, function(response) {
         //console.log("response", response);
@@ -325,6 +345,7 @@ browzine.serSol360Core = (function() {
         }
 
         if(titles.length > 0) {
+          console.log("bottom", titles.length);
           poll(titles);
         }
       });
