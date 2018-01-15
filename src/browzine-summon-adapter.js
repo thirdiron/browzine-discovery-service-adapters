@@ -234,6 +234,7 @@ browzine.serSol360Core = (function() {
   function getTarget(issn) {
     var element = $(".results-identifier:contains('" + issn + "')").closest(".results-title-row");
     var target = element.length > 0 ? element[0] : undefined;
+
     return target;
   };
 
@@ -323,18 +324,14 @@ browzine.serSol360Core = (function() {
 
   function adapter(searchResults) {
     var scope = getScope(searchResults);
-    console.log("scope", scope);
-
     var titles = addTargets(getTitles(scope));
-    console.log("titles", titles);
 
     (function poll(titles) {
-      console.log("top", titles.length);
       if(titles.length === 0) {
         return;
       }
+
       var title = titles.shift();
-      console.log(title);
 
       if(!title.shouldEnhance) {
         if(titles.length > 0) {
@@ -345,9 +342,7 @@ browzine.serSol360Core = (function() {
       }
 
       $.getJSON(title.endpoint, function(response) {
-        //console.log("response", response);
         var data = getData(response);
-        console.log("data", data);
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(data);
 
@@ -362,7 +357,6 @@ browzine.serSol360Core = (function() {
         }
 
         if(titles.length > 0) {
-          console.log("bottom", titles.length);
           poll(titles);
         }
       });
@@ -403,7 +397,6 @@ $(function() {
 
       if(mutation.target.querySelector && mutation.target.querySelector(".results-title-data")) {
         var searchResults = mutation.target;
-        console.log("SerSol 360", searchResults);
         browzine.serSol360Core.adapter(searchResults);
       }
     });
