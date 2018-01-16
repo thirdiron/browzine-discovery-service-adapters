@@ -358,8 +358,7 @@ browzine.serSol360Core = (function() {
         }
 
         if(coverImageUrl) {
-          $(title.target).find("img.results-title-image").attr("src", coverImageUrl);
-          $(title.target).find("img.results-title-image").attr("ng-src", coverImageUrl);
+          $(title.target).find("img.results-title-image").attr("src", coverImageUrl).attr("ng-src", coverImageUrl);
         }
 
         if(titles.length > 0) {

@@ -4,7 +4,7 @@ describe("SerSol 360 Core Model >", function() {
   beforeEach(function() {
     serSol360Core = browzine.serSol360Core;
 
-    var searchResults = $("<html><body><div class='container-fluid'><div ui-view='searchResults'><div class='results-title-data'></div></div></div></body></html>");
+    var searchResults = $("<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>");
 
     inject(function ($compile, $rootScope) {
       $scope = $rootScope.$new();
