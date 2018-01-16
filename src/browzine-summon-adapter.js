@@ -202,19 +202,21 @@ browzine.serSol360Core = (function() {
   var api = browzine.api;
   var apiKey = browzine.apiKey;
 
-  function getQueryVariable(variable, url) {
+  function getQueryVariable(url, key) {
     var query = url.split("?")[1];
     var parameters = query.split("&");
+    var value = "";
 
     for(var i = 0; i < parameters.length; i++) {
       var pair = parameters[i].split("=");
 
-      if(pair[0] == variable) {
-        return pair[1];
+      if(pair[0] == key) {
+        value = pair[1];
+        return value;
       }
     }
 
-    return;
+    return value;
   }
 
   function getIssn(title) {
@@ -225,7 +227,7 @@ browzine.serSol360Core = (function() {
     //This way we're able to account for both issn and eissn journal identifiers.
     //e.g. "History matters (Boone, N.C.)"
     if(title.syndeticsImageUrl) {
-      issn = getQueryVariable("issn", title.syndeticsImageUrl);
+      issn = getQueryVariable(title.syndeticsImageUrl, "issn");
     }
 
     return encodeURIComponent(issn);
@@ -239,8 +241,12 @@ browzine.serSol360Core = (function() {
   };
 
   function getEndpoint(issn) {
-    var endpoint = api + "/search?issns=" + issn.trim().replace("-", "");
-    endpoint += "&access_token=" + apiKey;
+    var endpoint;
+
+    if(issn) {
+      endpoint = api + "/search?issns=" + issn.trim().replace("-", "");
+      endpoint += "&access_token=" + apiKey;
+    }
 
     return endpoint;
   };
@@ -365,12 +371,18 @@ browzine.serSol360Core = (function() {
 
   return {
     adapter: adapter,
+    buildTemplate: buildTemplate,
+    getCoverImageUrl: getCoverImageUrl,
+    getBrowZineWebLink: getBrowZineWebLink,
+    getData: getData,
     getScope: getScope,
     getTitles: getTitles,
     addTargets: addTargets,
+    shouldEnhance: shouldEnhance,
+    getEndpoint: getEndpoint,
     getTarget: getTarget,
     getIssn: getIssn,
-    getEndpoint: getEndpoint,
+    getQueryVariable: getQueryVariable,
   };
 }());
 
