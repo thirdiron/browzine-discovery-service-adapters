@@ -241,7 +241,7 @@ browzine.serSol360Core = (function() {
   };
 
   function getEndpoint(issn) {
-    var endpoint;
+    var endpoint = null;
 
     if(issn) {
       endpoint = api + "/search?issns=" + issn.trim().replace("-", "");
@@ -256,14 +256,20 @@ browzine.serSol360Core = (function() {
   };
 
   function addTargets(titles) {
+    var titlesToEnhance = [];
+
     titles.forEach(function(title) {
       var issn = getIssn(title);
       title.target = getTarget(issn);
       title.endpoint = getEndpoint(issn);
       title.shouldEnhance = shouldEnhance(issn);
+
+      if(title.shouldEnhance) {
+        titlesToEnhance.push(title);
+      }
     });
 
-    return titles;
+    return titlesToEnhance;
   };
 
   function getTitles(scope) {
@@ -328,25 +334,10 @@ browzine.serSol360Core = (function() {
     return template;
   };
 
-  function adapter(searchResults) {
-    var scope = getScope(searchResults);
-    var titles = addTargets(getTitles(scope));
+  function searchTitles(titles, callback) {
+    var title = titles.shift();
 
-    (function poll(titles) {
-      if(titles.length === 0) {
-        return;
-      }
-
-      var title = titles.shift();
-
-      if(!title.shouldEnhance) {
-        if(titles.length > 0) {
-          poll(titles);
-        }
-
-        return;
-      }
-
+    if(title) {
       $.getJSON(title.endpoint, function(response) {
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
@@ -362,10 +353,25 @@ browzine.serSol360Core = (function() {
         }
 
         if(titles.length > 0) {
-          poll(titles);
+          searchTitles(titles, callback);
+        } else {
+          if(callback) {
+            return callback();
+          }
         }
       });
-    }(titles));
+    }
+  };
+
+  function adapter(searchResults) {
+    var scope = getScope(searchResults);
+    var titles = addTargets(getTitles(scope));
+
+    if(titles.length === 0) {
+      return;
+    }
+
+    searchTitles(titles);
   };
 
   return {
@@ -382,6 +388,7 @@ browzine.serSol360Core = (function() {
     getTarget: getTarget,
     getIssn: getIssn,
     getQueryVariable: getQueryVariable,
+    searchTitles: searchTitles,
   };
 }());
 
