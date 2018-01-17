@@ -28,6 +28,10 @@ Summon Custom Scripts are added in the Summon 2.0 External Script portion of the
 As a Custom Script Url:
 ![Summon 2.0 External Script](https://i.imgur.com/piLMSic.png "Summon 2.0 External Script")
 
+SerSol 360 Core custom scripts are added in 360 Core > Administration Console > E-Journal Portal 2.0 > Branding Options > Reference External JavaScript > JavaScript file url:
+![360 Core 2.0 External Script](https://i.imgur.com/c24Tlh5.png "360 Core 2.0 External Script")
+![360 Core 2.0 External Script](https://i.imgur.com/fj5mbyM.png "360 Core 2.0 External Script")
+
 ## Customize The BrowZine Enhancement
 
 Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
