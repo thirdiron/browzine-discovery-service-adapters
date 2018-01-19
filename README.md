@@ -1,13 +1,19 @@
 # Library Developers
 
 ## Overview
-Use `browzine-summon-adapter` to enhance Summon or 360 Core search results with BrowZine data; Adds links to Journal and Article content in BrowZine; Uses BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
+Use `browzine-summon-adapter` to enhance Summon or 360 Core search results with BrowZine data. 
 
-_Summon Search Results_
+`browzine-summon-adapter` adds links to Journal and Article content in BrowZine, and displays BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
+
+* [Summon Installation Instructions](#summon-adapter-installation)
+* [360 Core Installation Instructions](#360-core-adapter-installation)
+
+
+_Summon Search Results Example_
 
 ![Summon Journal Search Results](https://i.imgur.com/B34LEec.png "Summon Journal Search Results")
 
-_360 Core Search Results_
+_360 Core Search Results Example_
 
 ![360 Core Journal Search Results](https://i.imgur.com/UrxxYwf.png "360 Core Journal Search Results")
 
@@ -15,35 +21,13 @@ _360 Core Search Results_
 ## How to request your library API endpoint
 Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
 
-You will receive your `api` endpoint and your `apiKey`, update the following code snippet with these values and add to your Summon Custom Script:
+You will receive your `api` endpoint and your `apiKey`. 
 
-_BrowZine Summon Adapter Script_
+## Summon Adapter Installation
 
-```
-var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
-  apiKey: "ENTER API KEY",
-};
 
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
-document.head.appendChild(browzine.script);
-```
-
-_BrowZine 360 Core Adapter Script_
-
-```
-var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
-  apiKey: "ENTER API KEY",
-};
-
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
-document.head.appendChild(browzine.script);
-```
-
-_Loading Discovery Service Adapters_
+### BrowZine Summon Adapter Script
+Update the following code snippet with the `api` endpoint and `apiKey` values:
 
 ```
 var browzine = {
@@ -54,13 +38,9 @@ var browzine = {
 browzine.script = document.createElement("script");
 browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
 document.head.appendChild(browzine.script);
-
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
-document.head.appendChild(browzine.script);
 ```
 
-_Adding Summon Custom Script_
+### Adding Summon Custom Script
 
 Summon Custom Scripts are added in the Summon 2.0 External Script portion of the Summon Editor Settings:
 ![Summon 2.0 Editor Link](https://i.imgur.com/HJFpDGm.png "Summon 2.0 Editor Link")
@@ -68,21 +48,11 @@ Summon Custom Scripts are added in the Summon 2.0 External Script portion of the
 As a Custom Script Url:
 ![Summon 2.0 External Script](https://i.imgur.com/piLMSic.png "Summon 2.0 External Script")
 
-
-_Adding 360 Core Custom Script_
-
-360 Core custom scripts are added in 360 Core > Administration Console > E-Journal Portal 2.0 > Branding Options > Reference External JavaScript > JavaScript file url:
-![360 Core 2.0 External Script](https://i.imgur.com/c24Tlh5.png "360 Core 2.0 External Script")
-![360 Core 2.0 External Script](https://i.imgur.com/l53rUL8.png "360 Core 2.0 External Script")
-
-
-## Customize The BrowZine Enhancement
+### Summon Adapter Customizations
 
 Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
 
-E.g. You can customize "View the Journal" and "View Complete Issue" or "Browse Now". These customizations are optional and the defaults are shown below.
-
-_Summon Customizations_
+e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now". These customizations are optional and the defaults are shown below.
 
 ```
 var browzine = {
@@ -95,7 +65,35 @@ var browzine = {
 };
 ```
 
-_360 Core Customizations_
+
+
+## 360 Core Adapater Installation
+
+
+### BrowZine 360 Core Adapter Script
+Update the following code snippet with the `api` endpoint and `apiKey` values:
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
+document.head.appendChild(browzine.script);
+```
+
+### Adding 360 Core Custom Script
+
+360 Core custom scripts are added in 360 Core > Administration Console > E-Journal Portal 2.0 > Branding Options > Reference External JavaScript > JavaScript file url:
+![360 Core 2.0 External Script](https://i.imgur.com/c24Tlh5.png "360 Core 2.0 External Script")
+![360 Core 2.0 External Script](https://i.imgur.com/l53rUL8.png "360 Core 2.0 External Script")
+
+### 360 Core Adapater Customizations
+
+Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
+
+e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 
 ```
 var browzine = {
@@ -104,6 +102,31 @@ var browzine = {
   serSol360CoreJournalBrowZineWebLinkText: "View Journal in BrowZine",
 };
 ```
+
+
+
+## Non-standard Installation
+
+### Loading Multiple Discovery Service Adapters
+
+If you have multiple discovery services blended into one webpage, you can attach them both using this:
+
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
+document.head.appendChild(browzine.script);
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
+document.head.appendChild(browzine.script);
+```
+
+
 
 # Contributors
 
