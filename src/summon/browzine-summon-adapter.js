@@ -203,7 +203,7 @@ $(function() {
     return;
   }
 
-  var results = document;
+  var results = document.querySelector("#results") || document;
   var documentSummaries = results.querySelectorAll(".documentSummary");
 
   Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
