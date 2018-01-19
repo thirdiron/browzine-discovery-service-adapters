@@ -22,10 +22,6 @@ browzine.serSol360Core = (function() {
   function getIssn(title) {
     var issn = "";
 
-    //Using the base image url, if an issn exists, then the issn query parameter will be the issn.
-    //However, if only an eissn exists, then the issn query parameter value will be the eissn.
-    //This way we're able to account for both issn and eissn journal identifiers.
-    //e.g. "History matters (Boone, N.C.)"
     if(title.syndeticsImageUrl) {
       issn = getQueryVariable(title.syndeticsImageUrl, "issn");
     }

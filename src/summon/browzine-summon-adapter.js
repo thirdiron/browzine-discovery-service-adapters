@@ -204,8 +204,6 @@ $(function() {
   }
 
   var results = document.querySelector("#results");
-
-  //Enhance any documentSummary elements present before the observer starts
   var documentSummaries = results.querySelectorAll(".documentSummary");
 
   Array.prototype.forEach.call(documentSummaries, function(documentSummary) {

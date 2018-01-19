@@ -109,10 +109,18 @@ var browzine = {
 
 CircleCI executes deployments to S3 using the deploy-staging and deploy-production npm commands. Neither feature branches nor hotfix branches are deployed to S3.
 
-The Summon/BrowZine adapter can be found here:
+The BrowZine Summon Adapter adapter can be found here:
 
 Staging
-https://s3.amazonaws.com/browzine-adapters/summon-staging/browzine-summon-adapter.js
+https://s3.amazonaws.com/browzine-adapters/summon/staging/browzine-summon-adapter.js
 
 Production
 https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js
+
+The BrowZine 360 Core Adapter adapter can be found here:
+
+Staging
+https://s3.amazonaws.com/browzine-adapters/360-core/staging/browzine-360-core-adapter.js
+
+Production
+https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js
