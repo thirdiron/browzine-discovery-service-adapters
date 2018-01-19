@@ -7,13 +7,21 @@ machine:
 deployment:
   hotfix:
     branch: /hotfix\/.*/
+    commands:
+      - npm run deploy-summon-hotfix
+      - npm run deploy-360-core-hotfix
   feature:
     branch: /feature\/.*/
+    commands:
+      - npm run deploy-summon-feature
+      - npm run deploy-360-core-feature
   develop:
     branch: develop
     commands:
-      - npm run deploy-staging
+      - npm run deploy-summon-staging
+      - npm run deploy-360-core-staging
   master:
     branch: master
     commands:
-      - npm run deploy-production
+      - npm run deploy-summon-production
+      - npm run deploy-360-core-production

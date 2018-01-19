@@ -9,8 +9,14 @@
     "server": "http-server --cors -p 8080",
     "tunnel": "ngrok http 8080",
     "test": "karma start",
-    "deploy-staging": "AWS_BUCKET_FOLDER=summon-staging deploy-web-to-s3 src",
-    "deploy-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 src"
+    "deploy-summon-hotfix": "AWS_BUCKET_FOLDER=summon/hotfix deploy-web-to-s3 src/browzine-summon-adapter.js",
+    "deploy-summon-feature": "AWS_BUCKET_FOLDER=summon/feature deploy-web-to-s3 src/browzine-summon-adapter.js",
+    "deploy-summon-staging": "AWS_BUCKET_FOLDER=summon/staging deploy-web-to-s3 src/browzine-summon-adapter.js",
+    "deploy-summon-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 src/browzine-summon-adapter.js",
+    "deploy-360-core-hotfix": "AWS_BUCKET_FOLDER=summon/hotfix deploy-web-to-s3 src/browzine-360-core-adapter.js",
+    "deploy-360-core-feature": "AWS_BUCKET_FOLDER=summon/feature deploy-web-to-s3 src/browzine-360-core-adapter.js",
+    "deploy-360-core-staging": "AWS_BUCKET_FOLDER=summon/staging deploy-web-to-s3 src/browzine-360-core-adapter.js",
+    "deploy-360-core-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 src/browzine-360-core-adapter.js"
   },
   "dependencies": {},
   "devDependencies": {
