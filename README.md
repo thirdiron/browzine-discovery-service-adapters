@@ -3,13 +3,21 @@
 ## Overview
 Use `browzine-summon-adapter` to enhance Summon or 360 Core search results with BrowZine data; Adds links to Journal and Article content in BrowZine; Uses BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
 
+_Summon Search Results_
 
-![Article in Context links in Summon results](https://i.imgur.com/B34LEec.png "Article in Context links in Summon results")
+![Summon Journal Search Results](https://i.imgur.com/B34LEec.png "Summon Journal Search Results")
+
+_360 Core Search Results_
+
+![360 Core Journal Search Results](https://i.imgur.com/UrxxYwf.png "360 Core Journal Search Results")
+
 
 ## How to request your library API endpoint
 Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
 
 You will receive your `api` endpoint and your `apiKey`, update the following code snippet with these values and add to your Summon Custom Script:
+
+_BrowZine Summon Adapter Script_
 
 ```
 var browzine = {
@@ -22,13 +30,31 @@ browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzin
 document.head.appendChild(browzine.script);
 ```
 
+_BrowZine 360 Core Adapter Script_
+
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
+document.head.appendChild(browzine.script);
+```
+
+_Adding Summon Custom Script_
+
 Summon Custom Scripts are added in the Summon 2.0 External Script portion of the Summon Editor Settings:
 ![Summon 2.0 Editor Link](https://i.imgur.com/HJFpDGm.png "Summon 2.0 Editor Link")
 
 As a Custom Script Url:
 ![Summon 2.0 External Script](https://i.imgur.com/piLMSic.png "Summon 2.0 External Script")
 
-SerSol 360 Core custom scripts are added in 360 Core > Administration Console > E-Journal Portal 2.0 > Branding Options > Reference External JavaScript > JavaScript file url:
+
+_Adding 360 Core Custom Script_
+
+360 Core custom scripts are added in 360 Core > Administration Console > E-Journal Portal 2.0 > Branding Options > Reference External JavaScript > JavaScript file url:
 ![360 Core 2.0 External Script](https://i.imgur.com/c24Tlh5.png "360 Core 2.0 External Script")
 ![360 Core 2.0 External Script](https://i.imgur.com/fj5mbyM.png "360 Core 2.0 External Script")
 
@@ -38,14 +64,25 @@ Customize the naming conventions for each type of search result - Journal/Articl
 
 E.g. You can customize "View the Journal" and "View Complete Issue" or "Browse Now". These customizations are optional and the defaults are shown below.
 
+_Summon Customizations_
+
 ```
 var browzine = {
   api: "https://api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  journalWording: "View the Journal",
-  articleWording: "View Complete Issue",
-  journalBrowZineWebLinkText: "Browse Now",
-  articleBrowZineWebLinkText: "Browse Now",
+  summonJournalWording: "View the Journal",
+  summonArticleWording: "View Complete Issue",
+  summonJournalBrowZineWebLinkText: "Browse Now",
+  summonArticleBrowZineWebLinkText: "Browse Now",
+};
+```
+
+_360 Core Customizations_
+
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
   serSol360CoreJournalBrowZineWebLinkText: "View Journal in BrowZine",
 };
 ```
@@ -67,12 +104,6 @@ var browzine = {
 
 * `npm test` (Runs the Karma automated acceptance tests)
 
-### Before Submitting Pull Requests
-
-Contributors should:
-
-- Make the needed changes in `/src/browzine-summon-adapter.js`.
-- Add a test for the change in `/tests/browzine-summon-adapter.js`.
 
 ### Deploying
 

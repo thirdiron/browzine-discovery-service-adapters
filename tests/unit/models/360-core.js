@@ -180,7 +180,7 @@ describe("SerSol 360 Core Model >", function() {
   });
 
   describe("serSol360Core model searchTitles method >", function() {
-    it("should update the DOM with the enhancement template for journal search results", function() {
+    it("should enhance the DOM with template and cover image for journal search results", function() {
       serSol360Core.searchTitles([titles[0]], function() {
         var template = searchResults.find(".browzine");
         expect(template).toBeDefined();
@@ -193,7 +193,7 @@ describe("SerSol 360 Core Model >", function() {
 
     it("should update the DOM with the browzine journal cover for journal search results", function() {
       serSol360Core.searchTitles([titles[0]], function() {
-        var coverImage = searchResults.find("img.results-title-image");
+        var coverImage = $("body").find("img.results-title-image");
         expect(coverImage).toBeDefined();
         expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
         expect(coverImage.attr("ng-src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
