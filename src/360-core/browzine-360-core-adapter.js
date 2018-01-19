@@ -17,7 +17,7 @@ browzine.serSol360Core = (function() {
     }
 
     return value;
-  }
+  };
 
   function getIssn(title) {
     var issn = "";
