@@ -43,6 +43,23 @@ browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browz
 document.head.appendChild(browzine.script);
 ```
 
+_Loading Discovery Service Adapters_
+
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
+document.head.appendChild(browzine.script);
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
+document.head.appendChild(browzine.script);
+```
+
 _Adding Summon Custom Script_
 
 Summon Custom Scripts are added in the Summon 2.0 External Script portion of the Summon Editor Settings:
@@ -56,7 +73,8 @@ _Adding 360 Core Custom Script_
 
 360 Core custom scripts are added in 360 Core > Administration Console > E-Journal Portal 2.0 > Branding Options > Reference External JavaScript > JavaScript file url:
 ![360 Core 2.0 External Script](https://i.imgur.com/c24Tlh5.png "360 Core 2.0 External Script")
-![360 Core 2.0 External Script](https://i.imgur.com/fj5mbyM.png "360 Core 2.0 External Script")
+![360 Core 2.0 External Script](https://i.imgur.com/l53rUL8.png "360 Core 2.0 External Script")
+
 
 ## Customize The BrowZine Enhancement
 
