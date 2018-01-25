@@ -201,7 +201,7 @@ browzine.summon = (function() {
       }
 
       if(coverImageUrl && browzineEnabled) {
-        $(documentSummary).find(".coverImage img").attr("src", coverImageUrl);
+        $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
       }
     });
   };
