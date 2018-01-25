@@ -130,6 +130,10 @@ browzine.serSol360Core = (function() {
     return template;
   };
 
+  function getBrowZineEnabled(data) {
+    return data.browzineEnabled;
+  };
+
   function searchTitles(titles, callback) {
     var title = titles.shift();
 
@@ -138,14 +142,15 @@ browzine.serSol360Core = (function() {
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(data);
+        var browzineEnabled = getBrowZineEnabled(data);
 
         if(browzineWebLink) {
           var template = buildTemplate(browzineWebLink);
           $(title.target).find(".results-identifier").append(template);
         }
 
-        if(coverImageUrl) {
-          $(title.target).find("img.results-title-image").attr("src", coverImageUrl).attr("ng-src", coverImageUrl);
+        if(coverImageUrl && browzineEnabled) {
+          $(title.target).find("img.results-title-image").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
         }
 
         if(titles.length > 0) {
@@ -184,6 +189,7 @@ browzine.serSol360Core = (function() {
     getTarget: getTarget,
     getIssn: getIssn,
     getQueryVariable: getQueryVariable,
+    getBrowZineEnabled: getBrowZineEnabled,
     searchTitles: searchTitles,
   };
 }());

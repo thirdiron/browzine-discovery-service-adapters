@@ -159,6 +159,14 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
+  describe("serSol360Core model getBrowZineEnabled method >", function() {
+    it("should include a browzineEnabled in the BrowZine API response for a journal", function() {
+      var data = serSol360Core.getData(journalResponse);
+      expect(data).toBeDefined();
+      expect(serSol360Core.getBrowZineEnabled(data)).toEqual(true);
+    });
+  });
+
   describe("serSol360Core model buildTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var data = serSol360Core.getData(journalResponse);

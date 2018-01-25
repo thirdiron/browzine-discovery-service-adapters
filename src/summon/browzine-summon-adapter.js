@@ -126,6 +126,26 @@ browzine.summon = (function() {
     return coverImageUrl;
   };
 
+  function getBrowZineEnabled(scope, data, journal) {
+    var browzineEnabled = false;
+
+    if(isJournal(scope)) {
+      if(data.browzineEnabled) {
+        browzineEnabled = data.browzineEnabled;
+      }
+    }
+
+    if(isArticle(scope)) {
+      if(journal) {
+        if(journal.browzineEnabled) {
+          browzineEnabled = journal.browzineEnabled;
+        }
+      }
+    }
+
+    return browzineEnabled;
+  };
+
   function buildTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
@@ -173,13 +193,14 @@ browzine.summon = (function() {
 
       var browzineWebLink = getBrowZineWebLink(data);
       var coverImageUrl = getCoverImageUrl(scope, data, journal);
+      var browzineEnabled = getBrowZineEnabled(scope, data, journal);
 
       if(browzineWebLink) {
         var template = buildTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
-      if(coverImageUrl) {
+      if(coverImageUrl && browzineEnabled) {
         $(documentSummary).find(".coverImage img").attr("src", coverImageUrl);
       }
     });
@@ -194,6 +215,7 @@ browzine.summon = (function() {
     getIncludedJournal: getIncludedJournal,
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
+    getBrowZineEnabled: getBrowZineEnabled,
     buildTemplate: buildTemplate,
   };
 }());

@@ -289,6 +289,22 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getBrowZineEnabled method >", function() {
+    it("should include a browzineEnabled in the BrowZine API response for a journal", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+      var journal = summon.getIncludedJournal(journalResponse);
+
+      expect(summon.getBrowZineEnabled(scope, data, journal)).toEqual(true);
+    });
+  });
+
   describe("summon model buildTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var scope = {
