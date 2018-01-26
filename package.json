@@ -16,7 +16,11 @@
     "deploy-360-core-hotfix": "AWS_BUCKET_FOLDER=360-core/hotfix deploy-web-to-s3 src/360-core",
     "deploy-360-core-feature": "AWS_BUCKET_FOLDER=360-core/feature deploy-web-to-s3 src/360-core",
     "deploy-360-core-staging": "AWS_BUCKET_FOLDER=360-core/staging deploy-web-to-s3 src/360-core",
-    "deploy-360-core-production": "AWS_BUCKET_FOLDER=360-core deploy-web-to-s3 src/360-core"
+    "deploy-360-core-production": "AWS_BUCKET_FOLDER=360-core deploy-web-to-s3 src/360-core",
+    "deploy-primo-hotfix": "AWS_BUCKET_FOLDER=primo/hotfix deploy-web-to-s3 src/primo",
+    "deploy-primo-feature": "AWS_BUCKET_FOLDER=primo/feature deploy-web-to-s3 src/primo",
+    "deploy-primo-staging": "AWS_BUCKET_FOLDER=primo/staging deploy-web-to-s3 src/primo",
+    "deploy-primo-production": "AWS_BUCKET_FOLDER=primo deploy-web-to-s3 src/primo"
   },
   "dependencies": {},
   "devDependencies": {
