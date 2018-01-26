@@ -1,12 +1,13 @@
 # Library Developers
 
 ## Overview
-Use `browzine-summon-adapter` to enhance Summon or 360 Core search results with BrowZine data. 
+Use `browzine-discovery-service-adapters` to enhance Summon, 360 Core or Primo search results with BrowZine data.
 
-`browzine-summon-adapter` adds links to Journal and Article content in BrowZine, and displays BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
+`browzine-discovery-service-adapters` adds links to Journal and Article content in BrowZine, and displays BrowZine Journal covers. The BrowZine Summon adapter supports IE11+ and evergreen browsers (Chrome, Firefox, Safari, Microsoft Edge).
 
 * [Summon Installation Instructions](#summon-adapter-installation)
 * [360 Core Installation Instructions](#360-core-adapter-installation)
+* [Primo Installation Instructions](#primo-adapter-installation)
 
 
 _Summon Search Results Example_
@@ -15,13 +16,17 @@ _Summon Search Results Example_
 
 _360 Core Search Results Example_
 
-![360 Core Journal Search Results](https://i.imgur.com/UrxxYwf.png "360 Core Journal Search Results")
+![360 Core Journal Search Results](https://i.imgur.com/YVao9Fl.png "360 Core Journal Search Results")
+
+_Primo Search Results Example_
+
+![Primo Journal Search Results](https://i.imgur.com/pckF1VT.png "Primo Journal Search Results")
 
 
 ## How to request your library API endpoint
 Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
 
-You will receive your `api` endpoint and your `apiKey`. 
+You will receive your `api` endpoint and your `apiKey`.
 
 ## Summon Adapter Installation
 
@@ -103,6 +108,29 @@ var browzine = {
 };
 ```
 
+## Primo Adapater Installation
+
+
+### BrowZine Primo Adapter Script
+Update the following code snippet with the `api` endpoint and `apiKey` values:
+```
+var browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
+document.head.appendChild(browzine.script);
+```
+
+### Adding 360 Core Custom Script
+
+Upload this custom Primo package to your Primo view or add the contents of /js/custom.js to your existing customized Primo package.
+
+https://s3.amazonaws.com/browzine-adapters/primo/01COLSCHL_INST-BRZN.zip
+
+![Primo External Script](https://i.imgur.com/EcZDAaC.png "PrimoExternal Script")
 
 
 ## Non-standard Installation
