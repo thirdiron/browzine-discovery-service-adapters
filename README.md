@@ -173,14 +173,14 @@ document.head.appendChild(browzine.script);
 
 ## Installation
 
-* `git clone https://github.com/thirdiron/browzine-summon-adapter.git` this repository
+* `git clone https://github.com/thirdiron/browzine-discovery-service-adapters.git` this repository
 * change into the new directory
 * `npm install`
 
 ## Running / Development
 
 * `npm run server` (Runs a local webserver, visit http://localhost:8080)
-* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/browzine-summon-adapter.js)
+* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/summon/browzine-summon-adapter.js)
 
 ### Running Tests
 
