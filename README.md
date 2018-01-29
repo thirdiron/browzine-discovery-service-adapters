@@ -16,7 +16,7 @@ _Summon Search Results Example_
 
 _360 Core Search Results Example_
 
-![360 Core Journal Search Results](https://i.imgur.com/YVao9Fl.png "360 Core Journal Search Results")
+![360 Core Journal Search Results](https://i.imgur.com/UFUASU7.png "360 Core Journal Search Results")
 
 _Primo Search Results Example_
 
