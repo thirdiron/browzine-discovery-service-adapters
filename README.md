@@ -124,7 +124,7 @@ browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine
 document.head.appendChild(browzine.script);
 ```
 
-### Adding 360 Core Custom Script
+### Adding Primo Custom Script
 
 Upload this custom Primo package to your Primo view or add the contents of /js/custom.js to your existing customized Primo package.
 
@@ -132,7 +132,7 @@ https://s3.amazonaws.com/browzine-adapters/primo/01COLSCHL_INST-BRZN.zip
 
 ![Primo External Script](https://i.imgur.com/EcZDAaC.png "PrimoExternal Script")
 
-### 360 Core Adapater Customizations
+### Primo Adapater Customizations
 
 Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
 
@@ -164,6 +164,10 @@ document.head.appendChild(browzine.script);
 
 browzine.script = document.createElement("script");
 browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
+document.head.appendChild(browzine.script);
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
 document.head.appendChild(browzine.script);
 ```
 
@@ -206,3 +210,11 @@ https://s3.amazonaws.com/browzine-adapters/360-core/staging/browzine-360-core-ad
 
 Production
 https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js
+
+The BrowZine Primo Adapter adapter can be found here:
+
+Staging
+https://s3.amazonaws.com/browzine-adapters/primo/staging/browzine-primo-adapter.js
+
+Production
+https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js
