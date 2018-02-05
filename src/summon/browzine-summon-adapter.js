@@ -1,4 +1,4 @@
-browzine.search = (function() {
+browzine.summon = (function() {
   var api = browzine.api;
   var apiKey = browzine.apiKey;
 
@@ -126,19 +126,39 @@ browzine.search = (function() {
     return coverImageUrl;
   };
 
+  function getBrowZineEnabled(scope, data, journal) {
+    var browzineEnabled = false;
+
+    if(isJournal(scope)) {
+      if(data.browzineEnabled) {
+        browzineEnabled = data.browzineEnabled;
+      }
+    }
+
+    if(isArticle(scope)) {
+      if(journal) {
+        if(journal.browzineEnabled) {
+          browzineEnabled = journal.browzineEnabled;
+        }
+      }
+    }
+
+    return browzineEnabled;
+  };
+
   function buildTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
     var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
 
     if(isJournal(scope)) {
-      wording = browzine.journalWording || "View the Journal";
-      browzineWebLinkText = browzine.journalBrowZineWebLinkText || "Browse Now";
+      wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
+      browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.summonJournalBrowZineWebLinkText || "Browse Now";
     }
 
     if(isArticle(scope)) {
-      wording = browzine.articleWording || "View Complete Issue";
-      browzineWebLinkText = browzine.articleBrowZineWebLinkText || "Browse Now";
+      wording = browzine.articleWording || browzine.summonArticleWording || "View Complete Issue";
+      browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.summonArticleBrowZineWebLinkText || "Browse Now";
     }
 
     var template = "<div class='browzine'>" +
@@ -158,7 +178,7 @@ browzine.search = (function() {
     return angular.element(documentSummary).scope();
   };
 
-  function resultsWithBrowZine(documentSummary) {
+  function adapter(documentSummary) {
     var scope = getScope(documentSummary);
 
     if(!shouldEnhance(scope)) {
@@ -173,20 +193,21 @@ browzine.search = (function() {
 
       var browzineWebLink = getBrowZineWebLink(data);
       var coverImageUrl = getCoverImageUrl(scope, data, journal);
+      var browzineEnabled = getBrowZineEnabled(scope, data, journal);
 
       if(browzineWebLink) {
         var template = buildTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
-      if(coverImageUrl) {
-        $(documentSummary).find(".coverImage img").attr("src", coverImageUrl);
+      if(coverImageUrl && browzineEnabled) {
+        $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
       }
     });
   };
 
   return {
-    resultsWithBrowZine: resultsWithBrowZine,
+    adapter: adapter,
     getScope: getScope,
     shouldEnhance: shouldEnhance,
     getEndpoint: getEndpoint,
@@ -194,6 +215,7 @@ browzine.search = (function() {
     getIncludedJournal: getIncludedJournal,
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
+    getBrowZineEnabled: getBrowZineEnabled,
     buildTemplate: buildTemplate,
   };
 }());
@@ -203,29 +225,26 @@ $(function() {
     return;
   }
 
-  var results = document.querySelector("#results");
-  var config = {
-    attributes: true,
-    childList: true,
-    characterData: true,
-    subtree: true,
-  };
-
-  //Enhance any documentSummary elements present before the observer starts
+  var results = document.querySelector("#results") || document;
   var documentSummaries = results.querySelectorAll(".documentSummary");
 
   Array.prototype.forEach.call(documentSummaries, function(documentSummary) {
-    browzine.search.resultsWithBrowZine(documentSummary);
+    browzine.summon.adapter(documentSummary);
   });
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       if(mutation.attributeName === "document-summary") {
         var documentSummary = mutation.target;
-        browzine.search.resultsWithBrowZine(documentSummary);
+        browzine.summon.adapter(documentSummary);
       }
     });
   });
 
-  observer.observe(results, config);
+  observer.observe(results, {
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
 });

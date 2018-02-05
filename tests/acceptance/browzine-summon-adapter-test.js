@@ -1,11 +1,11 @@
 describe("BrowZine Summon Adapter >", function() {
-  var search = {}, documentSummary = {};
+  var summon = {}, documentSummary = {};
 
   $("body").append("<div id='results'></div>");
 
   describe("search results journal >", function() {
     beforeEach(function() {
-      search = browzine.search;
+      summon = browzine.summon;
 
       documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
@@ -37,7 +37,7 @@ describe("BrowZine Summon Adapter >", function() {
         });
       };
 
-      search.resultsWithBrowZine(documentSummary);
+      summon.adapter(documentSummary);
     });
 
     afterEach(function() {
@@ -62,7 +62,7 @@ describe("BrowZine Summon Adapter >", function() {
 
   describe("search results article >", function() {
     beforeEach(function() {
-      search = browzine.search;
+      summon = browzine.summon;
 
       documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
@@ -106,7 +106,7 @@ describe("BrowZine Summon Adapter >", function() {
         });
       };
 
-      search.resultsWithBrowZine(documentSummary);
+      summon.adapter(documentSummary);
     });
 
     afterEach(function() {
@@ -131,7 +131,7 @@ describe("BrowZine Summon Adapter >", function() {
 
   describe("search results article with no browzineWebLink >", function() {
     beforeEach(function() {
-      search = browzine.search;
+      summon = browzine.summon;
 
       documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
@@ -174,7 +174,7 @@ describe("BrowZine Summon Adapter >", function() {
         });
       };
 
-      search.resultsWithBrowZine(documentSummary);
+      summon.adapter(documentSummary);
     });
 
     afterEach(function() {

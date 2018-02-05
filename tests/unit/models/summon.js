@@ -1,8 +1,8 @@
-describe("Search Model >", function() {
-  var search = {}, journalResponse = {}, articleResponse = {};
+describe("Summon Model >", function() {
+  var summon = {}, journalResponse = {}, articleResponse = {};
 
   beforeEach(function() {
-    search = browzine.search;
+    summon = browzine.summon;
 
     journalResponse = {
       "data": [{
@@ -47,11 +47,11 @@ describe("Search Model >", function() {
 
   });
 
-  it("search model should exist", function() {
-    expect(search).toBeDefined();
+  it("summon model should exist", function() {
+    expect(summon).toBeDefined();
   });
 
-  describe("search model getScope method >", function() {
+  describe("summon model getScope method >", function() {
     it("should retrieve the scope from a search result", function() {
       var documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
@@ -66,7 +66,7 @@ describe("Search Model >", function() {
         documentSummary = $compile(documentSummary)($scope);
       });
 
-      var scope = search.getScope(documentSummary);
+      var scope = summon.getScope(documentSummary);
 
       expect(scope).toBeDefined();
       expect(scope.document).toBeDefined();
@@ -78,11 +78,11 @@ describe("Search Model >", function() {
     });
   });
 
-  describe("search model shouldEnhance method >", function() {
+  describe("summon model shouldEnhance method >", function() {
     it("should not enhance a search result without a document", function() {
       var scope = {};
 
-      expect(search.shouldEnhance(scope)).toEqual(false);
+      expect(summon.shouldEnhance(scope)).toEqual(false);
     });
 
     it("should enhance a journal search result with an issn", function() {
@@ -93,7 +93,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(true);
+      expect(summon.shouldEnhance(scope)).toEqual(true);
     });
 
     it("should enhance a journal search result with a lowercase content type", function() {
@@ -104,7 +104,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(true);
+      expect(summon.shouldEnhance(scope)).toEqual(true);
     });
 
     it("should enhance an eJournal search result with an issn", function() {
@@ -115,7 +115,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(true);
+      expect(summon.shouldEnhance(scope)).toEqual(true);
     });
 
     it("should enhance an article search result with a doi", function() {
@@ -126,7 +126,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(true);
+      expect(summon.shouldEnhance(scope)).toEqual(true);
     });
 
     it("should enhance an article search result with a lowercase content type", function() {
@@ -137,7 +137,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(true);
+      expect(summon.shouldEnhance(scope)).toEqual(true);
     });
 
     it("should not enhance a journal search result without an issn or eissn", function() {
@@ -147,7 +147,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(false);
+      expect(summon.shouldEnhance(scope)).toEqual(false);
     });
 
     it("should not enhance an article search result without a doi", function() {
@@ -157,7 +157,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(false);
+      expect(summon.shouldEnhance(scope)).toEqual(false);
     });
 
     it("should not enhance a journal search result without a content type", function() {
@@ -167,7 +167,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(false);
+      expect(summon.shouldEnhance(scope)).toEqual(false);
     });
 
     it("should not enhance an article search result without a content type", function() {
@@ -177,11 +177,11 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.shouldEnhance(scope)).toEqual(false);
+      expect(summon.shouldEnhance(scope)).toEqual(false);
     });
   });
 
-  describe("search model getEndpoint method >", function() {
+  describe("summon model getEndpoint method >", function() {
     it("should build a journal endpoint for a journal search result", function() {
       var scope = {
         document: {
@@ -190,7 +190,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.getEndpoint(scope)).toContain("search?issns=00284793");
+      expect(summon.getEndpoint(scope)).toContain("search?issns=00284793");
     });
 
     it("should select the issn over the eissn when a journal search result includes both", function() {
@@ -202,7 +202,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.getEndpoint(scope)).toContain("search?issns=00284793");
+      expect(summon.getEndpoint(scope)).toContain("search?issns=00284793");
     });
 
     it("should select the eissn when the journal search result has no issn", function() {
@@ -213,7 +213,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.getEndpoint(scope)).toContain("search?issns=00823974");
+      expect(summon.getEndpoint(scope)).toContain("search?issns=00823974");
     });
 
     it("should build an article endpoint for an article search result", function() {
@@ -224,7 +224,7 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575");
+      expect(summon.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575");
     });
 
     it("should build an article endpoint for an article search result and include its journal", function() {
@@ -235,25 +235,25 @@ describe("Search Model >", function() {
         }
       };
 
-      expect(search.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575?include=journal");
+      expect(summon.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575?include=journal");
     });
   });
 
-  describe("search model getBrowZineWebLink method >", function() {
+  describe("summon model getBrowZineWebLink method >", function() {
     it("should include a browzineWebLink in the BrowZine API response for a journal", function() {
-      var data = search.getData(journalResponse);
+      var data = summon.getData(journalResponse);
       expect(data).toBeDefined();
-      expect(search.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/10292");
+      expect(summon.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/10292");
     });
 
     it("should include a browzineWebLink in the BrowZine API response for an article", function() {
-      var data = search.getData(articleResponse);
+      var data = summon.getData(articleResponse);
       expect(data).toBeDefined();
-      expect(search.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+      expect(summon.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
     });
   });
 
-  describe("search model getCoverImageUrl method >", function() {
+  describe("summon model getCoverImageUrl method >", function() {
     it("should include a coverImageUrl in the BrowZine API response for a journal", function() {
       var scope = {
         document: {
@@ -262,13 +262,13 @@ describe("Search Model >", function() {
         }
       };
 
-      var data = search.getData(journalResponse);
-      var journal = search.getIncludedJournal(journalResponse);
+      var data = summon.getData(journalResponse);
+      var journal = summon.getIncludedJournal(journalResponse);
 
       expect(data).toBeDefined();
       expect(journal).toBeNull();
 
-      expect(search.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      expect(summon.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
 
     it("should include a coverImageUrl in the BrowZine API response for an article", function() {
@@ -279,17 +279,33 @@ describe("Search Model >", function() {
         }
       };
 
-      var data = search.getData(articleResponse);
-      var journal = search.getIncludedJournal(articleResponse);
+      var data = summon.getData(articleResponse);
+      var journal = summon.getIncludedJournal(articleResponse);
 
       expect(data).toBeDefined();
       expect(journal).toBeDefined();
 
-      expect(search.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+      expect(summon.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
     });
   });
 
-  describe("search model buildTemplate method >", function() {
+  describe("summon model getBrowZineEnabled method >", function() {
+    it("should include a browzineEnabled in the BrowZine API response for a journal", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+      var journal = summon.getIncludedJournal(journalResponse);
+
+      expect(summon.getBrowZineEnabled(scope, data, journal)).toEqual(true);
+    });
+  });
+
+  describe("summon model buildTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var scope = {
         document: {
@@ -298,9 +314,9 @@ describe("Search Model >", function() {
         }
       };
 
-      var data = search.getData(journalResponse);
-      var browzineWebLink = search.getBrowZineWebLink(data);
-      var template = search.buildTemplate(scope, browzineWebLink);
+      var data = summon.getData(journalResponse);
+      var browzineWebLink = summon.getBrowZineWebLink(data);
+      var template = summon.buildTemplate(scope, browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();
@@ -323,9 +339,9 @@ describe("Search Model >", function() {
         }
       };
 
-      var data = search.getData(articleResponse);
-      var browzineWebLink = search.getBrowZineWebLink(data);
-      var template = search.buildTemplate(scope, browzineWebLink);
+      var data = summon.getData(articleResponse);
+      var browzineWebLink = summon.getBrowZineWebLink(data);
+      var template = summon.buildTemplate(scope, browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();
