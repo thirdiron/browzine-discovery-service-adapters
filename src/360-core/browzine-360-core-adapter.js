@@ -95,8 +95,10 @@ browzine.serSol360Core = (function() {
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
-    if(data.browzineWebLink) {
-      browzineWebLink = data.browzineWebLink;
+    if(data) {
+      if(data.browzineWebLink) {
+        browzineWebLink = data.browzineWebLink;
+      }
     }
 
     return browzineWebLink;
@@ -105,11 +107,25 @@ browzine.serSol360Core = (function() {
   function getCoverImageUrl(data) {
     var coverImageUrl = null;
 
-    if(data.coverImageUrl) {
-      coverImageUrl = data.coverImageUrl;
+    if(data) {
+      if(data.coverImageUrl) {
+        coverImageUrl = data.coverImageUrl;
+      }
     }
 
     return coverImageUrl;
+  };
+
+  function getBrowZineEnabled(data) {
+    var browzineEnabled = null;
+
+    if(data) {
+      if(data.browzineEnabled) {
+        browzineEnabled = data.browzineEnabled;
+      }
+    }
+
+    return browzineEnabled;
   };
 
   function buildTemplate(browzineWebLink) {
@@ -128,10 +144,6 @@ browzine.serSol360Core = (function() {
     template = template.replace(/{bookIcon}/g, bookIcon);
 
     return template;
-  };
-
-  function getBrowZineEnabled(data) {
-    return data.browzineEnabled;
   };
 
   function searchTitles(titles, callback) {
