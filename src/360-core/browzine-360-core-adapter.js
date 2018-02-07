@@ -95,10 +95,8 @@ browzine.serSol360Core = (function() {
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
-    if(data) {
-      if(data.browzineWebLink) {
-        browzineWebLink = data.browzineWebLink;
-      }
+    if(data && data.browzineWebLink) {
+      browzineWebLink = data.browzineWebLink;
     }
 
     return browzineWebLink;
@@ -107,10 +105,8 @@ browzine.serSol360Core = (function() {
   function getCoverImageUrl(data) {
     var coverImageUrl = null;
 
-    if(data) {
-      if(data.coverImageUrl) {
-        coverImageUrl = data.coverImageUrl;
-      }
+    if(data && data.coverImageUrl) {
+      coverImageUrl = data.coverImageUrl;
     }
 
     return coverImageUrl;
@@ -119,10 +115,8 @@ browzine.serSol360Core = (function() {
   function getBrowZineEnabled(data) {
     var browzineEnabled = null;
 
-    if(data) {
-      if(data.browzineEnabled) {
-        browzineEnabled = data.browzineEnabled;
-      }
+    if(data && data.browzineEnabled) {
+      browzineEnabled = data.browzineEnabled;
     }
 
     return browzineEnabled;
