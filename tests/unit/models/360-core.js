@@ -149,6 +149,14 @@ describe("SerSol 360 Core Model >", function() {
       expect(data).toBeDefined();
       expect(serSol360Core.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/10292");
     });
+
+    it("should return null when the BrowZine API response for a journal is empty", function() {
+      var data = serSol360Core.getData({
+        "data": []
+      });
+      expect(data).toBeUndefined();
+      expect(serSol360Core.getBrowZineWebLink(data)).toEqual(null);
+    });
   });
 
   describe("serSol360Core model getCoverImageUrl method >", function() {
@@ -157,6 +165,14 @@ describe("SerSol 360 Core Model >", function() {
       expect(data).toBeDefined();
       expect(serSol360Core.getCoverImageUrl(data)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
+
+    it("should return null when the BrowZine API response for a journal is empty", function() {
+      var data = serSol360Core.getData({
+        "data": []
+      });
+      expect(data).toBeUndefined();
+      expect(serSol360Core.getCoverImageUrl(data)).toEqual(null);
+    });
   });
 
   describe("serSol360Core model getBrowZineEnabled method >", function() {
@@ -164,6 +180,14 @@ describe("SerSol 360 Core Model >", function() {
       var data = serSol360Core.getData(journalResponse);
       expect(data).toBeDefined();
       expect(serSol360Core.getBrowZineEnabled(data)).toEqual(true);
+    });
+
+    it("should return null when the BrowZine API response for a journal is empty", function() {
+      var data = serSol360Core.getData({
+        "data": []
+      });
+      expect(data).toBeUndefined();
+      expect(serSol360Core.getBrowZineEnabled(data)).toEqual(null);
     });
   });
 
