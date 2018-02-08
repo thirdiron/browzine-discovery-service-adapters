@@ -72,7 +72,7 @@ var browzine = {
 
 
 
-## 360 Core Adapater Installation
+## 360 Core Adapter Installation
 
 
 ### BrowZine 360 Core Adapter Script
@@ -94,7 +94,7 @@ document.head.appendChild(browzine.script);
 ![360 Core 2.0 External Script](https://i.imgur.com/c24Tlh5.png "360 Core 2.0 External Script")
 ![360 Core 2.0 External Script](https://i.imgur.com/l53rUL8.png "360 Core 2.0 External Script")
 
-### 360 Core Adapater Customizations
+### 360 Core Adapter Customizations
 
 Customize the naming conventions for each type of search result - Journal - by changing the wording in the quotes below:
 
@@ -108,7 +108,7 @@ var browzine = {
 };
 ```
 
-## Primo Adapater Installation
+## Primo Adapter Installation
 
 
 ### BrowZine Primo Adapter Script
@@ -132,7 +132,7 @@ https://s3.amazonaws.com/browzine-adapters/primo/01COLSCHL_INST-BRZN.zip
 
 ![Primo External Script](https://i.imgur.com/EcZDAaC.png "PrimoExternal Script")
 
-### Primo Adapater Customizations
+### Primo Adapter Customizations
 
 Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
 
@@ -142,7 +142,8 @@ e.g. You can customize "View Issue Contents" to be a different phrase.
 var browzine = {
   api: "https://api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  primoJournalBrowZineWebLinkText: "View Issue Contents",
+  primoJournalBrowZineWebLinkText: "View Journal Contents",
+  primoArticleBrowZineWebLinkText: "View Issue Contents",
 };
 ```
 
