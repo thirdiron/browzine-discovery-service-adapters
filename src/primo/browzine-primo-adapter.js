@@ -1,6 +1,6 @@
 // Define Angular module and whitelist URL of server with Node.js script
 var app = angular.module('viewCustom', ['angularLoad'])
-  .constant("api", browzine.api)
+  .constant("api", browzine.api.replace("api.thirdiron.com", "public-api.thirdiron.com"))
   .constant("apiKey", browzine.apiKey)
 
 // Add Article In Context & BrowZine Links
