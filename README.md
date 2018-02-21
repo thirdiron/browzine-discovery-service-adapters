@@ -114,7 +114,7 @@ var browzine = {
 ### BrowZine Primo Adapter Script
 Update the following code snippet with the `api` endpoint and `apiKey` values:
 ```
-var browzine = {
+window.browzine = {
   api: "https://api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
 };
@@ -139,7 +139,7 @@ Customize the naming conventions for each type of search result - Journal/Articl
 e.g. You can customize "View Issue Contents" to be a different phrase.
 
 ```
-var browzine = {
+window.browzine = {
   api: "https://api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
   primoJournalBrowZineWebLinkText: "View Journal Contents",

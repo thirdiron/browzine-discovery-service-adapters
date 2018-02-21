@@ -89,6 +89,13 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
+  describe("serSol360Core model urlRewrite method >", function() {
+    it("should rewrite the public api domain", function() {
+      var url = "https://api.thirdiron.com/public/v1/libraries/XXX";
+      expect(serSol360Core.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("serSol360Core model getQueryVariable method >", function() {
     it("should extract an issn from syndeticsImageUrl", function() {
       var syndeticsImageUrl = titles[0].syndeticsImageUrl;
