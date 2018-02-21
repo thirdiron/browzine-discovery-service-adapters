@@ -1,6 +1,10 @@
 browzine.summon = (function() {
-  var api = browzine.api;
+  var api = urlRewrite(browzine.api);
   var apiKey = browzine.apiKey;
+
+  function urlRewrite(url) {
+    return url.replace("api.thirdiron.com", "public-api.thirdiron.com");
+  };
 
   function isArticle(scope) {
     var result = false;
@@ -217,6 +221,7 @@ browzine.summon = (function() {
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
     buildTemplate: buildTemplate,
+    urlRewrite: urlRewrite,
   };
 }());
 

@@ -6,6 +6,7 @@ var app = angular.module('viewCustom', ['angularLoad'])
 // Add Article In Context & BrowZine Links
 app.controller('prmSearchResultAvailabilityLineAfterController', function($scope, $http, api, apiKey) {
   var vm = this;
+  api = api.replace("api.thirdiron.com", "public-api.thirdiron.com");
   $scope.primoJournalBrowZineWebLinkText = browzine.primoJournalBrowZineWebLinkText || "View Journal Contents";
   $scope.primoArticleBrowZineWebLinkText = browzine.primoArticleBrowZineWebLinkText || "View Issue Contents";
   $scope.book_icon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
@@ -46,6 +47,7 @@ app.component('prmSearchResultAvailabilityLineAfter', {
 // Add Journal Cover Images from BrowZine
 app.controller('prmSearchResultThumbnailContainerAfterController', function($scope, $http, api, apiKey) {
   var vm = this;
+  api = api.replace("api.thirdiron.com", "public-api.thirdiron.com");
   var newThumbnail = '';
   // checking for item property as this seems to impact virtual shelf browse (for reasons as yet unknown)
   if (vm.parentCtrl.item && vm.parentCtrl.item.pnx.addata.issn) {

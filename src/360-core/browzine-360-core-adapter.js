@@ -1,6 +1,10 @@
 browzine.serSol360Core = (function() {
-  var api = browzine.api;
+  var api = urlRewrite(browzine.api);
   var apiKey = browzine.apiKey;
+
+  function urlRewrite(url) {
+    return url.replace("api.thirdiron.com", "public-api.thirdiron.com");
+  };
 
   function getQueryVariable(url, key) {
     var query = url.split("?")[1];
@@ -197,6 +201,7 @@ browzine.serSol360Core = (function() {
     getQueryVariable: getQueryVariable,
     getBrowZineEnabled: getBrowZineEnabled,
     searchTitles: searchTitles,
+    urlRewrite: urlRewrite,
   };
 }());
 

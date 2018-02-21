@@ -78,6 +78,13 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("serSol360Core model urlRewrite method >", function() {
+    it("should rewrite the public api domain", function() {
+      var url = "https://api.thirdiron.com/public/v1/libraries/XXX";
+      expect(summon.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("summon model shouldEnhance method >", function() {
     it("should not enhance a search result without a document", function() {
       var scope = {};
