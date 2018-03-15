@@ -159,6 +159,10 @@ window.browzine = {
   primoArticleBrowZineWebLinkText: "View Issue Contents",
   noConflict: app,
 };
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
+document.head.appendChild(browzine.script);
 ```
 
 ## Non-standard Installation
