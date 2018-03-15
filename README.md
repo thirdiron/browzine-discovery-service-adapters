@@ -147,6 +147,20 @@ window.browzine = {
 };
 ```
 
+You can also set the `noConflict` property to your `app` instance to get the BrowZine Primo Adapter to work with your existing Primo integrations. Here's an example of how to accomplish this:
+
+```
+var app = angular.module('viewCustom', ['angularLoad']);
+
+window.browzine = {
+  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  apiKey: "ENTER API KEY",
+  primoJournalBrowZineWebLinkText: "View Journal Contents",
+  primoArticleBrowZineWebLinkText: "View Issue Contents",
+  noConflict: app,
+};
+```
+
 ## Non-standard Installation
 
 ### Loading Multiple Discovery Service Adapters
