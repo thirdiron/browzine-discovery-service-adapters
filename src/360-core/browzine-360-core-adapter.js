@@ -7,8 +7,6 @@ browzine.serSol360Core = (function() {
   };
 
   function getIssn(title) {
-    var issn = "", eissn = "";
-
     if(title.identifiers) {
       var issnIdentifier = title.identifiers.filter(function(identifier) {
         if(identifier.type && identifier.value) {
@@ -16,20 +14,22 @@ browzine.serSol360Core = (function() {
         }
       }).pop();
 
+      if(issnIdentifier) {
+        return encodeURIComponent(issnIdentifier.value);
+      }
+
       var eissnIdentifier = title.identifiers.filter(function(identifier) {
         if(identifier.type && identifier.value) {
           return identifier.type.toLowerCase() === "eissn" && identifier.value.length > 0;
         }
       }).pop();
 
-      if(issnIdentifier) {
-        issn = issnIdentifier.value;
-      } else if(eissnIdentifier) {
-        eissn = eissnIdentifier.value;
+      if(eissnIdentifier) {
+        return encodeURIComponent(eissnIdentifier.value);
       }
     }
 
-    return encodeURIComponent(issn || eissn);
+    return "";
   };
 
   function getTarget(issn) {

@@ -36,7 +36,13 @@ describe("SerSol 360 Core Model >", function() {
             {
               title: "Cell",
               syndeticsImageUrl: "",
-              identifiers: [{type: "ISSN", value: ""}]
+              identifiers: [{type: "ISSN", value: ""}, {type: "eISSN", value: "1839-4901"}]
+            },
+
+            {
+              title: "Art",
+              syndeticsImageUrl: "",
+              identifiers: [{type: "ISSN", value: "2960-1462"}]
             },
 
             {
@@ -44,6 +50,12 @@ describe("SerSol 360 Core Model >", function() {
               syndeticsImageUrl: "",
               identifiers: [{type: "eISSN", value: ""}]
             },
+
+            {
+              title: "Mechanics",
+              syndeticsImageUrl: "",
+              identifiers: []
+            }
           ]
         }
       };
@@ -118,6 +130,20 @@ describe("SerSol 360 Core Model >", function() {
     it("should extract an eIssn from the identifiers array when an issn is unavailable", function() {
       var title = titles[1];
       expect(serSol360Core.getIssn(title)).toEqual("2163-307X");
+
+      var title = titles[2];
+      expect(serSol360Core.getIssn(title)).toEqual("1839-4901");
+    });
+
+    it("should return only an issn from the identifiers array when an issn is available and an eissn is not available", function() {
+      var title = titles[3];
+      expect(serSol360Core.getIssn(title)).toEqual("2960-1462");
+    });
+
+    it("should return an empty string if no issn or eissn is available", function() {
+      var titles = serSol360Core.getTitles(scope);
+      expect(serSol360Core.getIssn(titles[5])).toEqual("");
+      expect(serSol360Core.getIssn(titles[6])).toEqual("");
     });
   });
 
@@ -138,9 +164,11 @@ describe("SerSol 360 Core Model >", function() {
     });
 
     it("should not enhance a journal search result without an issn or eissn", function() {
-      expect(titles.length).toEqual(2);
+      expect(titles.length).toEqual(4);
       expect(titles[0].title).toEqual("The New England journal of medicine");
       expect(titles[1].title).toEqual("The New England journal of medicine and surgery");
+      expect(titles[2].title).toEqual("Cell");
+      expect(titles[3].title).toEqual("Art");
     });
   });
 
