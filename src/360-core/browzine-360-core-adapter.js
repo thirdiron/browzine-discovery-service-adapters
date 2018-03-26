@@ -6,31 +6,30 @@ browzine.serSol360Core = (function() {
     return url.replace("api.thirdiron.com", "public-api.thirdiron.com");
   };
 
-  function getQueryVariable(url, key) {
-    var query = url.split("?")[1];
-    var parameters = query.split("&");
-    var value = "";
+  function getIssn(title) {
+    var issn = "", eissn = "";
 
-    for(var i = 0; i < parameters.length; i++) {
-      var pair = parameters[i].split("=");
+    if(title.identifiers) {
+      var issnIdentifier = title.identifiers.filter(function(identifier) {
+        if(identifier.type && identifier.value) {
+          return identifier.type.toLowerCase() === "issn" && identifier.value.length > 0;
+        }
+      }).pop();
 
-      if(pair[0] == key) {
-        value = pair[1];
-        return value;
+      var eissnIdentifier = title.identifiers.filter(function(identifier) {
+        if(identifier.type && identifier.value) {
+          return identifier.type.toLowerCase() === "eissn" && identifier.value.length > 0;
+        }
+      }).pop();
+
+      if(issnIdentifier) {
+        issn = issnIdentifier.value;
+      } else if(eissnIdentifier) {
+        eissn = eissnIdentifier.value;
       }
     }
 
-    return value;
-  };
-
-  function getIssn(title) {
-    var issn = "";
-
-    if(title.syndeticsImageUrl) {
-      issn = getQueryVariable(title.syndeticsImageUrl, "issn");
-    }
-
-    return encodeURIComponent(issn);
+    return encodeURIComponent(issn || eissn);
   };
 
   function getTarget(issn) {
@@ -198,7 +197,6 @@ browzine.serSol360Core = (function() {
     getEndpoint: getEndpoint,
     getTarget: getTarget,
     getIssn: getIssn,
-    getQueryVariable: getQueryVariable,
     getBrowZineEnabled: getBrowZineEnabled,
     searchTitles: searchTitles,
     urlRewrite: urlRewrite,
