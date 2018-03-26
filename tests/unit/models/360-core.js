@@ -155,6 +155,11 @@ describe("SerSol 360 Core Model >", function() {
       var titles = serSol360Core.getTitles(scope);
       expect(serSol360Core.getIssn(titles[6])).toEqual("");
     });
+
+    it("should return an empty string when the issn value is an empty string", function() {
+      var titles = serSol360Core.getTitles(scope);
+      expect(serSol360Core.getIssn(titles[7])).toEqual("");
+    });
   });
 
   describe("serSol360Core model shouldEnhance method >", function() {
