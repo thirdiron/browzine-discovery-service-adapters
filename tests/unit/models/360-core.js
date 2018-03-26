@@ -55,6 +55,12 @@ describe("SerSol 360 Core Model >", function() {
               title: "Mechanics",
               syndeticsImageUrl: "",
               identifiers: []
+            },
+
+            {
+              title: "Biology",
+              syndeticsImageUrl: "",
+              identifiers: [{type: "ISSN", value: ""}]
             }
           ]
         }
@@ -140,9 +146,13 @@ describe("SerSol 360 Core Model >", function() {
       expect(serSol360Core.getIssn(title)).toEqual("2960-1462");
     });
 
-    it("should return an empty string if no issn or eissn is available", function() {
+    it("should return an empty string when the eissn value is an empty string", function() {
       var titles = serSol360Core.getTitles(scope);
       expect(serSol360Core.getIssn(titles[5])).toEqual("");
+    });
+
+    it("should return an empty string when no issn or eissn is available", function() {
+      var titles = serSol360Core.getTitles(scope);
       expect(serSol360Core.getIssn(titles[6])).toEqual("");
     });
   });
@@ -164,11 +174,19 @@ describe("SerSol 360 Core Model >", function() {
     });
 
     it("should not enhance a journal search result without an issn or eissn", function() {
+      var results = serSol360Core.getTitles(scope);
+
       expect(titles.length).toEqual(4);
+      expect(titles.length).toBeLessThan(results.length);
+
       expect(titles[0].title).toEqual("The New England journal of medicine");
       expect(titles[1].title).toEqual("The New England journal of medicine and surgery");
       expect(titles[2].title).toEqual("Cell");
       expect(titles[3].title).toEqual("Art");
+
+      expect(results[2].shouldEnhance).toBeFalsy();
+      expect(results[5].shouldEnhance).toBeFalsy();
+      expect(results[6].shouldEnhance).toBeFalsy();
     });
   });
 
