@@ -31,6 +31,36 @@ describe("SerSol 360 Core Model >", function() {
               title: "Diamond deposits : origin, exploration, and history of discovery",
               syndeticsImageUrl: "https://secure.syndetics.com/index.aspx?isbn=9780873352130/mc.gif&client=mistatesum&freeimage=true",
               identifiers: [{type: "ISBN", value: "9780873352130"}, {type: "eISBN", value: "9780873352130"}, {type: "eISBN", value: "9780873352789"}]
+            },
+
+            {
+              title: "Cell",
+              syndeticsImageUrl: "",
+              identifiers: [{type: "ISSN", value: ""}, {type: "eISSN", value: "1839-4901"}]
+            },
+
+            {
+              title: "Art",
+              syndeticsImageUrl: "",
+              identifiers: [{type: "ISSN", value: "2960-1462"}]
+            },
+
+            {
+              title: "Science",
+              syndeticsImageUrl: "",
+              identifiers: [{type: "eISSN", value: ""}]
+            },
+
+            {
+              title: "Mechanics",
+              syndeticsImageUrl: "",
+              identifiers: []
+            },
+
+            {
+              title: "Biology",
+              syndeticsImageUrl: "",
+              identifiers: [{type: "ISSN", value: ""}]
             }
           ]
         }
@@ -86,6 +116,7 @@ describe("SerSol 360 Core Model >", function() {
 
       expect(scope.searchResultsCtrl.titleData.titles[0].title).toEqual("The New England journal of medicine");
       expect(scope.searchResultsCtrl.titleData.titles[0].syndeticsImageUrl).toEqual("https://secure.syndetics.com/index.aspx?isbn=/mc.gif&issn=0028-4793&client=mistatesum");
+      expect(scope.searchResultsCtrl.titleData.titles[0].identifiers).toEqual([{type: "ISSN", value: "0028-4793"}, {type: "eISSN", value: "1533-4406"}]);
     });
   });
 
@@ -96,17 +127,38 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
-  describe("serSol360Core model getQueryVariable method >", function() {
-    it("should extract an issn from syndeticsImageUrl", function() {
-      var syndeticsImageUrl = titles[0].syndeticsImageUrl;
-      var issn = serSol360Core.getQueryVariable(syndeticsImageUrl, "issn");
-      expect(issn).toEqual("0028-4793");
+  describe("serSol360Core model getIssn method >", function() {
+    it("should extract an issn from the identifiers array when available", function() {
+      var title = titles[0];
+      expect(serSol360Core.getIssn(title)).toEqual("0028-4793");
     });
 
-    it("should return empty string when no issn is available on syndeticsImageUrl", function() {
-      var syndeticsImageUrl = scope.searchResultsCtrl.titleData.titles[2].syndeticsImageUrl;
-      var issn = serSol360Core.getQueryVariable(syndeticsImageUrl, "issn");
-      expect(issn).toEqual("");
+    it("should extract an eIssn from the identifiers array when an issn is unavailable", function() {
+      var title = titles[1];
+      expect(serSol360Core.getIssn(title)).toEqual("2163-307X");
+
+      var title = titles[2];
+      expect(serSol360Core.getIssn(title)).toEqual("1839-4901");
+    });
+
+    it("should return only an issn from the identifiers array when an issn is available and an eissn is not available", function() {
+      var title = titles[3];
+      expect(serSol360Core.getIssn(title)).toEqual("2960-1462");
+    });
+
+    it("should return an empty string when the eissn value is an empty string", function() {
+      var titles = serSol360Core.getTitles(scope);
+      expect(serSol360Core.getIssn(titles[5])).toEqual("");
+    });
+
+    it("should return an empty string when no issn or eissn is available", function() {
+      var titles = serSol360Core.getTitles(scope);
+      expect(serSol360Core.getIssn(titles[6])).toEqual("");
+    });
+
+    it("should return an empty string when the issn value is an empty string", function() {
+      var titles = serSol360Core.getTitles(scope);
+      expect(serSol360Core.getIssn(titles[7])).toEqual("");
     });
   });
 
@@ -127,9 +179,22 @@ describe("SerSol 360 Core Model >", function() {
     });
 
     it("should not enhance a journal search result without an issn or eissn", function() {
-      expect(titles.length).toEqual(2);
+      var results = serSol360Core.getTitles(scope);
+
+      expect(titles.length).toEqual(4);
+      expect(titles.length).toBeLessThan(results.length);
+
       expect(titles[0].title).toEqual("The New England journal of medicine");
       expect(titles[1].title).toEqual("The New England journal of medicine and surgery");
+      expect(titles[2].title).toEqual("Cell");
+      expect(titles[3].title).toEqual("Art");
+
+      expect(titles).not.toContain(results[2]);
+      expect(titles).not.toContain(results[5]);
+      expect(titles).not.toContain(results[6]);
+      expect(results[2].shouldEnhance).toBeFalsy();
+      expect(results[5].shouldEnhance).toBeFalsy();
+      expect(results[6].shouldEnhance).toBeFalsy();
     });
   });
 
