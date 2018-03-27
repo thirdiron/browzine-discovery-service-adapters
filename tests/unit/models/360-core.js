@@ -189,6 +189,9 @@ describe("SerSol 360 Core Model >", function() {
       expect(titles[2].title).toEqual("Cell");
       expect(titles[3].title).toEqual("Art");
 
+      expect(titles).not.toContain(results[2]);
+      expect(titles).not.toContain(results[5]);
+      expect(titles).not.toContain(results[6]);
       expect(results[2].shouldEnhance).toBeFalsy();
       expect(results[5].shouldEnhance).toBeFalsy();
       expect(results[6].shouldEnhance).toBeFalsy();
