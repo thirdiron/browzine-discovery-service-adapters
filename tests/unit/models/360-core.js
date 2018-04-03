@@ -125,6 +125,11 @@ describe("SerSol 360 Core Model >", function() {
       var url = "https://api.thirdiron.com/public/v1/libraries/XXX";
       expect(serSol360Core.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
     });
+
+    it("should not rewrite the public api domain when the public-api domain already exists", function() {
+      var url = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(serSol360Core.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
   });
 
   describe("serSol360Core model getIssn method >", function() {

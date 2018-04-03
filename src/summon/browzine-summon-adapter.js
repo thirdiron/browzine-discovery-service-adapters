@@ -3,7 +3,7 @@ browzine.summon = (function() {
   var apiKey = browzine.apiKey;
 
   function urlRewrite(url) {
-    return url.replace("api.thirdiron.com", "public-api.thirdiron.com");
+    return url.indexOf("public-api.thirdiron.com") > 0 ? url : url.replace("api.thirdiron.com", "public-api.thirdiron.com");
   };
 
   function isArticle(scope) {
