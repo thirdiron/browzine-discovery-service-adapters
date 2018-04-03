@@ -159,13 +159,14 @@ browzine.serSol360Core = (function() {
         }
 
         if(coverImageUrl && browzineEnabled) {
+          var resultsTitleImageContainerSelector = ".results-title-image-div";
           var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
           var boxShadow = "1px 1px 2px #ccc";
 
           if($(title.target).find(resultsTitleImageSelector).length > 0) {
             $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
           } else {
-            $(title.target).find(".results-title-image-div").append("<img class='results-title-image'/>");
+            $(title.target).find(resultsTitleImageContainerSelector).append("<img class='results-title-image'/>");
             $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
           }
         }
