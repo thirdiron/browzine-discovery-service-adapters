@@ -1,6 +1,6 @@
 describe("BrowZine SerSol 360 Core Adapter >", function() {
   var serSol360Core = {}, searchResults = {};
-  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'></div><div class='results-title-details'><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
+  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
 
   $("body").append(results);
 

@@ -32,8 +32,17 @@ browzine.serSol360Core = (function() {
     return "";
   };
 
-  function getTarget(issn) {
-    var element = $(".results-identifier:contains('" + issn + "')").closest(".results-title-row");
+  function getJournalName(title) {
+    return (title && title.title) ? title.title : '';
+  };
+
+  function getTarget(title) {
+    var journalName = getJournalName(title);
+
+    var element = $(".results-title").filter(function() {
+      return $.trim($(this).text()) === journalName;
+    }).closest(".results-title-row");
+
     var target = element.length > 0 ? element[0] : undefined;
 
     return target;
@@ -59,7 +68,7 @@ browzine.serSol360Core = (function() {
 
     titles.forEach(function(title) {
       var issn = getIssn(title);
-      title.target = getTarget(issn);
+      title.target = getTarget(title);
       title.endpoint = getEndpoint(issn);
       title.shouldEnhance = shouldEnhance(issn);
 
@@ -204,6 +213,7 @@ browzine.serSol360Core = (function() {
     addTargets: addTargets,
     shouldEnhance: shouldEnhance,
     getEndpoint: getEndpoint,
+    getJournalName: getJournalName,
     getTarget: getTarget,
     getIssn: getIssn,
     getBrowZineEnabled: getBrowZineEnabled,

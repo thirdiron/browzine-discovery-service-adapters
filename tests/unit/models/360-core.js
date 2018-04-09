@@ -1,6 +1,6 @@
 describe("SerSol 360 Core Model >", function() {
   var serSol360Core = {}, journalResponse = {}, scope = {}, titles = [], searchResults = {};
-  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
+  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
 
   $("body").append(results);
 
@@ -200,6 +200,54 @@ describe("SerSol 360 Core Model >", function() {
       expect(results[2].shouldEnhance).toBeFalsy();
       expect(results[5].shouldEnhance).toBeFalsy();
       expect(results[6].shouldEnhance).toBeFalsy();
+    });
+  });
+
+  describe("serSol360Core model getJournalName method >", function() {
+    it("should retrieve journal name for a journal search result", function() {
+      var title = titles[0];
+      var journalName = serSol360Core.getJournalName(title);
+      expect(journalName).toEqual("The New England journal of medicine");
+    });
+
+    it("should return an empty string for a journal search result with no journal name", function() {
+      var title = titles[0];
+      delete title.title;
+      var journalName = serSol360Core.getJournalName(title);
+      expect(journalName).toEqual("");
+    });
+  });
+
+  describe("serSol360Core model getTarget method >", function() {
+    it("should retrieve target element for a journal search result", function() {
+      var title = titles[0];
+      var target = serSol360Core.getTarget(title);
+      expect(target).toBeDefined();
+      expect(target.innerHTML).toContain("The New England journal of medicine");
+    });
+
+    it("should return undefined for a journal search result with no journal name", function() {
+      var title = titles[0];
+      delete title.title;
+      var target = serSol360Core.getTarget(title);
+      expect(target).toBeUndefined();
+    });
+  });
+
+  describe("serSol360Core model getEndpoint method >", function() {
+    it("should build a journal endpoint for a journal search result", function() {
+      var title = titles[0];
+      expect(title.endpoint).toContain("search?issns=00284793");
+    });
+
+    it("should select the issn over the eissn when a journal search result includes both", function() {
+      var title = titles[0];
+      expect(title.endpoint).toContain("search?issns=00284793");
+    });
+
+    it("should select the eissn when the journal search result has no issn", function() {
+      var title = titles[1];
+      expect(title.endpoint).toContain("search?issns=2163307X");
     });
   });
 
