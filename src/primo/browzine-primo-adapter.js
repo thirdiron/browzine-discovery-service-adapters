@@ -1,10 +1,17 @@
-// Define Angular module and whitelist URL of server with Node.js script
-var app = angular.module('viewCustom', ['angularLoad'])
-  .constant("api", browzine.api)
-  .constant("apiKey", browzine.apiKey)
+// Define Angular app instance
+var appInstance = {};
+
+if(browzine.noConflict) {
+  appInstance = browzine.noConflict;
+} else {
+  appInstance = angular.module('viewCustom', ['angularLoad']);
+}
+
+appInstance.constant("api", browzine.api);
+appInstance.constant("apiKey", browzine.apiKey);
 
 // Add Article In Context & BrowZine Links
-app.controller('prmSearchResultAvailabilityLineAfterController', function($scope, $http, api, apiKey) {
+appInstance.controller('prmSearchResultAvailabilityLineAfterController', function($scope, $http, api, apiKey) {
   var vm = this;
   api = api.indexOf("public-api.thirdiron.com") > 0 ? api : api.replace("api.thirdiron.com", "public-api.thirdiron.com");
   $scope.primoJournalBrowZineWebLinkText = browzine.primoJournalBrowZineWebLinkText || "View Journal Contents";
@@ -36,7 +43,7 @@ app.controller('prmSearchResultAvailabilityLineAfterController', function($scope
 // St Olaf is using "View Issue Contents" for the "Article in Context" link but another great option is "View Complete Issue" or "View Article in Context".
 // St Olaf also has added a hover over link that says "Via BrowZine" to emphasize the interaction being used.
 
-app.component('prmSearchResultAvailabilityLineAfter', {
+appInstance.component('prmSearchResultAvailabilityLineAfter', {
   bindings: {
     parentCtrl: '<'
   },
@@ -45,7 +52,7 @@ app.component('prmSearchResultAvailabilityLineAfter', {
 });
 
 // Add Journal Cover Images from BrowZine
-app.controller('prmSearchResultThumbnailContainerAfterController', function($scope, $http, api, apiKey) {
+appInstance.controller('prmSearchResultThumbnailContainerAfterController', function($scope, $http, api, apiKey) {
   var vm = this;
   api = api.replace("api.thirdiron.com", "public-api.thirdiron.com");
   var newThumbnail = '';
@@ -70,7 +77,7 @@ app.controller('prmSearchResultThumbnailContainerAfterController', function($sco
   };
 });
 
-app.component('prmSearchResultThumbnailContainerAfter', {
+appInstance.component('prmSearchResultThumbnailContainerAfter', {
   bindings: {
     parentCtrl: '<'
   },
