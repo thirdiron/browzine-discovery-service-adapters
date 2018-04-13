@@ -41,7 +41,7 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js" + Date.now();
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js"
 document.head.appendChild(browzine.script);
 ```
 
@@ -84,7 +84,7 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js" + Date.now();
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js"
 document.head.appendChild(browzine.script);
 ```
 
@@ -128,27 +128,17 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
   };
 
   browzine.script = document.createElement("script");
-  browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js?" + Date.now();
+  browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js"
   document.head.appendChild(browzine.script);
 
-  // Add Article In Context & BrowZine Links
+  // Add Journal Cover Image and Article In Context Link from BrowZine
   app.controller('prmSearchResultAvailabilityLineAfterController', function($scope) {
-    window.browzine.primo.addSearchResultLink($scope);
+    window.browzine.primo.searchResult($scope);
   });
 
   app.component('prmSearchResultAvailabilityLineAfter', {
     bindings: { parentCtrl: '<' },
     controller: 'prmSearchResultAvailabilityLineAfterController'
-  });
-
-  // Add Journal Cover Images from BrowZine
-  app.controller('prmSearchResultThumbnailContainerAfterController', function($scope) {
-    window.browzine.primo.addJournalCoverImage($scope);
-  });
-
-  app.component('prmSearchResultThumbnailContainerAfter', {
-    bindings: { parentCtrl: '<' },
-    controller: 'prmSearchResultThumbnailContainerAfterController'
   });
 })();
 ```
@@ -189,15 +179,15 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js" + Date.now();
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js"
 document.head.appendChild(browzine.script);
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js" + Date.now();
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js"
 document.head.appendChild(browzine.script);
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js" + Date.now();
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js"
 document.head.appendChild(browzine.script);
 ```
 
