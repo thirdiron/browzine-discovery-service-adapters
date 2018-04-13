@@ -41,7 +41,7 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js" + Date.now();
 document.head.appendChild(browzine.script);
 ```
 
@@ -84,7 +84,7 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js" + Date.now();
 document.head.appendChild(browzine.script);
 ```
 
@@ -114,14 +114,43 @@ var browzine = {
 ### BrowZine Primo Adapter Script
 Update the following code snippet with the `api` endpoint and `apiKey` values:
 ```
-window.browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
-  apiKey: "ENTER API KEY",
-};
+(function () {
+  "use strict";
 
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
-document.head.appendChild(browzine.script);
+  var app = angular.module('viewCustom', ['angularLoad']);
+
+  // Load BrowZine Adapter
+  window.browzine = {
+    api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+    apiKey: "ENTER API KEY",
+    primoJournalBrowZineWebLinkText: "View Journal Contents",
+    primoArticleBrowZineWebLinkText: "View Issue Contents",
+  };
+
+  browzine.script = document.createElement("script");
+  browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js?" + Date.now();
+  document.head.appendChild(browzine.script);
+
+  // Add Article In Context & BrowZine Links
+  app.controller('prmSearchResultAvailabilityLineAfterController', function($scope) {
+    window.browzine.primo.addSearchResultLink($scope);
+  });
+
+  app.component('prmSearchResultAvailabilityLineAfter', {
+    bindings: { parentCtrl: '<' },
+    controller: 'prmSearchResultAvailabilityLineAfterController'
+  });
+
+  // Add Journal Cover Images from BrowZine
+  app.controller('prmSearchResultThumbnailContainerAfterController', function($scope) {
+    window.browzine.primo.addJournalCoverImage($scope);
+  });
+
+  app.component('prmSearchResultThumbnailContainerAfter', {
+    bindings: { parentCtrl: '<' },
+    controller: 'prmSearchResultThumbnailContainerAfterController'
+  });
+})();
 ```
 
 ### Adding Primo Custom Script
@@ -160,15 +189,15 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js" + Date.now();
 document.head.appendChild(browzine.script);
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js" + Date.now();
 document.head.appendChild(browzine.script);
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js" + Date.now();
 document.head.appendChild(browzine.script);
 ```
 
