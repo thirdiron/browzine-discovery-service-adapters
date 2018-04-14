@@ -41,7 +41,7 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js"
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
 document.head.appendChild(browzine.script);
 ```
 
@@ -84,7 +84,7 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js"
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
 document.head.appendChild(browzine.script);
 ```
 
@@ -128,7 +128,7 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
   };
 
   browzine.script = document.createElement("script");
-  browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js"
+  browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
   document.head.appendChild(browzine.script);
 
   // Add Journal Cover Image and Article In Context Link from BrowZine
@@ -179,15 +179,15 @@ var browzine = {
 };
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js"
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
 document.head.appendChild(browzine.script);
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js"
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
 document.head.appendChild(browzine.script);
 
 browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js"
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
 document.head.appendChild(browzine.script);
 ```
 
