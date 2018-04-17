@@ -179,8 +179,8 @@ browzine.primo = (function() {
     }
 
     var template = "<div class='browzine'>" +
-                      "<a href='{browzineWebLink}' target='_blank' title='{browzineWebLinkText} in BrowZine'>" +
-                          "<img src='{bookIcon}' class='browzine-icon'/> {browzineWebLinkText}" +
+                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' title='{browzineWebLinkText} in BrowZine'>" +
+                          "<img src='{bookIcon}' class='browzine-book-icon'/> {browzineWebLinkText}" +
                       "</a>" +
                    "</div>";
 
@@ -193,6 +193,10 @@ browzine.primo = (function() {
 
   function getElement(scope) {
     return scope.$element;
+  };
+
+  function getElementParent(element) {
+    return element[0].offsetParent || element[0];
   };
 
   function getScope($scope) {
@@ -232,7 +236,8 @@ browzine.primo = (function() {
 
         if(coverImageUrl && browzineEnabled) {
           setTimeout(function() {
-            var coverImages = element[0].offsetParent.querySelectorAll("prm-search-result-thumbnail-container img");
+            var elementParent = getElementParent(element);
+            var coverImages = elementParent.querySelectorAll("prm-search-result-thumbnail-container img");
 
             Array.prototype.forEach.call(coverImages, function(coverImage) {
               coverImage.src = coverImageUrl;
@@ -264,6 +269,8 @@ browzine.primo = (function() {
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
     buildTemplate: buildTemplate,
+    getElement: getElement,
+    getElementParent: getElementParent,
     getScope: getScope,
   };
 }());
