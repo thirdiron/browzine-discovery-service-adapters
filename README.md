@@ -36,7 +36,7 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -61,7 +61,7 @@ e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now". 
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
   summonJournalWording: "View the Journal",
   summonArticleWording: "View Complete Issue",
@@ -79,7 +79,7 @@ var browzine = {
 Update the following code snippet with the `api` endpoint and `apiKey` values:
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -102,7 +102,7 @@ e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
   serSol360CoreJournalBrowZineWebLinkText: "View Journal in BrowZine",
 };
@@ -121,7 +121,7 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
 
   // Load BrowZine Adapter
   window.browzine = {
-    api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+    api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
     apiKey: "ENTER API KEY",
     primoJournalBrowZineWebLinkText: "View Journal Contents",
     primoArticleBrowZineWebLinkText: "View Issue Contents",
@@ -159,7 +159,7 @@ e.g. You can customize "View Issue Contents" to be a different phrase.
 
 ```
 window.browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
   primoJournalBrowZineWebLinkText: "View Journal Contents",
   primoArticleBrowZineWebLinkText: "View Issue Contents",
@@ -174,7 +174,7 @@ If you have multiple discovery services blended into one webpage, you can attach
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
 };
 
