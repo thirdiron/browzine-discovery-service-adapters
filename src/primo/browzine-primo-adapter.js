@@ -14,7 +14,7 @@ browzine.primo = (function() {
     var validation = false;
     var result = getResult(scope);
 
-    if(result.pnx) {
+    if(result && result.pnx) {
       if(result.pnx.display && result.pnx.display.type) {
         var contentType = result.pnx.display.type[0].trim().toLowerCase();
 
@@ -31,7 +31,7 @@ browzine.primo = (function() {
     var validation = false;
     var result = getResult(scope);
 
-    if(result.pnx) {
+    if(result && result.pnx) {
       if(result.pnx.display && result.pnx.display.type) {
         var contentType = result.pnx.display.type[0].trim().toLowerCase();
 
@@ -48,12 +48,24 @@ browzine.primo = (function() {
     var issn = "";
     var result = getResult(scope);
 
-    if(result.pnx) {
-      if(result.pnx.addata && result.pnx.addata.issn) {
+    if(result && result.pnx && result.pnx.addata) {
+      if(result.pnx.addata.issn) {
         if(result.pnx.addata.issn.length > 1) {
           issn = result.pnx.addata.issn.join(",").trim().replace(/-/g, "");
         } else {
-          issn = result.pnx.addata.issn[0].trim().replace("-", "");
+          if(result.pnx.addata.issn[0]) {
+            issn = result.pnx.addata.issn[0].trim().replace("-", "");
+          }
+        }
+      }
+
+      if(result.pnx.addata.eissn && !issn) {
+        if(result.pnx.addata.eissn.length > 1) {
+          issn = result.pnx.addata.eissn.join(",").trim().replace(/-/g, "");
+        } else {
+          if(result.pnx.addata.eissn[0]) {
+            issn = result.pnx.addata.eissn[0].trim().replace("-", "");
+          }
         }
       }
     }
@@ -65,9 +77,11 @@ browzine.primo = (function() {
     var doi = "";
     var result = getResult(scope);
 
-    if(result.pnx) {
+    if(result && result.pnx) {
       if(result.pnx.addata && result.pnx.addata.doi) {
-        doi = result.pnx.addata.doi[0].trim().replace("-", "");
+        if(result.pnx.addata.doi[0]) {
+          doi = result.pnx.addata.doi[0].trim().replace("-", "");
+        }
       }
     }
 

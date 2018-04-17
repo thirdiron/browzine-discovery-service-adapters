@@ -1,0 +1,680 @@
+describe("Primo Model >", function() {
+  var primo = {}, journalResponse = {}, articleResponse = {};
+
+  beforeEach(function() {
+    primo = browzine.primo;
+
+    journalResponse = {
+      "data": [{
+        "id": 10292,
+        "type": "journals",
+        "title": "New England Journal of Medicine (NEJM)",
+        "issn": "00284793",
+        "sjrValue": 14.619,
+        "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+        "browzineEnabled": true,
+        "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
+      }, {
+        "id": 10289,
+        "type": "journals",
+        "title": "The Boston Medical and Surgical Journal",
+        "issn": "00966762",
+        "sjrValue": 0,
+        "coverImageUrl": "https://assets.thirdiron.com/default-journal-cover.png",
+        "browzineEnabled": false,
+        "externalLink": "http://za2uf4ps7f.search.serialssolutions.com/?V=1.0&N=100&L=za2uf4ps7f&S=I_M&C=0096-6762"
+      }]
+    };
+
+    articleResponse = {
+      "data": {
+        "id": 55134408,
+        "type": "articles",
+        "title": "New England Journal of Medicine reconsiders relationship with industry",
+        "date": "2015-05-12",
+        "authors": "McCarthy, M.",
+        "inPress": false,
+        "availableThroughBrowzine": true,
+        "startPage": "h2575",
+        "endPage": "h2575",
+        "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
+      },
+      "included": [{
+        "id": 18126,
+        "type": "journals",
+        "title": "theBMJ",
+        "issn": "09598138",
+        "sjrValue": 2.567,
+        "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+        "browzineEnabled": true,
+        "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+      }]
+    };
+  });
+
+  afterEach(function() {
+
+  });
+
+  it("primo model should exist", function() {
+    expect(primo).toBeDefined();
+  });
+
+  describe("primo model getScope method >", function() {
+    it("should retrieve the scope from a search result", function() {
+      $scope.$ctrl = {
+        parentCtrl: {
+          result: {
+            pnx: {
+              display: {
+                type: ["journal"]
+              },
+
+              addata: {
+                issn: ["0096-6762", "0028-4793"]
+              }
+            }
+          }
+        }
+      };
+
+      var scope = primo.getScope($scope);
+
+      expect(scope).toBeDefined();
+      expect(scope.result).toBeDefined();
+      expect(scope.result.pnx).toBeDefined();
+      expect(scope.result.pnx.display).toBeDefined();
+      expect(scope.result.pnx.display.type).toBeDefined();
+      expect(scope.result.pnx.addata).toBeDefined();
+      expect(scope.result.pnx.addata.issn).toBeDefined();
+
+      expect(scope.result.pnx.display.type[0]).toEqual("journal");
+      expect(scope.result.pnx.addata.issn[0]).toEqual("0096-6762");
+      expect(scope.result.pnx.addata.issn[1]).toEqual("0028-4793");
+    });
+  });
+
+  describe("primo model getResult method >", function() {
+    it("should include a result object from prmSearchResultAvailabilityLineAfterController $scope", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var result = primo.getResult(scope);
+      expect(result).toBeDefined();
+    });
+
+    it("should include a result object from prmSearchResultThumbnailContainerAfterController $scope", function() {
+      var scope = {
+        item: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var result = primo.getResult(scope);
+      expect(result).toBeDefined();
+    });
+  });
+
+  describe("primo model urlRewrite method >", function() {
+    it("should rewrite the public api domain", function() {
+      var url = "https://api.thirdiron.com/public/v1/libraries/XXX";
+      expect(primo.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+
+    it("should not rewrite the public api domain when the public-api domain already exists", function() {
+      var url = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(primo.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
+  describe("primo model shouldEnhance method >", function() {
+    it("should not enhance a search result without scope data", function() {
+      var scope = {};
+
+      expect(primo.shouldEnhance(scope)).toEqual(false);
+    });
+
+    it("should enhance a journal search result with an issn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should enhance a journal search result with an eissn, but no issn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              eissn: ["0096-6762"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should enhance a journal search result with both an issn and an eissn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              eissn: ["0096-6762"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should enhance a journal search result with an uppercase content type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["Journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should enhance an article search result with a doi", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should enhance an article search result with an uppercase content type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["Article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(true);
+    });
+
+    it("should not enhance a journal search result without an issn or eissn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: []
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(false);
+    });
+
+    it("should not enhance an article search result without a doi", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: []
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(false);
+    });
+
+    it("should not enhance a journal search result without a content type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(false);
+    });
+
+    it("should not enhance an article search result without a content type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(false);
+    });
+  });
+
+  describe("primo model getIssn method >", function() {
+    it("should retrieve an issn from a journal search result with an issn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getIssn(scope)).toEqual("00284793");
+    });
+
+    it("should retrieve an eissn from a journal search result with an eissn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              eissn: ["0096-6762"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getIssn(scope)).toEqual("00966762");
+    });
+
+    it("should retrieve an issn from a journal search result with both an issn and an eissn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              eissn: ["0096-6762"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getIssn(scope)).toEqual("00284793");
+    });
+  });
+
+  describe("primo model getDoi method >", function() {
+    it("should retrieve a doi from an article search result with a doi", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getDoi(scope)).toEqual(encodeURIComponent("10.1136/bmj.h2575"));
+    });
+
+    it("should retrieve an empty string from an article search result without a doi", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: []
+            }
+          }
+        }
+      };
+
+      expect(primo.getDoi(scope)).toEqual("");
+    });
+  });
+
+  describe("primo model getEndpoint method >", function() {
+    it("should build a journal endpoint for a journal search result", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getEndpoint(scope)).toContain("search?issns=00284793");
+    });
+
+    it("should build a multiple journal endpoint for a journal search result with more than one issn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getEndpoint(scope)).toContain("search?issns=00966762%2C00284793");
+    });
+
+    it("should select the eissn when the journal search result has no issn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: [],
+              eissn: ["0096-6762"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getEndpoint(scope)).toContain("search?issns=00966762");
+    });
+
+    it("should build an article endpoint for an article search result", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575");
+    });
+
+    it("should build an article endpoint for an article search result and include its journal", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575?include=journal");
+    });
+  });
+
+  describe("primo model getBrowZineWebLink method >", function() {
+    it("should include a browzineWebLink in the BrowZine API response for a journal", function() {
+      var data = primo.getData(journalResponse);
+      expect(data).toBeDefined();
+      expect(primo.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/10292");
+    });
+
+    it("should include a browzineWebLink in the BrowZine API response for an article", function() {
+      var data = primo.getData(articleResponse);
+      expect(data).toBeDefined();
+      expect(primo.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+    });
+  });
+
+  describe("primo model getCoverImageUrl method >", function() {
+    it("should include a coverImageUrl in the BrowZine API response for a journal", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+      var journal = primo.getIncludedJournal(journalResponse);
+
+      expect(data).toBeDefined();
+      expect(journal).toBeNull();
+
+      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+    });
+
+    it("should include a coverImageUrl in the BrowZine API response for an article", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var journal = primo.getIncludedJournal(articleResponse);
+
+      expect(data).toBeDefined();
+      expect(journal).toBeDefined();
+
+      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+    });
+  });
+
+  describe("primo model getBrowZineEnabled method >", function() {
+    it("should include a browzineEnabled flag in the BrowZine API response for a journal", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+      var journal = primo.getIncludedJournal(journalResponse);
+
+      expect(primo.getBrowZineEnabled(scope, data, journal)).toEqual(true);
+    });
+  });
+
+  describe("primo model buildTemplate method >", function() {
+    it("should build an enhancement template for journal search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+      var browzineWebLink = primo.getBrowZineWebLink(data);
+      var template = primo.buildTemplate(scope, browzineWebLink);
+
+      expect(data).toBeDefined();
+      expect(browzineWebLink).toBeDefined();
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' title='View Journal Contents in BrowZine'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png' class='browzine-book-icon'/> View Journal Contents</a></div>");
+      expect(template).toContain("View Journal Contents");
+      expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
+      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+    });
+
+    it("should build an enhancement template for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var browzineWebLink = primo.getBrowZineWebLink(data);
+      var template = primo.buildTemplate(scope, browzineWebLink);
+
+      expect(data).toBeDefined();
+      expect(browzineWebLink).toBeDefined();
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' title='View Issue Contents in BrowZine'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png' class='browzine-book-icon'/> View Issue Contents</a></div>");
+      expect(template).toContain("View Issue Contents");
+      expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+    });
+  });
+});
