@@ -641,10 +641,10 @@ describe("Primo Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' title='View Journal Contents in BrowZine'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png' class='browzine-book-icon'/> View Journal Contents</a></div>");
+      expect(template).toEqual("<div class='browzine'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' title='View Journal Contents in BrowZine'><img src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png' class='browzine-book-icon'/> View Journal Contents</a></div>");
       expect(template).toContain("View Journal Contents");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
     });
 
     it("should build an enhancement template for article search results", function() {
@@ -671,10 +671,10 @@ describe("Primo Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' title='View Issue Contents in BrowZine'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png' class='browzine-book-icon'/> View Issue Contents</a></div>");
+      expect(template).toEqual("<div class='browzine'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' title='View Issue Contents in BrowZine'><img src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png' class='browzine-book-icon'/> View Issue Contents</a></div>");
       expect(template).toContain("View Issue Contents");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
     });
   });
 });

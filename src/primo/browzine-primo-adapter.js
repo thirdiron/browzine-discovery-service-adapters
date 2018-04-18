@@ -182,7 +182,7 @@ browzine.primo = (function() {
 
   function buildTemplate(scope, browzineWebLink) {
     var browzineWebLinkText = "";
-    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
 
     if(isJournal(scope)) {
       browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.primoJournalBrowZineWebLinkText || "View Journal Contents";

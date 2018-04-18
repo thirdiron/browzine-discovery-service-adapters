@@ -326,10 +326,10 @@ describe("SerSol 360 Core Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine' style='margin: 5px 0;'><img class='browzine-book-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png' style='margin-top: -3px;'/> <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='font-weight: 300;'>View Journal in BrowZine</a></div>");
+      expect(template).toEqual("<div class='browzine' style='margin: 5px 0;'><img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png' style='margin-top: -3px;'/> <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='font-weight: 300;'>View Journal in BrowZine</a></div>");
       expect(template).toContain("View Journal in BrowZine");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
       expect(template).toContain("margin: 5px 0;");
       expect(template).toContain("margin-top: -3px;");
       expect(template).toContain("font-weight: 300;");
@@ -344,7 +344,7 @@ describe("SerSol 360 Core Model >", function() {
         expect(template.text().trim()).toContain("View Journal in BrowZine");
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
       })
     });
 

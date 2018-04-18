@@ -50,7 +50,7 @@ describe("BrowZine Summon Adapter >", function() {
       expect(template.text().trim()).toEqual("View the Journal: Browse Now");
       expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
       expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
     });
 
     it("should have an enhanced browzine journal cover", function() {
@@ -119,7 +119,7 @@ describe("BrowZine Summon Adapter >", function() {
       expect(template.text().trim()).toEqual("View Complete Issue: Browse Now");
       expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
       expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
     });
 
     it("should have an enhanced browzine journal cover", function() {
