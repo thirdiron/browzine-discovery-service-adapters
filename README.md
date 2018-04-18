@@ -132,6 +132,10 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
   document.head.appendChild(browzine.script);
 
   // Add Journal Cover Image and Article In Context Link from BrowZine
+  // Guide: If this Primo controller/component combo already exists from another 3rd-party
+  // integration, then do not create another combo. Simply update the existing controller with the
+  // `window.browzine.primo.searchResult($scope);` line and validate the `$scope` object is injected
+  // into the controller `function($scope)` signature.
   app.controller('prmSearchResultAvailabilityLineAfterController', function($scope) {
     window.browzine.primo.searchResult($scope);
   });
