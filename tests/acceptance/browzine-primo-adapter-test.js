@@ -187,4 +187,43 @@ describe("BrowZine Primo Adapter >", function() {
       }, 1000);
     });
   });
+
+  describe("search results without scope data >", function() {
+    beforeEach(function() {
+      primo = browzine.primo;
+
+      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img src=''/><img src=''/><img src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.$ctrl = {
+          parentCtrl: {
+
+          }
+        };
+
+        searchResult = $compile(searchResult)($scope);
+      });
+
+      $scope.$ctrl.parentCtrl.$element = searchResult;
+
+      jasmine.Ajax.install();
+
+      primo.searchResult($scope);
+
+      var request = jasmine.Ajax.requests.mostRecent();
+      expect(request).toBeUndefined();
+    });
+
+    afterEach(function() {
+      jasmine.Ajax.uninstall();
+    });
+
+    it("should not enhance a search result without scope data", function() {
+      var template = searchResult.find(".browzine");
+      expect(template.length).toEqual(0);
+      expect(template[0]).toBeUndefined();
+    });
+  });
 });
