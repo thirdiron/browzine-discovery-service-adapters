@@ -199,6 +199,10 @@ document.head.appendChild(browzine.script);
 
 # Contributors
 
+## Browser Compatibility and Support
+
+Enhancements and Bugfixes should be developed against the ES5 standard and tested against evergreen browsers and IE10+.
+
 ## Installation
 
 * `git clone https://github.com/thirdiron/browzine-discovery-service-adapters.git` this repository
