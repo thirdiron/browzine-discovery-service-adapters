@@ -36,7 +36,7 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -61,7 +61,7 @@ e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now". 
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
   summonJournalWording: "View the Journal",
   summonArticleWording: "View Complete Issue",
@@ -79,7 +79,7 @@ var browzine = {
 Update the following code snippet with the `api` endpoint and `apiKey` values:
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -102,7 +102,7 @@ e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
   serSol360CoreJournalBrowZineWebLinkText: "View Journal in BrowZine",
 };
@@ -114,14 +114,37 @@ var browzine = {
 ### BrowZine Primo Adapter Script
 Update the following code snippet with the `api` endpoint and `apiKey` values:
 ```
-window.browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
-  apiKey: "ENTER API KEY",
-};
+(function () {
+  "use strict";
 
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
-document.head.appendChild(browzine.script);
+  var app = angular.module('viewCustom', ['angularLoad']);
+
+  // Load BrowZine Adapter
+  window.browzine = {
+    api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+    apiKey: "ENTER API KEY",
+    primoJournalBrowZineWebLinkText: "View Journal Contents",
+    primoArticleBrowZineWebLinkText: "View Issue Contents",
+  };
+
+  browzine.script = document.createElement("script");
+  browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
+  document.head.appendChild(browzine.script);
+
+  // Add Journal Cover Image and Article In Context Link from BrowZine
+  // Guide: If this Primo controller/component combo already exists from another 3rd-party
+  // integration, then do not create another combo. Simply update the existing controller with the
+  // `window.browzine.primo.searchResult($scope);` line and validate the `$scope` object is injected
+  // into the controller `function($scope)` signature.
+  app.controller('prmSearchResultAvailabilityLineAfterController', function($scope) {
+    window.browzine.primo.searchResult($scope);
+  });
+
+  app.component('prmSearchResultAvailabilityLineAfter', {
+    bindings: { parentCtrl: '<' },
+    controller: 'prmSearchResultAvailabilityLineAfterController'
+  });
+})();
 ```
 
 ### Adding Primo Custom Script
@@ -140,7 +163,7 @@ e.g. You can customize "View Issue Contents" to be a different phrase.
 
 ```
 window.browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
   primoJournalBrowZineWebLinkText: "View Journal Contents",
   primoArticleBrowZineWebLinkText: "View Issue Contents",
@@ -155,7 +178,7 @@ If you have multiple discovery services blended into one webpage, you can attach
 
 ```
 var browzine = {
-  api: "https://api.thirdiron.com/public/v1/libraries/XXX",
+  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -175,6 +198,10 @@ document.head.appendChild(browzine.script);
 
 
 # Contributors
+
+## Browser Compatibility and Support
+
+Enhancements and Bugfixes should be developed against the ES5 standard and tested against evergreen browsers and IE10+.
 
 ## Installation
 

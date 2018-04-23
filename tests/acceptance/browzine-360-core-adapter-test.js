@@ -1,6 +1,6 @@
 describe("BrowZine SerSol 360 Core Adapter >", function() {
   var serSol360Core = {}, searchResults = {};
-  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
+  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
 
   $("body").append(results);
 
@@ -54,7 +54,7 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
       expect(template.text().trim()).toEqual("View Journal in BrowZine");
       expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
       expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
     });
 
     it("should have an enhanced browzine journal cover", function() {

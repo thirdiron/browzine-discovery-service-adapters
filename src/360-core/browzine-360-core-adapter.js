@@ -3,38 +3,46 @@ browzine.serSol360Core = (function() {
   var apiKey = browzine.apiKey;
 
   function urlRewrite(url) {
-    return url.replace("api.thirdiron.com", "public-api.thirdiron.com");
-  };
-
-  function getQueryVariable(url, key) {
-    var query = url.split("?")[1];
-    var parameters = query.split("&");
-    var value = "";
-
-    for(var i = 0; i < parameters.length; i++) {
-      var pair = parameters[i].split("=");
-
-      if(pair[0] == key) {
-        value = pair[1];
-        return value;
-      }
-    }
-
-    return value;
+    return url.indexOf("public-api.thirdiron.com") > 0 ? url : url.replace("api.thirdiron.com", "public-api.thirdiron.com");
   };
 
   function getIssn(title) {
-    var issn = "";
+    if(title.identifiers) {
+      var issnIdentifier = title.identifiers.filter(function(identifier) {
+        if(identifier.type && identifier.value) {
+          return identifier.type.toLowerCase() === "issn" && identifier.value.length > 0;
+        }
+      }).pop();
 
-    if(title.syndeticsImageUrl) {
-      issn = getQueryVariable(title.syndeticsImageUrl, "issn");
+      if(issnIdentifier) {
+        return encodeURIComponent(issnIdentifier.value);
+      }
+
+      var eissnIdentifier = title.identifiers.filter(function(identifier) {
+        if(identifier.type && identifier.value) {
+          return identifier.type.toLowerCase() === "eissn" && identifier.value.length > 0;
+        }
+      }).pop();
+
+      if(eissnIdentifier) {
+        return encodeURIComponent(eissnIdentifier.value);
+      }
     }
 
-    return encodeURIComponent(issn);
+    return "";
   };
 
-  function getTarget(issn) {
-    var element = $(".results-identifier:contains('" + issn + "')").closest(".results-title-row");
+  function getJournalName(title) {
+    return (title && title.title) ? title.title : '';
+  };
+
+  function getTarget(title) {
+    var journalName = getJournalName(title);
+
+    var element = $(".results-title").filter(function() {
+      return $.trim($(this).text()) === journalName;
+    }).closest(".results-title-row");
+
     var target = element.length > 0 ? element[0] : undefined;
 
     return target;
@@ -60,7 +68,7 @@ browzine.serSol360Core = (function() {
 
     titles.forEach(function(title) {
       var issn = getIssn(title);
-      title.target = getTarget(issn);
+      title.target = getTarget(title);
       title.endpoint = getEndpoint(issn);
       title.shouldEnhance = shouldEnhance(issn);
 
@@ -128,7 +136,7 @@ browzine.serSol360Core = (function() {
 
   function buildTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
-    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
 
     browzineWebLinkText = browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
@@ -160,7 +168,16 @@ browzine.serSol360Core = (function() {
         }
 
         if(coverImageUrl && browzineEnabled) {
-          $(title.target).find("img.results-title-image").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
+          var resultsTitleImageContainerSelector = ".results-title-image-div";
+          var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
+          var boxShadow = "1px 1px 2px #ccc";
+
+          if($(title.target).find(resultsTitleImageSelector).length > 0) {
+            $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+          } else {
+            $(title.target).find(resultsTitleImageContainerSelector).append("<img class='results-title-image'/>");
+            $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+          }
         }
 
         if(titles.length > 0) {
@@ -196,9 +213,9 @@ browzine.serSol360Core = (function() {
     addTargets: addTargets,
     shouldEnhance: shouldEnhance,
     getEndpoint: getEndpoint,
+    getJournalName: getJournalName,
     getTarget: getTarget,
     getIssn: getIssn,
-    getQueryVariable: getQueryVariable,
     getBrowZineEnabled: getBrowZineEnabled,
     searchTitles: searchTitles,
     urlRewrite: urlRewrite,

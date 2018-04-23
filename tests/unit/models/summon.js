@@ -83,6 +83,11 @@ describe("Summon Model >", function() {
       var url = "https://api.thirdiron.com/public/v1/libraries/XXX";
       expect(summon.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
     });
+
+    it("should not rewrite the public api domain when the public-api domain already exists", function() {
+      var url = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(summon.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
   });
 
   describe("summon model shouldEnhance method >", function() {
@@ -329,11 +334,11 @@ describe("Summon Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>View the Journal: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png'/></div>");
+      expect(template).toEqual("<div class='browzine'>View the Journal: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png'/></div>");
       expect(template).toContain("View the Journal");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
       expect(template).toContain("Browse Now");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");
     });
@@ -354,11 +359,11 @@ describe("Summon Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png'/></div>");
+      expect(template).toEqual("<div class='browzine'>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png'/></div>");
       expect(template).toContain("View Complete Issue");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
       expect(template).toContain("Browse Now");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");
     });
