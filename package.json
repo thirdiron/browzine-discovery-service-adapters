@@ -1,5 +1,5 @@
 {
-  "name": "browzine-summon-adapter",
+  "name": "browzine-discovery-service-adapters",
   "version": "1.0.0",
   "description": "Summon adapter to augment journal results with custom BrowZine API data.",
   "engines": {
