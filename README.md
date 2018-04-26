@@ -131,11 +131,6 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
   browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
   document.head.appendChild(browzine.script);
 
-  // Add Journal Cover Image and Article In Context Link from BrowZine
-  // Guide: If this Primo controller/component combo already exists from another 3rd-party
-  // integration, then do not create another combo. Simply update the existing controller with the
-  // `window.browzine.primo.searchResult($scope);` line and validate the `$scope` object is injected
-  // into the controller `function($scope)` signature.
   app.controller('prmSearchResultAvailabilityLineAfterController', function($scope) {
     window.browzine.primo.searchResult($scope);
   });
@@ -169,32 +164,6 @@ window.browzine = {
   primoArticleBrowZineWebLinkText: "View Issue Contents",
 };
 ```
-
-## Non-standard Installation
-
-### Loading Multiple Discovery Service Adapters
-
-If you have multiple discovery services blended into one webpage, you can attach them both using this:
-
-```
-var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
-  apiKey: "ENTER API KEY",
-};
-
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/summon/browzine-summon-adapter.js";
-document.head.appendChild(browzine.script);
-
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/360-core/browzine-360-core-adapter.js";
-document.head.appendChild(browzine.script);
-
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
-document.head.appendChild(browzine.script);
-```
-
 
 
 # Contributors
