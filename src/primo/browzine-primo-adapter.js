@@ -185,22 +185,51 @@ browzine.primo = (function() {
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
 
     if(isJournal(scope)) {
-      browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.primoJournalBrowZineWebLinkText || "View Journal Contents";
+
+      if(typeof browzine.primoJournalBrowZineWebLinkText !== 'undefined') {
+
+        if(browzine.primoJournalBrowZineWebLinkText  === null || browzine.primoJournalBrowZineWebLinkText  === "") {
+          // Var purposely empty in Primo JS file, service NOT wanted so set to empty string 
+          browzineWebLinkText = "";
+        } else {
+          // Var exists in Primo JS file, CUSTOMIZED service wanted so set to var-string value
+          browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.primoJournalBrowZineWebLinkText;
+        }
+      } else {
+        // Var not present in Primo JS file, DEFAULT service wanted so set to suggested string
+        browzineWebLinkText = "View Journal Contents";
+      }
     }
 
     if(isArticle(scope)) {
-      browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.primoArticleBrowZineWebLinkText || "View Issue Contents";
+
+      if(typeof browzine.primoArticleBrowZineWebLinkText !== 'undefined') {
+
+        if(browzine.primoArticleBrowZineWebLinkText  === null || browzine.primoArticleBrowZineWebLinkText  === "") {
+          // Var purposely empty in Primo JS file, service NOT wanted so set to empty string  
+          browzineWebLinkText = "";
+        } else {
+          // Var exists in Primo JS file, CUSTOMIZED service wanted so set to var-string value
+          browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.primoArticleBrowZineWebLinkText;
+        }
+      } else {
+        // Var not present in Primo JS file, DEFAULT service wanted so set to suggested string
+        browzineWebLinkText = "View Issue Contents";
+      }
     }
 
-    var template = "<div class='browzine'>" +
-                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' title='{browzineWebLinkText} in BrowZine'>" +
-                          "<img src='{bookIcon}' class='browzine-book-icon'/> {browzineWebLinkText}" +
-                      "</a>" +
-                   "</div>";
-
-    template = template.replace(/{browzineWebLink}/g, browzineWebLink);
-    template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
-    template = template.replace(/{bookIcon}/g, bookIcon);
+    var template = "<!-- Browzine web link is turned off. -->";
+    if(browzineWebLinkText !== "") {
+      template = "<div class='browzine'>" +
+                    "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' title='{browzineWebLinkText} in BrowZine'>" +
+                        "<img src='{bookIcon}' class='browzine-book-icon'/> {browzineWebLinkText}" +
+                    "</a>" +
+                 "</div>";
+   
+      template = template.replace(/{browzineWebLink}/g, browzineWebLink);
+      template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
+      template = template.replace(/{bookIcon}/g, bookIcon);
+    }
 
     return template;
   };
