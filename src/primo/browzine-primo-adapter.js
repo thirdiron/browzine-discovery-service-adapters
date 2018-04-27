@@ -147,15 +147,21 @@ browzine.primo = (function() {
   function getCoverImageUrl(scope, data, journal) {
     var coverImageUrl = null;
 
-    if(isJournal(scope)) {
-      if(data && data.coverImageUrl) {
-        coverImageUrl = data.coverImageUrl;
-      }
-    }
+    if(typeof browzine.primoUseCoverImageBrowZineService !== 'undefined' && browzine.primoUseCoverImageBrowZineService === false) {
+        // Var exists in Primo JS file and is False, service NOT wanted so set to False.
+        coverImageUrl = false;
+    } else {
 
-    if(isArticle(scope)) {
-      if(journal && journal.coverImageUrl) {
-        coverImageUrl = journal.coverImageUrl;
+      if(isJournal(scope)) {
+        if(data && data.coverImageUrl) {
+          coverImageUrl = data.coverImageUrl;
+        }
+      }
+
+      if(isArticle(scope)) {
+        if(journal && journal.coverImageUrl) {
+          coverImageUrl = journal.coverImageUrl;
+        }
       }
     }
 
