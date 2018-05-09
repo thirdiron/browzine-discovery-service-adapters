@@ -80,7 +80,7 @@ browzine.primo = (function() {
     if(result && result.pnx) {
       if(result.pnx.addata && result.pnx.addata.doi) {
         if(result.pnx.addata.doi[0]) {
-          doi = result.pnx.addata.doi[0].trim().replace("-", "");
+          doi = result.pnx.addata.doi[0].trim();
         }
       }
     }
