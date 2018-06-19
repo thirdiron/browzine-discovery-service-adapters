@@ -141,7 +141,7 @@ browzine.serSol360Core = (function() {
     browzineWebLinkText = browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
     var template = "<div class='browzine' style='margin: 5px 0;'>" +
-                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px;'/> " +
+                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;'/> " +
                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='font-weight: 300;'>{browzineWebLinkText}</a>" +
                    "</div>";
 
