@@ -193,7 +193,7 @@ browzine.primo = (function() {
     }
 
     var template = "<div class='browzine' style='line-height: 1.4em;'>" +
-                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' title='{browzineWebLinkText} in BrowZine'>" +
+                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank'>" +
                           "<img src='{bookIcon}' class='browzine-book-icon' style='margin-bottom: -1px; margin-right: 2.5px;' aria-hidden='true'/> " +
                           "<span class='browzine-web-link-text'>{browzineWebLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
