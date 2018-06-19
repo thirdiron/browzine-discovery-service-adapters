@@ -37,10 +37,10 @@ browzine.serSol360Core = (function() {
   };
 
   function getTarget(title) {
-    var journalName = getJournalName(title);
+    var journalName = getJournalName(title).toLowerCase().trim();
 
     var element = $(".results-title").filter(function() {
-      return $.trim($(this).text()) === journalName;
+      return $.trim($(this).text()).toLowerCase().indexOf(journalName) > -1 && journalName.length > 0;
     }).closest(".results-title-row");
 
     var target = element.length > 0 ? element[0] : undefined;

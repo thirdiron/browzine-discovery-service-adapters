@@ -1,6 +1,6 @@
 describe("SerSol 360 Core Model >", function() {
   var serSol360Core = {}, journalResponse = {}, scope = {}, titles = [], searchResults = {};
-  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
+  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-title'>The Base Journal</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
 
   $("body").append(results);
 
@@ -86,8 +86,6 @@ describe("SerSol 360 Core Model >", function() {
     };
 
     $.getJSON = function(endpoint, callback) {
-      expect(endpoint).toMatch(/search\?issns=00284793/);
-
       return callback({
         "data": [{
           "id": 10292,
@@ -231,6 +229,19 @@ describe("SerSol 360 Core Model >", function() {
       delete title.title;
       var target = serSol360Core.getTarget(title);
       expect(target).toBeUndefined();
+    });
+
+    it("should retrieve target element when the results title element contains the journal title", function() {
+      var title = titles[0];
+      var journalName = $(title.target).find(".results-title").text();
+
+      $("div[ui-view='searchResults']").find(".results-title:contains('" + journalName + "')")[0].innerHTML += " Terms of Use";
+
+      var target = serSol360Core.getTarget(title);
+
+      expect(target).toBeDefined();
+      expect(target.innerHTML).toContain("The New England journal of medicine");
+      expect(target.innerHTML).toContain("The New England journal of medicine Terms of Use");
     });
   });
 
