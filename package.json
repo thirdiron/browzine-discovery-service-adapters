@@ -9,6 +9,7 @@
   "scripts": {
     "server": "http-server --cors -p 8080",
     "test": "karma start",
+    "tunnel": "ngrok http 8080",
     "deploy-summon-hotfix": "AWS_BUCKET_FOLDER=summon/hotfix deploy-web-to-s3 src/summon",
     "deploy-summon-feature": "AWS_BUCKET_FOLDER=summon/feature deploy-web-to-s3 src/summon",
     "deploy-summon-staging": "AWS_BUCKET_FOLDER=summon/staging deploy-web-to-s3 src/summon",
@@ -22,15 +23,13 @@
     "deploy-primo-staging": "AWS_BUCKET_FOLDER=primo/staging deploy-web-to-s3 src/primo",
     "deploy-primo-production": "AWS_BUCKET_FOLDER=primo deploy-web-to-s3 src/primo"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "angular": "1.6.4",
     "angular-animate": "1.6.4",
     "angular-mocks": "1.6.4",
     "angular-resource": "1.6.4",
     "angular-route": "1.6.4",
     "deploy-web-to-s3": "^1.3.0",
-    "http-server": "^0.10.0",
     "jasmine-ajax": "^3.3.1",
     "jasmine-core": "2.8.0",
     "jquery": "^3.3.1",
@@ -39,5 +38,9 @@
     "karma-mocha-reporter": "^2.2.4",
     "karma-chrome-launcher": "2.2.0",
     "recursive-replace": "^1.0.1"
+  },
+  "devDependencies": {
+    "http-server": "^0.10.0",
+    "ngrok": "^2.2.21"
   }
 }

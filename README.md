@@ -181,7 +181,7 @@ Enhancements and Bugfixes should be developed against the ES5 standard and teste
 ## Running / Development
 
 * `npm run server` (Runs a local webserver, visit http://localhost:8080)
-* `npm install -g ngrok && ngrok http 8080` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/summon/browzine-summon-adapter.js)
+* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/summon/browzine-summon-adapter.js)
 
 ### Running Tests
 
