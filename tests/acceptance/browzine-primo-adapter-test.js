@@ -90,7 +90,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
 
         done();
-      });
+      }, (1000 / 60));
     });
   });
 
@@ -186,7 +186,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
 
         done();
-      });
+      }, (1000 / 60));
     });
   });
 
