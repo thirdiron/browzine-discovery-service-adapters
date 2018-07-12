@@ -82,7 +82,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     it("should have an enhanced browzine journal cover", function(done) {
-      setTimeout(function() {
+      requestAnimationFrame(function() {
         var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
 
         Array.prototype.forEach.call(coverImages, function(coverImage) {
@@ -90,7 +90,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
 
         done();
-      }, (1000 / 60));
+      });
     });
   });
 
@@ -177,7 +177,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     it("should have an enhanced browzine journal cover", function(done) {
-      setTimeout(function() {
+      requestAnimationFrame(function() {
         var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
         expect(coverImages).toBeDefined();
 
@@ -186,7 +186,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
 
         done();
-      }, (1000 / 60));
+      });
     });
   });
 
