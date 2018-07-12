@@ -264,7 +264,7 @@ browzine.primo = (function() {
                   poll();
                 }
               }
-            });
+            }, (1000 / 60));
           })();
         }
       }
