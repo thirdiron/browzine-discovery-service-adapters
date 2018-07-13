@@ -7,7 +7,7 @@ describe("BrowZine Primo Adapter >", function() {
     beforeEach(function() {
       primo = browzine.primo;
 
-      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img src=''/><img src=''/><img src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
       inject(function ($compile, $rootScope) {
         $scope = $rootScope.$new();
@@ -82,14 +82,15 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     it("should have an enhanced browzine journal cover", function(done) {
-      setTimeout(function() {
+      requestAnimationFrame(function() {
         var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
 
         Array.prototype.forEach.call(coverImages, function(coverImage) {
           expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
         });
+
         done();
-      }, 1000);
+      });
     });
   });
 
@@ -97,7 +98,7 @@ describe("BrowZine Primo Adapter >", function() {
     beforeEach(function() {
       primo = browzine.primo;
 
-      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
       inject(function ($compile, $rootScope) {
         $scope = $rootScope.$new();
@@ -176,15 +177,16 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     it("should have an enhanced browzine journal cover", function(done) {
-      setTimeout(function() {
+      requestAnimationFrame(function() {
         var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
         expect(coverImages).toBeDefined();
 
         Array.prototype.forEach.call(coverImages, function(coverImage) {
           expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
         });
+
         done();
-      }, 1000);
+      });
     });
   });
 

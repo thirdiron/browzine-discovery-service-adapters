@@ -247,21 +247,23 @@ browzine.primo = (function() {
         if(browzineWebLink && browzineEnabled) {
           var template = buildTemplate(scope, browzineWebLink);
           element.append(template);
-          $scope.$apply();
         }
 
         if(coverImageUrl && browzineEnabled) {
-          setTimeout(function() {
+          (function poll() {
             var elementParent = getElementParent(element);
             var coverImages = elementParent.querySelectorAll("prm-search-result-thumbnail-container img");
 
-            Array.prototype.forEach.call(coverImages, function(coverImage) {
-              coverImage.src = coverImageUrl;
-              $scope.$apply();
-            });
-
-            $scope.$apply();
-          }, 1000);
+            if(coverImages[0]) {
+              if(coverImages[0].className.indexOf("fan-img") > -1) {
+                Array.prototype.forEach.call(coverImages, function(coverImage) {
+                  coverImage.src = coverImageUrl;
+                });
+              } else {
+                requestAnimationFrame(poll);
+              }
+            }
+          })();
         }
       }
     };
