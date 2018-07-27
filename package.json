@@ -3,42 +3,44 @@
   "version": "1.0.0",
   "description": "Summon adapter to augment journal results with custom BrowZine API data.",
   "engines": {
-    "node": "0.10.32"
+    "node": "8.11.2",
+    "npm": "6.1.0"
   },
   "scripts": {
     "server": "http-server --cors -p 8080",
-    "tunnel": "ngrok http 8080",
     "test": "karma start",
+    "tunnel": "ngrok http 8080",
     "deploy-summon-hotfix": "AWS_BUCKET_FOLDER=summon/hotfix deploy-web-to-s3 src/summon",
     "deploy-summon-feature": "AWS_BUCKET_FOLDER=summon/feature deploy-web-to-s3 src/summon",
-    "deploy-summon-staging": "AWS_BUCKET_FOLDER=summon/staging deploy-web-to-s3 src/summon",
-    "deploy-summon-production": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 src/summon",
+    "deploy-summon-develop": "AWS_BUCKET_FOLDER=summon/staging deploy-web-to-s3 src/summon",
+    "deploy-summon-master": "AWS_BUCKET_FOLDER=summon deploy-web-to-s3 src/summon",
     "deploy-360-core-hotfix": "AWS_BUCKET_FOLDER=360-core/hotfix deploy-web-to-s3 src/360-core",
     "deploy-360-core-feature": "AWS_BUCKET_FOLDER=360-core/feature deploy-web-to-s3 src/360-core",
-    "deploy-360-core-staging": "AWS_BUCKET_FOLDER=360-core/staging deploy-web-to-s3 src/360-core",
-    "deploy-360-core-production": "AWS_BUCKET_FOLDER=360-core deploy-web-to-s3 src/360-core",
+    "deploy-360-core-develop": "AWS_BUCKET_FOLDER=360-core/staging deploy-web-to-s3 src/360-core",
+    "deploy-360-core-master": "AWS_BUCKET_FOLDER=360-core deploy-web-to-s3 src/360-core",
     "deploy-primo-hotfix": "AWS_BUCKET_FOLDER=primo/hotfix deploy-web-to-s3 src/primo",
     "deploy-primo-feature": "AWS_BUCKET_FOLDER=primo/feature deploy-web-to-s3 src/primo",
-    "deploy-primo-staging": "AWS_BUCKET_FOLDER=primo/staging deploy-web-to-s3 src/primo",
-    "deploy-primo-production": "AWS_BUCKET_FOLDER=primo deploy-web-to-s3 src/primo"
+    "deploy-primo-develop": "AWS_BUCKET_FOLDER=primo/staging deploy-web-to-s3 src/primo",
+    "deploy-primo-master": "AWS_BUCKET_FOLDER=primo deploy-web-to-s3 src/primo"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "angular": "1.6.4",
     "angular-animate": "1.6.4",
     "angular-mocks": "1.6.4",
     "angular-resource": "1.6.4",
     "angular-route": "1.6.4",
     "deploy-web-to-s3": "^1.3.0",
-    "http-server": "^0.10.0",
     "jasmine-ajax": "^3.3.1",
     "jasmine-core": "2.8.0",
     "jquery": "^3.3.1",
     "karma": "1.7.1",
     "karma-jasmine": "1.1.0",
     "karma-mocha-reporter": "^2.2.4",
-    "karma-phantomjs-launcher": "1.0.4",
-    "ngrok": "^2.2.21",
+    "karma-chrome-launcher": "2.2.0",
     "recursive-replace": "^1.0.1"
+  },
+  "devDependencies": {
+    "http-server": "^0.10.0",
+    "ngrok": "^2.2.21"
   }
 }

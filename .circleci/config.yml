@@ -1,0 +1,147 @@
+version: 2
+
+settings: &settings
+  shell: /bin/bash --login
+  docker:
+    - image: thirdiron/tici:master
+      auth:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+
+build-environment: &build-environment
+  name: Build Environment
+  command: ~/project/.circleci/build.sh
+
+jobs:
+  build:
+    <<: *settings
+    steps:
+      - checkout
+      - run:
+          <<: *build-environment
+      - run:
+          name: Automated Tests
+          command: |
+            . ~/.nvm/nvm.sh
+            npm test
+  deploy-hotfix:
+    <<: *settings
+    steps:
+      - checkout
+      - run:
+          <<: *build-environment
+      - run:
+          name: Deploy Hotfix Summon
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-summon-hotfix
+      - run:
+          name: Deploy Hotfix 360 Core
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-360-core-hotfix
+      - run:
+          name: Deploy Hotfix Primo
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-primo-hotfix
+  deploy-feature:
+    <<: *settings
+    steps:
+      - checkout
+      - run:
+          <<: *build-environment
+      - run:
+          name: Deploy Feature Summon
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-summon-feature
+      - run:
+          name: Deploy Feature 360 Core
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-360-core-feature
+      - run:
+          name: Deploy Feature Primo
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-primo-feature
+  deploy-develop:
+    <<: *settings
+    steps:
+      - checkout
+      - run:
+          <<: *build-environment
+      - run:
+          name: Deploy Develop Summon
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-summon-develop
+      - run:
+          name: Deploy Develop 360 Core
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-360-core-develop
+      - run:
+          name: Deploy Develop Primo
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-primo-develop
+  deploy-master:
+    <<: *settings
+    steps:
+      - checkout
+      - run:
+          <<: *build-environment
+      - run:
+          name: Deploy Master Summon
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-summon-master
+      - run:
+          name: Deploy Master 360 Core
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-360-core-master
+      - run:
+          name: Deploy Master Primo
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run deploy-primo-master
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build
+      - deploy-hotfix:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /hotfix\/.*/
+      - deploy-feature:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /feature\/.*/
+      - deploy-develop:
+          requires:
+            - build
+          filters:
+            branches:
+              only: develop
+      - deploy-master:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master
+        - develop
