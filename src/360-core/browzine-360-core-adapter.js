@@ -134,6 +134,16 @@ browzine.serSol360Core = (function() {
     return browzineEnabled;
   };
 
+  function isDefaultCoverImage(coverImageUrl) {
+    var defaultCoverImage = false;
+
+    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+      defaultCoverImage = true;
+    }
+
+    return defaultCoverImage;
+  };
+
   function buildTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
@@ -160,14 +170,14 @@ browzine.serSol360Core = (function() {
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(data);
-        var browzineEnabled = getBrowZineEnabled(data);
+        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
         if(browzineWebLink) {
           var template = buildTemplate(browzineWebLink);
           $(title.target).find(".results-identifier").append(template);
         }
 
-        if(coverImageUrl && browzineEnabled) {
+        if(coverImageUrl && !defaultCoverImage) {
           var resultsTitleImageContainerSelector = ".results-title-image-div";
           var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
           var boxShadow = "1px 1px 2px #ccc";
@@ -217,6 +227,7 @@ browzine.serSol360Core = (function() {
     getTarget: getTarget,
     getIssn: getIssn,
     getBrowZineEnabled: getBrowZineEnabled,
+    isDefaultCoverImage: isDefaultCoverImage,
     searchTitles: searchTitles,
     urlRewrite: urlRewrite,
   };

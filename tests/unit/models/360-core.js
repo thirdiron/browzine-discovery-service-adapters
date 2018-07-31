@@ -344,6 +344,18 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
+  describe("serSol360Core model isDefaultCoverImage method >", function() {
+    it("should return false when an actual coverImageUrl is returned by the API", function() {
+      var coverImageUrl = "https://assets.thirdiron.com/images/covers/0028-4793.png";
+      expect(serSol360Core.isDefaultCoverImage(coverImageUrl)).toEqual(false);
+    });
+
+    it("should return true when a default coverImageUrl is returned by the API", function() {
+      var coverImageUrl = "https://assets.thirdiron.com/images/covers/default.png";
+      expect(serSol360Core.isDefaultCoverImage(coverImageUrl)).toEqual(true);
+    });
+  });
+
   describe("serSol360Core model buildTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var data = serSol360Core.getData(journalResponse);

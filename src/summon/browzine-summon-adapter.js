@@ -150,6 +150,16 @@ browzine.summon = (function() {
     return browzineEnabled;
   };
 
+  function isDefaultCoverImage(coverImageUrl) {
+    var defaultCoverImage = false;
+
+    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+      defaultCoverImage = true;
+    }
+
+    return defaultCoverImage;
+  };
+
   function buildTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
@@ -197,14 +207,14 @@ browzine.summon = (function() {
 
       var browzineWebLink = getBrowZineWebLink(data);
       var coverImageUrl = getCoverImageUrl(scope, data, journal);
-      var browzineEnabled = getBrowZineEnabled(scope, data, journal);
+      var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
       if(browzineWebLink) {
         var template = buildTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
-      if(coverImageUrl && browzineEnabled) {
+      if(coverImageUrl && !defaultCoverImage) {
         $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
       }
     });
@@ -220,6 +230,7 @@ browzine.summon = (function() {
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
+    isDefaultCoverImage: isDefaultCoverImage,
     buildTemplate: buildTemplate,
     urlRewrite: urlRewrite,
   };

@@ -317,6 +317,18 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model isDefaultCoverImage method >", function() {
+    it("should return false when an actual coverImageUrl is returned by the API", function() {
+      var coverImageUrl = "https://assets.thirdiron.com/images/covers/0028-4793.png";
+      expect(summon.isDefaultCoverImage(coverImageUrl)).toEqual(false);
+    });
+
+    it("should return true when a default coverImageUrl is returned by the API", function() {
+      var coverImageUrl = "https://assets.thirdiron.com/images/covers/default.png";
+      expect(summon.isDefaultCoverImage(coverImageUrl)).toEqual(true);
+    });
+  });
+
   describe("summon model buildTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var scope = {

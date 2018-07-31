@@ -180,6 +180,16 @@ browzine.primo = (function() {
     return browzineEnabled;
   };
 
+  function isDefaultCoverImage(coverImageUrl) {
+    var defaultCoverImage = false;
+
+    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+      defaultCoverImage = true;
+    }
+
+    return defaultCoverImage;
+  };
+
   function buildTemplate(scope, browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
@@ -241,15 +251,15 @@ browzine.primo = (function() {
 
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
-        var browzineEnabled = getBrowZineEnabled(scope, data, journal);
+        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
         var element = getElement(scope);
 
-        if(browzineWebLink && browzineEnabled) {
+        if(browzineWebLink) {
           var template = buildTemplate(scope, browzineWebLink);
           element.append(template);
         }
 
-        if(coverImageUrl && browzineEnabled) {
+        if(coverImageUrl && !defaultCoverImage) {
           (function poll() {
             var elementParent = getElementParent(element);
             var coverImages = elementParent.querySelectorAll("prm-search-result-thumbnail-container img");
@@ -286,6 +296,7 @@ browzine.primo = (function() {
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
+    isDefaultCoverImage: isDefaultCoverImage,
     buildTemplate: buildTemplate,
     getElement: getElement,
     getElementParent: getElementParent,
