@@ -190,6 +190,29 @@ browzine.primo = (function() {
     return defaultCoverImage;
   };
 
+  function getDirectToPDFUrl(scope, data) {
+    var directToPDFUrl = null;
+
+    if(isArticle(scope)) {
+      if(data.fullTextFile) {
+        directToPDFUrl = data.fullTextFile;
+      }
+    }
+
+    return directToPDFUrl;
+  };
+
+  function showDirectToPDFLink() {
+    var enableShowDirectToPDFLink = false;
+    var config = browzine.primoArticlePDFDownloadLinkEnabled;
+
+    if(typeof config === "undefined" || config === null || config === true) {
+      enableShowDirectToPDFLink = true;
+    }
+
+    return enableShowDirectToPDFLink;
+  };
+
   function buildTemplate(scope, browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
@@ -252,6 +275,7 @@ browzine.primo = (function() {
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
+        var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var element = getElement(scope);
 
         if(browzineWebLink) {
@@ -297,6 +321,8 @@ browzine.primo = (function() {
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
     isDefaultCoverImage: isDefaultCoverImage,
+    getDirectToPDFUrl: getDirectToPDFUrl,
+    showDirectToPDFLink: showDirectToPDFLink,
     buildTemplate: buildTemplate,
     getElement: getElement,
     getElementParent: getElementParent,

@@ -91,7 +91,8 @@ describe("BrowZine Summon Adapter >", function() {
             "availableThroughBrowzine": true,
             "startPage": "h2575",
             "endPage": "h2575",
-            "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
+            "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+            "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
           },
           "included": [{
             "id": 18126,

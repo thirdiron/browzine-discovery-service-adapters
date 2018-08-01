@@ -37,7 +37,8 @@ describe("Primo Model >", function() {
         "availableThroughBrowzine": true,
         "startPage": "h2575",
         "endPage": "h2575",
-        "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
+        "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+        "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
       },
       "included": [{
         "id": 18126,
@@ -626,6 +627,69 @@ describe("Primo Model >", function() {
     it("should return true when a default coverImageUrl is returned by the API", function() {
       var coverImageUrl = "https://assets.thirdiron.com/images/covers/default.png";
       expect(primo.isDefaultCoverImage(coverImageUrl)).toEqual(true);
+    });
+  });
+
+  describe("primo model getDirectToPDFUrl method >", function() {
+    it("should not include a fullTextFile property in the BrowZine API response for a journal", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getDirectToPDFUrl(scope, data)).toBeNull();
+    });
+
+    it("should include a fullTextFile property in the BrowZine API response for an article", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getDirectToPDFUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+    });
+  });
+
+  describe("primo model showDirectToPDFLink method >", function() {
+    it("should show direct to pdf link when configuration property is undefined or null", function() {
+      expect(primo.showDirectToPDFLink()).toEqual(true);
+    });
+
+    it("should show direct to pdf link when configuration property is true", function() {
+      browzine.primoArticlePDFDownloadLinkEnabled = true;
+      expect(primo.showDirectToPDFLink()).toEqual(true);
+    });
+
+    it("should hide direct to pdf link when configuration property is false", function() {
+      browzine.primoArticlePDFDownloadLinkEnabled = false;
+      expect(primo.showDirectToPDFLink()).toEqual(false);
     });
   });
 

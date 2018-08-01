@@ -57,7 +57,7 @@ As a Custom Script Url:
 
 Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
 
-e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now". These customizations are optional and the defaults are shown below.
+e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" and whether to enable direct to PDF links. These customizations are optional and the defaults are shown below.
 
 ```
 var browzine = {
@@ -67,6 +67,9 @@ var browzine = {
   summonArticleWording: "View Complete Issue",
   summonJournalBrowZineWebLinkText: "Browse Now",
   summonArticleBrowZineWebLinkText: "Browse Now",
+  summonArticlePDFDownloadLinkEnabled: true,
+  summonArticlePDFDownloadWording: "Article PDF",
+  summonArticlePDFDownloadLinkText: "Download Now",
 };
 ```
 
@@ -123,8 +126,6 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
   window.browzine = {
     api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
     apiKey: "ENTER API KEY",
-    primoJournalBrowZineWebLinkText: "View Journal Contents",
-    primoArticleBrowZineWebLinkText: "View Issue Contents",
   };
 
   browzine.script = document.createElement("script");
@@ -162,6 +163,8 @@ window.browzine = {
   apiKey: "ENTER API KEY",
   primoJournalBrowZineWebLinkText: "View Journal Contents",
   primoArticleBrowZineWebLinkText: "View Issue Contents",
+  primoArticlePDFDownloadLinkEnabled: true,
+  primoArticlePDFDownloadLinkText: "Download PDF",
 };
 ```
 

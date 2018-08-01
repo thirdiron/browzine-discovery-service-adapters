@@ -28,7 +28,8 @@ describe("Summon Model >", function() {
         "availableThroughBrowzine": true,
         "startPage": "h2575",
         "endPage": "h2575",
-        "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
+        "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+        "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
       },
       "included": [{
         "id": 18126,
@@ -326,6 +327,54 @@ describe("Summon Model >", function() {
     it("should return true when a default coverImageUrl is returned by the API", function() {
       var coverImageUrl = "https://assets.thirdiron.com/images/covers/default.png";
       expect(summon.isDefaultCoverImage(coverImageUrl)).toEqual(true);
+    });
+  });
+
+  describe("summon model getDirectToPDFUrl method >", function() {
+    it("should not include a fullTextFile property in the BrowZine API response for a journal", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getDirectToPDFUrl(scope, data)).toBeNull();
+    });
+
+    it("should include a fullTextFile property in the BrowZine API response for an article", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getDirectToPDFUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+    });
+  });
+
+  describe("summon model showDirectToPDFLink method >", function() {
+    it("should show direct to pdf link when configuration property is undefined or null", function() {
+      expect(summon.showDirectToPDFLink()).toEqual(true);
+    });
+
+    it("should show direct to pdf link when configuration property is true", function() {
+      browzine.summonArticlePDFDownloadLinkEnabled = true;
+      expect(summon.showDirectToPDFLink()).toEqual(true);
+    });
+
+    it("should hide direct to pdf link when configuration property is false", function() {
+      browzine.summonArticlePDFDownloadLinkEnabled = false;
+      expect(summon.showDirectToPDFLink()).toEqual(false);
     });
   });
 
