@@ -183,14 +183,10 @@ browzine.summon = (function() {
     return enableShowDirectToPDFLink;
   };
 
-  function buildTemplate(scope, browzineWebLink, directToPDFUrl) {
+  function browzineWebLinkTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png";
-    var articlePDFDownloadWording = "";
-    var articlePDFDownloadLinkText = "";
-    var directToPDFTemplate = "";
 
     if(isJournal(scope)) {
       wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
@@ -200,17 +196,9 @@ browzine.summon = (function() {
     if(isArticle(scope)) {
       wording = browzine.articleWording || browzine.summonArticleWording || "View Complete Issue";
       browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.summonArticleBrowZineWebLinkText || "Browse Now";
-
-      articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
-      articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
-
-      if(showDirectToPDFLink() && directToPDFUrl) {
-        directToPDFTemplate = "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}'/> <br/>";
-      }
     }
 
     var template = "<div class='browzine'>" +
-                     "{directToPDFTemplate}" +
                      "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img class='browzine-book-icon' src='{bookIcon}'/>" +
                    "</div>";
 
@@ -218,6 +206,22 @@ browzine.summon = (function() {
     template = template.replace(/{browzineWebLink}/g, browzineWebLink);
     template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
     template = template.replace(/{bookIcon}/g, bookIcon);
+
+    return template;
+  };
+
+  function directToPDFTemplate(directToPDFUrl) {
+    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png";
+    var articlePDFDownloadWording = "";
+    var articlePDFDownloadLinkText = "";
+    var directToPDFTemplate = "";
+
+    articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
+    articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
+
+    var template = "<div class='browzine'>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}'/>" +
+                   "</div>";
 
     template = template.replace(/{directToPDFTemplate}/g, directToPDFTemplate);
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
@@ -250,8 +254,13 @@ browzine.summon = (function() {
       var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
 
+      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
+        var template = directToPDFTemplate(directToPDFUrl);
+        $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+      }
+
       if(browzineWebLink) {
-        var template = buildTemplate(scope, browzineWebLink, directToPDFUrl);
+        var template = browzineWebLinkTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
@@ -274,7 +283,8 @@ browzine.summon = (function() {
     isDefaultCoverImage: isDefaultCoverImage,
     getDirectToPDFUrl: getDirectToPDFUrl,
     showDirectToPDFLink: showDirectToPDFLink,
-    buildTemplate: buildTemplate,
+    browzineWebLinkTemplate: browzineWebLinkTemplate,
+    directToPDFTemplate: directToPDFTemplate,
     urlRewrite: urlRewrite,
   };
 }());

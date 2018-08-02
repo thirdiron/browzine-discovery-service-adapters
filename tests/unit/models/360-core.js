@@ -356,11 +356,11 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
-  describe("serSol360Core model buildTemplate method >", function() {
+  describe("serSol360Core model browzineWebLinkTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var data = serSol360Core.getData(journalResponse);
       var browzineWebLink = serSol360Core.getBrowZineWebLink(data);
-      var template = serSol360Core.buildTemplate(browzineWebLink);
+      var template = serSol360Core.browzineWebLinkTemplate(browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();

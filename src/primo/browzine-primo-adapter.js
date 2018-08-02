@@ -213,7 +213,7 @@ browzine.primo = (function() {
     return enableShowDirectToPDFLink;
   };
 
-  function buildTemplate(scope, browzineWebLink) {
+  function browzineWebLinkTemplate(scope, browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
 
@@ -279,7 +279,7 @@ browzine.primo = (function() {
         var element = getElement(scope);
 
         if(browzineWebLink) {
-          var template = buildTemplate(scope, browzineWebLink);
+          var template = browzineWebLinkTemplate(scope, browzineWebLink);
           element.append(template);
         }
 
@@ -323,7 +323,7 @@ browzine.primo = (function() {
     isDefaultCoverImage: isDefaultCoverImage,
     getDirectToPDFUrl: getDirectToPDFUrl,
     showDirectToPDFLink: showDirectToPDFLink,
-    buildTemplate: buildTemplate,
+    browzineWebLinkTemplate: browzineWebLinkTemplate,
     getElement: getElement,
     getElementParent: getElementParent,
     getScope: getScope,

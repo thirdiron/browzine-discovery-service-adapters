@@ -693,7 +693,7 @@ describe("Primo Model >", function() {
     });
   });
 
-  describe("primo model buildTemplate method >", function() {
+  describe("primo model browzineWebLinkTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var scope = {
         result: {
@@ -711,7 +711,7 @@ describe("Primo Model >", function() {
 
       var data = primo.getData(journalResponse);
       var browzineWebLink = primo.getBrowZineWebLink(data);
-      var template = primo.buildTemplate(scope, browzineWebLink);
+      var template = primo.browzineWebLinkTemplate(scope, browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();
@@ -741,7 +741,7 @@ describe("Primo Model >", function() {
 
       var data = primo.getData(articleResponse);
       var browzineWebLink = primo.getBrowZineWebLink(data);
-      var template = primo.buildTemplate(scope, browzineWebLink);
+      var template = primo.browzineWebLinkTemplate(scope, browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();

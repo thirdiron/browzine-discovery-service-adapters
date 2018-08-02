@@ -144,7 +144,7 @@ browzine.serSol360Core = (function() {
     return defaultCoverImage;
   };
 
-  function buildTemplate(browzineWebLink) {
+  function browzineWebLinkTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
 
@@ -173,7 +173,7 @@ browzine.serSol360Core = (function() {
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
         if(browzineWebLink) {
-          var template = buildTemplate(browzineWebLink);
+          var template = browzineWebLinkTemplate(browzineWebLink);
           $(title.target).find(".results-identifier").append(template);
         }
 
@@ -214,7 +214,7 @@ browzine.serSol360Core = (function() {
 
   return {
     adapter: adapter,
-    buildTemplate: buildTemplate,
+    browzineWebLinkTemplate: browzineWebLinkTemplate,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineWebLink: getBrowZineWebLink,
     getData: getData,
