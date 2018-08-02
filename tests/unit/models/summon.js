@@ -363,6 +363,10 @@ describe("Summon Model >", function() {
   });
 
   describe("summon model showDirectToPDFLink method >", function() {
+    afterEach(function() {
+      delete browzine.summonArticlePDFDownloadLinkEnabled;
+    });
+
     it("should show direct to pdf link when configuration property is undefined or null", function() {
       expect(summon.showDirectToPDFLink()).toEqual(true);
     });
@@ -414,17 +418,27 @@ describe("Summon Model >", function() {
 
       var data = summon.getData(articleResponse);
       var browzineWebLink = summon.getBrowZineWebLink(data);
-      var template = summon.buildTemplate(scope, browzineWebLink);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.buildTemplate(scope, browzineWebLink, directToPDFUrl);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img class='browzine-pdf-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png'/> <br/>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png'/></div>");
+
       expect(template).toContain("View Complete Issue");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
       expect(template).toContain("Browse Now");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
+
+      expect(template).toContain("Article PDF");
+      expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+      expect(template).toContain("Download Now");
+      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png");
+
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");
     });

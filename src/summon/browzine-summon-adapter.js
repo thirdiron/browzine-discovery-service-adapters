@@ -183,10 +183,14 @@ browzine.summon = (function() {
     return enableShowDirectToPDFLink;
   };
 
-  function buildTemplate(scope, browzineWebLink) {
+  function buildTemplate(scope, browzineWebLink, directToPDFUrl) {
     var wording = "";
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
+    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png";
+    var articlePDFDownloadWording = "";
+    var articlePDFDownloadLinkText = "";
+    var directToPDFTemplate = "";
 
     if(isJournal(scope)) {
       wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
@@ -196,17 +200,30 @@ browzine.summon = (function() {
     if(isArticle(scope)) {
       wording = browzine.articleWording || browzine.summonArticleWording || "View Complete Issue";
       browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.summonArticleBrowZineWebLinkText || "Browse Now";
+
+      articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
+      articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
+
+      if(showDirectToPDFLink() && directToPDFUrl) {
+        directToPDFTemplate = "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}'/> <br/>";
+      }
     }
 
     var template = "<div class='browzine'>" +
-                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> " +
-                     "<img class='browzine-book-icon' src='{bookIcon}'/>" +
+                     "{directToPDFTemplate}" +
+                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img class='browzine-book-icon' src='{bookIcon}'/>" +
                    "</div>";
 
     template = template.replace(/{wording}/g, wording);
     template = template.replace(/{browzineWebLink}/g, browzineWebLink);
     template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
     template = template.replace(/{bookIcon}/g, bookIcon);
+
+    template = template.replace(/{directToPDFTemplate}/g, directToPDFTemplate);
+    template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
+    template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
+    template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
 
     return template;
   };
@@ -234,7 +251,7 @@ browzine.summon = (function() {
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
 
       if(browzineWebLink) {
-        var template = buildTemplate(scope, browzineWebLink);
+        var template = buildTemplate(scope, browzineWebLink, directToPDFUrl);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
