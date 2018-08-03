@@ -678,6 +678,10 @@ describe("Primo Model >", function() {
   });
 
   describe("primo model showDirectToPDFLink method >", function() {
+    afterEach(function() {
+      delete browzine.primoArticlePDFDownloadLinkEnabled;
+    });
+
     it("should show direct to pdf link when configuration property is undefined or null", function() {
       expect(primo.showDirectToPDFLink()).toEqual(true);
     });
@@ -690,6 +694,40 @@ describe("Primo Model >", function() {
     it("should hide direct to pdf link when configuration property is false", function() {
       browzine.primoArticlePDFDownloadLinkEnabled = false;
       expect(primo.showDirectToPDFLink()).toEqual(false);
+    });
+  });
+
+  describe("primo model directToPDFTemplate method >", function() {
+    it("should build a direct to pdf template for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var directToPDFUrl = primo.getDirectToPDFUrl(scope, data);
+      var template = primo.directToPDFTemplate(directToPDFUrl);
+
+      expect(data).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em;'><a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png' class='browzine-pdf-icon' style='margin-bottom: -1px; margin-right: 2.5px;' aria-hidden='true'/> <span class='browzine-web-link-text'>Download Now</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+
+      expect(template).toContain("Download Now");
+      expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png");
     });
   });
 

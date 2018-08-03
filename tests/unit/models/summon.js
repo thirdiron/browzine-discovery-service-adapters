@@ -382,6 +382,36 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model directToPDFTemplate method >", function() {
+    it("should build a direct to pdf template for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl);
+
+      expect(data).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img class='browzine-pdf-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png'/></div>");
+
+      expect(template).toContain("Article PDF");
+      expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+      expect(template).toContain("Download Now");
+      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+  });
+
   describe("summon model browzineWebLinkTemplate method >", function() {
     it("should build a browzine web link template for journal search results", function() {
       var scope = {
@@ -431,36 +461,6 @@ describe("Summon Model >", function() {
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
       expect(template).toContain("Browse Now");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
-
-      expect(template).toContain("text-decoration: underline;");
-      expect(template).toContain("color: #333;");
-    });
-  });
-
-  describe("summon model directToPDFTemplate method >", function() {
-    it("should build a direct to pdf template for article search results", function() {
-      var scope = {
-        document: {
-          content_type: "Journal Article",
-          dois: ["10.1136/bmj.h2575"]
-        }
-      };
-
-      var data = summon.getData(articleResponse);
-      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
-      var template = summon.directToPDFTemplate(directToPDFUrl);
-
-      expect(data).toBeDefined();
-      expect(directToPDFUrl).toBeDefined();
-
-      expect(template).toBeDefined();
-
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img class='browzine-pdf-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png'/></div>");
-
-      expect(template).toContain("Article PDF");
-      expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
-      expect(template).toContain("Download Now");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png");
 
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");

@@ -183,6 +183,23 @@ browzine.summon = (function() {
     return enableShowDirectToPDFLink;
   };
 
+  function directToPDFTemplate(directToPDFUrl) {
+    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png";
+    var articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
+    var articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
+
+    var template = "<div class='browzine'>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}'/>" +
+                   "</div>";
+
+    template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
+    template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
+    template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
+
+    return template;
+  };
+
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
@@ -206,28 +223,6 @@ browzine.summon = (function() {
     template = template.replace(/{browzineWebLink}/g, browzineWebLink);
     template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
     template = template.replace(/{bookIcon}/g, bookIcon);
-
-    return template;
-  };
-
-  function directToPDFTemplate(directToPDFUrl) {
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png";
-    var articlePDFDownloadWording = "";
-    var articlePDFDownloadLinkText = "";
-    var directToPDFTemplate = "";
-
-    articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
-    articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
-
-    var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}'/>" +
-                   "</div>";
-
-    template = template.replace(/{directToPDFTemplate}/g, directToPDFTemplate);
-    template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
-    template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
-    template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
-    template = template.replace(/{pdfIcon}/g, pdfIcon);
 
     return template;
   };
