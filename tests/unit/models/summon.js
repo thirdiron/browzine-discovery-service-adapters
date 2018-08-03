@@ -400,12 +400,12 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img class='browzine-pdf-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img class='browzine-pdf-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png' width='12'/></div>");
 
       expect(template).toContain("Article PDF");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
       expect(template).toContain("Download Now");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png");
+      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png");
 
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");
@@ -429,11 +429,11 @@ describe("Summon Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>View the Journal: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png'/></div>");
+      expect(template).toEqual("<div class='browzine'>View the Journal: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png'/></div>");
       expect(template).toContain("View the Journal");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
       expect(template).toContain("Browse Now");
-      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png");
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");
     });
@@ -455,12 +455,12 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png'/></div>");
+      expect(template).toEqual("<div class='browzine'>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;'>Browse Now</a> <img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png'/></div>");
 
       expect(template).toContain("View Complete Issue");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
       expect(template).toContain("Browse Now");
-      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png");
 
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");

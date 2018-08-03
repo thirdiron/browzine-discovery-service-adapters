@@ -214,12 +214,12 @@ browzine.primo = (function() {
   };
 
   function directToPDFTemplate(directToPDFUrl) {
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine_pdf_download_icon.png";
+    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png";
     var articlePDFDownloadLinkText = browzine.primoArticlePDFDownloadLinkText || "Download Now";
 
-    var template = "<div class='browzine' style='line-height: 1.4em;'>" +
+    var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
                       "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank'>" +
-                          "<img src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -1px; margin-right: 2.5px;' aria-hidden='true'/> " +
+                          "<img src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 2.8px;' aria-hidden='true' width='13'/> " +
                           "<span class='browzine-web-link-text'>{articlePDFDownloadLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
                       "</a>" +
@@ -234,7 +234,7 @@ browzine.primo = (function() {
 
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png";
 
     if(isJournal(scope)) {
       browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.primoJournalBrowZineWebLinkText || "View Journal Contents";
@@ -300,7 +300,17 @@ browzine.primo = (function() {
 
         if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl);
-          element.prepend(template);
+
+          (function poll() {
+            var elementParent = getElementParent(element);
+            var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
+
+            if(availabilityLine) {
+              availabilityLine.innerHTML = template + availabilityLine.innerHTML;
+            } else {
+              requestAnimationFrame(poll);
+            }
+          })();
         }
 
         if(browzineWebLink) {

@@ -146,7 +146,7 @@ browzine.serSol360Core = (function() {
 
   function browzineWebLinkTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png";
 
     browzineWebLinkText = browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
