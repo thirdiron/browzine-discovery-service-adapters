@@ -331,7 +331,7 @@ describe("Summon Model >", function() {
   });
 
   describe("summon model getDirectToPDFUrl method >", function() {
-    it("should not include a fullTextFile property in the BrowZine API response for a journal", function() {
+    it("should not return a direct to pdf url for journal search results", function() {
       var scope = {
         document: {
           content_type: "Journal",
@@ -346,7 +346,7 @@ describe("Summon Model >", function() {
       expect(summon.getDirectToPDFUrl(scope, data)).toBeNull();
     });
 
-    it("should include a fullTextFile property in the BrowZine API response for an article", function() {
+    it("should return a direct to pdf url for article search results", function() {
       var scope = {
         document: {
           content_type: "Journal Article",
@@ -363,6 +363,10 @@ describe("Summon Model >", function() {
   });
 
   describe("summon model showDirectToPDFLink method >", function() {
+    beforeEach(function() {
+      delete browzine.summonArticlePDFDownloadLinkEnabled;
+    });
+
     afterEach(function() {
       delete browzine.summonArticlePDFDownloadLinkEnabled;
     });

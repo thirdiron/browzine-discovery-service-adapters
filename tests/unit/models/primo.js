@@ -631,7 +631,7 @@ describe("Primo Model >", function() {
   });
 
   describe("primo model getDirectToPDFUrl method >", function() {
-    it("should not include a fullTextFile property in the BrowZine API response for a journal", function() {
+    it("should not return a direct to pdf url for journal search results", function() {
       var scope = {
         result: {
           pnx: {
@@ -653,7 +653,7 @@ describe("Primo Model >", function() {
       expect(primo.getDirectToPDFUrl(scope, data)).toBeNull();
     });
 
-    it("should include a fullTextFile property in the BrowZine API response for an article", function() {
+    it("should return a direct to pdf url for article search results", function() {
       var scope = {
         result: {
           pnx: {
@@ -678,6 +678,10 @@ describe("Primo Model >", function() {
   });
 
   describe("primo model showDirectToPDFLink method >", function() {
+    beforeEach(function() {
+      delete browzine.primoArticlePDFDownloadLinkEnabled;
+    });
+
     afterEach(function() {
       delete browzine.primoArticlePDFDownloadLinkEnabled;
     });
