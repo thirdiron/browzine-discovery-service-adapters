@@ -134,9 +134,19 @@ browzine.serSol360Core = (function() {
     return browzineEnabled;
   };
 
-  function buildTemplate(browzineWebLink) {
+  function isDefaultCoverImage(coverImageUrl) {
+    var defaultCoverImage = false;
+
+    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+      defaultCoverImage = true;
+    }
+
+    return defaultCoverImage;
+  };
+
+  function browzineWebLinkTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png";
 
     browzineWebLinkText = browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
@@ -160,14 +170,14 @@ browzine.serSol360Core = (function() {
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(data);
-        var browzineEnabled = getBrowZineEnabled(data);
+        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
         if(browzineWebLink) {
-          var template = buildTemplate(browzineWebLink);
+          var template = browzineWebLinkTemplate(browzineWebLink);
           $(title.target).find(".results-identifier").append(template);
         }
 
-        if(coverImageUrl && browzineEnabled) {
+        if(coverImageUrl && !defaultCoverImage) {
           var resultsTitleImageContainerSelector = ".results-title-image-div";
           var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
           var boxShadow = "1px 1px 2px #ccc";
@@ -204,7 +214,7 @@ browzine.serSol360Core = (function() {
 
   return {
     adapter: adapter,
-    buildTemplate: buildTemplate,
+    browzineWebLinkTemplate: browzineWebLinkTemplate,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineWebLink: getBrowZineWebLink,
     getData: getData,
@@ -217,6 +227,7 @@ browzine.serSol360Core = (function() {
     getTarget: getTarget,
     getIssn: getIssn,
     getBrowZineEnabled: getBrowZineEnabled,
+    isDefaultCoverImage: isDefaultCoverImage,
     searchTitles: searchTitles,
     urlRewrite: urlRewrite,
   };
