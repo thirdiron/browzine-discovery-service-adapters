@@ -306,7 +306,7 @@ browzine.primo = (function() {
             var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
 
             if(availabilityLine) {
-              availabilityLine.innerHTML = template + availabilityLine.innerHTML;
+              availabilityLine.insertAdjacentHTML('afterbegin', template);
             } else {
               requestAnimationFrame(poll);
             }
