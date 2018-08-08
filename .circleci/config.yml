@@ -12,13 +12,22 @@ build-environment: &build-environment
   name: Build Environment
   command: ~/project/.circleci/build.sh
 
+package-cache: &package-cache
+  key: package-cache-{{ checksum "package.json" }}
+
 jobs:
   build:
     <<: *settings
     steps:
       - checkout
+      - restore_cache:
+          <<: *package-cache
       - run:
           <<: *build-environment
+      - save_cache:
+          <<: *package-cache
+          paths:
+            - node_modules
       - run:
           name: Automated Tests
           command: |
@@ -28,8 +37,14 @@ jobs:
     <<: *settings
     steps:
       - checkout
+      - restore_cache:
+          <<: *package-cache
       - run:
           <<: *build-environment
+      - save_cache:
+          <<: *package-cache
+          paths:
+            - node_modules
       - run:
           name: Deploy Hotfix Summon
           command: |
@@ -49,8 +64,14 @@ jobs:
     <<: *settings
     steps:
       - checkout
+      - restore_cache:
+          <<: *package-cache
       - run:
           <<: *build-environment
+      - save_cache:
+          <<: *package-cache
+          paths:
+            - node_modules
       - run:
           name: Deploy Feature Summon
           command: |
@@ -70,8 +91,14 @@ jobs:
     <<: *settings
     steps:
       - checkout
+      - restore_cache:
+          <<: *package-cache
       - run:
           <<: *build-environment
+      - save_cache:
+          <<: *package-cache
+          paths:
+            - node_modules
       - run:
           name: Deploy Develop Summon
           command: |
@@ -91,8 +118,14 @@ jobs:
     <<: *settings
     steps:
       - checkout
+      - restore_cache:
+          <<: *package-cache
       - run:
           <<: *build-environment
+      - save_cache:
+          <<: *package-cache
+          paths:
+            - node_modules
       - run:
           name: Deploy Master Summon
           command: |
