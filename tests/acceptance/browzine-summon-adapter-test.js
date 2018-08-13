@@ -261,12 +261,66 @@ describe("BrowZine Summon Adapter >", function() {
         summon.adapter(documentSummary);
       });
 
-      afterEach(function() {
-
-      });
-
       it("should not have an enhanced browse article in browzine option", function() {
         var template = documentSummary.find(".browzine");
+        expect(template.text().trim()).toEqual("");
+      });
+    });
+
+    describe("search results article not browzineEnabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["02.2016/bmj.h0830"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        $.getJSON = function(endpoint, callback) {
+          expect(endpoint).toMatch(/articles\/doi\/02.2016%2Fbmj.h0830/);
+
+          return callback({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "Adefovir Dipivoxil for the Treatment of Hepatitis B e Antigen–Negative Chronic Hepatitis B",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": false,
+              "startPage": "h2575",
+              "endPage": "h2575"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": false
+            }]
+          });
+        };
+
+        summon.adapter(documentSummary);
+      });
+
+      it("should not have an enhanced browse article in browzine link in search result", function() {
+        var template = documentSummary.find(".browzine .browzine-web-link");
+        expect(template.text().trim()).toEqual("");
+      });
+
+      it("should not have an enhanced direct to pdf link in search result", function() {
+        var template = documentSummary.find(".browzine .browzine-direct-to-pdf-link");
         expect(template.text().trim()).toEqual("");
       });
     });

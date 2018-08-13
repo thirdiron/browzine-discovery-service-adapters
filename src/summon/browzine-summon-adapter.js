@@ -246,15 +246,16 @@ browzine.summon = (function() {
 
       var browzineWebLink = getBrowZineWebLink(data);
       var coverImageUrl = getCoverImageUrl(scope, data, journal);
+      var browzineEnabled = getBrowZineEnabled(scope, data, journal);
       var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
 
-      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
+      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
         var template = directToPDFTemplate(directToPDFUrl);
         $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
       }
 
-      if(browzineWebLink) {
+      if(browzineWebLink && browzineEnabled) {
         var template = browzineWebLinkTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }

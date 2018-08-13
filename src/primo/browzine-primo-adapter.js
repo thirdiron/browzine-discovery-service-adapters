@@ -293,12 +293,13 @@ browzine.primo = (function() {
 
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
+        var browzineEnabled = getBrowZineEnabled(scope, data, journal);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
 
         var element = getElement(scope);
 
-        if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
+        if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
           var template = directToPDFTemplate(directToPDFUrl);
 
           (function poll() {
@@ -313,7 +314,7 @@ browzine.primo = (function() {
           })();
         }
 
-        if(browzineWebLink) {
+        if(browzineWebLink && browzineEnabled) {
           var template = browzineWebLinkTemplate(scope, browzineWebLink);
           element.append(template);
         }
