@@ -174,7 +174,7 @@ browzine.summon = (function() {
 
   function showDirectToPDFLink() {
     var enableShowDirectToPDFLink = false;
-    var config = browzine.summonArticlePDFDownloadLinkEnabled;
+    var config = browzine.articlePDFDownloadLinkEnabled;
 
     if(typeof config === "undefined" || config === null || config === true) {
       enableShowDirectToPDFLink = true;
@@ -184,12 +184,12 @@ browzine.summon = (function() {
   };
 
   function directToPDFTemplate(directToPDFUrl) {
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png";
-    var articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
-    var articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
+    var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
+    var articlePDFDownloadWording = browzine.articlePDFDownloadWording || "Article PDF";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "Download Now";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' width='12'/>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 2.8px;' width='13' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
@@ -203,7 +203,7 @@ browzine.summon = (function() {
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
 
     if(isJournal(scope)) {
       wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
@@ -216,7 +216,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img class='browzine-book-icon' src='{bookIcon}'/>" +
+                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img class='browzine-book-icon' src='{bookIcon}' style='margin-bottom: 1px;' width='16' height='16'/>" +
                    "</div>";
 
     template = template.replace(/{wording}/g, wording);
@@ -246,15 +246,16 @@ browzine.summon = (function() {
 
       var browzineWebLink = getBrowZineWebLink(data);
       var coverImageUrl = getCoverImageUrl(scope, data, journal);
+      var browzineEnabled = getBrowZineEnabled(scope, data, journal);
       var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
 
-      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
+      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
         var template = directToPDFTemplate(directToPDFUrl);
         $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
       }
 
-      if(browzineWebLink) {
+      if(browzineWebLink && browzineEnabled) {
         var template = browzineWebLinkTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
