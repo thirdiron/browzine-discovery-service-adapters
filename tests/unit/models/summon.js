@@ -404,12 +404,12 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img class='browzine-pdf-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png' width='12'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img class='browzine-pdf-icon' src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg' width='11'/></div>");
 
       expect(template).toContain("Article PDF");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
       expect(template).toContain("Download Now");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png");
+      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg");
 
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");

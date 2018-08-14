@@ -129,7 +129,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
         expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
-        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png");
+        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg");
       });
 
       it("should have an enhanced browzine journal cover", function() {

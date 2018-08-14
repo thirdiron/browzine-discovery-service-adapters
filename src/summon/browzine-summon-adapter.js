@@ -184,12 +184,12 @@ browzine.summon = (function() {
   };
 
   function directToPDFTemplate(directToPDFUrl) {
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png";
+    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' width='12'/>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' width='11'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
