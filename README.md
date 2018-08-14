@@ -57,16 +57,19 @@ As a Custom Script Url:
 
 Customize the naming conventions for each type of search result - Journal/Article - by changing the wording in the quotes below:
 
-e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now". These customizations are optional and the defaults are shown below.
+e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" and whether to enable direct to PDF links. These customizations are optional and the defaults are shown below.
 
 ```
 var browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  summonJournalWording: "View the Journal",
-  summonArticleWording: "View Complete Issue",
-  summonJournalBrowZineWebLinkText: "Browse Now",
-  summonArticleBrowZineWebLinkText: "Browse Now",
+  journalWording: "View the Journal",
+  articleWording: "View Complete Issue",
+  journalBrowZineWebLinkText: "Browse Now",
+  articleBrowZineWebLinkText: "Browse Now",
+  articlePDFDownloadLinkEnabled: true,
+  articlePDFDownloadWording: "Article PDF",
+  articlePDFDownloadLinkText: "Download Now",
 };
 ```
 
@@ -104,7 +107,7 @@ e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 var browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  serSol360CoreJournalBrowZineWebLinkText: "View Journal in BrowZine",
+  journalBrowZineWebLinkText: "View Journal in BrowZine",
 };
 ```
 
@@ -123,8 +126,6 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
   window.browzine = {
     api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
     apiKey: "ENTER API KEY",
-    primoJournalBrowZineWebLinkText: "View Journal Contents",
-    primoArticleBrowZineWebLinkText: "View Issue Contents",
   };
 
   browzine.script = document.createElement("script");
@@ -160,8 +161,10 @@ e.g. You can customize "View Issue Contents" to be a different phrase.
 window.browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  primoJournalBrowZineWebLinkText: "View Journal Contents",
-  primoArticleBrowZineWebLinkText: "View Issue Contents",
+  journalBrowZineWebLinkText: "View Journal Contents",
+  articleBrowZineWebLinkText: "View Issue Contents",
+  articlePDFDownloadLinkEnabled: true,
+  articlePDFDownloadLinkText: "Download PDF",
 };
 ```
 
