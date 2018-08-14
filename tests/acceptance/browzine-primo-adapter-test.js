@@ -203,7 +203,7 @@ describe("BrowZine Primo Adapter >", function() {
     describe("search results article with browzine web link and disabled direct to pdf link >", function() {
       beforeEach(function() {
         primo = browzine.primo;
-        browzine.primoArticlePDFDownloadLinkEnabled = false;
+        browzine.articlePDFDownloadLinkEnabled = false;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
@@ -273,7 +273,7 @@ describe("BrowZine Primo Adapter >", function() {
 
       afterEach(function() {
         jasmine.Ajax.uninstall();
-        delete browzine.primoArticlePDFDownloadLinkEnabled;
+        delete browzine.articlePDFDownloadLinkEnabled;
       });
 
       it("should have an enhanced browse article in browzine option", function() {

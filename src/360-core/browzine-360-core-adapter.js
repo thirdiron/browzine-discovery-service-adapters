@@ -148,7 +148,7 @@ browzine.serSol360Core = (function() {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png";
 
-    browzineWebLinkText = browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
+    browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
     var template = "<div class='browzine' style='margin: 5px 0;'>" +
                      "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;'/> " +

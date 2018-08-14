@@ -364,11 +364,11 @@ describe("Summon Model >", function() {
 
   describe("summon model showDirectToPDFLink method >", function() {
     beforeEach(function() {
-      delete browzine.summonArticlePDFDownloadLinkEnabled;
+      delete browzine.articlePDFDownloadLinkEnabled;
     });
 
     afterEach(function() {
-      delete browzine.summonArticlePDFDownloadLinkEnabled;
+      delete browzine.articlePDFDownloadLinkEnabled;
     });
 
     it("should show direct to pdf link when configuration property is undefined or null", function() {
@@ -376,12 +376,12 @@ describe("Summon Model >", function() {
     });
 
     it("should show direct to pdf link when configuration property is true", function() {
-      browzine.summonArticlePDFDownloadLinkEnabled = true;
+      browzine.articlePDFDownloadLinkEnabled = true;
       expect(summon.showDirectToPDFLink()).toEqual(true);
     });
 
     it("should hide direct to pdf link when configuration property is false", function() {
-      browzine.summonArticlePDFDownloadLinkEnabled = false;
+      browzine.articlePDFDownloadLinkEnabled = false;
       expect(summon.showDirectToPDFLink()).toEqual(false);
     });
   });

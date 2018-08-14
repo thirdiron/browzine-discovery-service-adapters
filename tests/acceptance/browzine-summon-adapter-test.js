@@ -142,7 +142,7 @@ describe("BrowZine Summon Adapter >", function() {
     describe("search results article with browzine web link and disabled direct to pdf link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
-        browzine.summonArticlePDFDownloadLinkEnabled = false;
+        browzine.articlePDFDownloadLinkEnabled = false;
 
         documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
@@ -191,7 +191,7 @@ describe("BrowZine Summon Adapter >", function() {
       });
 
       afterEach(function() {
-        delete browzine.summonArticlePDFDownloadLinkEnabled;
+        delete browzine.articlePDFDownloadLinkEnabled;
       });
 
       it("should have an enhanced browse article in browzine option", function() {

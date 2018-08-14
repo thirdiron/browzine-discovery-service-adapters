@@ -679,11 +679,11 @@ describe("Primo Model >", function() {
 
   describe("primo model showDirectToPDFLink method >", function() {
     beforeEach(function() {
-      delete browzine.primoArticlePDFDownloadLinkEnabled;
+      delete browzine.articlePDFDownloadLinkEnabled;
     });
 
     afterEach(function() {
-      delete browzine.primoArticlePDFDownloadLinkEnabled;
+      delete browzine.articlePDFDownloadLinkEnabled;
     });
 
     it("should show direct to pdf link when configuration property is undefined or null", function() {
@@ -691,12 +691,12 @@ describe("Primo Model >", function() {
     });
 
     it("should show direct to pdf link when configuration property is true", function() {
-      browzine.primoArticlePDFDownloadLinkEnabled = true;
+      browzine.articlePDFDownloadLinkEnabled = true;
       expect(primo.showDirectToPDFLink()).toEqual(true);
     });
 
     it("should hide direct to pdf link when configuration property is false", function() {
-      browzine.primoArticlePDFDownloadLinkEnabled = false;
+      browzine.articlePDFDownloadLinkEnabled = false;
       expect(primo.showDirectToPDFLink()).toEqual(false);
     });
   });
