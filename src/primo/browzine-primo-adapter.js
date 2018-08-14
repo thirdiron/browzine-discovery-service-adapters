@@ -204,7 +204,7 @@ browzine.primo = (function() {
 
   function showDirectToPDFLink() {
     var enableShowDirectToPDFLink = false;
-    var config = browzine.primoArticlePDFDownloadLinkEnabled;
+    var config = browzine.articlePDFDownloadLinkEnabled;
 
     if(typeof config === "undefined" || config === null || config === true) {
       enableShowDirectToPDFLink = true;
@@ -214,12 +214,12 @@ browzine.primo = (function() {
   };
 
   function directToPDFTemplate(directToPDFUrl) {
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png";
-    var articlePDFDownloadLinkText = browzine.primoArticlePDFDownloadLinkText || "Download Now";
+    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "Download Now";
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
                       "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank'>" +
-                          "<img src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 2.8px;' aria-hidden='true' width='13'/> " +
+                          "<img src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 2.8px;' aria-hidden='true' width='12'/> " +
                           "<span class='browzine-web-link-text'>{articlePDFDownloadLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
                       "</a>" +
@@ -293,12 +293,13 @@ browzine.primo = (function() {
 
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
+        var browzineEnabled = getBrowZineEnabled(scope, data, journal);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
 
         var element = getElement(scope);
 
-        if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
+        if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
           var template = directToPDFTemplate(directToPDFUrl);
 
           (function poll() {
@@ -313,7 +314,7 @@ browzine.primo = (function() {
           })();
         }
 
-        if(browzineWebLink) {
+        if(browzineWebLink && browzineEnabled) {
           var template = browzineWebLinkTemplate(scope, browzineWebLink);
           element.append(template);
         }

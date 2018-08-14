@@ -63,13 +63,13 @@ e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" a
 var browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  summonJournalWording: "View the Journal",
-  summonArticleWording: "View Complete Issue",
-  summonJournalBrowZineWebLinkText: "Browse Now",
-  summonArticleBrowZineWebLinkText: "Browse Now",
-  summonArticlePDFDownloadLinkEnabled: true,
-  summonArticlePDFDownloadWording: "Article PDF",
-  summonArticlePDFDownloadLinkText: "Download Now",
+  journalWording: "View the Journal",
+  articleWording: "View Complete Issue",
+  journalBrowZineWebLinkText: "Browse Now",
+  articleBrowZineWebLinkText: "Browse Now",
+  articlePDFDownloadLinkEnabled: true,
+  articlePDFDownloadWording: "Article PDF",
+  articlePDFDownloadLinkText: "Download Now",
 };
 ```
 
@@ -107,7 +107,7 @@ e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 var browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  serSol360CoreJournalBrowZineWebLinkText: "View Journal in BrowZine",
+  journalBrowZineWebLinkText: "View Journal in BrowZine",
 };
 ```
 
@@ -161,10 +161,10 @@ e.g. You can customize "View Issue Contents" to be a different phrase.
 window.browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
-  primoJournalBrowZineWebLinkText: "View Journal Contents",
-  primoArticleBrowZineWebLinkText: "View Issue Contents",
-  primoArticlePDFDownloadLinkEnabled: true,
-  primoArticlePDFDownloadLinkText: "Download PDF",
+  journalBrowZineWebLinkText: "View Journal Contents",
+  articleBrowZineWebLinkText: "View Issue Contents",
+  articlePDFDownloadLinkEnabled: true,
+  articlePDFDownloadLinkText: "Download PDF",
 };
 ```
 

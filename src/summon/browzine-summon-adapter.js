@@ -174,7 +174,7 @@ browzine.summon = (function() {
 
   function showDirectToPDFLink() {
     var enableShowDirectToPDFLink = false;
-    var config = browzine.summonArticlePDFDownloadLinkEnabled;
+    var config = browzine.articlePDFDownloadLinkEnabled;
 
     if(typeof config === "undefined" || config === null || config === true) {
       enableShowDirectToPDFLink = true;
@@ -184,12 +184,12 @@ browzine.summon = (function() {
   };
 
   function directToPDFTemplate(directToPDFUrl) {
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.png";
-    var articlePDFDownloadWording = browzine.summonArticlePDFDownloadWording || "Article PDF";
-    var articlePDFDownloadLinkText = browzine.summonArticlePDFDownloadLinkText || "Download Now";
+    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg";
+    var articlePDFDownloadWording = browzine.articlePDFDownloadWording || "Article PDF";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "Download Now";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' width='12'/>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' width='11'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
@@ -246,15 +246,16 @@ browzine.summon = (function() {
 
       var browzineWebLink = getBrowZineWebLink(data);
       var coverImageUrl = getCoverImageUrl(scope, data, journal);
+      var browzineEnabled = getBrowZineEnabled(scope, data, journal);
       var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
 
-      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
+      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
         var template = directToPDFTemplate(directToPDFUrl);
         $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
       }
 
-      if(browzineWebLink) {
+      if(browzineWebLink && browzineEnabled) {
         var template = browzineWebLinkTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
