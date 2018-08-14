@@ -727,11 +727,11 @@ describe("Primo Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 2.8px;' aria-hidden='true' width='12' height='16'/> <span class='browzine-web-link-text'>Download Now</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank'><img src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 2.8px;' aria-hidden='true' width='12' height='16'/> <span class='browzine-web-link-text'>Download Now</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
 
       expect(template).toContain("Download Now");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
     });
   });
 
@@ -759,10 +759,10 @@ describe("Primo Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em;'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-open-book-icon.svg' class='browzine-book-icon' style='margin-bottom: -2px; margin-right: 2.5px;' aria-hidden='true' width='15' height='15'/> <span class='browzine-web-link-text'>View Journal Contents</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em;'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank'><img src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' class='browzine-book-icon' style='margin-bottom: -2px; margin-right: 2.5px;' aria-hidden='true' width='15' height='15'/> <span class='browzine-web-link-text'>View Journal Contents</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
       expect(template).toContain("View Journal Contents");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-open-book-icon.svg");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
     });
 
     it("should build an enhancement template for article search results", function() {
@@ -789,10 +789,10 @@ describe("Primo Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em;'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank'><img src='https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-open-book-icon.svg' class='browzine-book-icon' style='margin-bottom: -2px; margin-right: 2.5px;' aria-hidden='true' width='15' height='15'/> <span class='browzine-web-link-text'>View Issue Contents</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em;'><a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank'><img src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' class='browzine-book-icon' style='margin-bottom: -2px; margin-right: 2.5px;' aria-hidden='true' width='15' height='15'/> <span class='browzine-web-link-text'>View Issue Contents</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
       expect(template).toContain("View Issue Contents");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
-      expect(template).toContain("https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-open-book-icon.svg");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
     });
   });
 });

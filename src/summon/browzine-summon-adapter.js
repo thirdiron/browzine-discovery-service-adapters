@@ -184,7 +184,7 @@ browzine.summon = (function() {
   };
 
   function directToPDFTemplate(directToPDFUrl) {
-    var pdfIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-pdf-download-icon.svg";
+    var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadWording = browzine.articlePDFDownloadWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "Download Now";
 
@@ -203,7 +203,7 @@ browzine.summon = (function() {
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
-    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-open-book-icon.svg";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
 
     if(isJournal(scope)) {
       wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
