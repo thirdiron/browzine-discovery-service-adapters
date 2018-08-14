@@ -189,7 +189,7 @@ browzine.summon = (function() {
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "Download Now";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' width='11'/>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 2.8px;' width='13' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
@@ -203,7 +203,7 @@ browzine.summon = (function() {
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png";
+    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-open-book-icon.svg";
 
     if(isJournal(scope)) {
       wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
@@ -216,7 +216,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img class='browzine-book-icon' src='{bookIcon}'/>" +
+                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img class='browzine-book-icon' src='{bookIcon}' style='margin-bottom: 1px;' width='16' height='16'/>" +
                    "</div>";
 
     template = template.replace(/{wording}/g, wording);

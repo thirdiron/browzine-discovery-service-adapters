@@ -146,12 +146,12 @@ browzine.serSol360Core = (function() {
 
   function browzineWebLinkTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.png";
+    var bookIcon = "https://s3.amazonaws.com/thirdiron-assets/images/integrations/browzine-open-book-icon.svg";
 
     browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
     var template = "<div class='browzine' style='margin: 5px 0;'>" +
-                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;'/> " +
+                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;' width='16' height='15'/> " +
                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='font-weight: 300;'>{browzineWebLinkText}</a>" +
                    "</div>";
 
