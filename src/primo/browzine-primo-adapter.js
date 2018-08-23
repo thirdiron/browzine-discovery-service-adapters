@@ -204,10 +204,15 @@ browzine.primo = (function() {
 
   function showDirectToPDFLink() {
     var enableShowDirectToPDFLink = false;
-    var config = browzine.primoArticlePDFDownloadLinkEnabled || browzine.articlePDFDownloadLinkEnabled;
+    var config = browzine.articlePDFDownloadLinkEnabled;
+    var prefixConfig = browzine.primoArticlePDFDownloadLinkEnabled;
 
     if(typeof config === "undefined" || config === null || config === true) {
       enableShowDirectToPDFLink = true;
+    }
+
+    if(typeof prefixConfig !== "undefined" && prefixConfig !== null && prefixConfig === false) {
+      enableShowDirectToPDFLink = false;
     }
 
     return enableShowDirectToPDFLink;

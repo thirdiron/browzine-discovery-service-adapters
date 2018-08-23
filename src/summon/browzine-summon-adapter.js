@@ -174,10 +174,15 @@ browzine.summon = (function() {
 
   function showDirectToPDFLink() {
     var enableShowDirectToPDFLink = false;
-    var config = browzine.summonArticlePDFDownloadLinkEnabled || browzine.articlePDFDownloadLinkEnabled;
+    var config = browzine.articlePDFDownloadLinkEnabled;
+    var prefixConfig = browzine.summonArticlePDFDownloadLinkEnabled;
 
     if(typeof config === "undefined" || config === null || config === true) {
       enableShowDirectToPDFLink = true;
+    }
+
+    if(typeof prefixConfig !== "undefined" && prefixConfig !== null && prefixConfig === false) {
+      enableShowDirectToPDFLink = false;
     }
 
     return enableShowDirectToPDFLink;
