@@ -180,9 +180,61 @@ browzine.primo = (function() {
     return browzineEnabled;
   };
 
-  function buildTemplate(scope, browzineWebLink) {
+  function isDefaultCoverImage(coverImageUrl) {
+    var defaultCoverImage = false;
+
+    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+      defaultCoverImage = true;
+    }
+
+    return defaultCoverImage;
+  };
+
+  function getDirectToPDFUrl(scope, data) {
+    var directToPDFUrl = null;
+
+    if(isArticle(scope)) {
+      if(data.fullTextFile) {
+        directToPDFUrl = data.fullTextFile;
+      }
+    }
+
+    return directToPDFUrl;
+  };
+
+  function showDirectToPDFLink() {
+    var enableShowDirectToPDFLink = false;
+    var config = browzine.primoArticlePDFDownloadLinkEnabled || browzine.articlePDFDownloadLinkEnabled;
+
+    if(typeof config === "undefined" || config === null || config === true) {
+      enableShowDirectToPDFLink = true;
+    }
+
+    return enableShowDirectToPDFLink;
+  };
+
+  function directToPDFTemplate(directToPDFUrl) {
+    var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.primoArticlePDFDownloadLinkText  || "Download Now";
+
+    var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
+                      "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank'>" +
+                          "<img src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 2.8px;' aria-hidden='true' width='12' height='16'/> " +
+                          "<span class='browzine-web-link-text'>{articlePDFDownloadLinkText}</span> " +
+                          "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
+                      "</a>" +
+                   "</div>";
+
+    template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
+    template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
+
+    return template;
+  };
+
+  function browzineWebLinkTemplate(scope, browzineWebLink) {
     var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
 
     if(isJournal(scope)) {
       browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.primoJournalBrowZineWebLinkText || "View Journal Contents";
@@ -194,7 +246,7 @@ browzine.primo = (function() {
 
     var template = "<div class='browzine' style='line-height: 1.4em;'>" +
                       "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank'>" +
-                          "<img src='{bookIcon}' class='browzine-book-icon' style='margin-bottom: -1px; margin-right: 2.5px;' aria-hidden='true'/> " +
+                          "<img src='{bookIcon}' class='browzine-book-icon' style='margin-bottom: -2px; margin-right: 2.5px;' aria-hidden='true' width='15' height='15'/> " +
                           "<span class='browzine-web-link-text'>{browzineWebLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
                       "</a>" +
@@ -242,14 +294,32 @@ browzine.primo = (function() {
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
         var browzineEnabled = getBrowZineEnabled(scope, data, journal);
+        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
+        var directToPDFUrl = getDirectToPDFUrl(scope, data);
+
         var element = getElement(scope);
 
+        if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
+          var template = directToPDFTemplate(directToPDFUrl);
+
+          (function poll() {
+            var elementParent = getElementParent(element);
+            var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
+
+            if(availabilityLine) {
+              availabilityLine.insertAdjacentHTML('afterbegin', template);
+            } else {
+              requestAnimationFrame(poll);
+            }
+          })();
+        }
+
         if(browzineWebLink && browzineEnabled) {
-          var template = buildTemplate(scope, browzineWebLink);
+          var template = browzineWebLinkTemplate(scope, browzineWebLink);
           element.append(template);
         }
 
-        if(coverImageUrl && browzineEnabled) {
+        if(coverImageUrl && !defaultCoverImage) {
           (function poll() {
             var elementParent = getElementParent(element);
             var coverImages = elementParent.querySelectorAll("prm-search-result-thumbnail-container img");
@@ -286,7 +356,11 @@ browzine.primo = (function() {
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
-    buildTemplate: buildTemplate,
+    isDefaultCoverImage: isDefaultCoverImage,
+    getDirectToPDFUrl: getDirectToPDFUrl,
+    showDirectToPDFLink: showDirectToPDFLink,
+    directToPDFTemplate: directToPDFTemplate,
+    browzineWebLinkTemplate: browzineWebLinkTemplate,
     getElement: getElement,
     getElementParent: getElementParent,
     getScope: getScope,

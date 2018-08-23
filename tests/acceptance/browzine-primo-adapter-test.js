@@ -78,7 +78,7 @@ describe("BrowZine Primo Adapter >", function() {
       expect(template.text().trim()).toEqual("View Journal Contents");
       expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
       expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
+      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
     });
 
     it("should have an enhanced browzine journal cover", function(done) {
@@ -95,97 +95,292 @@ describe("BrowZine Primo Adapter >", function() {
   });
 
   describe("search results article >", function() {
-    beforeEach(function() {
-      primo = browzine.primo;
+    describe("search results article with both browzine web link and direct to pdf link >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
 
-      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
-      inject(function ($compile, $rootScope) {
-        $scope = $rootScope.$new();
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
 
-        $scope.$ctrl = {
-          parentCtrl: {
-            result: {
-              pnx: {
-                display: {
-                  type: ["article"]
-                },
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
 
-                addata: {
-                  issn: ["0028-4793"],
-                  doi: ["10.1136/bmj.h2575"]
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1136/bmj.h2575"]
+                  }
                 }
               }
             }
-          }
-        };
+          };
 
-        searchResult = $compile(searchResult)($scope);
-      });
-
-      $scope.$ctrl.parentCtrl.$element = searchResult;
-
-      jasmine.Ajax.install();
-
-      primo.searchResult($scope);
-
-      var request = jasmine.Ajax.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        contentType: "application/json",
-        response: JSON.stringify({
-          "data": {
-            "id": 55134408,
-            "type": "articles",
-            "title": "New England Journal of Medicine reconsiders relationship with industry",
-            "date": "2015-05-12",
-            "authors": "McCarthy, M.",
-            "inPress": false,
-            "availableThroughBrowzine": true,
-            "startPage": "h2575",
-            "endPage": "h2575",
-            "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575"
-          },
-          "included": [{
-            "id": 18126,
-            "type": "journals",
-            "title": "theBMJ",
-            "issn": "09598138",
-            "sjrValue": 2.567,
-            "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
-            "browzineEnabled": true,
-            "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
-          }]
-        })
-      });
-
-      expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
-      expect(request.method).toBe('GET');
-    });
-
-    afterEach(function() {
-      jasmine.Ajax.uninstall();
-    });
-
-    it("should have an enhanced browse article in browzine option", function() {
-      var template = searchResult.find(".browzine");
-      expect(template).toBeDefined();
-      expect(template.text().trim()).toEqual("View Issue Contents");
-      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
-      expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
-    });
-
-    it("should have an enhanced browzine journal cover", function(done) {
-      requestAnimationFrame(function() {
-        var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
-        expect(coverImages).toBeDefined();
-
-        Array.prototype.forEach.call(coverImages, function(coverImage) {
-          expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+          searchResult = $compile(searchResult)($scope);
         });
 
-        done();
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should have an enhanced browse article in browzine option", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Issue Contents");
+        expect(template.text().trim()).toContain("Download Now");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+          });
+
+          done();
+        });
+      });
+    });
+
+    describe("search results article with browzine web link and disabled direct to pdf link >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+        browzine.articlePDFDownloadLinkEnabled = false;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1136/bmj.h2575"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+        delete browzine.articlePDFDownloadLinkEnabled;
+      });
+
+      it("should have an enhanced browse article in browzine option", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Issue Contents");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+          });
+
+          done();
+        });
+      });
+    });
+
+    describe("search results article not browzineEnabled >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1136/bmj.h2575"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": false,
+              "startPage": "h2575",
+              "endPage": "h2575"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": false
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should not have an enhanced browse article in browzine link in search result", function() {
+        var template = searchResult.find(".browzine .browzine-web-link");
+        expect(template.text().trim()).toEqual("");
+      });
+
+      it("should not have an enhanced direct to pdf link in search result", function() {
+        var template = searchResult.find(".browzine .browzine-direct-to-pdf-link");
+        expect(template.text().trim()).toEqual("");
       });
     });
   });
