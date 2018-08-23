@@ -204,7 +204,7 @@ browzine.primo = (function() {
 
   function showDirectToPDFLink() {
     var enableShowDirectToPDFLink = false;
-    var config = browzine.articlePDFDownloadLinkEnabled;
+    var config = browzine.primoArticlePDFDownloadLinkEnabled || browzine.articlePDFDownloadLinkEnabled;
 
     if(typeof config === "undefined" || config === null || config === true) {
       enableShowDirectToPDFLink = true;
@@ -215,7 +215,7 @@ browzine.primo = (function() {
 
   function directToPDFTemplate(directToPDFUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
-    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "Download Now";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.primoArticlePDFDownloadLinkText  || "Download Now";
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
                       "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank'>" +
