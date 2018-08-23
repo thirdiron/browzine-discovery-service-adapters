@@ -714,6 +714,16 @@ describe("Primo Model >", function() {
   });
 
   describe("primo model directToPDFTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articlePDFDownloadLinkText;
+      delete browzine.primoArticlePDFDownloadLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articlePDFDownloadLinkText;
+      delete browzine.primoArticlePDFDownloadLinkText;
+    });
+
     it("should build a direct to pdf template for article search results", function() {
       var scope = {
         result: {
@@ -744,6 +754,56 @@ describe("Primo Model >", function() {
       expect(template).toContain("Download Now");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+    });
+
+    it("should apply the articlePDFDownloadLinkText config property", function() {
+      browzine.articlePDFDownloadLinkText = "Download PDF";
+
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var directToPDFUrl = primo.getDirectToPDFUrl(scope, data);
+      var template = primo.directToPDFTemplate(directToPDFUrl);
+
+      expect(template).toContain("Download PDF");
+    });
+
+    it("should apply the primoArticlePDFDownloadLinkText config property", function() {
+      browzine.primoArticlePDFDownloadLinkText = "Download PDF Now";
+
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var directToPDFUrl = primo.getDirectToPDFUrl(scope, data);
+      var template = primo.directToPDFTemplate(directToPDFUrl);
+
+      expect(template).toContain("Download PDF Now");
     });
   });
 

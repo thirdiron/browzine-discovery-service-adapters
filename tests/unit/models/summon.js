@@ -399,6 +399,20 @@ describe("Summon Model >", function() {
   });
 
   describe("summon model directToPDFTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articlePDFDownloadWording;
+      delete browzine.summonArticlePDFDownloadWording;
+      delete browzine.articlePDFDownloadLinkText;
+      delete browzine.summonArticlePDFDownloadLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articlePDFDownloadWording;
+      delete browzine.summonArticlePDFDownloadWording;
+      delete browzine.articlePDFDownloadLinkText;
+      delete browzine.summonArticlePDFDownloadLinkText;
+    });
+
     it("should build a direct to pdf template for article search results", function() {
       var scope = {
         document: {
@@ -425,6 +439,74 @@ describe("Summon Model >", function() {
 
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articlePDFDownloadWording config property", function() {
+      browzine.articlePDFDownloadWording = "Journal Article PDF";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl);
+
+      expect(template).toContain("Journal Article PDF");
+    });
+
+    it("should apply the summonArticlePDFDownloadWording config property", function() {
+      browzine.summonArticlePDFDownloadWording = "Journal Article PDF 2";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl);
+
+      expect(template).toContain("Journal Article PDF 2");
+    });
+
+    it("should apply the articlePDFDownloadLinkText config property", function() {
+      browzine.articlePDFDownloadLinkText = "Download PDF";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl);
+
+      expect(template).toContain("Download PDF");
+    });
+
+    it("should apply the summonArticlePDFDownloadLinkText config property", function() {
+      browzine.summonArticlePDFDownloadLinkText = "Download PDF Now";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl);
+
+      expect(template).toContain("Download PDF Now");
     });
   });
 
