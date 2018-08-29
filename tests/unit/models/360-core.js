@@ -344,20 +344,32 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
-  describe("serSol360Core model buildTemplate method >", function() {
+  describe("serSol360Core model isDefaultCoverImage method >", function() {
+    it("should return false when an actual coverImageUrl is returned by the API", function() {
+      var coverImageUrl = "https://assets.thirdiron.com/images/covers/0028-4793.png";
+      expect(serSol360Core.isDefaultCoverImage(coverImageUrl)).toEqual(false);
+    });
+
+    it("should return true when a default coverImageUrl is returned by the API", function() {
+      var coverImageUrl = "https://assets.thirdiron.com/images/covers/default.png";
+      expect(serSol360Core.isDefaultCoverImage(coverImageUrl)).toEqual(true);
+    });
+  });
+
+  describe("serSol360Core model browzineWebLinkTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var data = serSol360Core.getData(journalResponse);
       var browzineWebLink = serSol360Core.getBrowZineWebLink(data);
-      var template = serSol360Core.buildTemplate(browzineWebLink);
+      var template = serSol360Core.browzineWebLinkTemplate(browzineWebLink);
 
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine' style='margin: 5px 0;'><img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png' style='margin-top: -3px; display: inline;'/> <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='font-weight: 300;'>View Journal in BrowZine</a></div>");
+      expect(template).toEqual("<div class='browzine' style='margin: 5px 0;'><img class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' style='margin-top: -3px; display: inline;' width='16' height='15'/> <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='font-weight: 300;'>View Journal in BrowZine</a></div>");
       expect(template).toContain("View Journal in BrowZine");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
-      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
       expect(template).toContain("margin: 5px 0;");
       expect(template).toContain("margin-top: -3px;");
       expect(template).toContain("font-weight: 300;");
@@ -372,7 +384,7 @@ describe("SerSol 360 Core Model >", function() {
         expect(template.text().trim()).toContain("View Journal in BrowZine");
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
       })
     });
 

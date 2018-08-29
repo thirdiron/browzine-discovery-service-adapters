@@ -134,14 +134,24 @@ browzine.serSol360Core = (function() {
     return browzineEnabled;
   };
 
-  function buildTemplate(browzineWebLink) {
-    var browzineWebLinkText = "";
-    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine_open_book_icon.png";
+  function isDefaultCoverImage(coverImageUrl) {
+    var defaultCoverImage = false;
 
-    browzineWebLinkText = browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
+    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+      defaultCoverImage = true;
+    }
+
+    return defaultCoverImage;
+  };
+
+  function browzineWebLinkTemplate(browzineWebLink) {
+    var browzineWebLinkText = "";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
+
+    browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
     var template = "<div class='browzine' style='margin: 5px 0;'>" +
-                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;'/> " +
+                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;' width='16' height='15'/> " +
                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='font-weight: 300;'>{browzineWebLinkText}</a>" +
                    "</div>";
 
@@ -160,14 +170,14 @@ browzine.serSol360Core = (function() {
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(data);
-        var browzineEnabled = getBrowZineEnabled(data);
+        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
         if(browzineWebLink) {
-          var template = buildTemplate(browzineWebLink);
+          var template = browzineWebLinkTemplate(browzineWebLink);
           $(title.target).find(".results-identifier").append(template);
         }
 
-        if(coverImageUrl && browzineEnabled) {
+        if(coverImageUrl && !defaultCoverImage) {
           var resultsTitleImageContainerSelector = ".results-title-image-div";
           var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
           var boxShadow = "1px 1px 2px #ccc";
@@ -204,7 +214,7 @@ browzine.serSol360Core = (function() {
 
   return {
     adapter: adapter,
-    buildTemplate: buildTemplate,
+    browzineWebLinkTemplate: browzineWebLinkTemplate,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineWebLink: getBrowZineWebLink,
     getData: getData,
@@ -217,6 +227,7 @@ browzine.serSol360Core = (function() {
     getTarget: getTarget,
     getIssn: getIssn,
     getBrowZineEnabled: getBrowZineEnabled,
+    isDefaultCoverImage: isDefaultCoverImage,
     searchTitles: searchTitles,
     urlRewrite: urlRewrite,
   };
