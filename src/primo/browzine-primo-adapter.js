@@ -266,7 +266,7 @@ browzine.primo = (function() {
       if(result.delivery.deliveryCategory) {
         var deliveryCategory = result.delivery.deliveryCategory[0].trim().toLowerCase();
 
-        if(deliveryCategory === "alma-e" && !showPrintRecords()) {
+        if(deliveryCategory === "alma-p" && !showPrintRecords()) {
           validation = true;
         }
       }
