@@ -59,10 +59,6 @@ browzine.serSol360Core = (function() {
     return endpoint;
   };
 
-  function shouldEnhance(issn) {
-    return !!issn;
-  };
-
   function addTargets(titles) {
     var titlesToEnhance = [];
 
@@ -144,6 +140,32 @@ browzine.serSol360Core = (function() {
     return defaultCoverImage;
   };
 
+  function showJournalCoverImages() {
+    var featureEnabled = false;
+    var config = browzine.journalCoverImagesEnabled;
+
+    if(typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
+  function showJournalBrowZineWebLinkText() {
+    var featureEnabled = false;
+    var config = browzine.journalBrowZineWebLinkTextEnabled;
+
+    if(typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
+  function shouldEnhance(issn) {
+    return !!issn;
+  };
+
   function browzineWebLinkTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
@@ -172,12 +194,12 @@ browzine.serSol360Core = (function() {
         var coverImageUrl = getCoverImageUrl(data);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
-        if(browzineWebLink) {
+        if(browzineWebLink && showJournalBrowZineWebLinkText()) {
           var template = browzineWebLinkTemplate(browzineWebLink);
           $(title.target).find(".results-identifier").append(template);
         }
 
-        if(coverImageUrl && !defaultCoverImage) {
+        if(coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
           var resultsTitleImageContainerSelector = ".results-title-image-div";
           var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
           var boxShadow = "1px 1px 2px #ccc";
@@ -230,6 +252,8 @@ browzine.serSol360Core = (function() {
     isDefaultCoverImage: isDefaultCoverImage,
     searchTitles: searchTitles,
     urlRewrite: urlRewrite,
+    showJournalCoverImages: showJournalCoverImages,
+    showJournalBrowZineWebLinkText: showJournalBrowZineWebLinkText,
   };
 }());
 
