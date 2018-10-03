@@ -165,6 +165,54 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
+  describe("serSol360Core model showJournalCoverImages method >", function() {
+    beforeEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    it("should show journal cover when configuration property is undefined or null", function() {
+      expect(serSol360Core.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should show journal cover when configuration property is true", function() {
+      browzine.journalCoverImagesEnabled = true;
+      expect(serSol360Core.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should not show journal cover when configuration property is false", function() {
+      browzine.journalCoverImagesEnabled = false;
+      expect(serSol360Core.showJournalCoverImages()).toEqual(false);
+    });
+  });
+
+  describe("serSol360Core model showJournalBrowZineWebLinkText method >", function() {
+    beforeEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    it("should show issue link when configuration property is undefined or null", function() {
+      expect(serSol360Core.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should show issue link when configuration property is true", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = true;
+      expect(serSol360Core.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should not show issue link when configuration property is false", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = false;
+      expect(serSol360Core.showJournalBrowZineWebLinkText()).toEqual(false);
+    });
+  });
+
   describe("serSol360Core model shouldEnhance method >", function() {
     it("should not enhance a search result without an issn", function() {
       var issn = '';

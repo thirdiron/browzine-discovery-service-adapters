@@ -435,6 +435,7 @@ browzine.primo = (function() {
     showArticleBrowZineWebLinkText: showArticleBrowZineWebLinkText,
     showDirectToPDFLink: showDirectToPDFLink,
     showPrintRecords: showPrintRecords,
+    isFiltered: isFiltered,
     directToPDFTemplate: directToPDFTemplate,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     getElement: getElement,

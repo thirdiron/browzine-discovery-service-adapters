@@ -344,6 +344,8 @@ browzine.summon = (function() {
     showJournalBrowZineWebLinkText: showJournalBrowZineWebLinkText,
     showArticleBrowZineWebLinkText: showArticleBrowZineWebLinkText,
     showDirectToPDFLink: showDirectToPDFLink,
+    showPrintRecords: showPrintRecords,
+    isFiltered: isFiltered,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     directToPDFTemplate: directToPDFTemplate,
     urlRewrite: urlRewrite,
