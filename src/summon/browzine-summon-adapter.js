@@ -285,7 +285,19 @@ browzine.summon = (function() {
   };
 
   function shouldEnhance(scope) {
-    return !!(!isFiltered(scope) && ((isJournal(scope) && getIssn(scope)) || (isArticle(scope) && getDoi(scope))));
+    var validation = false;
+
+    if(!isFiltered(scope)) {
+      if(isJournal(scope) && getIssn(scope)) {
+        validation = true;
+      }
+
+      if(isArticle(scope) && getDoi(scope)) {
+        validation = true;
+      }
+    }
+
+    return validation;
   };
 
   function adapter(documentSummary) {
