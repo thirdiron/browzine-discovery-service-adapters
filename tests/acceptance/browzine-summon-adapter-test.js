@@ -4,59 +4,125 @@ describe("BrowZine Summon Adapter >", function() {
   $("body").append("<div id='results'></div>");
 
   describe("search results journal >", function() {
-    beforeEach(function() {
-      summon = browzine.summon;
+    describe("search results journal with browzine web link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
 
-      documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
 
-      inject(function ($compile, $rootScope) {
-        $scope = $rootScope.$new();
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
 
-        $scope.document = {
-          content_type: "Journal",
-          issns: ["0028-4793"]
+          $scope.document = {
+            content_type: "Journal",
+            issns: ["0028-4793"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        $.getJSON = function(endpoint, callback) {
+          expect(endpoint).toMatch(/search\?issns=00284793/);
+
+          return callback({
+            "data": [{
+              "id": 10292,
+              "type": "journals",
+              "title": "New England Journal of Medicine (NEJM)",
+              "issn": "00284793",
+              "sjrValue": 14.619,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
+            }]
+          });
         };
 
-        documentSummary = $compile(documentSummary)($scope);
+        summon.adapter(documentSummary);
       });
 
-      $.getJSON = function(endpoint, callback) {
-        expect(endpoint).toMatch(/search\?issns=00284793/);
+      afterEach(function() {
 
-        return callback({
-          "data": [{
-            "id": 10292,
-            "type": "journals",
-            "title": "New England Journal of Medicine (NEJM)",
-            "issn": "00284793",
-            "sjrValue": 14.619,
-            "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
-            "browzineEnabled": true,
-            "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
-          }]
+      });
+
+      it("should have an enhanced browse journal in browzine option", function() {
+        var template = documentSummary.find(".browzine");
+        expect(template).toBeDefined();
+        expect(template.text().trim()).toEqual("View the Journal: Browse Now");
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      });
+    });
+
+    describe("search results journal with configuration flags disabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+        browzine.journalCoverImagesEnabled = false;
+        browzine.journalBrowZineWebLinkTextEnabled = false;
+        browzine.printRecordsIntegrationEnabled = false;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal",
+            issns: ["0028-4793"],
+            is_print: true
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
         });
-      };
 
-      summon.adapter(documentSummary);
-    });
+        $.getJSON = function(endpoint, callback) {
+          console.log("$.getJSON");
+          expect(endpoint).toMatch(/search\?issns=00284793/);
 
-    afterEach(function() {
+          return callback({
+            "data": [{
+              "id": 10292,
+              "type": "journals",
+              "title": "New England Journal of Medicine (NEJM)",
+              "issn": "00284793",
+              "sjrValue": 14.619,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
+            }]
+          });
+        };
 
-    });
+        summon.adapter(documentSummary);
+      });
 
-    it("should have an enhanced browse journal in browzine option", function() {
-      var template = documentSummary.find(".browzine");
-      expect(template).toBeDefined();
-      expect(template.text().trim()).toEqual("View the Journal: Browse Now");
-      expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
-      expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
-      expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
-    });
+      afterEach(function() {
+        delete browzine.journalCoverImagesEnabled;
+        delete browzine.journalBrowZineWebLinkTextEnabled;
+        delete browzine.printRecordsIntegrationEnabled;
+      });
 
-    it("should have an enhanced browzine journal cover", function() {
-      var coverImage = documentSummary.find(".coverImage img");
-      expect(coverImage).toBeDefined();
-      expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      it("should not have an browzine web issue link", function() {
+        var template = documentSummary.find(".browzine-web-link");
+        expect(template.length).toEqual(0);
+      });
+
+      it("should not have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage.attr("src")).not.toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      });
+
+      it("should not enhance a print record when print record integration is disabled", function() {
+        var template = documentSummary.find(".browzine-web-link");
+        expect(template.length).toEqual(0);
+      });
     });
   });
 
@@ -210,6 +276,89 @@ describe("BrowZine Summon Adapter >", function() {
         var coverImage = documentSummary.find(".coverImage img");
         expect(coverImage).toBeDefined();
         expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+      });
+    });
+
+    describe("search results article with configuration flags disabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+        browzine.journalCoverImagesEnabled = false;
+        browzine.articleBrowZineWebLinkTextEnabled = false;
+        browzine.articlePDFDownloadLinkEnabled = false;
+        browzine.printRecordsIntegrationEnabled = false;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1136/bmj.h2575"],
+            is_print: true
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        $.getJSON = function(endpoint, callback) {
+          expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+
+          return callback({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          });
+        };
+
+        summon.adapter(documentSummary);
+      });
+
+      afterEach(function() {
+        delete browzine.journalCoverImagesEnabled;
+        delete browzine.articleBrowZineWebLinkTextEnabled;
+        delete browzine.articlePDFDownloadLinkEnabled;
+        delete browzine.printRecordsIntegrationEnabled;
+      });
+
+      it("should not have a browzine direct to pdf link", function() {
+        var template = documentSummary.find(".browzine-direct-to-pdf-link");
+        expect(template.length).toEqual(0);
+      });
+
+      it("should not have an article in browzine context web link", function() {
+        var template = documentSummary.find(".browzine-web-link");
+        expect(template.length).toEqual(0);
+      });
+
+      it("should not have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage.attr("src")).not.toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+      });
+
+      it("should not enhance a print record when print record integration is disabled", function() {
+        var template = documentSummary.find(".browzine-web-link");
+        expect(template.length).toEqual(0);
       });
     });
 
