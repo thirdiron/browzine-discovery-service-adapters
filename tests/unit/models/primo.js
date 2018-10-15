@@ -147,6 +147,34 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model libraryIdOverride method >", function() {
+    beforeEach(function() {
+      browzine.libraryId = 123;
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should override the libraryId on the api endpoint when specified", function() {
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should override the libraryId on the api endpoint even when an api endpoint is specified", function() {
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("primo model shouldEnhance method >", function() {
     it("should not enhance a search result without scope data", function() {
       var scope = {};
