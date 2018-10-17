@@ -130,6 +130,34 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
+  describe("serSol360Core model libraryIdOverride method >", function() {
+    beforeEach(function() {
+      browzine.libraryId = 123;
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should override the libraryId on the api endpoint when specified", function() {
+      expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should override the libraryId on the api endpoint even when an api endpoint is specified", function() {
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+
+      expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("serSol360Core model getIssn method >", function() {
     it("should extract an issn from the identifiers array when available", function() {
       var title = titles[0];

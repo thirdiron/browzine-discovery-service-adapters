@@ -1,9 +1,26 @@
 browzine.serSol360Core = (function() {
-  var api = urlRewrite(browzine.api);
+  var libraryId = browzine.libraryId;
+  var api = libraryIdOverride(urlRewrite(browzine.api));
   var apiKey = browzine.apiKey;
 
   function urlRewrite(url) {
-    return url.indexOf("public-api.thirdiron.com") > 0 ? url : url.replace("api.thirdiron.com", "public-api.thirdiron.com");
+    if(!url) {
+      return;
+    }
+
+    return url.indexOf("public-api.thirdiron.com") > -1 ? url : url.replace("api.thirdiron.com", "public-api.thirdiron.com");
+  };
+
+  function libraryIdOverride(url) {
+    var override = url;
+    var libraryId = browzine.libraryId;
+
+    if(libraryId) {
+      var baseUrl = "https://public-api.thirdiron.com/public/v1/libraries/{libraryId}";
+      override = baseUrl.replace(/{libraryId}/g, libraryId);
+    }
+
+    return override;
   };
 
   function getIssn(title) {
@@ -252,6 +269,7 @@ browzine.serSol360Core = (function() {
     isDefaultCoverImage: isDefaultCoverImage,
     searchTitles: searchTitles,
     urlRewrite: urlRewrite,
+    libraryIdOverride: libraryIdOverride,
     showJournalCoverImages: showJournalCoverImages,
     showJournalBrowZineWebLinkText: showJournalBrowZineWebLinkText,
   };
