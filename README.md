@@ -180,7 +180,7 @@ window.browzine = {
   journalBrowZineWebLinkTextEnabled: true,
   journalBrowZineWebLinkText: "View Journal Contents",
 
-  articleBrowZineWebLinkTextEnabled: true
+  articleBrowZineWebLinkTextEnabled: true,
   articleBrowZineWebLinkText: "View Issue Contents",
 
   articlePDFDownloadLinkEnabled: true,
