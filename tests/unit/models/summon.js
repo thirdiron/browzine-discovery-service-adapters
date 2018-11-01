@@ -91,6 +91,34 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model libraryIdOverride method >", function() {
+    beforeEach(function() {
+      browzine.libraryId = 123;
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should override the libraryId on the api endpoint when specified", function() {
+      expect(summon.libraryIdOverride(summon.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should override the libraryId on the api endpoint even when an api endpoint is specified", function() {
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(summon.libraryIdOverride(summon.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+
+      expect(summon.libraryIdOverride(summon.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("summon model shouldEnhance method >", function() {
     it("should not enhance a search result without a document", function() {
       var scope = {};
@@ -362,6 +390,78 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model showJournalCoverImages method >", function() {
+    beforeEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    it("should show journal cover when configuration property is undefined or null", function() {
+      expect(summon.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should show journal cover when configuration property is true", function() {
+      browzine.journalCoverImagesEnabled = true;
+      expect(summon.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should not show journal cover when configuration property is false", function() {
+      browzine.journalCoverImagesEnabled = false;
+      expect(summon.showJournalCoverImages()).toEqual(false);
+    });
+  });
+
+  describe("summon model showJournalBrowZineWebLinkText method >", function() {
+    beforeEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    it("should show issue link when configuration property is undefined or null", function() {
+      expect(summon.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should show issue link when configuration property is true", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = true;
+      expect(summon.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should not show issue link when configuration property is false", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = false;
+      expect(summon.showJournalBrowZineWebLinkText()).toEqual(false);
+    });
+  });
+
+  describe("summon model showArticleBrowZineWebLinkText method >", function() {
+    beforeEach(function() {
+      delete browzine.articleBrowZineWebLinkTextEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleBrowZineWebLinkTextEnabled;
+    });
+
+    it("should show article in context link when configuration property is undefined or null", function() {
+      expect(summon.showArticleBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should show article in context link when configuration property is true", function() {
+      browzine.articleBrowZineWebLinkTextEnabled = true;
+      expect(summon.showArticleBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should not show article in context link when configuration property is false", function() {
+      browzine.articleBrowZineWebLinkTextEnabled = false;
+      expect(summon.showArticleBrowZineWebLinkText()).toEqual(false);
+    });
+  });
+
   describe("summon model showDirectToPDFLink method >", function() {
     beforeEach(function() {
       delete browzine.articlePDFDownloadLinkEnabled;
@@ -395,6 +495,98 @@ describe("Summon Model >", function() {
     it("should hide direct to pdf link when the platform prefixed configuration property is false", function() {
       browzine.summonArticlePDFDownloadLinkEnabled = false;
       expect(summon.showDirectToPDFLink()).toEqual(false);
+    });
+  });
+
+  describe("summon model showPrintRecords method >", function() {
+    beforeEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    it("should enhance print records when configuration property is undefined or null", function() {
+      expect(summon.showPrintRecords()).toEqual(true);
+    });
+
+    it("should enhance print records when configuration property is true", function() {
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(summon.showPrintRecords()).toEqual(true);
+    });
+
+    it("should not enhance print records when configuration property is false", function() {
+      browzine.printRecordsIntegrationEnabled = false;
+      expect(summon.showPrintRecords()).toEqual(false);
+    });
+  });
+
+  describe("summon model isFiltered method >", function() {
+    beforeEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    it("should not filter electronic records when print records configuration property is undefined or null", function() {
+      var scope = {
+        document: {
+          is_print: false
+        }
+      };
+      expect(summon.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter electronic records when print records configuration property is true", function() {
+      var scope = {
+        document: {
+          is_print: false
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(summon.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter electronic records when print records configuration property is false", function() {
+      var scope = {
+        document: {
+          is_print: false
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = false;
+      expect(summon.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter print records when print records configuration property is undefined or null", function() {
+      var scope = {
+        document: {
+          is_print: true
+        }
+      };
+      expect(summon.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter print records when print records configuration property is true", function() {
+      var scope = {
+        document: {
+          is_print: true
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(summon.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should filter print records when print records configuration property is false", function() {
+      var scope = {
+        document: {
+          is_print: true
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = false;
+      expect(summon.isFiltered(scope)).toEqual(true);
     });
   });
 

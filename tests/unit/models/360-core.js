@@ -130,6 +130,34 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
+  describe("serSol360Core model libraryIdOverride method >", function() {
+    beforeEach(function() {
+      browzine.libraryId = 123;
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should override the libraryId on the api endpoint when specified", function() {
+      expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should override the libraryId on the api endpoint even when an api endpoint is specified", function() {
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+
+      expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("serSol360Core model getIssn method >", function() {
     it("should extract an issn from the identifiers array when available", function() {
       var title = titles[0];
@@ -162,6 +190,54 @@ describe("SerSol 360 Core Model >", function() {
     it("should return an empty string when the issn value is an empty string", function() {
       var titles = serSol360Core.getTitles(scope);
       expect(serSol360Core.getIssn(titles[7])).toEqual("");
+    });
+  });
+
+  describe("serSol360Core model showJournalCoverImages method >", function() {
+    beforeEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    it("should show journal cover when configuration property is undefined or null", function() {
+      expect(serSol360Core.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should show journal cover when configuration property is true", function() {
+      browzine.journalCoverImagesEnabled = true;
+      expect(serSol360Core.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should not show journal cover when configuration property is false", function() {
+      browzine.journalCoverImagesEnabled = false;
+      expect(serSol360Core.showJournalCoverImages()).toEqual(false);
+    });
+  });
+
+  describe("serSol360Core model showJournalBrowZineWebLinkText method >", function() {
+    beforeEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    it("should show issue link when configuration property is undefined or null", function() {
+      expect(serSol360Core.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should show issue link when configuration property is true", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = true;
+      expect(serSol360Core.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should not show issue link when configuration property is false", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = false;
+      expect(serSol360Core.showJournalBrowZineWebLinkText()).toEqual(false);
     });
   });
 

@@ -63,13 +63,22 @@ e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" a
 var browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
+
+  journalCoverImagesEnabled: true,
+
+  journalBrowZineWebLinkTextEnabled: true,
   journalWording: "View the Journal",
-  articleWording: "View Complete Issue",
   journalBrowZineWebLinkText: "Browse Now",
+
+  articleBrowZineWebLinkTextEnabled: true,
+  articleWording: "View Complete Issue",
   articleBrowZineWebLinkText: "Browse Now",
+
   articlePDFDownloadLinkEnabled: true,
   articlePDFDownloadWording: "Article PDF",
   articlePDFDownloadLinkText: "Download Now",
+
+  printRecordsIntegrationEnabled: true,
 };
 ```
 
@@ -107,6 +116,10 @@ e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 var browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
+
+  journalCoverImagesEnabled: true,
+
+  journalBrowZineWebLinkTextEnabled: true,
   journalBrowZineWebLinkText: "View Journal in BrowZine",
 };
 ```
@@ -161,10 +174,19 @@ e.g. You can customize "View Issue Contents" to be a different phrase.
 window.browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
   apiKey: "ENTER API KEY",
+
+  journalCoverImagesEnabled: true,
+
+  journalBrowZineWebLinkTextEnabled: true,
   journalBrowZineWebLinkText: "View Journal Contents",
+
+  articleBrowZineWebLinkTextEnabled: true,
   articleBrowZineWebLinkText: "View Issue Contents",
+
   articlePDFDownloadLinkEnabled: true,
   articlePDFDownloadLinkText: "Download PDF",
+
+  printRecordsIntegrationEnabled: true,
 };
 ```
 

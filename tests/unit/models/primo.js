@@ -147,6 +147,34 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model libraryIdOverride method >", function() {
+    beforeEach(function() {
+      browzine.libraryId = 123;
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should override the libraryId on the api endpoint when specified", function() {
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should override the libraryId on the api endpoint even when an api endpoint is specified", function() {
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/123");
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
+
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("primo model shouldEnhance method >", function() {
     it("should not enhance a search result without scope data", function() {
       var scope = {};
@@ -677,6 +705,78 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model showJournalCoverImages method >", function() {
+    beforeEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalCoverImagesEnabled;
+    });
+
+    it("should show journal cover when configuration property is undefined or null", function() {
+      expect(primo.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should show journal cover when configuration property is true", function() {
+      browzine.journalCoverImagesEnabled = true;
+      expect(primo.showJournalCoverImages()).toEqual(true);
+    });
+
+    it("should not journal cover link when configuration property is false", function() {
+      browzine.journalCoverImagesEnabled = false;
+      expect(primo.showJournalCoverImages()).toEqual(false);
+    });
+  });
+
+  describe("primo model showJournalBrowZineWebLinkText method >", function() {
+    beforeEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.journalBrowZineWebLinkTextEnabled;
+    });
+
+    it("should show issue link when configuration property is undefined or null", function() {
+      expect(primo.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should show issue link when configuration property is true", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = true;
+      expect(primo.showJournalBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should not show issue link when configuration property is false", function() {
+      browzine.journalBrowZineWebLinkTextEnabled = false;
+      expect(primo.showJournalBrowZineWebLinkText()).toEqual(false);
+    });
+  });
+
+  describe("primo model showArticleBrowZineWebLinkText method >", function() {
+    beforeEach(function() {
+      delete browzine.articleBrowZineWebLinkTextEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleBrowZineWebLinkTextEnabled;
+    });
+
+    it("should show article in context link when configuration property is undefined or null", function() {
+      expect(primo.showArticleBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should show article in context link when configuration property is true", function() {
+      browzine.articleBrowZineWebLinkTextEnabled = true;
+      expect(primo.showArticleBrowZineWebLinkText()).toEqual(true);
+    });
+
+    it("should not show article in context link when configuration property is false", function() {
+      browzine.articleBrowZineWebLinkTextEnabled = false;
+      expect(primo.showArticleBrowZineWebLinkText()).toEqual(false);
+    });
+  });
+
   describe("primo model showDirectToPDFLink method >", function() {
     beforeEach(function() {
       delete browzine.articlePDFDownloadLinkEnabled;
@@ -710,6 +810,112 @@ describe("Primo Model >", function() {
     it("should hide direct to pdf link when the platform prefixed configuration property is false", function() {
       browzine.primoArticlePDFDownloadLinkEnabled = false;
       expect(primo.showDirectToPDFLink()).toEqual(false);
+    });
+  });
+
+  describe("primo model showPrintRecords method >", function() {
+    beforeEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    it("should enhance print records when configuration property is undefined or null", function() {
+      expect(primo.showPrintRecords()).toEqual(true);
+    });
+
+    it("should enhance print records when configuration property is true", function() {
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(primo.showPrintRecords()).toEqual(true);
+    });
+
+    it("should not enhance print records when configuration property is false", function() {
+      browzine.printRecordsIntegrationEnabled = false;
+      expect(primo.showPrintRecords()).toEqual(false);
+    });
+  });
+
+  describe("primo model isFiltered method >", function() {
+    beforeEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.printRecordsIntegrationEnabled;
+    });
+
+    it("should not filter electronic records when print records configuration property is undefined or null", function() {
+      var scope = {
+        result: {
+          delivery: {
+            deliveryCategory: ["Alma-E"]
+          }
+        }
+      };
+
+      expect(primo.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter electronic records when print records configuration property is true", function() {
+      var scope = {
+        result: {
+          delivery: {
+            deliveryCategory: ["Alma-E"]
+          }
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(primo.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter electronic records when print records configuration property is false", function() {
+      var scope = {
+        result: {
+          delivery: {
+            deliveryCategory: ["Alma-E"]
+          }
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = false;
+      expect(primo.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter print records when print records configuration property is undefined or null", function() {
+      var scope = {
+        result: {
+          delivery: {
+            deliveryCategory: ["Alma-P"]
+          }
+        }
+      };
+
+      expect(primo.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter print records when print records configuration property is true", function() {
+      var scope = {
+        result: {
+          delivery: {
+            deliveryCategory: ["Alma-P"]
+          }
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(primo.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should filter print records when print records configuration property is false", function() {
+      var scope = {
+        result: {
+          delivery: {
+            deliveryCategory: ["Alma-P"]
+          }
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = false;
+      expect(primo.isFiltered(scope)).toEqual(true);
     });
   });
 
