@@ -54,7 +54,7 @@ browzine.serSol360Core = (function() {
   };
 
   function getTarget(title) {
-    var issn = getIssn(title);
+    var issn = getIssn(title).toLowerCase().trim();
 
     var element = $(".results-identifier").filter(function() {
       return $.trim($(this).text()).toLowerCase().indexOf(issn) > -1 && issn.length > 0;
