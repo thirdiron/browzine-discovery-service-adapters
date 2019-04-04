@@ -83,6 +83,16 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
                   title: "The New England journal of medicine",
                   syndeticsImageUrl: "https://secure.syndetics.com/index.aspx?isbn=/mc.gif&issn=0028-4793&client=mistatesum",
                   identifiers: [{type: "ISSN", value: "0028-4793"}, {type: "eISSN", value: "1533-4406"}]
+                },
+                {
+                  title: "The New England journal of medicine",
+                  syndeticsImageUrl: "https://secure.syndetics.com/index.aspx?isbn=/mc.gif&issn=0028-4794&client=mistatesum",
+                  identifiers: [{type: "ISSN", value: "0028-4794"}, {type: "eISSN", value: "1533-4407"}]
+                },
+                {
+                  title: "The New England journal of medicine",
+                  syndeticsImageUrl: "https://secure.syndetics.com/index.aspx?isbn=/mc.gif&issn=0028-4795&client=mistatesum",
+                  identifiers: [{type: "ISSN", value: "0028-4795"}, {type: "eISSN", value: "1533-4408"}]
                 }
               ]
             }
@@ -92,8 +102,6 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
         });
 
         $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/search\?issns=00284793/);
-
           return callback({
             "data": [{
               "id": 10292,
@@ -114,7 +122,10 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
       it("should have an enhanced view journal in browzine option", function() {
         var template = searchResults.find(".browzine");
         expect(template).toBeDefined();
+
         expect(template.text().trim()).toEqual("View Journal in BrowZine");
+        expect((template.text().trim().match(/View Journal in BrowZine/g) || []).length).toEqual(1);
+
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/10292");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
         expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");

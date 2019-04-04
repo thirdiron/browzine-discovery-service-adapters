@@ -300,41 +300,20 @@ describe("SerSol 360 Core Model >", function() {
       expect(target.innerHTML).toContain("The New England journal of medicine");
     });
 
-    it("should return undefined for a journal search result with no journal name", function() {
+    it("should return undefined for a journal search result with no journal issn", function() {
       var title = titles[0];
-      delete title.title;
+      delete title.identifiers;
       var target = serSol360Core.getTarget(title);
       expect(target).toBeUndefined();
     });
 
-    it("should retrieve target element when the results title element contains the journal title", function() {
+    it("should retrieve target element when the results identifier element contains the journal issn", function() {
       var title = titles[0];
-      var journalName = $(title.target).find(".results-title").text();
-
-      $("div[ui-view='searchResults']").find(".results-title:contains('" + journalName + "')")[0].innerHTML += " Terms of Use";
-
       var target = serSol360Core.getTarget(title);
 
       expect(target).toBeDefined();
       expect(target.innerHTML).toContain("The New England journal of medicine");
-      expect(target.innerHTML).toContain("The New England journal of medicine Terms of Use");
-
-      $("div[ui-view='searchResults']").find(".results-title:contains('" + journalName + "')")[0].innerHTML = journalName;
-    });
-
-    it("should retrieve target element when the results title element contains an unexpected case change in the journal title", function() {
-      var title = titles[0];
-      var journalName = $(title.target).find(".results-title").text();
-
-      $("div[ui-view='searchResults']").find(".results-title:contains('" + journalName + "')")[0].innerHTML = journalName.toLowerCase();
-
-      var target = serSol360Core.getTarget(title);
-
-      expect(target).toBeDefined();
-      expect(journalName).toEqual("The New England journal of medicine");
-      expect(target.innerHTML).toContain("the new england journal of medicine");
-
-      $("div[ui-view='searchResults']").find(".results-title:contains('" + journalName.toLowerCase() + "')")[0].innerHTML = title.title;
+      expect(target.innerHTML).toContain("0028-4793");
     });
   });
 
