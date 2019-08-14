@@ -190,7 +190,7 @@ browzine.serSol360Core = (function() {
     browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.serSol360CoreJournalBrowZineWebLinkText || "View Journal in BrowZine";
 
     var template = "<div class='browzine' style='margin: 5px 0;'>" +
-                     "<img class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;' width='16' height='15'/> " +
+                     "<img alt='BrowZine Book Icon' class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;' width='16' height='15'/> " +
                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='font-weight: 300;'>{browzineWebLinkText}</a>" +
                    "</div>";
 
@@ -224,7 +224,7 @@ browzine.serSol360Core = (function() {
           if($(title.target).find(resultsTitleImageSelector).length > 0) {
             $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
           } else {
-            $(title.target).find(resultsTitleImageContainerSelector).append("<img class='results-title-image'/>");
+            $(title.target).find(resultsTitleImageContainerSelector).append("<img alt='Results Title Image' class='results-title-image'/>");
             $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
           }
         }
