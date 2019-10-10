@@ -622,7 +622,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 2.8px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article PDF");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");

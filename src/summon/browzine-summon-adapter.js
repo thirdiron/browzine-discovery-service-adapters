@@ -282,7 +282,7 @@ browzine.summon = (function() {
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 2.8px;' width='13' height='17'/>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
@@ -299,7 +299,7 @@ browzine.summon = (function() {
     var articleLinkText = browzine.articleLinkText || "Download Now";
 
     var template = "<div class='browzine'>" +
-                     "{articleLinkTextWording}: <a class='browzine-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{linkIcon}' style='margin-bottom: 2px; margin-right: 2.8px;' width='13' height='17'/>" +
+                     "{articleLinkTextWording}: <a class='browzine-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{linkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
