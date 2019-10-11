@@ -38,7 +38,8 @@ describe("Primo Model >", function() {
         "startPage": "h2575",
         "endPage": "h2575",
         "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
-        "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+        "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file",
+        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408"
       },
       "included": [{
         "id": 18126,
@@ -705,6 +706,53 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model getArticleLinkUrl method >", function() {
+    it("should not return an article link url for journal search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleLinkUrl(scope, data)).toBeNull();
+    });
+
+    it("should return an article link url for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleLinkUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408");
+    });
+  });
+
   describe("primo model showJournalCoverImages method >", function() {
     beforeEach(function() {
       delete browzine.journalCoverImagesEnabled;
@@ -810,6 +858,30 @@ describe("Primo Model >", function() {
     it("should hide direct to pdf link when the platform prefixed configuration property is false", function() {
       browzine.primoArticlePDFDownloadLinkEnabled = false;
       expect(primo.showDirectToPDFLink()).toEqual(false);
+    });
+  });
+
+  describe("primo model showArticleLink method >", function() {
+    beforeEach(function() {
+      delete browzine.articleLinkEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleLinkEnabled;
+    });
+
+    it("should not show article link by default when configuration property is undefined or null", function() {
+      expect(primo.showArticleLink()).toEqual(false);
+    });
+
+    it("should show article link when configuration property is true", function() {
+      browzine.articleLinkEnabled = true;
+      expect(primo.showArticleLink()).toEqual(true);
+    });
+
+    it("should hide article link when configuration property is false", function() {
+      browzine.articleLinkEnabled = false;
+      expect(primo.showArticleLink()).toEqual(false);
     });
   });
 
@@ -955,7 +1027,7 @@ describe("Primo Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank'><img alt='BrowZine PDF Icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 2.8px;' aria-hidden='true' width='12' height='16'/> <span class='browzine-web-link-text'>Download Now</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank'><img alt='BrowZine PDF Icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 4.5px;' aria-hidden='true' width='12' height='16'/> <span class='browzine-web-link-text'>Download Now</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
 
       expect(template).toContain("Download Now");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
@@ -1010,6 +1082,75 @@ describe("Primo Model >", function() {
       var template = primo.directToPDFTemplate(directToPDFUrl);
 
       expect(template).toContain("Download PDF Now");
+    });
+  });
+
+  describe("primo model articleLinkTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleLinkEnabled;
+      delete browzine.articleLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articleLinkEnabled;
+      delete browzine.articleLinkText;
+    });
+
+    it("should build an article link template for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var articleLinkUrl = primo.getArticleLinkUrl(scope, data);
+      var template = primo.articleLinkTemplate(articleLinkUrl);
+
+      expect(data).toBeDefined();
+      expect(articleLinkUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-article-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408' target='_blank'><img alt='BrowZine Article Link Icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' class='browzine-article-link-icon' style='margin-bottom: -3px; margin-right: 4.5px;' aria-hidden='true' width='12' height='16'/> <span class='browzine-article-link-text'>Read Article</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+
+      expect(template).toContain("Read Article");
+      expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+    });
+
+    it("should apply the articleLinkText config property", function() {
+      browzine.articleLinkText = "Read Article";
+
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var articleLinkUrl = primo.getArticleLinkUrl(scope, data);
+      var template = primo.articleLinkTemplate(articleLinkUrl);
+
+      expect(template).toContain("Read Article");
     });
   });
 

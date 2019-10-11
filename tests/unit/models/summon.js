@@ -29,7 +29,8 @@ describe("Summon Model >", function() {
         "startPage": "h2575",
         "endPage": "h2575",
         "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
-        "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+        "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file",
+        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408"
       },
       "included": [{
         "id": 18126,
@@ -390,6 +391,38 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getArticleLinkUrl method >", function() {
+    it("should not return an article link url for journal search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleLinkUrl(scope, data)).toBeNull();
+    });
+
+    it("should return an article link url for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleLinkUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408");
+    });
+  });
+
   describe("summon model showJournalCoverImages method >", function() {
     beforeEach(function() {
       delete browzine.journalCoverImagesEnabled;
@@ -495,6 +528,30 @@ describe("Summon Model >", function() {
     it("should hide direct to pdf link when the platform prefixed configuration property is false", function() {
       browzine.summonArticlePDFDownloadLinkEnabled = false;
       expect(summon.showDirectToPDFLink()).toEqual(false);
+    });
+  });
+
+  describe("summon model showArticleLink method >", function() {
+    beforeEach(function() {
+      delete browzine.articleLinkEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleLinkEnabled;
+    });
+
+    it("should not show article link by default when configuration property is undefined or null", function() {
+      expect(summon.showArticleLink()).toEqual(false);
+    });
+
+    it("should show article link when configuration property is true", function() {
+      browzine.articleLinkEnabled = true;
+      expect(summon.showArticleLink()).toEqual(true);
+    });
+
+    it("should hide article link when configuration property is false", function() {
+      browzine.articleLinkEnabled = false;
+      expect(summon.showArticleLink()).toEqual(false);
     });
   });
 
@@ -622,7 +679,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 2.8px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;'>Download Now</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article PDF");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
@@ -699,6 +756,82 @@ describe("Summon Model >", function() {
       var template = summon.directToPDFTemplate(directToPDFUrl);
 
       expect(template).toContain("Download PDF Now");
+    });
+  });
+
+  describe("summon model directToPDFTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleLinkEnabled;
+      delete browzine.articleLinkTextWording;
+      delete browzine.articleLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articleLinkEnabled;
+      delete browzine.articleLinkTextWording;
+      delete browzine.articleLinkText;
+    });
+
+    it("should build an article link template for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
+      var template = summon.articleLinkTemplate(articleLinkUrl);
+
+      expect(data).toBeDefined();
+      expect(articleLinkUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Article Link: <a class='browzine-article-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408' target='_blank' style='text-decoration: underline; color: #333;'>Read Article</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+
+      expect(template).toContain("Article Link");
+      expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408");
+      expect(template).toContain("Read Article");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articleLinkTextWording config property", function() {
+      browzine.articleLinkTextWording = "Article Link";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
+      var template = summon.articleLinkTemplate(articleLinkUrl);
+
+      expect(template).toContain("Article Link");
+    });
+
+    it("should apply the articleLinkText config property", function() {
+      browzine.articleLinkText = "Read Article";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
+      var template = summon.articleLinkTemplate(articleLinkUrl);
+
+      expect(template).toContain("Read Article");
     });
   });
 

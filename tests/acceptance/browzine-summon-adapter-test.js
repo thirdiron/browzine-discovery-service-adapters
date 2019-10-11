@@ -205,6 +205,86 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("search results article with no direct to pdf link and an article link >", function() {
+      beforeEach(function() {
+        browzine.articleLinkEnabled = true;
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1136/bmj.h2575"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        $.getJSON = function(endpoint, callback) {
+          expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+
+          return callback({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "",
+              "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          });
+        };
+
+        summon.adapter(documentSummary);
+      });
+
+      afterEach(function() {
+        delete browzine.articleLinkEnabled;
+      });
+
+      it("should enhance the search result with an article link", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Complete Issue: Browse Now");
+        expect(template.text().trim()).toContain("Article Link: Read Article");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+      });
+    });
+
     describe("search results article with browzine web link and disabled direct to pdf link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
