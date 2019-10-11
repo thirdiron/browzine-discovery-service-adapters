@@ -296,7 +296,7 @@ browzine.summon = (function() {
   function articleLinkTemplate(articleLinkUrl) {
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var articleLinkTextWording = browzine.articleLinkTextWording || "Article Link";
-    var articleLinkText = browzine.articleLinkText || "Download Now";
+    var articleLinkText = browzine.articleLinkText || "Read Article";
 
     var template = "<div class='browzine'>" +
                      "{articleLinkTextWording}: <a class='browzine-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{linkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
@@ -371,16 +371,11 @@ browzine.summon = (function() {
       var journal = getIncludedJournal(response);
 
       var browzineWebLink = getBrowZineWebLink(data);
-      console.log("browzineWebLink", browzineWebLink);
       var coverImageUrl = getCoverImageUrl(scope, data, journal);
-      console.log("coverImageUrl", coverImageUrl);
       var browzineEnabled = getBrowZineEnabled(scope, data, journal);
       var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
-      console.log("directToPDFUrl", directToPDFUrl);
       var articleLinkUrl = getArticleLinkUrl(scope, data);
-      console.log("articleLinkUrl", articleLinkUrl);
-      console.log("----");
 
       if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
         var template = directToPDFTemplate(directToPDFUrl);

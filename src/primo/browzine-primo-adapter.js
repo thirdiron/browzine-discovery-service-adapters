@@ -430,14 +430,10 @@ browzine.primo = (function() {
 
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
-        console.log("coverImageUrl", coverImageUrl);
         var browzineEnabled = getBrowZineEnabled(scope, data, journal);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
-        console.log("directToPDFUrl", directToPDFUrl);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
-        console.log("articleLinkUrl", articleLinkUrl);
-        console.log("----");
 
         var element = getElement(scope);
 
