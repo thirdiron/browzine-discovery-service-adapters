@@ -41,10 +41,6 @@ describe("BrowZine Summon Adapter >", function() {
         summon.adapter(documentSummary);
       });
 
-      afterEach(function() {
-
-      });
-
       it("should have an enhanced browse journal in browzine option", function() {
         var template = documentSummary.find(".browzine");
         expect(template).toBeDefined();
@@ -177,10 +173,6 @@ describe("BrowZine Summon Adapter >", function() {
         summon.adapter(documentSummary);
       });
 
-      afterEach(function() {
-
-      });
-
       it("should have an enhanced browse article in browzine option", function() {
         var template = documentSummary.find(".browzine");
 
@@ -240,10 +232,6 @@ describe("BrowZine Summon Adapter >", function() {
         };
 
         summon.adapter(documentSummary);
-      });
-
-      afterEach(function() {
-
       });
 
       it("should have an enhanced browzine journal cover", function() {
