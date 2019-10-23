@@ -307,6 +307,88 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
+    describe("search results article with a journal issn but no article doi >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0096-6762", "0028-4793"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": [{
+              "id": 10292,
+              "type": "journals",
+              "title": "New England Journal of Medicine (NEJM)",
+              "issn": "00284793",
+              "sjrValue": 14.619,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
+            }, {
+              "id": 10289,
+              "type": "journals",
+              "title": "The Boston Medical and Surgical Journal",
+              "issn": "00966762",
+              "sjrValue": 0,
+              "coverImageUrl": "https://assets.thirdiron.com/default-journal-cover.png",
+              "browzineEnabled": false,
+              "externalLink": "http://za2uf4ps7f.search.serialssolutions.com/?V=1.0&N=100&L=za2uf4ps7f&S=I_M&C=0096-6762"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/search\?issns=00966762%2C00284793/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+          });
+
+          done();
+        });
+      });
+    });
+
     describe("search results article with no direct to pdf link and an article link >", function() {
       beforeEach(function() {
         browzine.articleLinkEnabled = true;

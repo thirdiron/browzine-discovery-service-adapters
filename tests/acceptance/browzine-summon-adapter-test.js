@@ -205,6 +205,54 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("search results article with a journal issn but no article doi >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            issns: ["0028-4793"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        $.getJSON = function(endpoint, callback) {
+          expect(endpoint).toMatch(/search\?issns=00284793/);
+
+          return callback({
+            "data": [{
+              "id": 10292,
+              "type": "journals",
+              "title": "New England Journal of Medicine (NEJM)",
+              "issn": "00284793",
+              "sjrValue": 14.619,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
+            }]
+          });
+        };
+
+        summon.adapter(documentSummary);
+      });
+
+      afterEach(function() {
+
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      });
+    });
+
     describe("search results article with no direct to pdf link and an article link >", function() {
       beforeEach(function() {
         browzine.articleLinkEnabled = true;
