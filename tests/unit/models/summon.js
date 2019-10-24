@@ -192,7 +192,7 @@ describe("Summon Model >", function() {
       expect(summon.shouldEnhance(scope)).toEqual(false);
     });
 
-    it("should not enhance an article search result without a doi", function() {
+    it("should not enhance an article search result without a doi or issn", function() {
       var scope = {
         document: {
           content_type: "Journal Article"
@@ -200,6 +200,17 @@ describe("Summon Model >", function() {
       };
 
       expect(summon.shouldEnhance(scope)).toEqual(false);
+    });
+
+    it("should enhance an article search result journal cover with an issn even without a doi", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          issns: ["0028-4793"]
+        }
+      };
+
+      expect(summon.shouldEnhance(scope)).toEqual(true);
     });
 
     it("should not enhance a journal search result without a content type", function() {
@@ -279,6 +290,17 @@ describe("Summon Model >", function() {
 
       expect(summon.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575?include=journal");
     });
+
+    it("should build a journal endpoint for an article search result with a journal issn but no article doi", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          issns: ["0028-4793"]
+        }
+      };
+
+      expect(summon.getEndpoint(scope)).toContain("search?issns=00284793");
+    });
   });
 
   describe("summon model getBrowZineWebLink method >", function() {
@@ -328,6 +350,23 @@ describe("Summon Model >", function() {
       expect(journal).toBeDefined();
 
       expect(summon.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+    });
+
+    it("should include a coverImageUrl in the BrowZine API response for an article with a journal issn but no article doi", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+      var journal = summon.getIncludedJournal(journalResponse);
+
+      expect(data).toBeDefined();
+      expect(journal).toBeNull();
+
+      expect(summon.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
   });
 

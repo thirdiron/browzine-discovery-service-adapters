@@ -84,12 +84,17 @@ browzine.summon = (function() {
   function getEndpoint(scope) {
     var endpoint = "";
 
-    if(isArticle(scope)) {
+    if(isJournal(scope) && getIssn(scope)) {
+      var issn = getIssn(scope);
+      endpoint = api + "/search?issns=" + issn;
+    }
+
+    if(isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
       endpoint = api + "/articles/doi/" + doi + "?include=journal";
     }
 
-    if(isJournal(scope)) {
+    if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
       var issn = getIssn(scope);
       endpoint = api + "/search?issns=" + issn;
     }
@@ -126,15 +131,21 @@ browzine.summon = (function() {
   function getCoverImageUrl(scope, data, journal) {
     var coverImageUrl = null;
 
-    if(isJournal(scope)) {
+    if(isJournal(scope) && getIssn(scope)) {
       if(data && data.coverImageUrl) {
         coverImageUrl = data.coverImageUrl;
       }
     }
 
-    if(isArticle(scope)) {
+    if(isArticle(scope) && getDoi(scope)) {
       if(journal && journal.coverImageUrl) {
         coverImageUrl = journal.coverImageUrl;
+      }
+    }
+
+    if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
+      if(data && data.coverImageUrl) {
+        coverImageUrl = data.coverImageUrl;
       }
     }
 
@@ -350,6 +361,10 @@ browzine.summon = (function() {
       }
 
       if(isArticle(scope) && getDoi(scope)) {
+        validation = true;
+      }
+
+      if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
         validation = true;
       }
     }

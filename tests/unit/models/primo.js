@@ -312,7 +312,26 @@ describe("Primo Model >", function() {
       expect(primo.shouldEnhance(scope)).toEqual(false);
     });
 
-    it("should not enhance an article search result without a doi", function() {
+    it("should not enhance an article search result without a doi or issn", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: [],
+              doi: []
+            }
+          }
+        }
+      };
+
+      expect(primo.shouldEnhance(scope)).toEqual(false);
+    });
+
+    it("should enhance an article search result journal cover with an issn even without a doi", function() {
       var scope = {
         result: {
           pnx: {
@@ -328,7 +347,7 @@ describe("Primo Model >", function() {
         }
       };
 
-      expect(primo.shouldEnhance(scope)).toEqual(false);
+      expect(primo.shouldEnhance(scope)).toEqual(true);
     });
 
     it("should not enhance a journal search result without a content type", function() {
@@ -557,6 +576,24 @@ describe("Primo Model >", function() {
 
       expect(primo.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575?include=journal");
     });
+
+    it("should build a journal endpoint for an article search result with a journal issn but no article doi", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getEndpoint(scope)).toContain("search?issns=00284793");
+    });
   });
 
   describe("primo model getBrowZineWebLink method >", function() {
@@ -621,6 +658,30 @@ describe("Primo Model >", function() {
       expect(journal).toBeDefined();
 
       expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+    });
+
+    it("should include a coverImageUrl in the BrowZine API response for an article with a journal issn but no article doi", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+      var journal = primo.getIncludedJournal(journalResponse);
+
+      expect(data).toBeDefined();
+      expect(journal).toBeNull();
+
+      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
   });
 
