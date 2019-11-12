@@ -84,12 +84,17 @@ browzine.summon = (function() {
   function getEndpoint(scope) {
     var endpoint = "";
 
-    if(isArticle(scope)) {
+    if(isJournal(scope) && getIssn(scope)) {
+      var issn = getIssn(scope);
+      endpoint = api + "/search?issns=" + issn;
+    }
+
+    if(isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
       endpoint = api + "/articles/doi/" + doi + "?include=journal";
     }
 
-    if(isJournal(scope)) {
+    if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
       var issn = getIssn(scope);
       endpoint = api + "/search?issns=" + issn;
     }
@@ -126,15 +131,21 @@ browzine.summon = (function() {
   function getCoverImageUrl(scope, data, journal) {
     var coverImageUrl = null;
 
-    if(isJournal(scope)) {
+    if(isJournal(scope) && getIssn(scope)) {
       if(data && data.coverImageUrl) {
         coverImageUrl = data.coverImageUrl;
       }
     }
 
-    if(isArticle(scope)) {
+    if(isArticle(scope) && getDoi(scope)) {
       if(journal && journal.coverImageUrl) {
         coverImageUrl = journal.coverImageUrl;
+      }
+    }
+
+    if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
+      if(data && data.coverImageUrl) {
+        coverImageUrl = data.coverImageUrl;
       }
     }
 
@@ -179,6 +190,18 @@ browzine.summon = (function() {
     }
 
     return directToPDFUrl;
+  };
+
+  function getArticleLinkUrl(scope, data) {
+    var articleLinkUrl = null;
+
+    if(isArticle(scope)) {
+      if(data.contentLocation) {
+        articleLinkUrl = data.contentLocation;
+      }
+    }
+
+    return articleLinkUrl;
   };
 
   function showJournalCoverImages() {
@@ -230,6 +253,17 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
+  function showArticleLink() {
+    var featureEnabled = false;
+    var config = browzine.articleLinkEnabled;
+
+    if(config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function showPrintRecords() {
     var featureEnabled = false;
     var config = browzine.printRecordsIntegrationEnabled;
@@ -259,13 +293,30 @@ browzine.summon = (function() {
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 2.8px;' width='13' height='17'/>" +
+                     "{articlePDFDownloadWording}: <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
     template = template.replace(/{pdfIcon}/g, pdfIcon);
+
+    return template;
+  };
+
+  function articleLinkTemplate(articleLinkUrl) {
+    var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
+    var articleLinkTextWording = browzine.articleLinkTextWording || "Article Link";
+    var articleLinkText = browzine.articleLinkText || "Read Article";
+
+    var template = "<div class='browzine'>" +
+                     "{articleLinkTextWording}: <a class='browzine-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{linkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                   "</div>";
+
+    template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
+    template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
+    template = template.replace(/{articleLinkText}/g, articleLinkText);
+    template = template.replace(/{linkIcon}/g, linkIcon);
 
     return template;
   };
@@ -286,7 +337,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img class='browzine-book-icon' src='{bookIcon}' style='margin-bottom: 1px;' width='16' height='16'/>" +
+                     "{wording}: <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;'>{browzineWebLinkText}</a> <img alt='BrowZine Book Icon' class='browzine-book-icon' src='{bookIcon}' style='margin-bottom: 1px;' width='16' height='16'/>" +
                    "</div>";
 
     template = template.replace(/{wording}/g, wording);
@@ -312,6 +363,10 @@ browzine.summon = (function() {
       if(isArticle(scope) && getDoi(scope)) {
         validation = true;
       }
+
+      if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
+        validation = true;
+      }
     }
 
     return validation;
@@ -335,9 +390,15 @@ browzine.summon = (function() {
       var browzineEnabled = getBrowZineEnabled(scope, data, journal);
       var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
+      var articleLinkUrl = getArticleLinkUrl(scope, data);
 
       if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
         var template = directToPDFTemplate(directToPDFUrl);
+        $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+      }
+
+      if(!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink() && browzineEnabled) {
+        var template = articleLinkTemplate(articleLinkUrl);
         $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
       }
 
@@ -369,14 +430,17 @@ browzine.summon = (function() {
     getBrowZineEnabled: getBrowZineEnabled,
     isDefaultCoverImage: isDefaultCoverImage,
     getDirectToPDFUrl: getDirectToPDFUrl,
+    getArticleLinkUrl: getArticleLinkUrl,
     showJournalCoverImages: showJournalCoverImages,
     showJournalBrowZineWebLinkText: showJournalBrowZineWebLinkText,
     showArticleBrowZineWebLinkText: showArticleBrowZineWebLinkText,
     showDirectToPDFLink: showDirectToPDFLink,
+    showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
     isFiltered: isFiltered,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     directToPDFTemplate: directToPDFTemplate,
+    articleLinkTemplate: articleLinkTemplate,
     urlRewrite: urlRewrite,
     libraryIdOverride: libraryIdOverride,
   };

@@ -78,6 +78,10 @@ var browzine = {
   articlePDFDownloadWording: "Article PDF",
   articlePDFDownloadLinkText: "Download Now",
 
+  articleLinkEnabled: true,
+  articleLinkTextWording: "Article Link",
+  articleLinkText: "Read Article",
+
   printRecordsIntegrationEnabled: true,
 };
 ```
@@ -185,6 +189,9 @@ window.browzine = {
 
   articlePDFDownloadLinkEnabled: true,
   articlePDFDownloadLinkText: "Download PDF",
+
+  articleLinkEnabled: true,
+  articleLinkText: "Read Article",
 
   printRecordsIntegrationEnabled: true,
 };
