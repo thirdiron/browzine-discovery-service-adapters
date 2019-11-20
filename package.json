@@ -24,7 +24,7 @@
     "deploy-primo-master": "AWS_BUCKET_FOLDER=primo deploy-web-to-s3 src/primo"
   },
   "dependencies": {
-    "angular": "1.6.4",
+    "angular": "1.7.9",
     "angular-animate": "1.6.4",
     "angular-mocks": "1.6.4",
     "angular-resource": "1.6.4",
