@@ -62,6 +62,121 @@ describe("Primo Model >", function() {
     expect(primo).toBeDefined();
   });
 
+  describe("primo model isJournal method >", function() {
+    it("should identify a journal with singular journal type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isJournal(scope)).toEqual(true);
+    });
+
+    it("should identify a journal with plural journal type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journals"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isJournal(scope)).toEqual(true);
+    });
+
+    it("should only identify a journal as a journal type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isJournal(scope)).toEqual(false);
+    });
+  });
+
+  describe("primo model isArticle method >", function() {
+    it("should identify an article with singular article type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isArticle(scope)).toEqual(true);
+    });
+
+    it("should identify an article with plural article type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["articles"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isArticle(scope)).toEqual(true);
+    });
+
+    it("should only identify an article as a article type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isArticle(scope)).toEqual(false);
+    });
+  });
+
   describe("primo model getScope method >", function() {
     it("should retrieve the scope from a search result", function() {
       $scope.$ctrl = {
