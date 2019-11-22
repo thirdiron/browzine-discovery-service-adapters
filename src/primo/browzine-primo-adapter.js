@@ -35,7 +35,7 @@ browzine.primo = (function() {
       if(result.pnx.display && result.pnx.display.type) {
         var contentType = result.pnx.display.type[0].trim().toLowerCase();
 
-        if(contentType === "article") {
+        if(contentType.indexOf("article") > -1) {
           validation = true;
         }
       }
@@ -52,7 +52,7 @@ browzine.primo = (function() {
       if(result.pnx.display && result.pnx.display.type) {
         var contentType = result.pnx.display.type[0].trim().toLowerCase();
 
-        if(contentType === "journal") {
+        if(contentType.indexOf("journal") > -1) {
           validation = true;
         }
       }
