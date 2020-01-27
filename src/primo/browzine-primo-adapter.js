@@ -218,7 +218,7 @@ browzine.primo = (function() {
     var directToPDFUrl = null;
 
     if(isArticle(scope)) {
-      if(data.fullTextFile) {
+      if(data && data.fullTextFile) {
         directToPDFUrl = data.fullTextFile;
       }
     }
@@ -230,7 +230,7 @@ browzine.primo = (function() {
     var articleLinkUrl = null;
 
     if(isArticle(scope)) {
-      if(data.contentLocation) {
+      if(data && data.contentLocation) {
         articleLinkUrl = data.contentLocation;
       }
     }

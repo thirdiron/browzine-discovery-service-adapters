@@ -888,6 +888,77 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.text().trim()).toEqual("");
       });
     });
+
+    describe("search results article with no doi and journal not browzineEnabled >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["1543687X"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": [{
+              "id": 47087,
+              "type": "journals",
+              "title": "Biotech business week",
+              "issn": "1543687X",
+              "sjrValue": 0,
+              "coverImageUrl": "https://assets.thirdiron.com/default-journal-cover.png",
+              "browzineEnabled": false,
+              "externalLink": "https://onesearch.library.rice.edu/discovery/search?query=issn,exact,1543-687X,OR&query=issn,exact,,AND&pfilter=rtype,exact,journals,AND&tab=Everything&search_scope=MyInst_and_CI&vid=01RICE_INST:RICE&lang=en&mode=advanced&offset=0"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/search\?issns=1543687X/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should not have an enhanced browse article in browzine link in search result", function() {
+        var template = searchResult.find(".browzine .browzine-web-link");
+        expect(template.text().trim()).toEqual("");
+      });
+
+      it("should not have an enhanced direct to pdf link in search result", function() {
+        var template = searchResult.find(".browzine .browzine-direct-to-pdf-link");
+        expect(template.text().trim()).toEqual("");
+      });
+    });
   });
 
   describe("search results without scope data >", function() {
