@@ -105,7 +105,17 @@ browzine.summon = (function() {
   };
 
   function getData(response) {
-    return Array.isArray(response.data) ? response.data[0] : response.data;
+    var data = {};
+
+    if(Array.isArray(response.data)) {
+      data = response.data.filter(function(journal) {
+        return journal.browzineEnabled === true;
+      }).pop();
+    } else {
+      data = response.data;
+    }
+
+    return data;
   };
 
   function getIncludedJournal(response) {
@@ -184,7 +194,7 @@ browzine.summon = (function() {
     var directToPDFUrl = null;
 
     if(isArticle(scope)) {
-      if(data.fullTextFile) {
+      if(data && data.fullTextFile) {
         directToPDFUrl = data.fullTextFile;
       }
     }
@@ -196,7 +206,7 @@ browzine.summon = (function() {
     var articleLinkUrl = null;
 
     if(isArticle(scope)) {
-      if(data.contentLocation) {
+      if(data && data.contentLocation) {
         articleLinkUrl = data.contentLocation;
       }
     }

@@ -835,6 +835,24 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model getData method >", function() {
+    it("should return data when the journal is browzineEnabled", function() {
+      var data = primo.getData(journalResponse);
+      expect(data).toBeDefined();
+    });
+
+    it("should not return data when the journal is not browzineEnabled", function() {
+      journalResponse.data[0].browzineEnabled = false;
+      var data = primo.getData(journalResponse);
+      expect(data).toEqual(undefined);
+    });
+
+    it("should return data for an article", function() {
+      var data = primo.getData(articleResponse);
+      expect(data).toBeDefined();
+    });
+  });
+
   describe("primo model getDirectToPDFUrl method >", function() {
     it("should not return a direct to pdf url for journal search results", function() {
       var scope = {
@@ -879,6 +897,29 @@ describe("Primo Model >", function() {
       expect(data).toBeDefined();
 
       expect(primo.getDirectToPDFUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+    });
+
+    it("should not return a direct to pdf url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = primo.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(primo.getDirectToPDFUrl(scope, data)).toEqual(null);
     });
   });
 
@@ -926,6 +967,29 @@ describe("Primo Model >", function() {
       expect(data).toBeDefined();
 
       expect(primo.getArticleLinkUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408");
+    });
+
+    it("should not return an article link url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = primo.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(primo.getArticleLinkUrl(scope, data)).toEqual(null);
     });
   });
 

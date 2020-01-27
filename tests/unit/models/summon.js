@@ -398,6 +398,24 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getData method >", function() {
+    it("should return data when the journal is browzineEnabled", function() {
+      var data = summon.getData(journalResponse);
+      expect(data).toBeDefined();
+    });
+
+    it("should not return data when the journal is not browzineEnabled", function() {
+      journalResponse.data[0].browzineEnabled = false;
+      var data = summon.getData(journalResponse);
+      expect(data).toEqual(undefined);
+    });
+
+    it("should return data for an article", function() {
+      var data = summon.getData(articleResponse);
+      expect(data).toBeDefined();
+    });
+  });
+
   describe("summon model getDirectToPDFUrl method >", function() {
     it("should not return a direct to pdf url for journal search results", function() {
       var scope = {
@@ -427,6 +445,21 @@ describe("Summon Model >", function() {
       expect(data).toBeDefined();
 
       expect(summon.getDirectToPDFUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
+    });
+
+    it("should not return a direct to pdf url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article"
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = summon.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(summon.getDirectToPDFUrl(scope, data)).toEqual(null);
     });
   });
 
@@ -459,6 +492,21 @@ describe("Summon Model >", function() {
       expect(data).toBeDefined();
 
       expect(summon.getArticleLinkUrl(scope, data)).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408");
+    });
+
+    it("should not return an article link url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article"
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = summon.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(summon.getArticleLinkUrl(scope, data)).toEqual(null);
     });
   });
 
