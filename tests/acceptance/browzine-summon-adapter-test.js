@@ -195,6 +195,18 @@ describe("BrowZine Summon Adapter >", function() {
         expect(coverImage).toBeDefined();
         expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
       });
+
+      it("should open a new window when a direct to pdf link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575", "_blank");
+      });
     });
 
     describe("search results article with a journal issn but no article doi >", function() {
