@@ -411,6 +411,22 @@ describe("SerSol 360 Core Model >", function() {
     });
   });
 
+  describe("serSol360Core model transition method >", function() {
+    it("should open browzine links in a new window", function() {
+      spyOn(window, "open");
+
+      serSol360Core.transition({
+        preventDefault: function() {},
+        stopPropagation: function() {}
+      }, {
+        href: "https://browzine.com/libraries/XXX/journals/10292",
+        target: "_blank"
+      });
+
+      expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/XXX/journals/10292", "_blank");
+    });
+  });
+
   describe("serSol360Core model browzineWebLinkTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var data = serSol360Core.getData(journalResponse);
@@ -421,7 +437,7 @@ describe("SerSol 360 Core Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine' style='margin: 5px 0;'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' style='margin-top: -3px; display: inline;' width='16' height='15'/> <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='font-weight: 300;'>View Journal in BrowZine</a></div>");
+      expect(template).toEqual("<div class='browzine' style='margin: 5px 0;'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' style='margin-top: -3px; display: inline;' width='16' height='15'/> <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='font-weight: 300;' onclick='browzine.serSol360Core.transition(event, this)'>View Journal in BrowZine</a></div>");
       expect(template).toContain("View Journal in BrowZine");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");

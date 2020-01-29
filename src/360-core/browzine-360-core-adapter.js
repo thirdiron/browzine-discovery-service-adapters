@@ -183,6 +183,19 @@ browzine.serSol360Core = (function() {
     return !!issn;
   };
 
+  function transition(event, anchor) {
+    // We’ve seen some discovery services intercept basic a href links, and have
+    // been encouraged to intercept clicks more closely. We should continue
+    // intercepting clicks like this unless we hear feedback from discovery
+    // service vendors that this is no longer desired or necessary.
+    event.preventDefault();
+    event.stopPropagation();
+
+    window.open(anchor.href, anchor.target);
+
+    return false;
+  };
+
   function browzineWebLinkTemplate(browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
@@ -191,7 +204,7 @@ browzine.serSol360Core = (function() {
 
     var template = "<div class='browzine' style='margin: 5px 0;'>" +
                      "<img alt='BrowZine Book Icon' class='browzine-book-icon' src='{bookIcon}' style='margin-top: -3px; display: inline;' width='16' height='15'/> " +
-                     "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='font-weight: 300;'>{browzineWebLinkText}</a>" +
+                     "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='font-weight: 300;' onclick='browzine.serSol360Core.transition(event, this)'>{browzineWebLinkText}</a>" +
                    "</div>";
 
     template = template.replace(/{browzineWebLink}/g, browzineWebLink);
@@ -253,6 +266,7 @@ browzine.serSol360Core = (function() {
 
   return {
     adapter: adapter,
+    transition: transition,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineWebLink: getBrowZineWebLink,
