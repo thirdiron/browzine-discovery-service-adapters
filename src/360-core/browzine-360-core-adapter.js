@@ -184,6 +184,10 @@ browzine.serSol360Core = (function() {
   };
 
   function transition(event, anchor) {
+    // We’ve seen some discovery services intercept basic a href links, and have
+    // been encouraged to intercept clicks more closely. We should continue
+    // intercepting clicks like this unless we hear feedback from discovery
+    // service vendors that this is no longer desired or necessary.
     event.preventDefault();
     event.stopPropagation();
 
