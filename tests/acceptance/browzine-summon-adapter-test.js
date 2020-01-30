@@ -195,6 +195,18 @@ describe("BrowZine Summon Adapter >", function() {
         expect(coverImage).toBeDefined();
         expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
       });
+
+      it("should open a new window when a direct to pdf link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575", "_blank");
+      });
     });
 
     describe("search results article with a journal issn but no article doi >", function() {
@@ -572,6 +584,54 @@ describe("BrowZine Summon Adapter >", function() {
               "sjrValue": 2.567,
               "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
               "browzineEnabled": false
+            }]
+          });
+        };
+
+        summon.adapter(documentSummary);
+      });
+
+      it("should not have an enhanced browse article in browzine link in search result", function() {
+        var template = documentSummary.find(".browzine .browzine-web-link");
+        expect(template.text().trim()).toEqual("");
+      });
+
+      it("should not have an enhanced direct to pdf link in search result", function() {
+        var template = documentSummary.find(".browzine .browzine-direct-to-pdf-link");
+        expect(template.text().trim()).toEqual("");
+      });
+    });
+
+    describe("search results article with no doi and journal not browzineEnabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            issns: ["1543687X"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        $.getJSON = function(endpoint, callback) {
+          expect(endpoint).toMatch(/search\?issns=1543687X/);
+
+          return callback({
+            "data": [{
+              "id": 47087,
+              "type": "journals",
+              "title": "Biotech business week",
+              "issn": "1543687X",
+              "sjrValue": 0,
+              "coverImageUrl": "https://assets.thirdiron.com/default-journal-cover.png",
+              "browzineEnabled": false,
+              "externalLink": "https://onesearch.library.rice.edu/discovery/search?query=issn,exact,1543-687X,OR&query=issn,exact,,AND&pfilter=rtype,exact,journals,AND&tab=Everything&search_scope=MyInst_and_CI&vid=01RICE_INST:RICE&lang=en&mode=advanced&offset=0"
             }]
           });
         };

@@ -35,7 +35,7 @@ browzine.primo = (function() {
       if(result.pnx.display && result.pnx.display.type) {
         var contentType = result.pnx.display.type[0].trim().toLowerCase();
 
-        if(contentType === "article") {
+        if(contentType.indexOf("article") > -1) {
           validation = true;
         }
       }
@@ -52,7 +52,7 @@ browzine.primo = (function() {
       if(result.pnx.display && result.pnx.display.type) {
         var contentType = result.pnx.display.type[0].trim().toLowerCase();
 
-        if(contentType === "journal") {
+        if(contentType.indexOf("journal") > -1) {
           validation = true;
         }
       }
@@ -218,7 +218,7 @@ browzine.primo = (function() {
     var directToPDFUrl = null;
 
     if(isArticle(scope)) {
-      if(data.fullTextFile) {
+      if(data && data.fullTextFile) {
         directToPDFUrl = data.fullTextFile;
       }
     }
@@ -230,7 +230,7 @@ browzine.primo = (function() {
     var articleLinkUrl = null;
 
     if(isArticle(scope)) {
-      if(data.contentLocation) {
+      if(data && data.contentLocation) {
         articleLinkUrl = data.contentLocation;
       }
     }
@@ -326,12 +326,25 @@ browzine.primo = (function() {
     return validation;
   };
 
+  function transition(event, anchor) {
+    // We’ve seen some discovery services intercept basic a href links, and have
+    // been encouraged to intercept clicks more closely. We should continue
+    // intercepting clicks like this unless we hear feedback from discovery
+    // service vendors that this is no longer desired or necessary.
+    event.preventDefault();
+    event.stopPropagation();
+
+    window.open(anchor.href, anchor.target);
+
+    return false;
+  };
+
   function directToPDFTemplate(directToPDFUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.primoArticlePDFDownloadLinkText  || "Download Now";
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
-                      "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank'>" +
+                      "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
                           "<img alt='BrowZine PDF Icon' src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 4.5px;' aria-hidden='true' width='12' height='16'/> " +
                           "<span class='browzine-web-link-text'>{articlePDFDownloadLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
@@ -350,7 +363,7 @@ browzine.primo = (function() {
     var articleLinkText = browzine.articleLinkText  || "Read Article";
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
-                      "<a class='browzine-article-link' href='{articleLinkUrl}' target='_blank'>" +
+                      "<a class='browzine-article-link' href='{articleLinkUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
                           "<img alt='BrowZine Article Link Icon' src='{linkIcon}' class='browzine-article-link-icon' style='margin-bottom: -3px; margin-right: 4.5px;' aria-hidden='true' width='12' height='16'/> " +
                           "<span class='browzine-article-link-text'>{articleLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
@@ -377,7 +390,7 @@ browzine.primo = (function() {
     }
 
     var template = "<div class='browzine' style='line-height: 1.4em;'>" +
-                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank'>" +
+                      "<a class='browzine-web-link' href='{browzineWebLink}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
                           "<img alt='BrowZine Book Icon' src='{bookIcon}' class='browzine-book-icon' style='margin-bottom: -2px; margin-right: 2.5px;' aria-hidden='true' width='15' height='15'/> " +
                           "<span class='browzine-web-link-text'>{browzineWebLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
@@ -540,6 +553,7 @@ browzine.primo = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
+    transition: transition,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,
     browzineWebLinkTemplate: browzineWebLinkTemplate,

@@ -137,6 +137,12 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
         expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
         expect(coverImage.attr("ng-src")).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
       });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        searchResults.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/XXX/journals/10292", "_blank");
+      });
     });
   });
 });
