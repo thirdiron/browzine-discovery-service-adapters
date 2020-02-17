@@ -59,6 +59,8 @@ Customize the naming conventions for each type of search result - Journal/Articl
 
 e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" and whether to enable direct to PDF links. These customizations are optional and the defaults are shown below.
 
+Please note a valid institutional email address is required to use the Unpaywall feature in LibKey Discovery.
+
 ```
 var browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
@@ -83,6 +85,24 @@ var browzine = {
   articleLinkText: "Read Article",
 
   printRecordsIntegrationEnabled: true,
+
+  unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
+
+  articlePDFDownloadViaUnpaywallEnabled: true,
+  articlePDFDownloadViaUnpaywallWording: "Article PDF",
+  articlePDFDownloadViaUnpaywallLinkText: "Download Now (via Unpaywall)",
+
+  articleLinkViaUnpaywallEnabled: true,
+  articleLinkViaUnpaywallWording: "Article Link",
+  articleLinkViaUnpaywallLinkText: "Read Article (via Unpaywall)",
+
+  articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
+  articleAcceptedManuscriptPDFViaUnpaywallWording: "Article PDF",
+  articleAcceptedManuscriptPDFViaUnpaywallLinkText: "Download Now (Accepted Manuscript via Unpaywall)",
+
+  articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true
+  articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
+  articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (via Unpaywall)",
 };
 ```
 
@@ -174,6 +194,8 @@ Customize the naming conventions for each type of search result - Journal/Articl
 
 e.g. You can customize "View Issue Contents" to be a different phrase.
 
+Please note a valid institutional email address is required to use the Unpaywall feature in LibKey Discovery.
+
 ```
 window.browzine = {
   api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
@@ -194,6 +216,20 @@ window.browzine = {
   articleLinkText: "Read Article",
 
   printRecordsIntegrationEnabled: true,
+
+  unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
+
+  articlePDFDownloadViaUnpaywallEnabled: true,
+  articlePDFDownloadViaUnpaywallText: "Download PDF (via Unpaywall)",
+
+  articleLinkViaUnpaywallEnabled: true,
+  articleLinkViaUnpaywallText: "Read Article (via Unpaywall)",
+
+  articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
+  articleAcceptedManuscriptPDFViaUnpaywallText: "Download PDF (Accepted Manuscript via Unpaywall),
+
+  articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
+  articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall),
 };
 ```
 
