@@ -4,7 +4,7 @@ browzine.summon = (function() {
   var apiKey = browzine.apiKey;
 
   function urlRewrite(url) {
-    if(!url) {
+    if (!url) {
       return;
     }
 
@@ -15,7 +15,7 @@ browzine.summon = (function() {
     var override = url;
     var libraryId = browzine.libraryId;
 
-    if(libraryId) {
+    if (libraryId) {
       var baseUrl = "https://public-api.thirdiron.com/public/v1/libraries/{libraryId}";
       override = baseUrl.replace(/{libraryId}/g, libraryId);
     }
@@ -26,10 +26,10 @@ browzine.summon = (function() {
   function isArticle(scope) {
     var result = false;
 
-    if(scope.document) {
-      if(scope.document.content_type) {
+    if (scope.document) {
+      if (scope.document.content_type) {
         var contentType = scope.document.content_type.trim().toLowerCase();
-        if(contentType === "journal article") {
+        if (contentType === "journal article") {
           result = true;
         }
       }
@@ -41,10 +41,10 @@ browzine.summon = (function() {
   function isJournal(scope) {
     var result = false;
 
-    if(scope.document) {
-      if(scope.document.content_type) {
+    if (scope.document) {
+      if (scope.document.content_type) {
         var contentType = scope.document.content_type.trim().toLowerCase();
-        if(contentType === "journal" || contentType === "ejournal") {
+        if (contentType === "journal" || contentType === "ejournal") {
           result = true;
         }
       }
@@ -56,12 +56,12 @@ browzine.summon = (function() {
   function getIssn(scope) {
     var issn = "";
 
-    if(scope.document) {
-      if(scope.document.issns) {
+    if (scope.document) {
+      if (scope.document.issns) {
         issn = scope.document.issns[0].trim().replace("-", "");
       }
 
-      if(scope.document.eissns && !issn) {
+      if (scope.document.eissns && !issn) {
         issn = scope.document.eissns[0].trim().replace("-", "");
       }
     }
@@ -72,8 +72,8 @@ browzine.summon = (function() {
   function getDoi(scope) {
     var doi = "";
 
-    if(scope.document) {
-      if(scope.document.dois) {
+    if (scope.document) {
+      if (scope.document.dois) {
         doi = scope.document.dois[0].trim();
       }
     }
@@ -84,17 +84,17 @@ browzine.summon = (function() {
   function getEndpoint(scope) {
     var endpoint = "";
 
-    if(isJournal(scope) && getIssn(scope)) {
+    if (isJournal(scope) && getIssn(scope)) {
       var issn = getIssn(scope);
       endpoint = api + "/search?issns=" + issn;
     }
 
-    if(isArticle(scope) && getDoi(scope)) {
+    if (isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
       endpoint = api + "/articles/doi/" + doi + "?include=journal";
     }
 
-    if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
+    if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
       var issn = getIssn(scope);
       endpoint = api + "/search?issns=" + issn;
     }
@@ -107,7 +107,7 @@ browzine.summon = (function() {
   function getData(response) {
     var data = {};
 
-    if(Array.isArray(response.data)) {
+    if (Array.isArray(response.data)) {
       data = response.data.filter(function(journal) {
         return journal.browzineEnabled === true;
       }).pop();
@@ -121,7 +121,7 @@ browzine.summon = (function() {
   function getIncludedJournal(response) {
     var journal = null;
 
-    if(response.included) {
+    if (response.included) {
       journal = Array.isArray(response.included) ? response.included[0] : response.included;
     }
 
@@ -131,7 +131,7 @@ browzine.summon = (function() {
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
-    if(data && data.browzineWebLink) {
+    if (data && data.browzineWebLink) {
       browzineWebLink = data.browzineWebLink;
     }
 
@@ -141,20 +141,20 @@ browzine.summon = (function() {
   function getCoverImageUrl(scope, data, journal) {
     var coverImageUrl = null;
 
-    if(isJournal(scope) && getIssn(scope)) {
-      if(data && data.coverImageUrl) {
+    if (isJournal(scope) && getIssn(scope)) {
+      if (data && data.coverImageUrl) {
         coverImageUrl = data.coverImageUrl;
       }
     }
 
-    if(isArticle(scope) && getDoi(scope)) {
-      if(journal && journal.coverImageUrl) {
+    if (isArticle(scope) && getDoi(scope)) {
+      if (journal && journal.coverImageUrl) {
         coverImageUrl = journal.coverImageUrl;
       }
     }
 
-    if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
-      if(data && data.coverImageUrl) {
+    if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
+      if (data && data.coverImageUrl) {
         coverImageUrl = data.coverImageUrl;
       }
     }
@@ -165,14 +165,14 @@ browzine.summon = (function() {
   function getBrowZineEnabled(scope, data, journal) {
     var browzineEnabled = false;
 
-    if(isJournal(scope)) {
-      if(data && data.browzineEnabled) {
+    if (isJournal(scope)) {
+      if (data && data.browzineEnabled) {
         browzineEnabled = data.browzineEnabled;
       }
     }
 
-    if(isArticle(scope)) {
-      if(journal && journal.browzineEnabled) {
+    if (isArticle(scope)) {
+      if (journal && journal.browzineEnabled) {
         browzineEnabled = journal.browzineEnabled;
       }
     }
@@ -183,7 +183,7 @@ browzine.summon = (function() {
   function isDefaultCoverImage(coverImageUrl) {
     var defaultCoverImage = false;
 
-    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+    if (coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
       defaultCoverImage = true;
     }
 
@@ -193,8 +193,8 @@ browzine.summon = (function() {
   function getDirectToPDFUrl(scope, data) {
     var directToPDFUrl = null;
 
-    if(isArticle(scope)) {
-      if(data && data.fullTextFile) {
+    if (isArticle(scope)) {
+      if (data && data.fullTextFile) {
         directToPDFUrl = data.fullTextFile;
       }
     }
@@ -205,8 +205,8 @@ browzine.summon = (function() {
   function getArticleLinkUrl(scope, data) {
     var articleLinkUrl = null;
 
-    if(isArticle(scope)) {
-      if(data && data.contentLocation) {
+    if (isArticle(scope)) {
+      if (data && data.contentLocation) {
         articleLinkUrl = data.contentLocation;
       }
     }
@@ -218,7 +218,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.journalCoverImagesEnabled;
 
-    if(typeof config === "undefined" || config === null || config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
@@ -229,7 +229,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.journalBrowZineWebLinkTextEnabled;
 
-    if(typeof config === "undefined" || config === null || config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
@@ -240,7 +240,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.articleBrowZineWebLinkTextEnabled;
 
-    if(typeof config === "undefined" || config === null || config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
@@ -252,11 +252,11 @@ browzine.summon = (function() {
     var config = browzine.articlePDFDownloadLinkEnabled;
     var prefixConfig = browzine.summonArticlePDFDownloadLinkEnabled;
 
-    if(typeof config === "undefined" || config === null || config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
-    if(typeof prefixConfig !== "undefined" && prefixConfig !== null && prefixConfig === false) {
+    if (typeof prefixConfig !== "undefined" && prefixConfig !== null && prefixConfig === false) {
       featureEnabled = false;
     }
 
@@ -267,7 +267,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.articleLinkEnabled;
 
-    if(config === true) {
+    if (config === true) {
       featureEnabled = true;
     }
 
@@ -278,7 +278,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.printRecordsIntegrationEnabled;
 
-    if(typeof config === "undefined" || config === null || config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
@@ -288,8 +288,8 @@ browzine.summon = (function() {
   function isFiltered(scope) {
     var result = false;
 
-    if(scope && scope.document) {
-      if(scope.document.is_print && !showPrintRecords()) {
+    if (scope && scope.document) {
+      if (scope.document.is_print && !showPrintRecords()) {
         result = true;
       }
     }
@@ -349,12 +349,12 @@ browzine.summon = (function() {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
 
-    if(isJournal(scope)) {
+    if (isJournal(scope)) {
       wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
       browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.summonJournalBrowZineWebLinkText || "Browse Now";
     }
 
-    if(isArticle(scope)) {
+    if (isArticle(scope)) {
       wording = browzine.articleWording || browzine.summonArticleWording || "View Complete Issue";
       browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.summonArticleBrowZineWebLinkText || "Browse Now";
     }
@@ -378,16 +378,16 @@ browzine.summon = (function() {
   function shouldEnhance(scope) {
     var validation = false;
 
-    if(!isFiltered(scope)) {
-      if(isJournal(scope) && getIssn(scope)) {
+    if (!isFiltered(scope)) {
+      if (isJournal(scope) && getIssn(scope)) {
         validation = true;
       }
 
-      if(isArticle(scope) && getDoi(scope)) {
+      if (isArticle(scope) && getDoi(scope)) {
         validation = true;
       }
 
-      if(isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
+      if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
         validation = true;
       }
     }
@@ -398,7 +398,7 @@ browzine.summon = (function() {
   function adapter(documentSummary) {
     var scope = getScope(documentSummary);
 
-    if(!shouldEnhance(scope)) {
+    if (!shouldEnhance(scope)) {
       return;
     }
 
@@ -415,27 +415,27 @@ browzine.summon = (function() {
       var directToPDFUrl = getDirectToPDFUrl(scope, data);
       var articleLinkUrl = getArticleLinkUrl(scope, data);
 
-      if(directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
+      if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
         var template = directToPDFTemplate(directToPDFUrl);
         $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
       }
 
-      if(!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink() && browzineEnabled) {
+      if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink() && browzineEnabled) {
         var template = articleLinkTemplate(articleLinkUrl);
         $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
       }
 
-      if(browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
+      if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
         var template = browzineWebLinkTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
-      if(browzineWebLink && browzineEnabled && isArticle(scope) && showArticleBrowZineWebLinkText()) {
+      if (browzineWebLink && browzineEnabled && isArticle(scope) && showArticleBrowZineWebLinkText()) {
         var template = browzineWebLinkTemplate(scope, browzineWebLink);
         $(documentSummary).find(".docFooter .row:eq(0)").append(template);
       }
 
-      if(coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
+      if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
         $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
       }
     });
@@ -471,7 +471,7 @@ browzine.summon = (function() {
 }());
 
 $(function() {
-  if(!browzine) {
+  if (!browzine) {
     return;
   }
 
@@ -484,7 +484,7 @@ $(function() {
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-      if(mutation.attributeName === "document-summary") {
+      if (mutation.attributeName === "document-summary") {
         var documentSummary = mutation.target;
         browzine.summon.adapter(documentSummary);
       }

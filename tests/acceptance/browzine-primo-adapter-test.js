@@ -138,7 +138,7 @@ describe("BrowZine Primo Adapter >", function() {
 
         var request = jasmine.Ajax.requests.mostRecent();
 
-        if(!request) return;
+        if (!request) return;
 
         request.respondWith({
           status: 200,
@@ -747,7 +747,7 @@ describe("BrowZine Primo Adapter >", function() {
 
         var request = jasmine.Ajax.requests.mostRecent();
 
-        if(!request) return;
+        if (!request) return;
 
         request.respondWith({
           status: 200,
