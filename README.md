@@ -100,7 +100,7 @@ var browzine = {
   articleAcceptedManuscriptPDFViaUnpaywallWording: "Article PDF",
   articleAcceptedManuscriptPDFViaUnpaywallLinkText: "Download Now (Accepted Manuscript via Unpaywall)",
 
-  articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true
+  articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
   articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (via Unpaywall)",
 };
@@ -226,10 +226,10 @@ window.browzine = {
   articleLinkViaUnpaywallText: "Read Article (via Unpaywall)",
 
   articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
-  articleAcceptedManuscriptPDFViaUnpaywallText: "Download PDF (Accepted Manuscript via Unpaywall),
+  articleAcceptedManuscriptPDFViaUnpaywallText: "Download PDF (Accepted Manuscript via Unpaywall)",
 
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
-  articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall),
+  articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall)",
 };
 ```
 
