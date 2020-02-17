@@ -128,6 +128,18 @@ browzine.primo = (function() {
     return endpoint;
   };
 
+  function getEndpointUnpaywall(scope) {
+    var endpoint;
+    var email = browzine.unpaywallEmailAddressKey;
+
+    if (isArticle(scope) && getDoi(scope) && email) {
+      var doi = getDoi(scope);
+      endpoint = "https://api.unpaywall.org/v2/" + doi + "?email=" + email;
+    }
+
+    return endpoint;
+  };
+
   function getData(response) {
     var data = {};
 
@@ -444,12 +456,14 @@ browzine.primo = (function() {
     }
 
     var endpoint = getEndpoint(scope);
+    // console.log("endpoint", endpoint);
 
     var request = new XMLHttpRequest();
     request.open("GET", endpoint, true);
     request.setRequestHeader("Content-type", "application/json");
 
     request.onload = function() {
+      // console.log("request", request);
       if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var response = JSON.parse(request.response);
 
@@ -522,6 +536,23 @@ browzine.primo = (function() {
           })();
         }
       }
+
+      // if (request.readyState == XMLHttpRequest.DONE && request.status == 404) {
+      //   var endpoint = getEndpointUnpaywall(scope);
+      //   console.log("unpaywall endpoint", endpoint);
+      //
+      //   var request = new XMLHttpRequest();
+      //   request.open("GET", endpoint, true);
+      //   request.setRequestHeader("Content-type", "application/json");
+      //
+      //   request.onload = function() {
+      //     if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+      //
+      //     }
+      //   };
+      //
+      //   request.send();
+      // }
     };
 
     request.send();
@@ -538,6 +569,7 @@ browzine.primo = (function() {
     getDoi: getDoi,
     isFiltered: isFiltered,
     getEndpoint: getEndpoint,
+    getEndpointUnpaywall: getEndpointUnpaywall,
     shouldEnhance: shouldEnhance,
     getData: getData,
     getIncludedJournal: getIncludedJournal,

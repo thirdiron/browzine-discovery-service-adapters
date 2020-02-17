@@ -104,6 +104,18 @@ browzine.summon = (function() {
     return endpoint;
   };
 
+  function getEndpointUnpaywall(scope) {
+    var endpoint;
+    var email = browzine.unpaywallEmailAddressKey;
+
+    if (isArticle(scope) && getDoi(scope) && email) {
+      var doi = getDoi(scope);
+      endpoint = "https://api.unpaywall.org/v2/" + doi + "?email=" + email;
+    }
+
+    return endpoint;
+  };
+
   function getData(response) {
     var data = {};
 
@@ -446,6 +458,7 @@ browzine.summon = (function() {
     getScope: getScope,
     shouldEnhance: shouldEnhance,
     getEndpoint: getEndpoint,
+    getEndpointUnpaywall: getEndpointUnpaywall,
     getData: getData,
     getIncludedJournal: getIncludedJournal,
     getBrowZineWebLink: getBrowZineWebLink,

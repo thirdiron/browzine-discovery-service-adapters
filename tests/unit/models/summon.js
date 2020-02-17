@@ -303,6 +303,36 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getEndpointUnpaywall method >", function() {
+    afterEach(function() {
+      delete browzine.unpaywallEmailAddressKey;
+    });
+
+    it("should build an article endpoint for an article search result", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+
+      expect(summon.getEndpointUnpaywall(scope)).toContain("https://api.unpaywall.org/v2/10.1136%2Fbmj.h2575");
+    });
+
+    it("should build an article endpoint for an article search result only when an email address key is provided", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      expect(summon.getEndpointUnpaywall(scope)).toBeUndefined();
+    });
+  });
+
   describe("summon model getBrowZineWebLink method >", function() {
     it("should include a browzineWebLink in the BrowZine API response for a journal", function() {
       var data = summon.getData(journalResponse);

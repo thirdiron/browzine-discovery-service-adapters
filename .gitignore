@@ -9,3 +9,6 @@
 .npm
 .eslintcache
 *.log
+
+360-core-loader.js
+summon-loader.js
