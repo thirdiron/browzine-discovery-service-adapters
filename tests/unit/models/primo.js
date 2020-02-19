@@ -1516,4 +1516,46 @@ describe("Primo Model >", function() {
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
     });
   });
+
+  describe("primo model isUnpaywallEnabled method >", function() {
+    beforeEach(function() {
+      delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+      delete browzine.articleLinkViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+    });
+
+    it("should validate unpaywall is disabled when none of the enabled flags are set", function() {
+      expect(primo.isUnpaywallEnabled()).toEqual(undefined);
+    });
+
+    it("should validate unpaywall is enabled when all of the enabled flags are set", function() {
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+      expect(primo.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articlePDFDownloadViaUnpaywallEnabled is set", function() {
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      expect(primo.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleLinkViaUnpaywallEnabled is set", function() {
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      expect(primo.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleAcceptedManuscriptPDFViaUnpaywallEnabled is set", function() {
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      expect(primo.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is set", function() {
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+      expect(primo.isUnpaywallEnabled()).toEqual(true);
+    });
+  });
 });

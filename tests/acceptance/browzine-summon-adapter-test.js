@@ -21,10 +21,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/search\?issns=00284793/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": [{
               "id": 10292,
               "type": "journals",
@@ -35,10 +41,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/search\?issns=00284793/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
       });
 
       it("should have an enhanced browse journal in browzine option", function() {
@@ -78,11 +89,18 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          console.log("$.getJSON");
-          expect(endpoint).toMatch(/search\?issns=00284793/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        if (!request) return;
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": [{
               "id": 10292,
               "type": "journals",
@@ -93,13 +111,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/search\?issns=00284793/);
+        expect(request.method).toBe('GET');
       });
 
       afterEach(function() {
+        jasmine.Ajax.uninstall();
         delete browzine.journalCoverImagesEnabled;
         delete browzine.journalBrowZineWebLinkTextEnabled;
         delete browzine.printRecordsIntegrationEnabled;
@@ -140,10 +160,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": {
               "id": 55134408,
               "type": "articles",
@@ -167,10 +193,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
       });
 
       it("should have an enhanced browse article in browzine option", function() {
@@ -226,10 +257,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/search\?issns=00284793/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": [{
               "id": 10292,
               "type": "journals",
@@ -240,10 +277,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/search\?issns=00284793/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
       });
 
       it("should have an enhanced browzine journal cover", function() {
@@ -271,10 +313,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": {
               "id": 55134408,
               "type": "articles",
@@ -299,13 +347,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
       });
 
       afterEach(function() {
+        jasmine.Ajax.uninstall();
         delete browzine.articleLinkEnabled;
       });
 
@@ -351,10 +401,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": {
               "id": 55134408,
               "type": "articles",
@@ -378,13 +434,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
       });
 
       afterEach(function() {
+        jasmine.Ajax.uninstall();
         delete browzine.articlePDFDownloadLinkEnabled;
       });
 
@@ -429,10 +487,18 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        if (!request) return;
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": {
               "id": 55134408,
               "type": "articles",
@@ -456,13 +522,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
       });
 
       afterEach(function() {
+        jasmine.Ajax.uninstall();
         delete browzine.journalCoverImagesEnabled;
         delete browzine.articleBrowZineWebLinkTextEnabled;
         delete browzine.articlePDFDownloadLinkEnabled;
@@ -507,10 +575,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/articles\/doi\/02.2016%2Fbmj.h0830/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": {
               "id": 55134408,
               "type": "articles",
@@ -532,10 +606,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": true,
               "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/articles\/doi\/02.2016%2Fbmj.h0830/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
       });
 
       it("should not have an enhanced browse article in browzine option", function() {
@@ -561,10 +640,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/articles\/doi\/02.2016%2Fbmj.h0830/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": {
               "id": 55134408,
               "type": "articles",
@@ -585,10 +670,15 @@ describe("BrowZine Summon Adapter >", function() {
               "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
               "browzineEnabled": false
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/articles\/doi\/02.2016%2Fbmj.h0830/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
       });
 
       it("should not have an enhanced browse article in browzine link in search result", function() {
@@ -619,10 +709,16 @@ describe("BrowZine Summon Adapter >", function() {
           documentSummary = $compile(documentSummary)($scope);
         });
 
-        $.getJSON = function(endpoint, callback) {
-          expect(endpoint).toMatch(/search\?issns=1543687X/);
+        jasmine.Ajax.install();
 
-          return callback({
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
             "data": [{
               "id": 47087,
               "type": "journals",
@@ -633,10 +729,15 @@ describe("BrowZine Summon Adapter >", function() {
               "browzineEnabled": false,
               "externalLink": "https://onesearch.library.rice.edu/discovery/search?query=issn,exact,1543-687X,OR&query=issn,exact,,AND&pfilter=rtype,exact,journals,AND&tab=Everything&search_scope=MyInst_and_CI&vid=01RICE_INST:RICE&lang=en&mode=advanced&offset=0"
             }]
-          });
-        };
+          })
+        });
 
-        summon.adapter(documentSummary);
+        expect(request.url).toMatch(/search\?issns=1543687X/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
       });
 
       it("should not have an enhanced browse article in browzine link in search result", function() {

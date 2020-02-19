@@ -383,6 +383,78 @@ browzine.summon = (function() {
     return template;
   };
 
+  function articlePDFUnpaywallTemplate(directToPDFUrl) {
+    var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
+    var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
+
+    var template = "<div class='browzine'>" +
+                     "{articlePDFDownloadWording}: <a class='unpaywall-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                   "</div>";
+
+    template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
+    template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
+    template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
+
+    return template;
+  };
+
+  function articleLinkUnpaywallTemplate(articleLinkUrl) {
+    var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
+    var articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || "Article Link";
+    var articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
+
+    var template = "<div class='browzine'>" +
+                     "{articleLinkTextWording}: <a class='unpaywall-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{linkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                   "</div>";
+
+    template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
+    template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
+    template = template.replace(/{articleLinkText}/g, articleLinkText);
+    template = template.replace(/{linkIcon}/g, linkIcon);
+
+    return template;
+  };
+
+  function manuscriptPDFUnpaywallTemplate(directToPDFUrl) {
+    var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
+    var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
+    var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
+
+    var template = "<div class='browzine'>" +
+                     "{articlePDFDownloadWording}: <a class='unpaywall-manuscript-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                   "</div>";
+
+    template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
+    template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
+    template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
+
+    return template;
+  };
+
+  function manuscriptLinkUnpaywallTemplate(articleLinkUrl) {
+    var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
+    var articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "Article Link";
+    var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
+
+    var template = "<div class='browzine'>" +
+                     "{articleLinkTextWording}: <a class='unpaywall-manuscript-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{linkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                   "</div>";
+
+    template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
+    template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
+    template = template.replace(/{articleLinkText}/g, articleLinkText);
+    template = template.replace(/{linkIcon}/g, linkIcon);
+
+    return template;
+  };
+
+  function isUnpaywallEnabled() {
+    return browzine.articlePDFDownloadViaUnpaywallEnabled || browzine.articleLinkViaUnpaywallEnabled || browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled || browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+  };
+
   function getScope(documentSummary) {
     return angular.element(documentSummary).scope();
   };
@@ -416,41 +488,69 @@ browzine.summon = (function() {
 
     var endpoint = getEndpoint(scope);
 
-    $.getJSON(endpoint, function(response) {
-      var data = getData(response);
-      var journal = getIncludedJournal(response);
+    var request = new XMLHttpRequest();
+    request.open("GET", endpoint, true);
+    request.setRequestHeader("Content-type", "application/json");
 
-      var browzineWebLink = getBrowZineWebLink(data);
-      var coverImageUrl = getCoverImageUrl(scope, data, journal);
-      var browzineEnabled = getBrowZineEnabled(scope, data, journal);
-      var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
-      var directToPDFUrl = getDirectToPDFUrl(scope, data);
-      var articleLinkUrl = getArticleLinkUrl(scope, data);
+    request.onload = function() {
+      if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+        var response = JSON.parse(request.response);
 
-      if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
-        var template = directToPDFTemplate(directToPDFUrl);
-        $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+        var data = getData(response);
+        var journal = getIncludedJournal(response);
+
+        var browzineWebLink = getBrowZineWebLink(data);
+        var coverImageUrl = getCoverImageUrl(scope, data, journal);
+        var browzineEnabled = getBrowZineEnabled(scope, data, journal);
+        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
+        var directToPDFUrl = getDirectToPDFUrl(scope, data);
+        var articleLinkUrl = getArticleLinkUrl(scope, data);
+
+        if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
+          var template = directToPDFTemplate(directToPDFUrl);
+          $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+        }
+
+        if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink() && browzineEnabled) {
+          var template = articleLinkTemplate(articleLinkUrl);
+          $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+        }
+
+        if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
+          var template = browzineWebLinkTemplate(scope, browzineWebLink);
+          $(documentSummary).find(".docFooter .row:eq(0)").append(template);
+        }
+
+        if (browzineWebLink && browzineEnabled && isArticle(scope) && showArticleBrowZineWebLinkText()) {
+          var template = browzineWebLinkTemplate(scope, browzineWebLink);
+          $(documentSummary).find(".docFooter .row:eq(0)").append(template);
+        }
+
+        if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
+          $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
+        }
       }
 
-      if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink() && browzineEnabled) {
-        var template = articleLinkTemplate(articleLinkUrl);
-        $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
-      }
+      if (request.readyState == XMLHttpRequest.DONE && request.status == 404) {
+        var endpoint = getEndpointUnpaywall(scope);
 
-      if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
-        var template = browzineWebLinkTemplate(scope, browzineWebLink);
-        $(documentSummary).find(".docFooter .row:eq(0)").append(template);
-      }
+        if (endpoint && isUnpaywallEnabled()) {
+          var requestUnpaywall = new XMLHttpRequest();
+          requestUnpaywall.open("GET", endpoint, true);
+          requestUnpaywall.setRequestHeader("Content-type", "application/json");
 
-      if (browzineWebLink && browzineEnabled && isArticle(scope) && showArticleBrowZineWebLinkText()) {
-        var template = browzineWebLinkTemplate(scope, browzineWebLink);
-        $(documentSummary).find(".docFooter .row:eq(0)").append(template);
-      }
+          requestUnpaywall.onload = function() {
+            if (requestUnpaywall.readyState == XMLHttpRequest.DONE && requestUnpaywall.status == 200) {
+              var response = JSON.parse(requestUnpaywall.response);
+            }
+          };
 
-      if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
-        $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
+          requestUnpaywall.send();
+        }
       }
-    });
+    };
+
+    request.send();
   };
 
   return {
@@ -478,6 +578,11 @@ browzine.summon = (function() {
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,
+    articlePDFUnpaywallTemplate: articlePDFUnpaywallTemplate,
+    articleLinkUnpaywallTemplate: articleLinkUnpaywallTemplate,
+    manuscriptPDFUnpaywallTemplate: manuscriptPDFUnpaywallTemplate,
+    manuscriptLinkUnpaywallTemplate: manuscriptLinkUnpaywallTemplate,
+    isUnpaywallEnabled: isUnpaywallEnabled,
     urlRewrite: urlRewrite,
     libraryIdOverride: libraryIdOverride,
   };

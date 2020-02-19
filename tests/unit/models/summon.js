@@ -1022,4 +1022,46 @@ describe("Summon Model >", function() {
       expect(template).toContain("color: #333;");
     });
   });
+
+  describe("summon model isUnpaywallEnabled method >", function() {
+    beforeEach(function() {
+      delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+      delete browzine.articleLinkViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+    });
+
+    it("should validate unpaywall is disabled when none of the enabled flags are set", function() {
+      expect(summon.isUnpaywallEnabled()).toEqual(undefined);
+    });
+
+    it("should validate unpaywall is enabled when all of the enabled flags are set", function() {
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articlePDFDownloadViaUnpaywallEnabled is set", function() {
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleLinkViaUnpaywallEnabled is set", function() {
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleAcceptedManuscriptPDFViaUnpaywallEnabled is set", function() {
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is set", function() {
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+  });
 });

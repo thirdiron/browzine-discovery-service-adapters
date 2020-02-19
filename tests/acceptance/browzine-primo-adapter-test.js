@@ -39,6 +39,7 @@ describe("BrowZine Primo Adapter >", function() {
         primo.searchResult($scope);
 
         var request = jasmine.Ajax.requests.mostRecent();
+        
         request.respondWith({
           status: 200,
           contentType: "application/json",
