@@ -400,6 +400,8 @@ browzine.summon = (function() {
       }
     }
 
+    return url;
+
     // if (unpaywallType === 'AcceptedArticleLink') {
     //   label = `Manuscript Link`;
     // }
@@ -756,6 +758,7 @@ browzine.summon = (function() {
               console.log("unpaywallArticleLinkUrl", unpaywallArticleLinkUrl);
               console.log("unpaywallManuscriptArticlePDFUrl", unpaywallManuscriptArticlePDFUrl);
               console.log("unpaywallManuscriptArticleLinkUrl", unpaywallManuscriptArticleLinkUrl);
+              console.log("--------");
             }
           };
 
