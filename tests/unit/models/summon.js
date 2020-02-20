@@ -540,6 +540,158 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model isTrustedRepository method >", function() {
+    it("should expect non nih.gov and non europepmc.org repositories to be untrusted", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(summon.isTrustedRepository(response)).toEqual(false);
+    });
+
+    it("should expect nih.gov repositories to be trusted", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4890194/",
+          "url_for_landing_page": "https://dx.doi.org/10.1016%2Fj.sjbs.2016.02.019",
+          "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4890194/pdf/main.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      expect(summon.isTrustedRepository(response)).toEqual(true);
+    });
+
+    it("should expect europepmc.org repositories to be trusted", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://europepmc.org/article/MED/28794876#free-full-text",
+          "url_for_landing_page": "http://doi.org/10.1186/s40248-017-0101-8",
+          "url_for_pdf": "https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC5545842&blobtype=pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      expect(summon.isTrustedRepository(response)).toEqual(true);
+    });
+  });
+
+  describe("summon model isUnknownVersion method >", function() {
+    it("should expect an empty string version property to validate as an unknown version", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": ""
+        }
+      };
+
+      expect(summon.isUnknownVersion(response)).toEqual(true);
+    });
+
+    it("should expect a non-existent version property to validate as an unknown version", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119"
+        }
+      };
+
+      expect(summon.isUnknownVersion(response)).toEqual(true);
+    });
+
+    it("should expect a null version property to validate as an unknown version", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": null
+        }
+      };
+
+      expect(summon.isUnknownVersion(response)).toEqual(true);
+    });
+  });
+
+  describe("summon model getUnpaywallArticlePDFUrl method >", function() {
+    it("should return an unpaywall pdf url for publishedVersion of article hosted by publisher", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(summon.getUnpaywallArticlePDFUrl(response)).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
+    });
+  });
+
   describe("summon model showJournalCoverImages method >", function() {
     beforeEach(function() {
       delete browzine.journalCoverImagesEnabled;

@@ -751,6 +751,11 @@ browzine.summon = (function() {
               var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(response);
               var unpaywallManuscriptArticlePDFUrl = getUnpaywallManuscriptArticlePDFUrl(response);
               var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
+
+              console.log("unpaywallArticlePDFUrl", unpaywallArticlePDFUrl);
+              console.log("unpaywallArticleLinkUrl", unpaywallArticleLinkUrl);
+              console.log("unpaywallManuscriptArticlePDFUrl", unpaywallManuscriptArticlePDFUrl);
+              console.log("unpaywallManuscriptArticleLinkUrl", unpaywallManuscriptArticleLinkUrl);
             }
           };
 
