@@ -556,6 +556,24 @@ describe("Primo Model >", function() {
 
       expect(primo.getIssn(scope)).toEqual("00284793");
     });
+
+    it("should only retrieve issn formats", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["Whitman, Mary C., Wen Fan, Lorena Rela, Diego J. Rodriguez-Gil, and Charles A. Greer. 2009. “Blood Vessels Form a Migratory Scaffold in the Rostral Migratory Stream.” The Journal of Comparative Neurology 516 (2) (September 10): 94–104. doi:10.1002/cne.22093.", "0021-9967"]
+            }
+          }
+        }
+      };
+
+      expect(primo.getIssn(scope)).toEqual("00219967");
+    });
   });
 
   describe("primo model getDoi method >", function() {

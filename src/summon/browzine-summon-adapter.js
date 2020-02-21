@@ -53,16 +53,48 @@ browzine.summon = (function() {
     return result;
   };
 
+  // function getIssn(scope) {
+  //   var issn = "";
+  //
+  //   if (scope.document) {
+  //     if (scope.document.issns) {
+  //       issn = scope.document.issns[0].trim().replace("-", "");
+  //     }
+  //
+  //     if (scope.document.eissns && !issn) {
+  //       issn = scope.document.eissns[0].trim().replace("-", "");
+  //     }
+  //   }
+  //
+  //   return encodeURIComponent(issn);
+  // };
+
   function getIssn(scope) {
     var issn = "";
 
     if (scope.document) {
       if (scope.document.issns) {
-        issn = scope.document.issns[0].trim().replace("-", "");
+        if (scope.document.issns.length > 1) {
+          issn = scope.document.issns.filter(function(issn) {
+            return (issn.length < 10) && (/[\S]{4}\-[\S]{4}/.test(issn));
+          }).join(",").trim().replace(/-/g, "");
+        } else {
+          if (scope.document.issns[0]) {
+            issn = scope.document.issns[0].trim().replace("-", "");
+          }
+        }
       }
 
       if (scope.document.eissns && !issn) {
-        issn = scope.document.eissns[0].trim().replace("-", "");
+        if (scope.document.eissns.length > 1) {
+          issn = scope.document.eissns.filter(function(issn) {
+            return (issn.length < 10) && (/[\S]{4}\-[\S]{4}/.test(issn));
+          }).join(",").trim().replace(/-/g, "");
+        } else {
+          if (scope.document.eissns[0]) {
+            issn = scope.document.eissns[0].trim().replace("-", "");
+          }
+        }
       }
     }
 
@@ -73,7 +105,7 @@ browzine.summon = (function() {
     var doi = "";
 
     if (scope.document) {
-      if (scope.document.dois) {
+      if (scope.document.dois && scope.document.dois[0]) {
         doi = scope.document.dois[0].trim();
       }
     }
@@ -774,6 +806,8 @@ browzine.summon = (function() {
     adapter: adapter,
     getScope: getScope,
     shouldEnhance: shouldEnhance,
+    getIssn: getIssn,
+    getDoi: getDoi,
     getEndpoint: getEndpoint,
     getEndpointUnpaywall: getEndpointUnpaywall,
     getData: getData,

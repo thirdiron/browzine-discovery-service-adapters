@@ -234,6 +234,77 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getIssn method >", function() {
+    it("should retrieve an issn from a journal search result with an issn", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          issns: ["0028-4793"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00284793");
+    });
+
+    it("should retrieve an eissn from a journal search result with an eissn", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          eissns: ["0096-6762"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00966762");
+    });
+
+    it("should retrieve an issn from a journal search result with both an issn and an eissn", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          issns: ["0028-4793"],
+          eissns: ["0096-6762"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00284793");
+    });
+
+    it("should only retrieve issn formats", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          issns: ["Whitman, Mary C., Wen Fan, Lorena Rela, Diego J. Rodriguez-Gil, and Charles A. Greer. 2009. “Blood Vessels Form a Migratory Scaffold in the Rostral Migratory Stream.” The Journal of Comparative Neurology 516 (2) (September 10): 94–104. doi:10.1002/cne.22093.", "0021-9967"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00219967");
+    });
+  });
+
+  describe("primo model getDoi method >", function() {
+    it("should retrieve a doi from an article search result with a doi", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      expect(summon.getDoi(scope)).toEqual(encodeURIComponent("10.1136/bmj.h2575"));
+    });
+
+    it("should retrieve an empty string from an article search result without a doi", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: []
+        }
+      };
+
+      expect(summon.getDoi(scope)).toEqual("");
+    });
+  });
+
   describe("summon model getEndpoint method >", function() {
     it("should build a journal endpoint for a journal search result", function() {
       var scope = {

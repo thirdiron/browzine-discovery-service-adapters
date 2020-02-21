@@ -68,7 +68,9 @@ browzine.primo = (function() {
     if (result && result.pnx && result.pnx.addata) {
       if (result.pnx.addata.issn) {
         if (result.pnx.addata.issn.length > 1) {
-          issn = result.pnx.addata.issn.join(",").trim().replace(/-/g, "");
+          issn = result.pnx.addata.issn.filter(function(issn) {
+            return (issn.length < 10) && (/[\S]{4}\-[\S]{4}/.test(issn));
+          }).join(",").trim().replace(/-/g, "");
         } else {
           if (result.pnx.addata.issn[0]) {
             issn = result.pnx.addata.issn[0].trim().replace("-", "");
@@ -78,7 +80,9 @@ browzine.primo = (function() {
 
       if (result.pnx.addata.eissn && !issn) {
         if (result.pnx.addata.eissn.length > 1) {
-          issn = result.pnx.addata.eissn.join(",").trim().replace(/-/g, "");
+          issn = result.pnx.addata.eissn.filter(function(issn) {
+            return (issn.length < 10) && (/[\S]{4}\-[\S]{4}/.test(issn));
+          }).join(",").trim().replace(/-/g, "");
         } else {
           if (result.pnx.addata.eissn[0]) {
             issn = result.pnx.addata.eissn[0].trim().replace("-", "");
@@ -736,6 +740,12 @@ browzine.primo = (function() {
 
   function searchResult($scope) {
     var scope = getScope($scope);
+    // console.log("all scope data:", scope);
+    // console.log("title:", scope.result.pnx.addata.atitle);
+    // console.log("journal:", scope.result.pnx.addata.jtitle);
+    // console.log("issn:", scope.result.pnx.addata.issn);
+    // console.log("doi:", scope.result.pnx.addata.doi);
+    // console.log("----");
 
     if (!shouldEnhance(scope)) {
       return;
