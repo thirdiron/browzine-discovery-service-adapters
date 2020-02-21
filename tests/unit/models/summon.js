@@ -281,7 +281,7 @@ describe("Summon Model >", function() {
     });
   });
 
-  describe("primo model getDoi method >", function() {
+  describe("summon model getDoi method >", function() {
     it("should retrieve a doi from an article search result with a doi", function() {
       var scope = {
         document: {
