@@ -1209,6 +1209,29 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model getUnpaywallArticleLinkUrl method >", function() {
+    it("should return an unpaywall article link url for publishedVersion of article hosted by repository without an article pdf url", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(primo.getUnpaywallArticleLinkUrl(response)).toEqual("https://doi.org/10.1098/rstb.1986.0056");
+    });
+  });
+
   describe("primo model getUnpaywallManuscriptArticlePDFUrl method >", function() {
     it("should return an unpaywall manuscript pdf url for acceptedVersion of article hosted by repository", function() {
       var response = {
@@ -1229,6 +1252,29 @@ describe("Primo Model >", function() {
       };
 
       expect(primo.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
+    });
+  });
+
+  describe("primo model getUnpaywallManuscriptArticleLinkUrl method >", function() {
+    it("should return an unpaywall manuscript article link url for acceptedVersion of article hosted by repository without an article pdf url", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa repository (via pmcid lookup)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T01:10:19.539950",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_pdf": null,
+          "version": "acceptedVersion"
+        }
+      };
+
+      expect(primo.getUnpaywallManuscriptArticleLinkUrl(response)).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
     });
   });
 
