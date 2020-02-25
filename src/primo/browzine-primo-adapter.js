@@ -626,7 +626,7 @@ browzine.primo = (function() {
     return template;
   };
 
-  function articlePDFUnpaywallTemplate(directToPDFUrl) {
+  function unpaywallArticlePDFTemplate(directToPDFUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallText  || "Download PDF (via Unpaywall)";
 
@@ -645,7 +645,7 @@ browzine.primo = (function() {
     return template;
   };
 
-  function articleLinkUnpaywallTemplate(articleLinkUrl) {
+  function unpaywallArticleLinkTemplate(articleLinkUrl) {
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var articleLinkText = browzine.articleLinkViaUnpaywallText  || "Read Article (via Unpaywall)";
 
@@ -664,7 +664,7 @@ browzine.primo = (function() {
     return template;
   };
 
-  function manuscriptPDFUnpaywallTemplate(directToPDFUrl) {
+  function unpaywallManuscriptPDFTemplate(directToPDFUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallText  || "Download PDF (Accepted Manuscript via Unpaywall)";
 
@@ -683,7 +683,7 @@ browzine.primo = (function() {
     return template;
   };
 
-  function manuscriptLinkUnpaywallTemplate(articleLinkUrl) {
+  function unpaywallManuscriptLinkTemplate(articleLinkUrl) {
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallText  || "Read Article (Accepted Manuscript via Unpaywall)";
 
@@ -853,6 +853,39 @@ browzine.primo = (function() {
               console.log("unpaywallManuscriptArticlePDFUrl", unpaywallManuscriptArticlePDFUrl);
               console.log("unpaywallManuscriptArticleLinkUrl", unpaywallManuscriptArticleLinkUrl);
               console.log("--------");
+
+              var template;
+
+              if (unpaywallArticlePDFUrl) {
+                template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+              }
+
+              if (unpaywallArticleLinkUrl) {
+                template = unpaywallArticleLinkTemplate(unpaywallArticlePDFUrl);
+              }
+
+              if (unpaywallManuscriptArticlePDFUrl) {
+                template = unpaywallManuscriptPDFTemplate(unpaywallArticlePDFUrl);
+              }
+
+              if (unpaywallManuscriptArticleLinkUrl) {
+                template = unpaywallManuscriptLinkTemplate(unpaywallArticlePDFUrl);
+              }
+
+              if (template) {
+                var element = getElement(scope);
+
+                (function poll() {
+                  var elementParent = getElementParent(element);
+                  var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
+
+                  if (availabilityLine) {
+                    availabilityLine.insertAdjacentHTML('afterbegin', template);
+                  } else {
+                    requestAnimationFrame(poll);
+                  }
+                })();
+              }
             }
           };
 
@@ -901,10 +934,10 @@ browzine.primo = (function() {
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
-    articlePDFUnpaywallTemplate: articlePDFUnpaywallTemplate,
-    articleLinkUnpaywallTemplate: articleLinkUnpaywallTemplate,
-    manuscriptPDFUnpaywallTemplate: manuscriptPDFUnpaywallTemplate,
-    manuscriptLinkUnpaywallTemplate: manuscriptLinkUnpaywallTemplate,
+    unpaywallArticlePDFTemplate: unpaywallArticlePDFTemplate,
+    unpaywallArticleLinkTemplate: unpaywallArticleLinkTemplate,
+    unpaywallManuscriptPDFTemplate: unpaywallManuscriptPDFTemplate,
+    unpaywallManuscriptLinkTemplate: unpaywallManuscriptLinkTemplate,
     isUnpaywallEnabled: isUnpaywallEnabled,
     getElement: getElement,
     getElementParent: getElementParent,

@@ -621,7 +621,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function articlePDFUnpaywallTemplate(directToPDFUrl) {
+  function unpaywallArticlePDFTemplate(directToPDFUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
@@ -638,7 +638,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function articleLinkUnpaywallTemplate(articleLinkUrl) {
+  function unpaywallArticleLinkTemplate(articleLinkUrl) {
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || "Article Link";
     var articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
@@ -655,7 +655,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function manuscriptPDFUnpaywallTemplate(directToPDFUrl) {
+  function unpaywallManuscriptPDFTemplate(directToPDFUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
@@ -672,7 +672,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function manuscriptLinkUnpaywallTemplate(articleLinkUrl) {
+  function unpaywallManuscriptLinkTemplate(articleLinkUrl) {
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "Article Link";
     var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
@@ -791,6 +791,28 @@ browzine.summon = (function() {
               console.log("unpaywallManuscriptArticlePDFUrl", unpaywallManuscriptArticlePDFUrl);
               console.log("unpaywallManuscriptArticleLinkUrl", unpaywallManuscriptArticleLinkUrl);
               console.log("--------");
+
+              var template;
+
+              if (unpaywallArticlePDFUrl) {
+                template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+              }
+
+              if (unpaywallArticleLinkUrl) {
+                template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
+              }
+
+              if (unpaywallManuscriptArticlePDFUrl) {
+                template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+              }
+
+              if (unpaywallManuscriptArticleLinkUrl) {
+                template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
+              }
+
+              if (template) {
+                $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+              }
             }
           };
 
@@ -835,10 +857,10 @@ browzine.summon = (function() {
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,
-    articlePDFUnpaywallTemplate: articlePDFUnpaywallTemplate,
-    articleLinkUnpaywallTemplate: articleLinkUnpaywallTemplate,
-    manuscriptPDFUnpaywallTemplate: manuscriptPDFUnpaywallTemplate,
-    manuscriptLinkUnpaywallTemplate: manuscriptLinkUnpaywallTemplate,
+    unpaywallArticlePDFTemplate: unpaywallArticlePDFTemplate,
+    unpaywallArticleLinkTemplate: unpaywallArticleLinkTemplate,
+    unpaywallManuscriptPDFTemplate: unpaywallManuscriptPDFTemplate,
+    unpaywallManuscriptLinkTemplate: unpaywallManuscriptLinkTemplate,
     isUnpaywallEnabled: isUnpaywallEnabled,
     urlRewrite: urlRewrite,
     libraryIdOverride: libraryIdOverride,
