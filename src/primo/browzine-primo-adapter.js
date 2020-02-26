@@ -329,7 +329,7 @@ browzine.primo = (function() {
 
     if (response.best_oa_location) {
       if (response.best_oa_location.host_type === "publisher" || response.best_oa_location.host_type === "repository") {
-        if (response.best_oa_location.version === "publishedVersion" || (isUnknownVersion(response) && isTrustedRepository(response))) {
+        if (response.best_oa_location.version === "publishedVersion") {
           if (!response.best_oa_location.url_for_pdf) {
             url = response.best_oa_location.url_for_landing_page;
           }
@@ -420,7 +420,7 @@ browzine.primo = (function() {
 
     if (response.best_oa_location) {
       if (response.best_oa_location.host_type === "repository") {
-        if (response.best_oa_location.version === "acceptedVersion" || (isUnknownVersion(response) && isTrustedRepository(response))) {
+        if (response.best_oa_location.version === "acceptedVersion") {
           if (!response.best_oa_location.url_for_pdf) {
             url = response.best_oa_location.url_for_landing_page;
           }
