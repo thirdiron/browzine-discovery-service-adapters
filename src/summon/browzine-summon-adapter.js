@@ -53,22 +53,6 @@ browzine.summon = (function() {
     return result;
   };
 
-  // function getIssn(scope) {
-  //   var issn = "";
-  //
-  //   if (scope.document) {
-  //     if (scope.document.issns) {
-  //       issn = scope.document.issns[0].trim().replace("-", "");
-  //     }
-  //
-  //     if (scope.document.eissns && !issn) {
-  //       issn = scope.document.eissns[0].trim().replace("-", "");
-  //     }
-  //   }
-  //
-  //   return encodeURIComponent(issn);
-  // };
-
   function getIssn(scope) {
     var issn = "";
 
@@ -296,36 +280,6 @@ browzine.summon = (function() {
     }
 
     return url;
-
-    // if (unpaywallType === 'FullTextFile' || unpaywallType === 'PublishedPDF') {
-    //   label = 'Download PDF';
-    // }
-    //
-    // if (unpaywallType === 'FullTextFile' || unpaywallType === 'PublishedPDF' || unpaywallType === 'AcceptedPDF') {
-    //   const urlForPdf = unpaywallResponse.best_oa_location.url_for_pdf;
-    //   return (!!urlForPdf) ? urlForPdf : '';
-    // }
-    //
-    // const bestLocation = unpaywallResponse.best_oa_location;
-    // const trustedRepository = bestLocation.url_for_pdf ? bestLocation.url_for_pdf.includes('nih.gov') || bestLocation.url_for_pdf.includes('europepmc.org')
-    //                                                    : false;
-    // const versionUnknown = bestLocation.version === null || bestLocation.version === '';
-    //
-    // if (bestLocation.host_type === 'publisher' && (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository))) {
-    //   return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //     ? 'LandingPage'
-    //     : 'FullTextFile';
-    // } else if (bestLocation.host_type === 'repository') {
-    //   if (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'PublishedArticleLink'
-    //       : 'PublishedPDF';
-    //   } else if (bestLocation.version === 'acceptedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'AcceptedArticleLink'
-    //       : 'AcceptedPDF';
-    //   }
-    // }
   };
 
   function getUnpaywallArticleLinkUrl(response) {
@@ -333,7 +287,7 @@ browzine.summon = (function() {
 
     if (response.best_oa_location) {
       if (response.best_oa_location.host_type === "publisher" || response.best_oa_location.host_type === "repository") {
-        if (response.best_oa_location.version === "publishedVersion" || (isUnknownVersion(response) && isTrustedRepository(response))) {
+        if (response.best_oa_location.version === "publishedVersion") {
           if (!response.best_oa_location.url_for_pdf) {
             url = response.best_oa_location.url_for_landing_page;
           }
@@ -342,35 +296,6 @@ browzine.summon = (function() {
     }
 
     return url;
-
-    // if (unpaywallType === 'LandingPage' || unpaywallType === 'PublishedArticleLink') {
-    //   label = 'Article Link';
-    // }
-    //
-    // if (unpaywallType === 'LandingPage' || unpaywallType === 'PublishedArticleLink' || unpaywallType === 'AcceptedArticleLink') {
-    //   return unpaywallResponse.best_oa_location.url_for_landing_page;
-    // }
-    //
-    // const bestLocation = unpaywallResponse.best_oa_location;
-    // const trustedRepository = bestLocation.url_for_pdf ? bestLocation.url_for_pdf.includes('nih.gov') || bestLocation.url_for_pdf.includes('europepmc.org')
-    //                                                    : false;
-    // const versionUnknown = bestLocation.version === null || bestLocation.version === '';
-    //
-    // if (bestLocation.host_type === 'publisher' && (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository))) {
-    //   return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //     ? 'LandingPage'
-    //     : 'FullTextFile';
-    // } else if (bestLocation.host_type === 'repository') {
-    //   if (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'PublishedArticleLink'
-    //       : 'PublishedPDF';
-    //   } else if (bestLocation.version === 'acceptedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'AcceptedArticleLink'
-    //       : 'AcceptedPDF';
-    //   }
-    // }
   };
 
   function getUnpaywallManuscriptArticlePDFUrl(response) {
@@ -387,36 +312,6 @@ browzine.summon = (function() {
     }
 
     return url;
-
-    // if (unpaywallType === 'AcceptedPDF') {
-    //   label = `Manuscript PDF`;
-    // }
-    //
-    // if (unpaywallType === 'FullTextFile' || unpaywallType === 'PublishedPDF' || unpaywallType === 'AcceptedPDF') {
-    //   const urlForPdf = unpaywallResponse.best_oa_location.url_for_pdf;
-    //   return (!!urlForPdf) ? urlForPdf : '';
-    // }
-    //
-    // const bestLocation = unpaywallResponse.best_oa_location;
-    // const trustedRepository = bestLocation.url_for_pdf ? bestLocation.url_for_pdf.includes('nih.gov') || bestLocation.url_for_pdf.includes('europepmc.org')
-    //                                                    : false;
-    // const versionUnknown = bestLocation.version === null || bestLocation.version === '';
-    //
-    // if (bestLocation.host_type === 'publisher' && (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository))) {
-    //   return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //     ? 'LandingPage'
-    //     : 'FullTextFile';
-    // } else if (bestLocation.host_type === 'repository') {
-    //   if (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'PublishedArticleLink'
-    //       : 'PublishedPDF';
-    //   } else if (bestLocation.version === 'acceptedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'AcceptedArticleLink'
-    //       : 'AcceptedPDF';
-    //   }
-    // }
   };
 
   function getUnpaywallManuscriptArticleLinkUrl(response) {
@@ -424,7 +319,7 @@ browzine.summon = (function() {
 
     if (response.best_oa_location) {
       if (response.best_oa_location.host_type === "repository") {
-        if (response.best_oa_location.version === "acceptedVersion" || (isUnknownVersion(response) && isTrustedRepository(response))) {
+        if (response.best_oa_location.version === "acceptedVersion") {
           if (!response.best_oa_location.url_for_pdf) {
             url = response.best_oa_location.url_for_landing_page;
           }
@@ -433,35 +328,6 @@ browzine.summon = (function() {
     }
 
     return url;
-
-    // if (unpaywallType === 'AcceptedArticleLink') {
-    //   label = `Manuscript Link`;
-    // }
-    //
-    // if (unpaywallType === 'LandingPage' || unpaywallType === 'PublishedArticleLink' || unpaywallType === 'AcceptedArticleLink') {
-    //   return unpaywallResponse.best_oa_location.url_for_landing_page;
-    // }
-    //
-    // const bestLocation = unpaywallResponse.best_oa_location;
-    // const trustedRepository = bestLocation.url_for_pdf ? bestLocation.url_for_pdf.includes('nih.gov') || bestLocation.url_for_pdf.includes('europepmc.org')
-    //                                                    : false;
-    // const versionUnknown = bestLocation.version === null || bestLocation.version === '';
-    //
-    // if (bestLocation.host_type === 'publisher' && (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository))) {
-    //   return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //     ? 'LandingPage'
-    //     : 'FullTextFile';
-    // } else if (bestLocation.host_type === 'repository') {
-    //   if (bestLocation.version === 'publishedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'PublishedArticleLink'
-    //       : 'PublishedPDF';
-    //   } else if (bestLocation.version === 'acceptedVersion' || (versionUnknown && trustedRepository)) {
-    //     return isNull(bestLocation.url_for_pdf) || bestLocation.url_for_pdf === ''
-    //       ? 'AcceptedArticleLink'
-    //       : 'AcceptedPDF';
-    //   }
-    // }
   };
 
   function showJournalCoverImages() {
@@ -785,12 +651,6 @@ browzine.summon = (function() {
               var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(response);
               var unpaywallManuscriptArticlePDFUrl = getUnpaywallManuscriptArticlePDFUrl(response);
               var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
-
-              console.log("unpaywallArticlePDFUrl", unpaywallArticlePDFUrl);
-              console.log("unpaywallArticleLinkUrl", unpaywallArticleLinkUrl);
-              console.log("unpaywallManuscriptArticlePDFUrl", unpaywallManuscriptArticlePDFUrl);
-              console.log("unpaywallManuscriptArticleLinkUrl", unpaywallManuscriptArticleLinkUrl);
-              console.log("--------");
 
               var template;
 
