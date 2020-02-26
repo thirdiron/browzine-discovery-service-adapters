@@ -861,15 +861,15 @@ browzine.primo = (function() {
               }
 
               if (unpaywallArticleLinkUrl) {
-                template = unpaywallArticleLinkTemplate(unpaywallArticlePDFUrl);
+                template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
               }
 
               if (unpaywallManuscriptArticlePDFUrl) {
-                template = unpaywallManuscriptPDFTemplate(unpaywallArticlePDFUrl);
+                template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
               }
 
               if (unpaywallManuscriptArticleLinkUrl) {
-                template = unpaywallManuscriptLinkTemplate(unpaywallArticlePDFUrl);
+                template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
               }
 
               if (template) {
