@@ -1207,15 +1207,57 @@ describe("Primo Model >", function() {
 
       expect(primo.getUnpaywallArticlePDFUrl(response)).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
     });
+
+    it("should return an unpaywall pdf url for publishedVersion of article hosted by repository", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(primo.getUnpaywallArticlePDFUrl(response)).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
+    });
   });
 
   describe("primo model getUnpaywallArticleLinkUrl method >", function() {
-    it("should return an unpaywall article link url for publishedVersion of article hosted by repository without an article pdf url", function() {
+    it("should return an unpaywall article link url for publishedVersion of article hosted by publisher without an article pdf url", function() {
       var response = {
         "best_oa_location": {
           "endpoint_id": null,
           "evidence": "oa journal (via observed oa rate)",
           "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(primo.getUnpaywallArticleLinkUrl(response)).toEqual("https://doi.org/10.1098/rstb.1986.0056");
+    });
+
+    it("should return an unpaywall article link url for publishedVersion of article hosted by repository without an article pdf url", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "repository",
           "is_best": true,
           "license": null,
           "pmh_id": null,
