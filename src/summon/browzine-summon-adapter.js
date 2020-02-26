@@ -627,7 +627,7 @@ browzine.summon = (function() {
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='unpaywall-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                     "{articlePDFDownloadWording}: <a class='unpaywall-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
@@ -661,7 +661,7 @@ browzine.summon = (function() {
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording}: <a class='unpaywall-manuscript-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                     "{articlePDFDownloadWording}: <a class='unpaywall-manuscript-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
@@ -675,7 +675,7 @@ browzine.summon = (function() {
   function unpaywallManuscriptLinkTemplate(articleLinkUrl) {
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "Article Link";
-    var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
+    var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (Accepted Manuscript via Unpaywall)";
 
     var template = "<div class='browzine'>" +
                      "{articleLinkTextWording}: <a class='unpaywall-manuscript-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{linkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +

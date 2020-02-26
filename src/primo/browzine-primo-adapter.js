@@ -631,7 +631,7 @@ browzine.primo = (function() {
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallText  || "Download PDF (via Unpaywall)";
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
-                      "<a class='unpaywall-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
+                      "<a class='unpaywall-article-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
                           "<img alt='BrowZine PDF Icon' src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 4.5px;' aria-hidden='true' width='12' height='16'/> " +
                           "<span class='browzine-web-link-text'>{articlePDFDownloadLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
@@ -669,7 +669,7 @@ browzine.primo = (function() {
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallText  || "Download PDF (Accepted Manuscript via Unpaywall)";
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
-                      "<a class='unpaywall-manuscript-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
+                      "<a class='unpaywall-manuscript-article-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
                           "<img alt='BrowZine PDF Icon' src='{pdfIcon}' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 4.5px;' aria-hidden='true' width='12' height='16'/> " +
                           "<span class='browzine-web-link-text'>{articlePDFDownloadLinkText}</span> " +
                           "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +

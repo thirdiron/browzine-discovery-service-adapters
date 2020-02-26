@@ -102,7 +102,7 @@ var browzine = {
 
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
-  articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (via Unpaywall)",
+  articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (Accepted Manuscript via Unpaywall)",
 };
 ```
 
