@@ -374,7 +374,7 @@ describe("Summon Model >", function() {
     });
   });
 
-  describe("summon model getEndpointUnpaywall method >", function() {
+  describe("summon model getUnpaywallEndpoint method >", function() {
     afterEach(function() {
       delete browzine.unpaywallEmailAddressKey;
     });
@@ -389,7 +389,7 @@ describe("Summon Model >", function() {
 
       browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
 
-      expect(summon.getEndpointUnpaywall(scope)).toContain("https://api.unpaywall.org/v2/10.1136%2Fbmj.h2575");
+      expect(summon.getUnpaywallEndpoint(scope)).toContain("https://api.unpaywall.org/v2/10.1136%2Fbmj.h2575");
     });
 
     it("should build an article endpoint for an article search result only when an email address key is provided", function() {
@@ -400,7 +400,7 @@ describe("Summon Model >", function() {
         }
       };
 
-      expect(summon.getEndpointUnpaywall(scope)).toBeUndefined();
+      expect(summon.getUnpaywallEndpoint(scope)).toBeUndefined();
     });
   });
 

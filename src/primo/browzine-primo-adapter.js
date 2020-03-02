@@ -132,7 +132,7 @@ browzine.primo = (function() {
     return endpoint;
   };
 
-  function getEndpointUnpaywall(scope) {
+  function getUnpaywallEndpoint(scope) {
     var endpoint;
     var email = browzine.unpaywallEmailAddressKey;
 
@@ -708,7 +708,7 @@ browzine.primo = (function() {
       }
 
       if (request.readyState == XMLHttpRequest.DONE && request.status == 404) {
-        var endpoint = getEndpointUnpaywall(scope);
+        var endpoint = getUnpaywallEndpoint(scope);
 
         if (endpoint && isUnpaywallEnabled()) {
           var requestUnpaywall = new XMLHttpRequest();
@@ -778,7 +778,7 @@ browzine.primo = (function() {
     getDoi: getDoi,
     isFiltered: isFiltered,
     getEndpoint: getEndpoint,
-    getEndpointUnpaywall: getEndpointUnpaywall,
+    getUnpaywallEndpoint: getUnpaywallEndpoint,
     shouldEnhance: shouldEnhance,
     getData: getData,
     getIncludedJournal: getIncludedJournal,

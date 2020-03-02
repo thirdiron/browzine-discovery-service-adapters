@@ -729,7 +729,7 @@ describe("Primo Model >", function() {
     });
   });
 
-  describe("primo model getEndpointUnpaywall method >", function() {
+  describe("primo model getUnpaywallEndpoint method >", function() {
     afterEach(function() {
       delete browzine.unpaywallEmailAddressKey;
     });
@@ -752,7 +752,7 @@ describe("Primo Model >", function() {
 
       browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
 
-      expect(primo.getEndpointUnpaywall(scope)).toContain("https://api.unpaywall.org/v2/10.1136%2Fbmj.h2575");
+      expect(primo.getUnpaywallEndpoint(scope)).toContain("https://api.unpaywall.org/v2/10.1136%2Fbmj.h2575");
     });
 
     it("should build an article endpoint for an article search result only when an email address key is provided", function() {
@@ -771,7 +771,7 @@ describe("Primo Model >", function() {
         }
       };
 
-      expect(primo.getEndpointUnpaywall(scope)).toBeUndefined();
+      expect(primo.getUnpaywallEndpoint(scope)).toBeUndefined();
     });
   });
 
