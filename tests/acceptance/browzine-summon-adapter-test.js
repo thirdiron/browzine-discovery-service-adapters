@@ -812,7 +812,7 @@ describe("BrowZine Summon Adapter >", function() {
                 "pmh_id": null,
                 "repository_institution": null,
                 "updated": "2019-10-11T20:52:04.790279",
-                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
                 "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
                 "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
                 "version": "publishedVersion"
@@ -848,7 +848,7 @@ describe("BrowZine Summon Adapter >", function() {
                 "pmh_id": null,
                 "repository_institution": null,
                 "updated": "2020-02-22T00:58:09.389993",
-                "url": "https://doi.org/10.1098/rstb.1986.0056",
+                "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
                 "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
                 "url_for_pdf": null,
                 "version": "publishedVersion"
@@ -884,7 +884,7 @@ describe("BrowZine Summon Adapter >", function() {
                 "pmh_id": "oai:diposit.ub.edu:2445/147225",
                 "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
                 "updated": "2020-02-20T17:30:21.829852",
-                "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+                "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
                 "url_for_landing_page": "http://hdl.handle.net/2445/147225",
                 "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
                 "version": "acceptedVersion"
@@ -920,7 +920,7 @@ describe("BrowZine Summon Adapter >", function() {
                 "pmh_id": null,
                 "repository_institution": null,
                 "updated": "2020-02-22T01:10:19.539950",
-                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
                 "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
                 "url_for_pdf": null,
                 "version": "acceptedVersion"
@@ -956,7 +956,7 @@ describe("BrowZine Summon Adapter >", function() {
                 "pmh_id": "oai:pubmedcentral.nih.gov:1386933",
                 "repository_institution": "pubmedcentral.nih.gov",
                 "updated": "2017-10-21T12:10:36.827576",
-                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf-do-not-use",
                 "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933",
                 "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf",
                 "version": null
