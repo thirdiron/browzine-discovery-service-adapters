@@ -1270,6 +1270,48 @@ describe("Primo Model >", function() {
 
       expect(primo.getUnpaywallArticlePDFUrl(response)).toEqual("https://www.europepmc.org/pmc/articles/PMC6041472");
     });
+
+    it("should return an unpaywall article pdf url for article hosted by repository of unknown version from a trusted repository like nih.gov", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(primo.getUnpaywallArticlePDFUrl(response)).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
+    });
+
+    it("should return an unpaywall article pdf url for article hosted by repository of unknown version from a trusted repository like europepmc.org", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "https://www.europepmc.org/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(primo.getUnpaywallArticlePDFUrl(response)).toEqual("https://www.europepmc.org/pmc/articles/PMC6041472");
+    });
   });
 
   describe("primo model getUnpaywallArticleLinkUrl method >", function() {
@@ -1338,7 +1380,7 @@ describe("Primo Model >", function() {
       expect(primo.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
     });
 
-    it("should return an unpaywall manuscript pdf url for article hosted by repository of unknown version from a trusted repository like nih.gov", function() {
+    it("should not return an unpaywall manuscript pdf url for article hosted by repository of unknown version from a trusted repository like nih.gov", function() {
       var response = {
         "best_oa_location": {
           "endpoint_id": "e32e740fde0998433a4",
@@ -1356,10 +1398,10 @@ describe("Primo Model >", function() {
         }
       };
 
-      expect(primo.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
+      expect(primo.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual(undefined);
     });
 
-    it("should return an unpaywall manuscript pdf url for article hosted by repository of unknown version from a trusted repository like europepmc.org", function() {
+    it("should not return an unpaywall manuscript pdf url for article hosted by repository of unknown version from a trusted repository like europepmc.org", function() {
       var response = {
         "best_oa_location": {
           "endpoint_id": "e32e740fde0998433a4",
@@ -1377,7 +1419,7 @@ describe("Primo Model >", function() {
         }
       };
 
-      expect(primo.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual("https://www.europepmc.org/pmc/articles/PMC6041472");
+      expect(primo.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual(undefined);
     });
   });
 

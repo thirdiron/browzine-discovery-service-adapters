@@ -315,7 +315,7 @@ browzine.primo = (function() {
 
     if (response.best_oa_location) {
       if (response.best_oa_location.host_type === "repository") {
-        if (response.best_oa_location.version === "acceptedVersion" || (isUnknownVersion(response) && isTrustedRepository(response))) {
+        if (response.best_oa_location.version === "acceptedVersion" || (isUnknownVersion(response) && !isTrustedRepository(response))) {
           if (response.best_oa_location.url_for_pdf) {
             url = response.best_oa_location.url_for_pdf;
           }
