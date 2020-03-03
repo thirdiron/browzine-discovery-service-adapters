@@ -1174,6 +1174,42 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
         });
       });
+
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
+        it("should enhance the article with an unpaywall article pdf", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "pubmedcentral.nih.gov",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": "oai:pubmedcentral.nih.gov:1386933",
+                "repository_institution": "pubmedcentral.nih.gov",
+                "updated": "2017-10-21T12:10:36.827576",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933",
+                "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf",
+                "version": null
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Download PDF (via Unpaywall)");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+        });
+      });
     });
   });
 
