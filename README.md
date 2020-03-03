@@ -238,7 +238,8 @@ window.browzine = {
 
 ## Browser Compatibility and Support
 
-Enhancements and Bugfixes should be developed against the ES5 standard and tested against evergreen browsers and IE10+.
+Enhancements and Bugfixes should be developed against the ES5 standard and tested against evergreen browsers and IE11+.
+Care should be taken to validate JavaScript features used are available in IE11+ and evergreen browsers to gain the widest customer base support as possible. See, https://caniuse.com/#feat=es5
 
 ## Installation
 
