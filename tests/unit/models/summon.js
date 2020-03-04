@@ -234,6 +234,77 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getIssn method >", function() {
+    it("should retrieve an issn from a journal search result with an issn", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          issns: ["0028-4793"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00284793");
+    });
+
+    it("should retrieve an eissn from a journal search result with an eissn", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          eissns: ["0096-6762"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00966762");
+    });
+
+    it("should retrieve an issn from a journal search result with both an issn and an eissn", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          issns: ["0028-4793"],
+          eissns: ["0096-6762"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00284793");
+    });
+
+    it("should only retrieve issn formats", function() {
+      var scope = {
+        document: {
+          content_type: "journal",
+          issns: ["Whitman, Mary C., Wen Fan, Lorena Rela, Diego J. Rodriguez-Gil, and Charles A. Greer. 2009. “Blood Vessels Form a Migratory Scaffold in the Rostral Migratory Stream.” The Journal of Comparative Neurology 516 (2) (September 10): 94–104. doi:10.1002/cne.22093.", "0021-9967"]
+        }
+      };
+
+      expect(summon.getIssn(scope)).toEqual("00219967");
+    });
+  });
+
+  describe("summon model getDoi method >", function() {
+    it("should retrieve a doi from an article search result with a doi", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      expect(summon.getDoi(scope)).toEqual(encodeURIComponent("10.1136/bmj.h2575"));
+    });
+
+    it("should retrieve an empty string from an article search result without a doi", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: []
+        }
+      };
+
+      expect(summon.getDoi(scope)).toEqual("");
+    });
+  });
+
   describe("summon model getEndpoint method >", function() {
     it("should build a journal endpoint for a journal search result", function() {
       var scope = {
@@ -300,6 +371,36 @@ describe("Summon Model >", function() {
       };
 
       expect(summon.getEndpoint(scope)).toContain("search?issns=00284793");
+    });
+  });
+
+  describe("summon model getUnpaywallEndpoint method >", function() {
+    afterEach(function() {
+      delete browzine.unpaywallEmailAddressKey;
+    });
+
+    it("should build an article endpoint for an article search result", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+
+      expect(summon.getUnpaywallEndpoint(scope)).toContain("https://api.unpaywall.org/v2/10.1136%2Fbmj.h2575");
+    });
+
+    it("should build an article endpoint for an article search result only when an email address key is provided", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      expect(summon.getUnpaywallEndpoint(scope)).toBeUndefined();
     });
   });
 
@@ -507,6 +608,395 @@ describe("Summon Model >", function() {
       expect(data).toEqual(undefined);
 
       expect(summon.getArticleLinkUrl(scope, data)).toEqual(null);
+    });
+  });
+
+  describe("summon model isTrustedRepository method >", function() {
+    it("should expect non nih.gov and non europepmc.org repositories to be untrusted", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(summon.isTrustedRepository(response)).toEqual(false);
+    });
+
+    it("should expect nih.gov repositories to be trusted", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4890194/",
+          "url_for_landing_page": "https://dx.doi.org/10.1016%2Fj.sjbs.2016.02.019",
+          "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4890194/pdf/main.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      expect(summon.isTrustedRepository(response)).toEqual(true);
+    });
+
+    it("should expect europepmc.org repositories to be trusted", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://europepmc.org/article/MED/28794876#free-full-text",
+          "url_for_landing_page": "http://doi.org/10.1186/s40248-017-0101-8",
+          "url_for_pdf": "https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC5545842&blobtype=pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      expect(summon.isTrustedRepository(response)).toEqual(true);
+    });
+  });
+
+  describe("summon model isUnknownVersion method >", function() {
+    it("should expect an empty string version property to validate as an unknown version", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": ""
+        }
+      };
+
+      expect(summon.isUnknownVersion(response)).toEqual(true);
+    });
+
+    it("should expect a non-existent version property to validate as an unknown version", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119"
+        }
+      };
+
+      expect(summon.isUnknownVersion(response)).toEqual(true);
+    });
+
+    it("should expect a null version property to validate as an unknown version", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": null
+        }
+      };
+
+      expect(summon.isUnknownVersion(response)).toEqual(true);
+    });
+  });
+
+  describe("summon model getUnpaywallArticlePDFUrl method >", function() {
+    it("should return an unpaywall pdf url for publishedVersion of article hosted by publisher", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(summon.getUnpaywallArticlePDFUrl(response)).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
+    });
+
+    it("should return an unpaywall pdf url for publishedVersion of article hosted by repository", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(summon.getUnpaywallArticlePDFUrl(response)).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
+    });
+
+    it("should return an unpaywall pdf url for article hosted by publisher of unknown version from a trusted repository like nih.gov", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(summon.getUnpaywallArticlePDFUrl(response)).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
+    });
+
+    it("should return an unpaywall pdf url for article hosted by publisher of unknown version from a trusted repository like europepmc.org", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "https://www.europepmc.org/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(summon.getUnpaywallArticlePDFUrl(response)).toEqual("https://www.europepmc.org/pmc/articles/PMC6041472");
+    });
+
+    it("should return an unpaywall article pdf url for article hosted by repository of unknown version from a trusted repository like nih.gov", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(summon.getUnpaywallArticlePDFUrl(response)).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
+    });
+
+    it("should return an unpaywall article pdf url for article hosted by repository of unknown version from a trusted repository like europepmc.org", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "https://www.europepmc.org/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(summon.getUnpaywallArticlePDFUrl(response)).toEqual("https://www.europepmc.org/pmc/articles/PMC6041472");
+    });
+  });
+
+  describe("summon model getUnpaywallArticleLinkUrl method >", function() {
+    it("should return an unpaywall article link url for publishedVersion of article hosted by publisher without an article pdf url", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(summon.getUnpaywallArticleLinkUrl(response)).toEqual("https://doi.org/10.1098/rstb.1986.0056");
+    });
+
+    it("should return an unpaywall article link url for publishedVersion of article hosted by repository without an article pdf url", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      expect(summon.getUnpaywallArticleLinkUrl(response)).toEqual("https://doi.org/10.1098/rstb.1986.0056");
+    });
+  });
+
+  describe("summon model getUnpaywallManuscriptArticlePDFUrl method >", function() {
+    it("should return an unpaywall manuscript pdf url for acceptedVersion of article hosted by repository", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      expect(summon.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
+    });
+
+    it("should not return an unpaywall manuscript pdf url for article hosted by repository of unknown version from a trusted repository like nih.gov", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(summon.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual(undefined);
+    });
+
+    it("should not return an unpaywall manuscript pdf url for article hosted by repository of unknown version from a trusted repository like europepmc.org", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "https://www.europepmc.org/pmc/articles/PMC6041472",
+          "version": null
+        }
+      };
+
+      expect(summon.getUnpaywallManuscriptArticlePDFUrl(response)).toEqual(undefined);
+    });
+  });
+
+  describe("summon model getUnpaywallManuscriptArticleLinkUrl method >", function() {
+    it("should return an unpaywall manuscript article link url for acceptedVersion of article hosted by repository without an article pdf url", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa repository (via pmcid lookup)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T01:10:19.539950",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+          "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_pdf": null,
+          "version": "acceptedVersion"
+        }
+      };
+
+      expect(summon.getUnpaywallManuscriptArticleLinkUrl(response)).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
     });
   });
 
@@ -862,7 +1352,7 @@ describe("Summon Model >", function() {
     });
   });
 
-  describe("summon model directToPDFTemplate method >", function() {
+  describe("summon model articleLinkTemplate method >", function() {
     beforeEach(function() {
       delete browzine.articleLinkEnabled;
       delete browzine.articleLinkTextWording;
@@ -990,6 +1480,450 @@ describe("Summon Model >", function() {
 
       expect(template).toContain("text-decoration: underline;");
       expect(template).toContain("color: #333;");
+    });
+  });
+
+  describe("summon model unpaywallArticlePDFTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articlePDFDownloadViaUnpaywallWording;
+      delete browzine.articlePDFDownloadViaUnpaywallLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articlePDFDownloadViaUnpaywallWording;
+      delete browzine.articlePDFDownloadViaUnpaywallLinkText;
+    });
+
+    it("should build an unpaywall article pdf template", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
+      var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+
+      expect(unpaywallArticlePDFUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='unpaywall-article-pdf-link' href='http://jaha.org.ro/index.php/JAHA/article/download/142/119' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now (via Unpaywall)</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+
+      expect(template).toContain("Article PDF");
+      expect(template).toContain("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
+      expect(template).toContain("Download Now (via Unpaywall)");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articlePDFDownloadViaUnpaywallWording config property", function() {
+      browzine.articlePDFDownloadViaUnpaywallWording = "Journal Article PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
+      var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+
+      expect(template).toContain("Journal Article PDF");
+    });
+
+    it("should apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
+      browzine.articlePDFDownloadViaUnpaywallLinkText = "Download PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
+      var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+
+      expect(template).toContain("Download PDF");
+    });
+  });
+
+  describe("summon model unpaywallArticleLinkTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleLinkViaUnpaywallWording;
+      delete browzine.articleLinkViaUnpaywallLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articleLinkViaUnpaywallWording;
+      delete browzine.articleLinkViaUnpaywallLinkText;
+    });
+
+    it("should build an unpaywall article link template", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
+      var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
+
+      expect(unpaywallArticleLinkUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Article Link: <a class='unpaywall-article-link' href='https://doi.org/10.1098/rstb.1986.0056' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article (via Unpaywall)</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+
+      expect(template).toContain("Article Link");
+      expect(template).toContain("https://doi.org/10.1098/rstb.1986.0056");
+      expect(template).toContain("Read Article (via Unpaywall)");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articleLinkViaUnpaywallWording config property", function() {
+      browzine.articleLinkViaUnpaywallWording = "Journal Article Link";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
+      var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
+
+      expect(template).toContain("Journal Article Link");
+    });
+
+    it("should apply the articleLinkViaUnpaywallLinkText config property", function() {
+      browzine.articleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
+      var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
+
+      expect(template).toContain("Read Article Now (via Unpaywall)");
+    });
+  });
+
+  describe("summon model unpaywallManuscriptPDFTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallWording;
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallWording;
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText;
+    });
+
+    it("should build an unpaywall article pdf template", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
+      var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+
+      expect(unpaywallManuscriptArticlePDFUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='unpaywall-manuscript-article-pdf-link' href='http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now (Accepted Manuscript via Unpaywall)</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+
+      expect(template).toContain("Article PDF");
+      expect(template).toContain("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
+      expect(template).toContain("Download Now (Accepted Manuscript via Unpaywall)");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articlePDFDownloadViaUnpaywallWording config property", function() {
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallWording = "Journal Article PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
+      var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+
+      expect(template).toContain("Journal Article PDF");
+    });
+
+    it("should apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText = "Download PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
+      var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+
+      expect(template).toContain("Download PDF");
+      expect(template).not.toContain("Download PDF (Accepted Manuscript via Unpaywall)");
+    });
+  });
+
+  describe("summon model unpaywallManuscriptLinkTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording;
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText;
+    });
+
+    afterEach(function() {
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording;
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText;
+    });
+
+    it("should build an unpaywall article link template", function() {
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa repository (via pmcid lookup)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T01:10:19.539950",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+          "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_pdf": null,
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
+      var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
+
+      expect(unpaywallManuscriptArticleLinkUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Article Link: <a class='unpaywall-manuscript-article-link' href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article (Accepted Manuscript via Unpaywall)</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+
+      expect(template).toContain("Article Link");
+      expect(template).toContain("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
+      expect(template).toContain("Read Article (Accepted Manuscript via Unpaywall)");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articleAcceptedManuscriptArticleLinkViaUnpaywallWording config property", function() {
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording = "Article Link";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa repository (via pmcid lookup)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T01:10:19.539950",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+          "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_pdf": null,
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
+      var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
+
+      expect(template).toContain("Article Link");
+    });
+
+    it("should apply the articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText config property", function() {
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa repository (via pmcid lookup)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T01:10:19.539950",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+          "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_pdf": null,
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
+      var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
+
+      expect(template).toContain("Read Article Now (via Unpaywall)");
+      expect(template).not.toContain("Read Article (Accepted Manuscript via Unpaywall)");
+    });
+  });
+
+  describe("summon model isUnpaywallEnabled method >", function() {
+    beforeEach(function() {
+      delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+      delete browzine.articleLinkViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+    });
+
+    it("should validate unpaywall is disabled when none of the enabled flags are set", function() {
+      expect(summon.isUnpaywallEnabled()).toEqual(undefined);
+    });
+
+    it("should validate unpaywall is enabled when all of the enabled flags are set", function() {
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articlePDFDownloadViaUnpaywallEnabled is set", function() {
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleLinkViaUnpaywallEnabled is set", function() {
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleAcceptedManuscriptPDFViaUnpaywallEnabled is set", function() {
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
+    });
+
+    it("should validate unpaywall is enabled when only articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is set", function() {
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+      expect(summon.isUnpaywallEnabled()).toEqual(true);
     });
   });
 });
