@@ -656,17 +656,11 @@ browzine.summon = (function() {
 
               if (unpaywallArticlePDFUrl) {
                 template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
-              }
-
-              if (unpaywallArticleLinkUrl) {
+              } else if (unpaywallArticleLinkUrl) {
                 template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
-              }
-
-              if (unpaywallManuscriptArticlePDFUrl) {
+              } else if (unpaywallManuscriptArticlePDFUrl) {
                 template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
-              }
-
-              if (unpaywallManuscriptArticleLinkUrl) {
+              } else if (unpaywallManuscriptArticleLinkUrl) {
                 template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
               }
 

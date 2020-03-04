@@ -795,7 +795,7 @@ describe("BrowZine Summon Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      describe("unpaywall best open access location host type pubisher and version publishedVersion and has a pdf url >", function() {
+      describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
         it("should enhance the article with an unpaywall article pdf", function() {
           var request = jasmine.Ajax.requests.mostRecent();
 
@@ -831,7 +831,7 @@ describe("BrowZine Summon Adapter >", function() {
         });
       });
 
-      describe("unpaywall best open access location host type pubisher and version publishedVersion and does not have a pdf url >", function() {
+      describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
         it("should enhance the article with an unpaywall article link", function() {
           var request = jasmine.Ajax.requests.mostRecent();
 
