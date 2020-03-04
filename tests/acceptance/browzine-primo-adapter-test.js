@@ -1210,6 +1210,24 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
         });
       });
+
+      describe("unpaywall no best open access location >", function() {
+        it("should not enhance the article with an unpaywall link", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": null
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template.length).toEqual(0);
+        });
+      });
     });
   });
 
