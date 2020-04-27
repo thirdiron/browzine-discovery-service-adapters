@@ -4,7 +4,7 @@ browzine.serSol360Core = (function() {
   var apiKey = browzine.apiKey;
 
   function urlRewrite(url) {
-    if(!url) {
+    if (!url) {
       return;
     }
 
@@ -15,7 +15,7 @@ browzine.serSol360Core = (function() {
     var override = url;
     var libraryId = browzine.libraryId;
 
-    if(libraryId) {
+    if (libraryId) {
       var baseUrl = "https://public-api.thirdiron.com/public/v1/libraries/{libraryId}";
       override = baseUrl.replace(/{libraryId}/g, libraryId);
     }
@@ -24,24 +24,24 @@ browzine.serSol360Core = (function() {
   };
 
   function getIssn(title) {
-    if(title.identifiers) {
+    if (title.identifiers) {
       var issnIdentifier = title.identifiers.filter(function(identifier) {
-        if(identifier.type && identifier.value) {
+        if (identifier.type && identifier.value) {
           return identifier.type.toLowerCase() === "issn" && identifier.value.length > 0;
         }
       }).pop();
 
-      if(issnIdentifier) {
+      if (issnIdentifier) {
         return encodeURIComponent(issnIdentifier.value);
       }
 
       var eissnIdentifier = title.identifiers.filter(function(identifier) {
-        if(identifier.type && identifier.value) {
+        if (identifier.type && identifier.value) {
           return identifier.type.toLowerCase() === "eissn" && identifier.value.length > 0;
         }
       }).pop();
 
-      if(eissnIdentifier) {
+      if (eissnIdentifier) {
         return encodeURIComponent(eissnIdentifier.value);
       }
     }
@@ -68,7 +68,7 @@ browzine.serSol360Core = (function() {
   function getEndpoint(issn) {
     var endpoint = null;
 
-    if(issn) {
+    if (issn) {
       endpoint = api + "/search?issns=" + issn.trim().replace("-", "");
       endpoint += "&access_token=" + apiKey;
     }
@@ -85,7 +85,7 @@ browzine.serSol360Core = (function() {
       title.endpoint = getEndpoint(issn);
       title.shouldEnhance = shouldEnhance(issn);
 
-      if(title.shouldEnhance) {
+      if (title.shouldEnhance) {
         titlesToEnhance.push(title);
       }
     });
@@ -96,10 +96,10 @@ browzine.serSol360Core = (function() {
   function getTitles(scope) {
     var titles = [];
 
-    if(scope) {
-      if(scope.searchResultsCtrl) {
-        if(scope.searchResultsCtrl.titleData) {
-          if(scope.searchResultsCtrl.titleData.titles) {
+    if (scope) {
+      if (scope.searchResultsCtrl) {
+        if (scope.searchResultsCtrl.titleData) {
+          if (scope.searchResultsCtrl.titleData.titles) {
             titles = angular.copy(scope.searchResultsCtrl.titleData.titles);
           }
         }
@@ -120,7 +120,7 @@ browzine.serSol360Core = (function() {
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
-    if(data && data.browzineWebLink) {
+    if (data && data.browzineWebLink) {
       browzineWebLink = data.browzineWebLink;
     }
 
@@ -130,7 +130,7 @@ browzine.serSol360Core = (function() {
   function getCoverImageUrl(data) {
     var coverImageUrl = null;
 
-    if(data && data.coverImageUrl) {
+    if (data && data.coverImageUrl) {
       coverImageUrl = data.coverImageUrl;
     }
 
@@ -140,7 +140,7 @@ browzine.serSol360Core = (function() {
   function getBrowZineEnabled(data) {
     var browzineEnabled = null;
 
-    if(data && data.browzineEnabled) {
+    if (data && data.browzineEnabled) {
       browzineEnabled = data.browzineEnabled;
     }
 
@@ -150,7 +150,7 @@ browzine.serSol360Core = (function() {
   function isDefaultCoverImage(coverImageUrl) {
     var defaultCoverImage = false;
 
-    if(coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
+    if (coverImageUrl && coverImageUrl.toLowerCase().indexOf("default") > -1) {
       defaultCoverImage = true;
     }
 
@@ -161,7 +161,7 @@ browzine.serSol360Core = (function() {
     var featureEnabled = false;
     var config = browzine.journalCoverImagesEnabled;
 
-    if(typeof config === "undefined" || config === null || config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
@@ -172,7 +172,7 @@ browzine.serSol360Core = (function() {
     var featureEnabled = false;
     var config = browzine.journalBrowZineWebLinkTextEnabled;
 
-    if(typeof config === "undefined" || config === null || config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
@@ -217,24 +217,24 @@ browzine.serSol360Core = (function() {
   function searchTitles(titles, callback) {
     var title = titles.shift();
 
-    if(title) {
+    if (title) {
       $.getJSON(title.endpoint, function(response) {
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(data);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
-        if(browzineWebLink && showJournalBrowZineWebLinkText()) {
+        if (browzineWebLink && showJournalBrowZineWebLinkText()) {
           var template = browzineWebLinkTemplate(browzineWebLink);
           $(title.target).find(".results-identifier").append(template);
         }
 
-        if(coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
+        if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
           var resultsTitleImageContainerSelector = ".results-title-image-div";
           var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
           var boxShadow = "1px 1px 2px #ccc";
 
-          if($(title.target).find(resultsTitleImageSelector).length > 0) {
+          if ($(title.target).find(resultsTitleImageSelector).length > 0) {
             $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
           } else {
             $(title.target).find(resultsTitleImageContainerSelector).append("<img alt='Results Title Image' class='results-title-image'/>");
@@ -242,10 +242,10 @@ browzine.serSol360Core = (function() {
           }
         }
 
-        if(titles.length > 0) {
+        if (titles.length > 0) {
           searchTitles(titles, callback);
         } else {
-          if(callback) {
+          if (callback) {
             return callback();
           }
         }
@@ -257,7 +257,7 @@ browzine.serSol360Core = (function() {
     var scope = getScope(searchResults);
     var titles = addTargets(getTitles(scope));
 
-    if(titles.length === 0) {
+    if (titles.length === 0) {
       return;
     }
 
@@ -290,7 +290,7 @@ browzine.serSol360Core = (function() {
 }());
 
 $(function() {
-  if(!browzine) {
+  if (!browzine) {
     return;
   }
 
@@ -298,7 +298,7 @@ $(function() {
 
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-      if(mutation.target.querySelector && mutation.target.querySelector(".results-title-data")) {
+      if (mutation.target.querySelector && mutation.target.querySelector(".results-title-data")) {
         var searchResults = mutation.target;
         browzine.serSol360Core.adapter(searchResults);
       }
