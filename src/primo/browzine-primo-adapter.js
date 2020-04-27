@@ -694,6 +694,7 @@ browzine.primo = (function() {
             var elementParent = getElementParent(element);
             var coverImages = elementParent.querySelectorAll("prm-search-result-thumbnail-container img");
 
+            // Current Sandbox
             if (coverImages && coverImages.length && coverImages[0]) {
               if (coverImages[0].className.indexOf("fan-img") > -1) {
                 Array.prototype.forEach.call(coverImages, function(coverImage) {
@@ -702,6 +703,17 @@ browzine.primo = (function() {
               }
             } else {
               requestAnimationFrame(poll);
+            }
+
+            // Current Production
+            if (coverImages[0]) {
+              if (coverImages[0].className.indexOf("fan-img") > -1) {
+                Array.prototype.forEach.call(coverImages, function(coverImage) {
+                  coverImage.src = coverImageUrl;
+                });
+              } else {
+                requestAnimationFrame(poll);
+              }
             }
           })();
         }
