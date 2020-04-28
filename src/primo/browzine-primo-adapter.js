@@ -684,7 +684,7 @@ browzine.primo = (function() {
           element.append(template);
         }
 
-        if (browzineWebLink && browzineEnabled && isArticle(scope) && showArticleBrowZineWebLinkText()) {
+        if (browzineWebLink && browzineEnabled && isArticle(scope) && (directToPDFUrl || articleLinkUrl) && showArticleBrowZineWebLinkText()) {
           var template = browzineWebLinkTemplate(scope, browzineWebLink);
           element.append(template);
         }

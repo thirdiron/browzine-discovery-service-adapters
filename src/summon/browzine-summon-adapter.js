@@ -625,7 +625,7 @@ browzine.summon = (function() {
           $(documentSummary).find(".docFooter .row:eq(0)").append(template);
         }
 
-        if (browzineWebLink && browzineEnabled && isArticle(scope) && showArticleBrowZineWebLinkText()) {
+        if (browzineWebLink && browzineEnabled && isArticle(scope) && (directToPDFUrl || articleLinkUrl) && showArticleBrowZineWebLinkText()) {
           var template = browzineWebLinkTemplate(scope, browzineWebLink);
           $(documentSummary).find(".docFooter .row:eq(0)").append(template);
         }
