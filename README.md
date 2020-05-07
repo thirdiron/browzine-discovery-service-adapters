@@ -84,8 +84,6 @@ var browzine = {
   articleLinkTextWording: "Article Link",
   articleLinkText: "Read Article",
 
-  printRecordsIntegrationEnabled: true,
-
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 
   articlePDFDownloadViaUnpaywallEnabled: true,
