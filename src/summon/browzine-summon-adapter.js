@@ -635,7 +635,7 @@ browzine.summon = (function() {
         }
       }
 
-      if (request.readyState == XMLHttpRequest.DONE && request.status == 404) {
+      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
         var endpoint = getUnpaywallEndpoint(scope);
 
         if (endpoint && isUnpaywallEnabled()) {
