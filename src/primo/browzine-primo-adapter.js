@@ -445,7 +445,7 @@ browzine.primo = (function() {
 
   function directToPDFTemplate(directToPDFUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
-    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.primoArticlePDFDownloadLinkText  || "Download Now";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.primoArticlePDFDownloadLinkText  || "Download PDF";
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
                       "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
@@ -684,7 +684,7 @@ browzine.primo = (function() {
           element.append(template);
         }
 
-        if (browzineWebLink && browzineEnabled && isArticle(scope) && showArticleBrowZineWebLinkText()) {
+        if (browzineWebLink && browzineEnabled && isArticle(scope) && (directToPDFUrl || articleLinkUrl) && showArticleBrowZineWebLinkText()) {
           var template = browzineWebLinkTemplate(scope, browzineWebLink);
           element.append(template);
         }
@@ -694,32 +694,18 @@ browzine.primo = (function() {
             var elementParent = getElementParent(element);
             var coverImages = elementParent.querySelectorAll("prm-search-result-thumbnail-container img");
 
-            // Current Sandbox
-            if (coverImages && coverImages.length && coverImages[0]) {
-              if (coverImages[0].className.indexOf("fan-img") > -1) {
-                Array.prototype.forEach.call(coverImages, function(coverImage) {
-                  coverImage.src = coverImageUrl;
-                });
-              }
+            if (coverImages && coverImages[0] && coverImages[0].className.indexOf("fan-img") > -1) {
+              Array.prototype.forEach.call(coverImages, function(coverImage) {
+                coverImage.src = coverImageUrl;
+              });
             } else {
               requestAnimationFrame(poll);
-            }
-
-            // Current Production
-            if (coverImages[0]) {
-              if (coverImages[0].className.indexOf("fan-img") > -1) {
-                Array.prototype.forEach.call(coverImages, function(coverImage) {
-                  coverImage.src = coverImageUrl;
-                });
-              } else {
-                requestAnimationFrame(poll);
-              }
             }
           })();
         }
       }
 
-      if (request.readyState == XMLHttpRequest.DONE && request.status == 404) {
+      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
         var endpoint = getUnpaywallEndpoint(scope);
 
         if (endpoint && isUnpaywallEnabled()) {

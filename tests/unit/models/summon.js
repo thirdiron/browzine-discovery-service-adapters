@@ -1272,7 +1272,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF <a class='browzine-direct-to-pdf-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article PDF");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
@@ -1382,7 +1382,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article Link: <a class='browzine-article-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article Link <a class='browzine-article-link' href='https://develop.browzine.com/libraries/XXX/articles/55134408' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article Link");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408");
@@ -1445,7 +1445,7 @@ describe("Summon Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>View the Journal: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Browse Now</a> <img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' style='margin-bottom: 1px;' width='16' height='16'/></div>");
+      expect(template).toEqual("<div class='browzine'>View the Journal <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Browse Now</a> <img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' style='margin-bottom: 1px;' width='16' height='16'/></div>");
       expect(template).toContain("View the Journal");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
       expect(template).toContain("Browse Now");
@@ -1471,7 +1471,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>View Complete Issue: <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Browse Now</a> <img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' style='margin-bottom: 1px;' width='16' height='16'/></div>");
+      expect(template).toEqual("<div class='browzine'>View Complete Issue <a class='browzine-web-link' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Browse Now</a> <img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg' style='margin-bottom: 1px;' width='16' height='16'/></div>");
 
       expect(template).toContain("View Complete Issue");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
@@ -1519,7 +1519,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='unpaywall-article-pdf-link' href='http://jaha.org.ro/index.php/JAHA/article/download/142/119' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now (via Unpaywall)</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF <a class='unpaywall-article-pdf-link' href='http://jaha.org.ro/index.php/JAHA/article/download/142/119' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now (via Unpaywall)</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article PDF");
       expect(template).toContain("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
@@ -1619,7 +1619,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article Link: <a class='unpaywall-article-link' href='https://doi.org/10.1098/rstb.1986.0056' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article (via Unpaywall)</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article Link <a class='unpaywall-article-link' href='https://doi.org/10.1098/rstb.1986.0056' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article (via Unpaywall)</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article Link");
       expect(template).toContain("https://doi.org/10.1098/rstb.1986.0056");
@@ -1719,7 +1719,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article PDF: <a class='unpaywall-manuscript-article-pdf-link' href='http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now (Accepted Manuscript via Unpaywall)</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article PDF <a class='unpaywall-manuscript-article-pdf-link' href='http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Download Now (Accepted Manuscript via Unpaywall)</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article PDF");
       expect(template).toContain("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
@@ -1820,7 +1820,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual("<div class='browzine'>Article Link: <a class='unpaywall-manuscript-article-link' href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article (Accepted Manuscript via Unpaywall)</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
+      expect(template).toEqual("<div class='browzine'>Article Link <a class='unpaywall-manuscript-article-link' href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>Read Article (Accepted Manuscript via Unpaywall)</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/></div>");
 
       expect(template).toContain("Article Link");
       expect(template).toContain("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");

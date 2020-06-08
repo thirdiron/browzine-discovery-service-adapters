@@ -374,7 +374,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template).toBeDefined();
 
         expect(template.text().trim()).toContain("View Issue Contents");
-        expect(template.text().trim()).toContain("Download Now");
+        expect(template.text().trim()).toContain("Download PDF");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
@@ -585,6 +585,107 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXX/articles/55134408");
         expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
+          });
+
+          done();
+        });
+      });
+    });
+
+    describe("search results article with an article in context link but no direct to pdf link and no article link >", function() {
+      beforeEach(function() {
+        browzine.articleLinkEnabled = true;
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1136/bmj.h2575"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "",
+              "contentLocation": ""
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+        delete browzine.articleLinkEnabled;
+      });
+
+      it("should not enhance the search result with an article in context link", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).not.toContain("Download PDF");
+        expect(template.text().trim()).not.toContain("Read Article");
+        expect(template.text().trim()).not.toContain("View Issue Contents");
       });
 
       it("should have an enhanced browzine journal cover", function(done) {
@@ -1018,6 +1119,326 @@ describe("BrowZine Primo Adapter >", function() {
 
         request.respondWith({
           status: 404
+        });
+      });
+
+      afterEach(function() {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+
+      describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
+        it("should enhance the article with an unpaywall article pdf", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "open (via free pdf)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": "cc-by-nc-nd",
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2019-10-11T20:52:04.790279",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+                "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Download PDF (via Unpaywall)");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+        });
+      });
+
+      describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
+        it("should enhance the article with an unpaywall article link", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "oa journal (via observed oa rate)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": null,
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2020-02-22T00:58:09.389993",
+                "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+                "url_for_pdf": null,
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Read Article (via Unpaywall)");
+          expect(template.find("a.unpaywall-article-link").attr("href")).toEqual("https://doi.org/10.1098/rstb.1986.0056");
+          expect(template.find("a.unpaywall-article-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+        });
+      });
+
+      describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function() {
+        it("should enhance the article with an unpaywall manuscript article pdf", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "e32e740fde0998433a4",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": "cc0",
+                "pmh_id": "oai:diposit.ub.edu:2445/147225",
+                "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+                "updated": "2020-02-20T17:30:21.829852",
+                "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+                "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+                "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+                "version": "acceptedVersion"
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Download PDF (Accepted Manuscript via Unpaywall)");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+        });
+      });
+
+      describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
+        it("should enhance the article with an unpaywall manuscript article link", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "oa repository (via pmcid lookup)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2020-02-22T01:10:19.539950",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+                "url_for_pdf": null,
+                "version": "acceptedVersion"
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Read Article (Accepted Manuscript via Unpaywall)");
+          expect(template.find("a.unpaywall-manuscript-article-link").attr("href")).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
+          expect(template.find("a.unpaywall-manuscript-article-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+        });
+      });
+
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
+        it("should enhance the article with an unpaywall article pdf", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "pubmedcentral.nih.gov",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": "oai:pubmedcentral.nih.gov:1386933",
+                "repository_institution": "pubmedcentral.nih.gov",
+                "updated": "2017-10-21T12:10:36.827576",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf-do-not-use",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933",
+                "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf",
+                "version": null
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Download PDF (via Unpaywall)");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+        });
+      });
+
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function() {
+        it("should enhance the article with an unpaywall manuscript article pdf", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "pubmedcentral.nih.gov",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": "oai:pubmedcentral.nih.gov:1386933",
+                "repository_institution": "pubmedcentral.nih.gov",
+                "updated": "2017-10-21T12:10:36.827576",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf-do-not-use",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933",
+                "url_for_pdf": "https://google.com/pmc/articles/PMC1386933/pdf",
+                "version": null
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Download PDF (Accepted Manuscript via Unpaywall)");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual("https://google.com/pmc/articles/PMC1386933/pdf");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+        });
+      });
+
+      describe("unpaywall no best open access location >", function() {
+        it("should not enhance the article with an unpaywall link", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": null
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template.length).toEqual(0);
+        });
+      });
+    });
+
+    describe("search results article with browzine results but no pdf url that calls unpaywall >", function() {
+      beforeEach(function() {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1136/bmj.h2575"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": false,
+              "contentLocation": "",
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "",
+              "fullTextFile": ""
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": false,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
         });
       });
 
