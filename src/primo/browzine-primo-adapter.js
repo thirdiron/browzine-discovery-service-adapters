@@ -724,13 +724,13 @@ browzine.primo = (function() {
 
               var template;
 
-              if (unpaywallArticlePDFUrl) {
+              if (unpaywallArticlePDFUrl && browzine.articlePDFDownloadViaUnpaywallEnabled) {
                 template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
-              } else if (unpaywallArticleLinkUrl) {
+              } else if (unpaywallArticleLinkUrl && browzine.articleLinkViaUnpaywallEnabled ) {
                 template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
-              } else if (unpaywallManuscriptArticlePDFUrl) {
+              } else if (unpaywallManuscriptArticlePDFUrl && browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled) {
                 template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
-              } else if (unpaywallManuscriptArticleLinkUrl) {
+              } else if (unpaywallManuscriptArticleLinkUrl && browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled) {
                 template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
               }
 
