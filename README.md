@@ -23,20 +23,20 @@ _Primo Search Results Example_
 ![Primo Journal Search Results](https://i.imgur.com/pckF1VT.png "Primo Journal Search Results")
 
 
-## How to request your library API endpoint
-Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
+## How to request your libraryId and apiKey
+Visit Third Iron support to request your library Id and API Key - http://support.thirdiron.com/
 
-You will receive your `api` endpoint and your `apiKey`.
+You will receive your `libraryId` and your `apiKey`.
+
 
 ## Summon Adapter Installation
 
-
 ### BrowZine Summon Adapter Script
-Update the following code snippet with the `api` endpoint and `apiKey` values:
+Update the following code snippet with your `libraryId` and `apiKey` values:
 
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -63,7 +63,7 @@ Please note a valid institutional email address is required to use the Unpaywall
 
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 
   journalCoverImagesEnabled: true,
@@ -110,10 +110,10 @@ var browzine = {
 
 
 ### BrowZine 360 Core Adapter Script
-Update the following code snippet with the `api` endpoint and `apiKey` values:
+Update the following code snippet with your `libraryId` and `apiKey` values:
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -136,7 +136,7 @@ e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 
   journalCoverImagesEnabled: true,
@@ -150,7 +150,7 @@ var browzine = {
 
 
 ### BrowZine Primo Adapter Script
-Update the following code snippet with the `api` endpoint and `apiKey` values:
+Update the following code snippet with your `libraryId` and `apiKey` values:
 ```
 (function () {
   "use strict";
@@ -159,7 +159,7 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
 
   // Load BrowZine Adapter
   window.browzine = {
-    api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+    libraryId: "XXX",
     apiKey: "ENTER API KEY",
   };
 
@@ -196,7 +196,7 @@ Please note a valid institutional email address is required to use the Unpaywall
 
 ```
 window.browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 
   journalCoverImagesEnabled: true,
