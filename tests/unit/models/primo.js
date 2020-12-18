@@ -1563,8 +1563,8 @@ describe("Primo Model >", function() {
       delete browzine.articleLinkEnabled;
     });
 
-    it("should not show article link by default when configuration property is undefined or null", function() {
-      expect(primo.showArticleLink()).toEqual(false);
+    it("should show article link by default when configuration property is undefined or null", function() {
+      expect(primo.showArticleLink()).toEqual(true);
     });
 
     it("should show article link when configuration property is true", function() {

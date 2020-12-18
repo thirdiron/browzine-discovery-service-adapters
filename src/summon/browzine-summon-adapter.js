@@ -383,7 +383,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.articleLinkEnabled;
 
-    if (config === true) {
+    if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
     }
 
