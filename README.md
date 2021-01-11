@@ -180,9 +180,18 @@ Update the following code snippet with your `libraryId` and `apiKey` values:
 
 ### Adding Primo Custom Script
 
-Upload this custom Primo package to your Primo view or add the contents of /js/custom.js to your existing customized Primo package.
+Upload this custom Primo package to your Primo view or add the contents of /js/custom.js to your existing customized Primo package. Then upload 01COLSCHL_INST-BRZN.zip in Primo at Configure Views > 01COLSCHL_INST:BRZNTEST.
 
+Edit the 01COLSCHL_INST:BRZNTEST view.
+Then go to Manage Customization Package.
+Under Upload Package, select the Customization Package 01COLSCHL_INST-BRZN.zip.
+Then click Upload.
+Then in the View Configuration header click Save.
+
+Here's a sample view package (if needed):
 https://s3.amazonaws.com/browzine-adapters/primo/01COLSCHL_INST-BRZN.zip
+
+But, if available, just download the Current View Customization Package under the Download Package section and use that as your starting package.
 
 ![Primo External Script](https://i.imgur.com/EcZDAaC.png "PrimoExternal Script")
 
