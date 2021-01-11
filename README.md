@@ -182,11 +182,14 @@ Update the following code snippet with your `libraryId` and `apiKey` values:
 
 Upload this custom Primo package to your Primo view or add the contents of /js/custom.js to your existing customized Primo package. Then upload 01COLSCHL_INST-BRZN.zip in Primo at Configure Views > 01COLSCHL_INST:BRZNTEST.
 
+Upload Steps:
+```
 Edit the 01COLSCHL_INST:BRZNTEST view.
 Then go to Manage Customization Package.
 Under Upload Package, select the Customization Package 01COLSCHL_INST-BRZN.zip.
 Then click Upload.
 Then in the View Configuration header click Save.
+```
 
 Here's a sample view package (if needed):
 https://s3.amazonaws.com/browzine-adapters/primo/01COLSCHL_INST-BRZN.zip
