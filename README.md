@@ -23,20 +23,20 @@ _Primo Search Results Example_
 ![Primo Journal Search Results](https://i.imgur.com/pckF1VT.png "Primo Journal Search Results")
 
 
-## How to request your library API endpoint
-Visit Third Iron support to request your library API endpoint - http://support.thirdiron.com/
+## How to request your libraryId and apiKey
+Visit Third Iron support to request your library Id and API Key - http://support.thirdiron.com/
 
-You will receive your `api` endpoint and your `apiKey`.
+You will receive your `libraryId` and your `apiKey`.
+
 
 ## Summon Adapter Installation
 
-
 ### BrowZine Summon Adapter Script
-Update the following code snippet with the `api` endpoint and `apiKey` values:
+Update the following code snippet with your `libraryId` and `apiKey` values:
 
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -63,7 +63,7 @@ Please note a valid institutional email address is required to use the Unpaywall
 
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 
   journalCoverImagesEnabled: true,
@@ -110,10 +110,10 @@ var browzine = {
 
 
 ### BrowZine 360 Core Adapter Script
-Update the following code snippet with the `api` endpoint and `apiKey` values:
+Update the following code snippet with your `libraryId` and `apiKey` values:
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 };
 
@@ -136,7 +136,7 @@ e.g. You can customize "View Journal in BrowZine" to be a different phrase.
 
 ```
 var browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 
   journalCoverImagesEnabled: true,
@@ -150,7 +150,7 @@ var browzine = {
 
 
 ### BrowZine Primo Adapter Script
-Update the following code snippet with the `api` endpoint and `apiKey` values:
+Update the following code snippet with your `libraryId` and `apiKey` values:
 ```
 (function () {
   "use strict";
@@ -159,7 +159,7 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
 
   // Load BrowZine Adapter
   window.browzine = {
-    api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+    libraryId: "XXX",
     apiKey: "ENTER API KEY",
   };
 
@@ -180,9 +180,21 @@ Update the following code snippet with the `api` endpoint and `apiKey` values:
 
 ### Adding Primo Custom Script
 
-Upload this custom Primo package to your Primo view or add the contents of /js/custom.js to your existing customized Primo package.
+Upload this custom Primo package to your Primo view or add the contents of /js/custom.js to your existing customized Primo package. Then upload 01COLSCHL_INST-BRZN.zip in Primo at Configure Views > 01COLSCHL_INST:BRZNTEST.
 
+Upload Steps:
+```
+Edit the 01COLSCHL_INST:BRZNTEST view.
+Then go to Manage Customization Package.
+Under Upload Package, select the Customization Package 01COLSCHL_INST-BRZN.zip.
+Then click Upload.
+Then in the View Configuration header click Save.
+```
+
+Here's a sample view package (if needed):
 https://s3.amazonaws.com/browzine-adapters/primo/01COLSCHL_INST-BRZN.zip
+
+But, if available, just download the Current View Customization Package under the Download Package section and use that as your starting package.
 
 ![Primo External Script](https://i.imgur.com/EcZDAaC.png "PrimoExternal Script")
 
@@ -196,7 +208,7 @@ Please note a valid institutional email address is required to use the Unpaywall
 
 ```
 window.browzine = {
-  api: "https://public-api.thirdiron.com/public/v1/libraries/XXX",
+  libraryId: "XXX",
   apiKey: "ENTER API KEY",
 
   journalCoverImagesEnabled: true,
