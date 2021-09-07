@@ -1939,7 +1939,7 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    fdescribe("search results open access article with a direct to pdf link and journal not browzineEnabled >", function() {
+    describe("search results open access article with a direct to pdf link and journal not browzineEnabled >", function() {
       beforeEach(function() {
         primo = browzine.primo;
 
