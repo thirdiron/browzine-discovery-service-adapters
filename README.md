@@ -84,6 +84,8 @@ var browzine = {
   articleLinkTextWording: "Article Link",
   articleLinkText: "Read Article",
 
+  showSummonFullTextOnlineLink: true,
+
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 
   articlePDFDownloadViaUnpaywallEnabled: true,
@@ -226,6 +228,8 @@ window.browzine = {
   articleLinkText: "Read Article",
 
   printRecordsIntegrationEnabled: true,
+
+  showPrimoOnlineAccessLink: true,
 
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 

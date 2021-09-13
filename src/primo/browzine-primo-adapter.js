@@ -413,6 +413,17 @@ browzine.primo = (function() {
     return featureEnabled;
   };
 
+  function showOneLink() {
+    var featureEnabled = false;
+    var config = browzine.showPrimoOnlineAccessLink;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function isFiltered(scope) {
     var validation = false;
     var result = getResult(scope);
@@ -792,6 +803,7 @@ browzine.primo = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
+    showOneLink: showOneLink,
     transition: transition,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,

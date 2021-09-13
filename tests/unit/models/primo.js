@@ -1602,6 +1602,30 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model showOneLink method >", function() {
+    beforeEach(function() {
+      delete browzine.showPrimoOnlineAccessLink;
+    });
+
+    afterEach(function() {
+      delete browzine.showPrimoOnlineAccessLink;
+    });
+
+    it("should disable onelink when configuration property is undefined or null", function() {
+      expect(primo.showOneLink()).toEqual(true);
+    });
+
+    it("should disable onelink when configuration property is true", function() {
+      browzine.showPrimoOnlineAccessLink = true;
+      expect(primo.showOneLink()).toEqual(true);
+    });
+
+    it("should not disable onelink when configuration property is false", function() {
+      browzine.showPrimoOnlineAccessLink = false;
+      expect(primo.showOneLink()).toEqual(false);
+    });
+  });
+
   describe("primo model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;

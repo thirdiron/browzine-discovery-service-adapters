@@ -1156,6 +1156,30 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model showOneLink method >", function() {
+    beforeEach(function() {
+      delete browzine.showSummonFullTextOnlineLink;
+    });
+
+    afterEach(function() {
+      delete browzine.showSummonFullTextOnlineLink;
+    });
+
+    it("should disable onelink when configuration property is undefined or null", function() {
+      expect(summon.showOneLink()).toEqual(true);
+    });
+
+    it("should disable onelink when configuration property is true", function() {
+      browzine.showSummonFullTextOnlineLink = true;
+      expect(summon.showOneLink()).toEqual(true);
+    });
+
+    it("should not disable onelink when configuration property is false", function() {
+      browzine.showSummonFullTextOnlineLink = false;
+      expect(summon.showOneLink()).toEqual(false);
+    });
+  });
+
   describe("summon model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;

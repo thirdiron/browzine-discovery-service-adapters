@@ -401,6 +401,17 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
+  function showOneLink() {
+    var featureEnabled = false;
+    var config = browzine.showSummonFullTextOnlineLink;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function isFiltered(scope) {
     var result = false;
 
@@ -706,6 +717,7 @@ browzine.summon = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
+    showOneLink: showOneLink,
     isFiltered: isFiltered,
     transition: transition,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
