@@ -621,12 +621,12 @@ browzine.summon = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
 
-        if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
+        if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl);
           $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
         }
 
-        if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink() && browzineEnabled) {
+        if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl);
           $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
         }

@@ -660,7 +660,7 @@ browzine.primo = (function() {
 
         var element = getElement(scope);
 
-        if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink() && browzineEnabled) {
+        if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl);
 
           (function poll() {
@@ -675,7 +675,7 @@ browzine.primo = (function() {
           })();
         }
 
-        if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink() && browzineEnabled) {
+        if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl);
 
           (function poll() {

@@ -1938,6 +1938,116 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
     });
+
+    describe("search results open access article with a direct to pdf link and journal not browzineEnabled >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["21582440"],
+                    doi: ["10.1177/2158244020915900"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 379795373,
+              "type": "articles",
+              "title": "From Open Access to Open Science: The Path From Scientific Reality to Open Scientific Communication",
+              "date": "2020-05-10",
+              "doi": "10.1177/2158244020915900",
+              "authors": "Heise, Christian; Pearce, Joshua M.",
+              "inPress": false,
+              "openAccess": true,
+              "pmid": "",
+              "availableThroughBrowzine": false,
+              "startPage": "215824402091590",
+              "endPage": "",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/379795373/content-location",
+              "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/379795373/full-text-file",
+              "ILLURL": "https://illiad.mines.edu/illiad//illiad.dll?Action=10&Form=30&&rft.genre=article&rft.aulast=Heise&rft.issn=2158-2440&rft.jtitle=SAGE%20Open&rft.atitle=From%20Open%20Access%20to%20Open%20Science%3A%20The%20Path%20From%20Scientific%20Reality%20to%20Open%20Scientific%20Communication&rft.volume=10&rft.issue=2&rft.spage=215824402091590&rft.epage=&rft.date=2020-05-10&rfr_id=BrowZine"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "SAGE Open",
+              "issn": "21582440",
+              "sjrValue": 0.248,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/2158-2440.png",
+              "browzineEnabled": false,
+              "externalLink": "https://mines.primo.exlibrisgroup.com/discovery/search?query=issn,contains,2158-2440,AND&pfilter=rtype,exact,journals,AND&tab=Everything&search_scope=MyInst_and_CI&sortby=rank&vid=01COLSCHL_INST:MINES&lang=en&mode=advanced&offset=0"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1177%2F2158244020915900/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should have an enhanced browse article in browzine option", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Download PDF");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/articles/379795373/full-text-file");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/2158-2440.png");
+          });
+
+          done();
+        });
+      });
+
+      it("should open a new window when a direct to pdf link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/articles/379795373/full-text-file", "_blank");
+      });
+    });
   });
 
   describe("search results without scope data >", function() {
