@@ -1668,5 +1668,95 @@ describe("BrowZine Summon Adapter >", function() {
         });
       });
     });
+
+    describe("search results open access article with a direct to pdf link and journal not browzineEnabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1177/2158244020915900"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 379795373,
+              "type": "articles",
+              "title": "From Open Access to Open Science: The Path From Scientific Reality to Open Scientific Communication",
+              "date": "2020-05-10",
+              "doi": "10.1177/2158244020915900",
+              "authors": "Heise, Christian; Pearce, Joshua M.",
+              "inPress": false,
+              "openAccess": true,
+              "pmid": "",
+              "availableThroughBrowzine": false,
+              "startPage": "215824402091590",
+              "endPage": "",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/379795373/content-location",
+              "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/379795373/full-text-file",
+              "ILLURL": "https://illiad.mines.edu/illiad//illiad.dll?Action=10&Form=30&&rft.genre=article&rft.aulast=Heise&rft.issn=2158-2440&rft.jtitle=SAGE%20Open&rft.atitle=From%20Open%20Access%20to%20Open%20Science%3A%20The%20Path%20From%20Scientific%20Reality%20to%20Open%20Scientific%20Communication&rft.volume=10&rft.issue=2&rft.spage=215824402091590&rft.epage=&rft.date=2020-05-10&rfr_id=BrowZine"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "SAGE Open",
+              "issn": "21582440",
+              "sjrValue": 0.248,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/2158-2440.png",
+              "browzineEnabled": false,
+              "externalLink": "https://mines.primo.exlibrisgroup.com/discovery/search?query=issn,contains,2158-2440,AND&pfilter=rtype,exact,journals,AND&tab=Everything&search_scope=MyInst_and_CI&sortby=rank&vid=01COLSCHL_INST:MINES&lang=en&mode=advanced&offset=0"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1177%2F2158244020915900/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should have an enhanced browse article in browzine option", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Article PDF Download Now");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/articles/379795373/full-text-file");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/2158-2440.png");
+      });
+
+      it("should open a new window when a direct to pdf link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/articles/379795373/full-text-file", "_blank");
+      });
+    });
   });
 });
