@@ -646,7 +646,7 @@ browzine.summon = (function() {
         }
 
         if (!showOneLink() && (directToPDFUrl || articleLinkUrl)) {
-          const oneLinkElement = $(documentSummary).find(".availabilityContent");
+          var oneLinkElement = $(documentSummary).find(".availabilityContent");
 
           if (oneLinkElement) {
             oneLinkElement.remove();
@@ -688,7 +688,7 @@ browzine.summon = (function() {
               }
 
               if (!showOneLink() && template) {
-                const oneLinkElement = $(documentSummary).find(".availabilityContent");
+                var oneLinkElement = $(documentSummary).find(".availabilityContent");
 
                 if (oneLinkElement) {
                   oneLinkElement.remove();

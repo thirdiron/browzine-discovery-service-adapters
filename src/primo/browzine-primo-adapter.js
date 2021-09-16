@@ -714,6 +714,15 @@ browzine.primo = (function() {
             }
           })();
         }
+
+        if (!showOneLink() && (directToPDFUrl || articleLinkUrl)) {
+          var elementParent = getElementParent(element);
+          var oneLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
+
+          if (oneLinkElement) {
+            oneLinkElement.remove();
+          }
+        }
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
@@ -754,6 +763,21 @@ browzine.primo = (function() {
 
                   if (availabilityLine) {
                     availabilityLine.insertAdjacentHTML('afterbegin', template);
+                  } else {
+                    requestAnimationFrame(poll);
+                  }
+                })();
+              }
+
+              if (!showOneLink() && template) {
+                var element = getElement(scope);
+
+                (function poll() {
+                  var elementParent = getElementParent(element);
+                  var oneLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
+
+                  if (oneLinkElement) {
+                    oneLinkElement.remove();
                   } else {
                     requestAnimationFrame(poll);
                   }
