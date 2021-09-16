@@ -644,6 +644,14 @@ browzine.summon = (function() {
         if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
           $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
         }
+
+        if (!showOneLink() && (directToPDFUrl || articleLinkUrl)) {
+          const oneLinkElement = $(documentSummary).find(".availabilityContent");
+
+          if (oneLinkElement) {
+            oneLinkElement.remove();
+          }
+        }
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
@@ -677,6 +685,14 @@ browzine.summon = (function() {
 
               if (template) {
                 $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+              }
+
+              if (!showOneLink() && template) {
+                const oneLinkElement = $(documentSummary).find(".availabilityContent");
+
+                if (oneLinkElement) {
+                  oneLinkElement.remove();
+                }
               }
             }
           };
