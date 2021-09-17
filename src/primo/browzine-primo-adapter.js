@@ -720,7 +720,7 @@ browzine.primo = (function() {
           var oneLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
 
           if (oneLinkElement) {
-            oneLinkElement.remove();
+            // oneLinkElement.remove();
           }
         }
       }
