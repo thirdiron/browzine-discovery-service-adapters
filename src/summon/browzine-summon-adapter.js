@@ -649,7 +649,7 @@ browzine.summon = (function() {
           var oneLinkElement = $(documentSummary).find(".availabilityContent");
 
           if (oneLinkElement) {
-            // oneLinkElement.remove();
+            oneLinkElement.remove();
           }
         }
       }
