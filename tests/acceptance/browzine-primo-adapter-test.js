@@ -2054,7 +2054,7 @@ describe("BrowZine Primo Adapter >", function() {
         primo = browzine.primo;
         browzine.libKeyOneLinkView = false;
 
-        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'><div class='layout-row'><span class='availability-status'>Available Online</span></div></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-quick-link><a target='_blank'><span>PDF</span></a></prm-quick-link><prm-search-result-availability-line><div class='layout-align-start-start'><div class='layout-row'><span class='availability-status'>Available Online</span></div></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2129,6 +2129,15 @@ describe("BrowZine Primo Adapter >", function() {
         expect(searchResult).toBeDefined();
         expect(searchResult.text().trim()).toContain("Download PDF");
         expect(searchResult.text().trim()).not.toContain("Available Online");
+      });
+
+      it("should not show the quicklink option", function() {
+        var quickLink = searchResult.find("prm-quick-link");
+
+        expect(searchResult).toBeDefined();
+        expect(searchResult.text().trim()).toContain("Download PDF");
+
+        expect(quickLink.length).toEqual(0);
       });
     });
   });
