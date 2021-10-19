@@ -1762,7 +1762,7 @@ describe("BrowZine Summon Adapter >", function() {
     describe("search results article with onelink and both browzine web link and direct to pdf link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
-        browzine.showSummonFullTextOnlineLink = false;
+        browzine.libKeyOneLinkView = false;
 
         documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><span class='contentType'>Journal Article </span><a class='availabilityLink' href='#'>Full Text Online </a></div></div></div></div>");
 
@@ -1819,7 +1819,7 @@ describe("BrowZine Summon Adapter >", function() {
 
       afterEach(function() {
         jasmine.Ajax.uninstall();
-        delete browzine.showSummonFullTextOnlineLink;
+        delete browzine.libKeyOneLinkView;
       });
 
       it("should not show the onelink option", function() {

@@ -1158,11 +1158,11 @@ describe("Summon Model >", function() {
 
   describe("summon model showOneLink method >", function() {
     beforeEach(function() {
-      delete browzine.showSummonFullTextOnlineLink;
+      delete browzine.libKeyOneLinkView;
     });
 
     afterEach(function() {
-      delete browzine.showSummonFullTextOnlineLink;
+      delete browzine.libKeyOneLinkView;
     });
 
     it("should disable onelink when configuration property is undefined or null", function() {
@@ -1170,12 +1170,12 @@ describe("Summon Model >", function() {
     });
 
     it("should disable onelink when configuration property is true", function() {
-      browzine.showSummonFullTextOnlineLink = true;
+      browzine.libKeyOneLinkView = true;
       expect(summon.showOneLink()).toEqual(true);
     });
 
     it("should not disable onelink when configuration property is false", function() {
-      browzine.showSummonFullTextOnlineLink = false;
+      browzine.libKeyOneLinkView = false;
       expect(summon.showOneLink()).toEqual(false);
     });
   });

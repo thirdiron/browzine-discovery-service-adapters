@@ -415,7 +415,7 @@ browzine.primo = (function() {
 
   function showOneLink() {
     var featureEnabled = false;
-    var config = browzine.showPrimoOnlineAccessLink;
+    var config = browzine.libKeyOneLinkView;
 
     if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;

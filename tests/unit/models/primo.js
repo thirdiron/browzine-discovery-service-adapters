@@ -1604,11 +1604,11 @@ describe("Primo Model >", function() {
 
   describe("primo model showOneLink method >", function() {
     beforeEach(function() {
-      delete browzine.showPrimoOnlineAccessLink;
+      delete browzine.libKeyOneLinkView;
     });
 
     afterEach(function() {
-      delete browzine.showPrimoOnlineAccessLink;
+      delete browzine.libKeyOneLinkView;
     });
 
     it("should disable onelink when configuration property is undefined or null", function() {
@@ -1616,12 +1616,12 @@ describe("Primo Model >", function() {
     });
 
     it("should disable onelink when configuration property is true", function() {
-      browzine.showPrimoOnlineAccessLink = true;
+      browzine.libKeyOneLinkView = true;
       expect(primo.showOneLink()).toEqual(true);
     });
 
     it("should not disable onelink when configuration property is false", function() {
-      browzine.showPrimoOnlineAccessLink = false;
+      browzine.libKeyOneLinkView = false;
       expect(primo.showOneLink()).toEqual(false);
     });
   });

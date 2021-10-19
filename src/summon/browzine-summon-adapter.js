@@ -403,7 +403,7 @@ browzine.summon = (function() {
 
   function showOneLink() {
     var featureEnabled = false;
-    var config = browzine.showSummonFullTextOnlineLink;
+    var config = browzine.libKeyOneLinkView;
 
     if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;

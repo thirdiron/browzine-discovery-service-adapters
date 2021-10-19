@@ -84,7 +84,7 @@ var browzine = {
   articleLinkTextWording: "Article Link",
   articleLinkText: "Read Article",
 
-  showSummonFullTextOnlineLink: true,
+  libKeyOneLinkView: true,
 
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 
@@ -229,7 +229,7 @@ window.browzine = {
 
   printRecordsIntegrationEnabled: true,
 
-  showPrimoOnlineAccessLink: true,
+  libKeyOneLinkView: true,
 
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 
