@@ -652,6 +652,14 @@ browzine.summon = (function() {
             contentLinkElement.remove();
           }
         }
+
+        if (showLibKeyOneLinkView() && directToPDFUrl) {
+          var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+
+          if (quickLinkElement) {
+            quickLinkElement.remove();
+          }
+        }
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
@@ -672,13 +680,16 @@ browzine.summon = (function() {
               var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
 
               var template;
+              var pdfAvailable = false;
 
               if (unpaywallArticlePDFUrl && browzine.articlePDFDownloadViaUnpaywallEnabled) {
                 template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallArticleLinkUrl && browzine.articleLinkViaUnpaywallEnabled ) {
                 template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
               } else if (unpaywallManuscriptArticlePDFUrl && browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled) {
                 template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallManuscriptArticleLinkUrl && browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled) {
                 template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
               }
@@ -692,6 +703,14 @@ browzine.summon = (function() {
 
                 if (contentLinkElement) {
                   contentLinkElement.remove();
+                }
+              }
+
+              if (showLibKeyOneLinkView() && template && pdfAvailable) {
+                var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+
+                if (quickLinkElement) {
+                  quickLinkElement.remove();
                 }
               }
             }

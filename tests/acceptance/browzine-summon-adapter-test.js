@@ -1837,5 +1837,414 @@ describe("BrowZine Summon Adapter >", function() {
         expect(quicklink.length).toEqual(0);
       });
     });
+
+    describe("search results article with extra links and with no browzine results that calls unpaywall >", function() {
+      beforeEach(function() {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        summon = browzine.summon;
+        browzine.libKeyOneLinkView = true;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1136/bmj.h2575"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 404
+        });
+      });
+
+      afterEach(function() {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        delete browzine.libKeyOneLinkView;
+
+        jasmine.Ajax.uninstall();
+      });
+
+      describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
+        it("should enhance the article with an unpaywall article pdf and show libkey one link view", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "open (via free pdf)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": "cc-by-nc-nd",
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2019-10-11T20:52:04.790279",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+                "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(0);
+        });
+
+        it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false and not show libkey one link view", function() {
+          browzine.articlePDFDownloadViaUnpaywallEnabled = false;
+
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "open (via free pdf)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": "cc-by-nc-nd",
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2019-10-11T20:52:04.790279",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+                "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(1);
+        });
+      });
+
+      describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
+        it("should enhance the article with an unpaywall article link and not show libkey one link view", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "oa journal (via observed oa rate)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": null,
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2020-02-22T00:58:09.389993",
+                "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+                "url_for_pdf": null,
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(1);
+        });
+
+        it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
+          browzine.articleLinkViaUnpaywallEnabled = false;
+
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "oa journal (via observed oa rate)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": null,
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2020-02-22T00:58:09.389993",
+                "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+                "url_for_pdf": null,
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(1);
+        });
+      });
+
+      describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function() {
+        it("should enhance the article with an unpaywall manuscript article pdf and show libkey one link view", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "e32e740fde0998433a4",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": "cc0",
+                "pmh_id": "oai:diposit.ub.edu:2445/147225",
+                "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+                "updated": "2020-02-20T17:30:21.829852",
+                "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+                "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+                "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+                "version": "acceptedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(0);
+        });
+
+        it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false and not show libkey one link view", function() {
+          browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = false;
+
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "e32e740fde0998433a4",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": "cc0",
+                "pmh_id": "oai:diposit.ub.edu:2445/147225",
+                "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+                "updated": "2020-02-20T17:30:21.829852",
+                "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+                "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+                "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+                "version": "acceptedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(1);
+        });
+      });
+
+      describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
+        it("should enhance the article with an unpaywall manuscript article link and not show libeky one link view", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "oa repository (via pmcid lookup)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2020-02-22T01:10:19.539950",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+                "url_for_pdf": null,
+                "version": "acceptedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(1);
+        });
+
+        it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
+          browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = false;
+
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "oa repository (via pmcid lookup)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2020-02-22T01:10:19.539950",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+                "url_for_pdf": null,
+                "version": "acceptedVersion"
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(1);
+        });
+      });
+
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
+        it("should enhance the article with an unpaywall article pdf and show libkey one link view", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "pubmedcentral.nih.gov",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": "oai:pubmedcentral.nih.gov:1386933",
+                "repository_institution": "pubmedcentral.nih.gov",
+                "updated": "2017-10-21T12:10:36.827576",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf-do-not-use",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933",
+                "url_for_pdf": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf",
+                "version": null
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(0);
+        });
+      });
+
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function() {
+        it("should enhance the article with an unpaywall manuscript article pdf and show libkey one link view", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": "pubmedcentral.nih.gov",
+                "evidence": "oa repository (via OAI-PMH doi match)",
+                "host_type": "repository",
+                "is_best": true,
+                "license": null,
+                "pmh_id": "oai:pubmedcentral.nih.gov:1386933",
+                "repository_institution": "pubmedcentral.nih.gov",
+                "updated": "2017-10-21T12:10:36.827576",
+                "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf-do-not-use",
+                "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933",
+                "url_for_pdf": "https://google.com/pmc/articles/PMC1386933/pdf",
+                "version": null
+              }
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template).toBeDefined();
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(0);
+        });
+      });
+
+      describe("unpaywall no best open access location >", function() {
+        it("should not enhance the article with an unpaywall link and not show libkey one link view", function() {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": null
+            })
+          });
+
+          var template = documentSummary.find(".browzine");
+
+          expect(template.length).toEqual(0);
+
+          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          expect(quicklink.length).toEqual(1);
+        });
+      });
+    });
   });
 });
