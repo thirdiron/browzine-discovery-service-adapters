@@ -1156,7 +1156,7 @@ describe("Summon Model >", function() {
     });
   });
 
-  describe("summon model showOneLink method >", function() {
+  describe("summon model showLibKeyOneLinkView method >", function() {
     beforeEach(function() {
       delete browzine.libKeyOneLinkView;
     });
@@ -1166,17 +1166,17 @@ describe("Summon Model >", function() {
     });
 
     it("should disable onelink when configuration property is undefined or null", function() {
-      expect(summon.showOneLink()).toEqual(true);
+      expect(summon.showLibKeyOneLinkView()).toEqual(true);
     });
 
     it("should disable onelink when configuration property is true", function() {
       browzine.libKeyOneLinkView = true;
-      expect(summon.showOneLink()).toEqual(true);
+      expect(summon.showLibKeyOneLinkView()).toEqual(true);
     });
 
     it("should not disable onelink when configuration property is false", function() {
       browzine.libKeyOneLinkView = false;
-      expect(summon.showOneLink()).toEqual(false);
+      expect(summon.showLibKeyOneLinkView()).toEqual(false);
     });
   });
 

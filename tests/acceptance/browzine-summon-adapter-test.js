@@ -1759,10 +1759,10 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
-    describe("search results article with onelink and both browzine web link and direct to pdf link >", function() {
+    describe("search results article extra links and both browzine web link and direct to pdf link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
-        browzine.libKeyOneLinkView = false;
+        browzine.libKeyOneLinkView = true;
 
         documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><span class='contentType'>Journal Article </span><a class='availabilityLink' href='#'>Full Text Online </a></div></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
 
@@ -1822,13 +1822,13 @@ describe("BrowZine Summon Adapter >", function() {
         delete browzine.libKeyOneLinkView;
       });
 
-      it("should not show the onelink option", function() {
+      it("should not show the content link option", function() {
         expect(documentSummary).toBeDefined();
         expect(documentSummary.text().trim()).toContain("Article PDF Download Now");
         expect(documentSummary.text().trim()).not.toContain("Journal Article Full Text Online");
       });
 
-      it("should not show the quicklink option", function() {
+      it("should not show the quick link option", function() {
         var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
 
         expect(documentSummary).toBeDefined();

@@ -413,7 +413,7 @@ browzine.primo = (function() {
     return featureEnabled;
   };
 
-  function showOneLink() {
+  function showLibKeyOneLinkView() {
     var featureEnabled = false;
     var config = browzine.libKeyOneLinkView;
 
@@ -715,12 +715,12 @@ browzine.primo = (function() {
           })();
         }
 
-        if (!showOneLink() && (directToPDFUrl || articleLinkUrl)) {
+        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
           var elementParent = getElementParent(element);
-          var oneLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
+          var contentLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
 
-          if (oneLinkElement) {
-            oneLinkElement.remove();
+          if (contentLinkElement) {
+            contentLinkElement.remove();
           }
         }
       }
@@ -769,15 +769,15 @@ browzine.primo = (function() {
                 })();
               }
 
-              if (!showOneLink() && template) {
+              if (showLibKeyOneLinkView() && template) {
                 var element = getElement(scope);
 
                 (function poll() {
                   var elementParent = getElementParent(element);
-                  var oneLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
+                  var contentLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
 
-                  if (oneLinkElement) {
-                    oneLinkElement.remove();
+                  if (contentLinkElement) {
+                    contentLinkElement.remove();
                   } else {
                     requestAnimationFrame(poll);
                   }
@@ -827,7 +827,7 @@ browzine.primo = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
-    showOneLink: showOneLink,
+    showLibKeyOneLinkView: showLibKeyOneLinkView,
     transition: transition,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,

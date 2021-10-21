@@ -401,7 +401,7 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
-  function showOneLink() {
+  function showLibKeyOneLinkView() {
     var featureEnabled = false;
     var config = browzine.libKeyOneLinkView;
 
@@ -645,11 +645,11 @@ browzine.summon = (function() {
           $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
         }
 
-        if (!showOneLink() && (directToPDFUrl || articleLinkUrl)) {
-          var oneLinkElement = $(documentSummary).find(".availabilityContent");
+        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
+          var contentLinkElement = $(documentSummary).find(".availabilityContent");
 
-          if (oneLinkElement) {
-            oneLinkElement.remove();
+          if (contentLinkElement) {
+            contentLinkElement.remove();
           }
         }
       }
@@ -687,11 +687,11 @@ browzine.summon = (function() {
                 $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
               }
 
-              if (!showOneLink() && template) {
-                var oneLinkElement = $(documentSummary).find(".availabilityContent");
+              if (showLibKeyOneLinkView() && template) {
+                var contentLinkElement = $(documentSummary).find(".availabilityContent");
 
-                if (oneLinkElement) {
-                  oneLinkElement.remove();
+                if (contentLinkElement) {
+                  contentLinkElement.remove();
                 }
               }
             }
@@ -733,7 +733,7 @@ browzine.summon = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
-    showOneLink: showOneLink,
+    showLibKeyOneLinkView: showLibKeyOneLinkView,
     isFiltered: isFiltered,
     transition: transition,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
