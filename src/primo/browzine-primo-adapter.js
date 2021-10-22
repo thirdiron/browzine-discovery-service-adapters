@@ -723,6 +723,15 @@ browzine.primo = (function() {
             contentLinkElement.remove();
           }
         }
+
+        if (showLibKeyOneLinkView() && directToPDFUrl) {
+          var elementParent = getElementParent(element);
+          var quickLinkElement = elementParent.querySelector("prm-quick-link");
+
+          if (quickLinkElement) {
+            quickLinkElement.remove();
+          }
+        }
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
@@ -743,13 +752,16 @@ browzine.primo = (function() {
               var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
 
               var template;
+              var pdfAvailable = false;
 
               if (unpaywallArticlePDFUrl && browzine.articlePDFDownloadViaUnpaywallEnabled) {
                 template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallArticleLinkUrl && browzine.articleLinkViaUnpaywallEnabled ) {
                 template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
               } else if (unpaywallManuscriptArticlePDFUrl && browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled) {
                 template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallManuscriptArticleLinkUrl && browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled) {
                 template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
               }
@@ -778,6 +790,21 @@ browzine.primo = (function() {
 
                   if (contentLinkElement) {
                     contentLinkElement.remove();
+                  } else {
+                    requestAnimationFrame(poll);
+                  }
+                })();
+              }
+
+              if (showLibKeyOneLinkView() && template && pdfAvailable) {
+                var element = getElement(scope);
+
+                (function poll() {
+                  var elementParent = getElementParent(element);
+                  var quickLinkElement = elementParent.querySelector("prm-quick-link");
+
+                  if (quickLinkElement) {
+                    quickLinkElement.remove();
                   } else {
                     requestAnimationFrame(poll);
                   }
