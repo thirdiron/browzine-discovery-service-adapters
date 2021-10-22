@@ -1829,11 +1829,10 @@ describe("BrowZine Summon Adapter >", function() {
       });
 
       it("should not show the quick link option", function() {
-        var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
-
         expect(documentSummary).toBeDefined();
         expect(documentSummary.text().trim()).toContain("Article PDF Download Now");
 
+        var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
         expect(quicklink.length).toEqual(0);
       });
     });
@@ -1914,6 +1913,11 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template).toBeDefined();
 
+          expect(template.text().trim()).toContain("Article PDF Download Now (via Unpaywall)");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
         });
@@ -1947,6 +1951,11 @@ describe("BrowZine Summon Adapter >", function() {
           var template = documentSummary.find(".browzine");
 
           expect(template).toBeDefined();
+
+          expect(template.text().trim()).toEqual("");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual(undefined);
+          expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual(undefined);
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual(undefined);
 
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
@@ -1982,6 +1991,11 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template).toBeDefined();
 
+          expect(template.text().trim()).toContain("Article Link Read Article (via Unpaywall)");
+          expect(template.find("a.unpaywall-article-link").attr("href")).toEqual("https://doi.org/10.1098/rstb.1986.0056");
+          expect(template.find("a.unpaywall-article-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
@@ -2015,6 +2029,11 @@ describe("BrowZine Summon Adapter >", function() {
           var template = documentSummary.find(".browzine");
 
           expect(template).toBeDefined();
+
+          expect(template.text().trim()).toEqual("");
+          expect(template.find("a.unpaywall-article-link").attr("href")).toEqual(undefined);
+          expect(template.find("a.unpaywall-article-link").attr("target")).toEqual(undefined);
+          expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual(undefined);
 
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
@@ -2050,6 +2069,11 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template).toBeDefined();
 
+          expect(template.text().trim()).toContain("Article PDF Download Now (Accepted Manuscript via Unpaywall)");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
         });
@@ -2084,13 +2108,18 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template).toBeDefined();
 
+          expect(template.text().trim()).toEqual("");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual(undefined);
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual(undefined);
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual(undefined);
+
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
       });
 
       describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-        it("should enhance the article with an unpaywall manuscript article link and not show libeky one link view", function() {
+        it("should enhance the article with an unpaywall manuscript article link and not show libkey one link view", function() {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2117,6 +2146,11 @@ describe("BrowZine Summon Adapter >", function() {
           var template = documentSummary.find(".browzine");
 
           expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Article Link Read Article (Accepted Manuscript via Unpaywall)");
+          expect(template.find("a.unpaywall-manuscript-article-link").attr("href")).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
+          expect(template.find("a.unpaywall-manuscript-article-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
 
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
@@ -2152,6 +2186,11 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template).toBeDefined();
 
+          expect(template.text().trim()).toEqual("");
+          expect(template.find("a.unpaywall-manuscript-article-link").attr("href")).toEqual(undefined);
+          expect(template.find("a.unpaywall-manuscript-article-link").attr("target")).toEqual(undefined);
+          expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual(undefined);
+
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
@@ -2186,6 +2225,11 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template).toBeDefined();
 
+          expect(template.text().trim()).toContain("Article PDF Download Now (via Unpaywall)");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1386933/pdf");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
+
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
         });
@@ -2219,6 +2263,11 @@ describe("BrowZine Summon Adapter >", function() {
           var template = documentSummary.find(".browzine");
 
           expect(template).toBeDefined();
+
+          expect(template.text().trim()).toContain("Article PDF Download Now (Accepted Manuscript via Unpaywall)");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual("https://google.com/pmc/articles/PMC1386933/pdf");
+          expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
+          expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
 
           var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
