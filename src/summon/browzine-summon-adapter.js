@@ -401,6 +401,17 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
+  function showLibKeyOneLinkView() {
+    var featureEnabled = false;
+    var config = browzine.libKeyOneLinkView;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function isFiltered(scope) {
     var result = false;
 
@@ -633,6 +644,22 @@ browzine.summon = (function() {
         if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
           $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
         }
+
+        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
+          var contentLinkElement = $(documentSummary).find(".availabilityContent");
+
+          if (contentLinkElement) {
+            contentLinkElement.remove();
+          }
+        }
+
+        if (showLibKeyOneLinkView() && directToPDFUrl) {
+          var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+
+          if (quickLinkElement) {
+            quickLinkElement.remove();
+          }
+        }
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
@@ -653,19 +680,38 @@ browzine.summon = (function() {
               var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
 
               var template;
+              var pdfAvailable = false;
 
               if (unpaywallArticlePDFUrl && browzine.articlePDFDownloadViaUnpaywallEnabled) {
                 template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallArticleLinkUrl && browzine.articleLinkViaUnpaywallEnabled ) {
                 template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
               } else if (unpaywallManuscriptArticlePDFUrl && browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled) {
                 template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallManuscriptArticleLinkUrl && browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled) {
                 template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
               }
 
               if (template) {
                 $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+              }
+
+              if (showLibKeyOneLinkView() && template) {
+                var contentLinkElement = $(documentSummary).find(".availabilityContent");
+
+                if (contentLinkElement) {
+                  contentLinkElement.remove();
+                }
+              }
+
+              if (showLibKeyOneLinkView() && template && pdfAvailable) {
+                var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+
+                if (quickLinkElement) {
+                  quickLinkElement.remove();
+                }
               }
             }
           };
@@ -706,6 +752,7 @@ browzine.summon = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
+    showLibKeyOneLinkView: showLibKeyOneLinkView,
     isFiltered: isFiltered,
     transition: transition,
     browzineWebLinkTemplate: browzineWebLinkTemplate,

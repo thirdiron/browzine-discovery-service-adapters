@@ -413,6 +413,17 @@ browzine.primo = (function() {
     return featureEnabled;
   };
 
+  function showLibKeyOneLinkView() {
+    var featureEnabled = false;
+    var config = browzine.libKeyOneLinkView;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function isFiltered(scope) {
     var validation = false;
     var result = getResult(scope);
@@ -703,6 +714,24 @@ browzine.primo = (function() {
             }
           })();
         }
+
+        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
+          var elementParent = getElementParent(element);
+          var contentLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
+
+          if (contentLinkElement) {
+            contentLinkElement.remove();
+          }
+        }
+
+        if (showLibKeyOneLinkView() && directToPDFUrl) {
+          var elementParent = getElementParent(element);
+          var quickLinkElement = elementParent.querySelector("prm-quick-link");
+
+          if (quickLinkElement) {
+            quickLinkElement.remove();
+          }
+        }
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
@@ -723,13 +752,16 @@ browzine.primo = (function() {
               var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
 
               var template;
+              var pdfAvailable = false;
 
               if (unpaywallArticlePDFUrl && browzine.articlePDFDownloadViaUnpaywallEnabled) {
                 template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallArticleLinkUrl && browzine.articleLinkViaUnpaywallEnabled ) {
                 template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
               } else if (unpaywallManuscriptArticlePDFUrl && browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled) {
                 template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+                pdfAvailable = true;
               } else if (unpaywallManuscriptArticleLinkUrl && browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled) {
                 template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
               }
@@ -743,6 +775,36 @@ browzine.primo = (function() {
 
                   if (availabilityLine) {
                     availabilityLine.insertAdjacentHTML('afterbegin', template);
+                  } else {
+                    requestAnimationFrame(poll);
+                  }
+                })();
+              }
+
+              if (showLibKeyOneLinkView() && template) {
+                var element = getElement(scope);
+
+                (function poll() {
+                  var elementParent = getElementParent(element);
+                  var contentLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
+
+                  if (contentLinkElement) {
+                    contentLinkElement.remove();
+                  } else {
+                    requestAnimationFrame(poll);
+                  }
+                })();
+              }
+
+              if (showLibKeyOneLinkView() && template && pdfAvailable) {
+                var element = getElement(scope);
+
+                (function poll() {
+                  var elementParent = getElementParent(element);
+                  var quickLinkElement = elementParent.querySelector("prm-quick-link");
+
+                  if (quickLinkElement) {
+                    quickLinkElement.remove();
                   } else {
                     requestAnimationFrame(poll);
                   }
@@ -792,6 +854,7 @@ browzine.primo = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
+    showLibKeyOneLinkView: showLibKeyOneLinkView,
     transition: transition,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,

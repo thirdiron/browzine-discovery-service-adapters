@@ -1602,6 +1602,36 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model showLibKeyOneLinkView method >", function() {
+    beforeEach(function() {
+      delete browzine.libKeyOneLinkView;
+    });
+
+    afterEach(function() {
+      delete browzine.libKeyOneLinkView;
+    });
+
+    it("should disable onelink when configuration property is undefined", function() {
+      delete browzine.libKeyOneLinkView;
+      expect(primo.showLibKeyOneLinkView()).toEqual(true);
+    });
+
+    it("should disable onelink when configuration property is null", function() {
+      browzine.libKeyOneLinkView = null;
+      expect(primo.showLibKeyOneLinkView()).toEqual(true);
+    });
+
+    it("should disable onelink when configuration property is true", function() {
+      browzine.libKeyOneLinkView = true;
+      expect(primo.showLibKeyOneLinkView()).toEqual(true);
+    });
+
+    it("should not disable onelink when configuration property is false", function() {
+      browzine.libKeyOneLinkView = false;
+      expect(primo.showLibKeyOneLinkView()).toEqual(false);
+    });
+  });
+
   describe("primo model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;

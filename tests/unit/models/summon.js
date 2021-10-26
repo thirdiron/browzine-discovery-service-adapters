@@ -1156,6 +1156,36 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model showLibKeyOneLinkView method >", function() {
+    beforeEach(function() {
+      delete browzine.libKeyOneLinkView;
+    });
+
+    afterEach(function() {
+      delete browzine.libKeyOneLinkView;
+    });
+
+    it("should disable onelink when configuration property is undefined", function() {
+      delete browzine.libKeyOneLinkView;
+      expect(summon.showLibKeyOneLinkView()).toEqual(true);
+    });
+
+    it("should disable onelink when configuration property is null", function() {
+      browzine.libKeyOneLinkView = null;
+      expect(summon.showLibKeyOneLinkView()).toEqual(true);
+    });
+
+    it("should disable onelink when configuration property is true", function() {
+      browzine.libKeyOneLinkView = true;
+      expect(summon.showLibKeyOneLinkView()).toEqual(true);
+    });
+
+    it("should not disable onelink when configuration property is false", function() {
+      browzine.libKeyOneLinkView = false;
+      expect(summon.showLibKeyOneLinkView()).toEqual(false);
+    });
+  });
+
   describe("summon model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;
