@@ -412,6 +412,17 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
+  function showRetractionWatch() {
+    var featureEnabled = false;
+    var config = browzine.articleRetractionWatchEnabled;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function isFiltered(scope) {
     var result = false;
 
@@ -753,6 +764,7 @@ browzine.summon = (function() {
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
     showLibKeyOneLinkView: showLibKeyOneLinkView,
+    showRetractionWatch: showRetractionWatch,
     isFiltered: isFiltered,
     transition: transition,
     browzineWebLinkTemplate: browzineWebLinkTemplate,

@@ -1611,24 +1611,54 @@ describe("Primo Model >", function() {
       delete browzine.libKeyOneLinkView;
     });
 
-    it("should disable onelink when configuration property is undefined", function() {
+    it("should enable onelink when configuration property is undefined", function() {
       delete browzine.libKeyOneLinkView;
       expect(primo.showLibKeyOneLinkView()).toEqual(true);
     });
 
-    it("should disable onelink when configuration property is null", function() {
+    it("should enable onelink when configuration property is null", function() {
       browzine.libKeyOneLinkView = null;
       expect(primo.showLibKeyOneLinkView()).toEqual(true);
     });
 
-    it("should disable onelink when configuration property is true", function() {
+    it("should enable onelink when configuration property is true", function() {
       browzine.libKeyOneLinkView = true;
       expect(primo.showLibKeyOneLinkView()).toEqual(true);
     });
 
-    it("should not disable onelink when configuration property is false", function() {
+    it("should disable onelink when configuration property is false", function() {
       browzine.libKeyOneLinkView = false;
       expect(primo.showLibKeyOneLinkView()).toEqual(false);
+    });
+  });
+
+  describe("primo model showRetractionWatch method >", function() {
+    beforeEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+    });
+
+    it("should enable retraction watch when configuration property is undefined", function() {
+      delete browzine.articleRetractionWatchEnabled;
+      expect(primo.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should enable retraction watch when configuration property is null", function() {
+      browzine.articleRetractionWatchEnabled = null;
+      expect(primo.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should enable retraction watch when configuration property is true", function() {
+      browzine.articleRetractionWatchEnabled = true;
+      expect(primo.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should disable retraction watch when configuration property is false", function() {
+      browzine.articleRetractionWatchEnabled = false;
+      expect(primo.showRetractionWatch()).toEqual(false);
     });
   });
 
