@@ -462,24 +462,27 @@ browzine.summon = (function() {
 
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
+    var pdfIconWidth = "13";
     var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
     if (articleRetractionUrl && showRetractionWatch()) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+      pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording} <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                     "{articlePDFDownloadWording} <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
     template = template.replace(/{pdfIcon}/g, pdfIcon);
+    template = template.replace(/{pdfIconWidth}/g, pdfIconWidth);
 
     return template;
   };
@@ -530,24 +533,27 @@ browzine.summon = (function() {
 
   function unpaywallArticlePDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
+    var pdfIconWidth = "13";
     var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
 
     if (articleRetractionUrl && showRetractionWatch()) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+      pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording} <a class='unpaywall-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                     "{articlePDFDownloadWording} <a class='unpaywall-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
     template = template.replace(/{pdfIcon}/g, pdfIcon);
+    template = template.replace(/{pdfIconWidth}/g, pdfIconWidth);
 
     return template;
   };
@@ -571,24 +577,27 @@ browzine.summon = (function() {
 
   function unpaywallManuscriptPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
+    var pdfIconWidth = "13";
     var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
 
     if (articleRetractionUrl && showRetractionWatch()) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+      pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
     var template = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording} <a class='unpaywall-manuscript-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+                     "{articlePDFDownloadWording} <a class='unpaywall-manuscript-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{pdfIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
                    "</div>";
 
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
     template = template.replace(/{pdfIcon}/g, pdfIcon);
+    template = template.replace(/{pdfIconWidth}/g, pdfIconWidth);
 
     return template;
   };
