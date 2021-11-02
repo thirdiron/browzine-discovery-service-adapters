@@ -30,7 +30,8 @@ describe("Summon Model >", function() {
         "endPage": "h2575",
         "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
         "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file",
-        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408"
+        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408",
+        "retractionNoticeUrl": "https://develop.libkey.io/libraries/1252/10.1155/2019/5730746"
       },
       "included": [{
         "id": 18126,
@@ -608,6 +609,53 @@ describe("Summon Model >", function() {
       expect(data).toEqual(undefined);
 
       expect(summon.getArticleLinkUrl(scope, data)).toEqual(null);
+    });
+  });
+
+  describe("summon model getArticleRetractionUrl method >", function() {
+    it("should not return an article retraction url for journal search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleRetractionUrl(scope, data)).toBeNull();
+    });
+
+    it("should return an article retraction url for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleRetractionUrl(scope, data)).toEqual("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+    });
+
+    it("should not return an article retraction url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article"
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = summon.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(summon.getArticleRetractionUrl(scope, data)).toEqual(null);
     });
   });
 

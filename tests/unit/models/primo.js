@@ -39,7 +39,8 @@ describe("Primo Model >", function() {
         "endPage": "h2575",
         "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
         "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file",
-        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408"
+        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408",
+        "retractionNoticeUrl": "https://develop.libkey.io/libraries/1252/10.1155/2019/5730746"
       },
       "included": [{
         "id": 18126,
@@ -1054,6 +1055,76 @@ describe("Primo Model >", function() {
       expect(data).toEqual(undefined);
 
       expect(primo.getArticleLinkUrl(scope, data)).toEqual(null);
+    });
+  });
+
+  describe("primo model getArticleRetractionUrl method >", function() {
+    it("should not return a retraction url for journal search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleRetractionUrl(scope, data)).toBeNull();
+    });
+
+    it("should return a retraction url for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleRetractionUrl(scope, data)).toEqual("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+    });
+
+    it("should not return a retraction url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = primo.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(primo.getArticleRetractionUrl(scope, data)).toEqual(null);
     });
   });
 

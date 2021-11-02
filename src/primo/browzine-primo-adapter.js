@@ -254,6 +254,18 @@ browzine.primo = (function() {
     return articleLinkUrl;
   };
 
+  function getArticleRetractionUrl(scope, data) {
+    var articleRetractionUrl = null;
+
+    if (isArticle(scope)) {
+      if (data && data.retractionNoticeUrl) {
+        articleRetractionUrl = data.retractionNoticeUrl;
+      }
+    }
+
+    return articleRetractionUrl;
+  };
+
   function isTrustedRepository(response) {
     var validation = false;
 
@@ -465,9 +477,15 @@ browzine.primo = (function() {
     return false;
   };
 
-  function directToPDFTemplate(directToPDFUrl) {
+  function directToPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.primoArticlePDFDownloadLinkText  || "Download PDF";
+
+    if (articleRetractionUrl && showRetractionWatch()) {
+      directToPDFUrl = articleRetractionUrl;
+      pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+      articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "Retracted Article";
+    }
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
                       "<a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
@@ -530,9 +548,15 @@ browzine.primo = (function() {
     return template;
   };
 
-  function unpaywallArticlePDFTemplate(directToPDFUrl) {
+  function unpaywallArticlePDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallText  || "Download PDF (via Unpaywall)";
+
+    if (articleRetractionUrl && showRetractionWatch()) {
+      directToPDFUrl = articleRetractionUrl;
+      pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+      articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "Retracted Article";
+    }
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
                       "<a class='unpaywall-article-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
@@ -568,9 +592,15 @@ browzine.primo = (function() {
     return template;
   };
 
-  function unpaywallManuscriptPDFTemplate(directToPDFUrl) {
+  function unpaywallManuscriptPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallText  || "Download PDF (Accepted Manuscript via Unpaywall)";
+
+    if (articleRetractionUrl && showRetractionWatch()) {
+      directToPDFUrl = articleRetractionUrl;
+      pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+      articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "Retracted Article";
+    }
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
                       "<a class='unpaywall-manuscript-article-pdf-link' href='{directToPDFUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
@@ -668,11 +698,12 @@ browzine.primo = (function() {
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
+        var articleRetractionUrl = getArticleRetractionUrl(scope, data);
 
         var element = getElement(scope);
 
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
-          var template = directToPDFTemplate(directToPDFUrl);
+          var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
 
           (function poll() {
             var elementParent = getElementParent(element);
@@ -761,17 +792,18 @@ browzine.primo = (function() {
               var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(response);
               var unpaywallManuscriptArticlePDFUrl = getUnpaywallManuscriptArticlePDFUrl(response);
               var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
+              var articleRetractionUrl = getArticleRetractionUrl(scope, data);
 
               var template;
               var pdfAvailable = false;
 
               if (unpaywallArticlePDFUrl && browzine.articlePDFDownloadViaUnpaywallEnabled) {
-                template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+                template = unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl, articleRetractionUrl);
                 pdfAvailable = true;
               } else if (unpaywallArticleLinkUrl && browzine.articleLinkViaUnpaywallEnabled ) {
                 template = unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
               } else if (unpaywallManuscriptArticlePDFUrl && browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled) {
-                template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+                template = unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl, articleRetractionUrl);
                 pdfAvailable = true;
               } else if (unpaywallManuscriptArticleLinkUrl && browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled) {
                 template = unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
@@ -853,6 +885,7 @@ browzine.primo = (function() {
     isDefaultCoverImage: isDefaultCoverImage,
     getDirectToPDFUrl: getDirectToPDFUrl,
     getArticleLinkUrl: getArticleLinkUrl,
+    getArticleRetractionUrl: getArticleRetractionUrl,
     isUnknownVersion: isUnknownVersion,
     isTrustedRepository: isTrustedRepository,
     getUnpaywallArticlePDFUrl: getUnpaywallArticlePDFUrl,
