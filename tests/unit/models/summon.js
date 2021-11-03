@@ -1354,6 +1354,10 @@ describe("Summon Model >", function() {
       delete browzine.summonArticlePDFDownloadWording;
       delete browzine.articlePDFDownloadLinkText;
       delete browzine.summonArticlePDFDownloadLinkText;
+      delete browzine.articlePDFDownloadLinkText;
+
+      delete browzine.articleRetractionWatchTextWording;
+      delete browzine.articleRetractionWatchText;
     });
 
     afterEach(function() {
@@ -1361,6 +1365,9 @@ describe("Summon Model >", function() {
       delete browzine.summonArticlePDFDownloadWording;
       delete browzine.articlePDFDownloadLinkText;
       delete browzine.summonArticlePDFDownloadLinkText;
+
+      delete browzine.articleRetractionWatchTextWording;
+      delete browzine.articleRetractionWatchText;
     });
 
     it("should build a direct to pdf template for article search results", function() {
@@ -1457,6 +1464,73 @@ describe("Summon Model >", function() {
       var template = summon.directToPDFTemplate(directToPDFUrl);
 
       expect(template).toContain("Download PDF Now");
+    });
+
+
+    it("should build a retracted pdf template for article search results when retraction notice available and retraction watch enabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(data).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+      expect(articleRetractionUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Retracted Article <a class='browzine-direct-to-pdf-link' href='https://develop.libkey.io/libraries/1252/10.1155/2019/5730746' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>More Info</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='17' height='17'/></div>");
+
+      expect(template).toContain("Retracted Article");
+      expect(template).toContain("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+      expect(template).toContain("More");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articleRetractionWatchTextWording config property when retraction notice available and retraction watch enabled", function() {
+      browzine.articleRetractionWatchTextWording = "Retracted Article PDF";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(template).toContain("Retracted Article PDF");
+    });
+
+    it("should apply the articleRetractionWatchText config property when retraction notice available and retraction watch enabled", function() {
+      browzine.articleRetractionWatchText = "More Info";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(template).toContain("More Info");
     });
   });
 
