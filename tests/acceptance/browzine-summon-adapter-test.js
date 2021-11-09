@@ -240,6 +240,119 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("search results article with both browzine web link and retracted article link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1155/2019/5730746"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 284414450,
+              "type": "articles",
+              "title": "Operational Risk Assessment for International Transport Corridor: A Case Study of China-Pakistan Economic Corridor",
+              "date": "2019-03-04",
+              "authors": "Lei, Yang; Huang, Chengfeng; Wu, Yuan",
+              "inPress": false,
+              "doi": "10.1155/2019/5730746",
+              "ILLURL": "https://illiad.mines.edu/illiad//illiad.dll?Action=10&Form=30&&rft.genre=article&rft.aulast=Lei&rft.issn=1026-0226&rft.jtitle=Discrete%20Dynamics%20in%20Nature%20and%20Society&rft.atitle=Operational%20Risk%20Assessment%20for%20International%20Transport%20Corridor%3A%20A%20Case%20Study%20of%20China-Pakistan%20Economic%20Corridor&rft.volume=2019&rft.issue=&rft.spage=1&rft.epage=7&rft.date=2019-03-04&rfr_id=BrowZine",
+              "pmid": "",
+              "openAccess": true,
+              "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/284414450/full-text-file?utm_source=api_716",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/284414450/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "1",
+              "endPage": "7",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/36603/issues/205373599?showArticleInContext=doi:10.1155%2F2019%2F5730746&utm_source=api_716",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 36603
+                  }
+                }
+              },
+              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746"
+            },
+            "included": [
+              {
+                "id": 36603,
+                "type": "journals",
+                "title": "Discrete Dynamics in Nature and Society",
+                "issn": "10260226",
+                "sjrValue": 0.266,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1026-0226.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/36603?utm_source=api_716"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1155%2F2019%2F5730746/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should have an enhanced browse article in browzine option", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Complete Issue Browse Now");
+        expect(template.text().trim()).toContain("Retracted Article More Info");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/36603/issues/205373599?showArticleInContext=doi:10.1155%2F2019%2F5730746&utm_source=api_716");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/1026-0226.png");
+      });
+
+      it("should open a new window when a retracted article link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/36603/issues/205373599?showArticleInContext=doi:10.1155%2F2019%2F5730746&utm_source=api_716", "_blank");
+      });
+    });
+
     describe("search results article with a journal issn but no article doi >", function() {
       beforeEach(function() {
         summon = browzine.summon;

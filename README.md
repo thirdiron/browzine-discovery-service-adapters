@@ -103,6 +103,10 @@ var browzine = {
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
   articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (Accepted Manuscript via Unpaywall)",
+
+  articleRetractionWatchEnabled: true,
+  articleRetractionWatchTextWording: "Retracted Article",
+  articleRetractionWatchText: "More Info",
 };
 ```
 
@@ -244,6 +248,9 @@ window.browzine = {
 
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall)",
+
+  articleRetractionWatchEnabled: true,
+  articleRetractionWatchText: "Retracted Article",
 };
 ```
 

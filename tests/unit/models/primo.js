@@ -39,7 +39,8 @@ describe("Primo Model >", function() {
         "endPage": "h2575",
         "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
         "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file",
-        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408"
+        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408",
+        "retractionNoticeUrl": "https://develop.libkey.io/libraries/1252/10.1155/2019/5730746"
       },
       "included": [{
         "id": 18126,
@@ -1057,6 +1058,76 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model getArticleRetractionUrl method >", function() {
+    it("should not return a retraction url for journal search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleRetractionUrl(scope, data)).toBeNull();
+    });
+
+    it("should return a retraction url for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleRetractionUrl(scope, data)).toEqual("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+    });
+
+    it("should not return a retraction url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"]
+            }
+          }
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = primo.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(primo.getArticleRetractionUrl(scope, data)).toEqual(null);
+    });
+  });
+
   describe("primo model isTrustedRepository method >", function() {
     it("should expect non nih.gov and non europepmc.org repositories to be untrusted", function() {
       var response = {
@@ -1611,24 +1682,54 @@ describe("Primo Model >", function() {
       delete browzine.libKeyOneLinkView;
     });
 
-    it("should disable onelink when configuration property is undefined", function() {
+    it("should enable onelink when configuration property is undefined", function() {
       delete browzine.libKeyOneLinkView;
       expect(primo.showLibKeyOneLinkView()).toEqual(true);
     });
 
-    it("should disable onelink when configuration property is null", function() {
+    it("should enable onelink when configuration property is null", function() {
       browzine.libKeyOneLinkView = null;
       expect(primo.showLibKeyOneLinkView()).toEqual(true);
     });
 
-    it("should disable onelink when configuration property is true", function() {
+    it("should enable onelink when configuration property is true", function() {
       browzine.libKeyOneLinkView = true;
       expect(primo.showLibKeyOneLinkView()).toEqual(true);
     });
 
-    it("should not disable onelink when configuration property is false", function() {
+    it("should disable onelink when configuration property is false", function() {
       browzine.libKeyOneLinkView = false;
       expect(primo.showLibKeyOneLinkView()).toEqual(false);
+    });
+  });
+
+  describe("primo model showRetractionWatch method >", function() {
+    beforeEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+    });
+
+    it("should enable retraction watch when configuration property is undefined", function() {
+      delete browzine.articleRetractionWatchEnabled;
+      expect(primo.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should enable retraction watch when configuration property is null", function() {
+      browzine.articleRetractionWatchEnabled = null;
+      expect(primo.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should enable retraction watch when configuration property is true", function() {
+      browzine.articleRetractionWatchEnabled = true;
+      expect(primo.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should disable retraction watch when configuration property is false", function() {
+      browzine.articleRetractionWatchEnabled = false;
+      expect(primo.showRetractionWatch()).toEqual(false);
     });
   });
 
@@ -1734,11 +1835,15 @@ describe("Primo Model >", function() {
     beforeEach(function() {
       delete browzine.articlePDFDownloadLinkText;
       delete browzine.primoArticlePDFDownloadLinkText;
+
+      delete browzine.articleRetractionWatchText;
     });
 
     afterEach(function() {
       delete browzine.articlePDFDownloadLinkText;
       delete browzine.primoArticlePDFDownloadLinkText;
+
+      delete browzine.articleRetractionWatchText;
     });
 
     it("should build a direct to pdf template for article search results", function() {
@@ -1821,6 +1926,66 @@ describe("Primo Model >", function() {
       var template = primo.directToPDFTemplate(directToPDFUrl);
 
       expect(template).toContain("Download PDF Now");
+    });
+
+
+    it("should build a direct to pdf template for article search results when retraction notice available and retraction watch enabled", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var directToPDFUrl = primo.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = primo.getArticleRetractionUrl(scope, data);
+      var template = primo.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(data).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-direct-to-pdf-link' href='https://develop.libkey.io/libraries/1252/10.1155/2019/5730746' target='_blank' onclick='browzine.primo.transition(event, this)'><img alt='BrowZine PDF Icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 1.5px;' aria-hidden='true' width='15' height='16'/> <span class='browzine-web-link-text'>Retracted Article</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+
+      expect(template).toContain("Retracted Article");
+      expect(template).toContain("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+    });
+
+    it("should apply the articleRetractionWatchText config property when retraction notice available and retraction watch enabled", function() {
+      browzine.articleRetractionWatchText = "Retracted Article PDF";
+
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var directToPDFUrl = primo.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = primo.getArticleRetractionUrl(scope, data);
+      var template = primo.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(template).toContain("Retracted Article PDF");
     });
   });
 
