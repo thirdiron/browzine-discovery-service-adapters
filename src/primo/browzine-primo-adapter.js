@@ -161,8 +161,10 @@ browzine.primo = (function() {
   function getIncludedJournal(response) {
     var journal = null;
 
-    if (response.included) {
-      journal = Array.isArray(response.included) ? response.included[0] : response.included;
+    if (response.included && Array.isArray(response.included)) {
+      journal = response.included.filter(function(obj) {
+        return obj.type.toLowerCase() === "journals";
+      }).pop();
     }
 
     return journal;
@@ -173,7 +175,7 @@ browzine.primo = (function() {
 
     if (response.included && Array.isArray(response.included)) {
       library = response.included.filter(function(obj) {
-        return obj.type === "libraries";
+        return obj.type.toLowerCase() === "libraries";
       }).pop();
     }
 
