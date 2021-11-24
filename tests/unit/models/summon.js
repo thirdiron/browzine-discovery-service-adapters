@@ -42,6 +42,10 @@ describe("Summon Model >", function() {
         "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
         "browzineEnabled": true,
         "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+      }, {
+        "id": 1252,
+        "type": "libraries",
+        "discoveryServiceBehavior": "onelink"
       }]
     };
   });
@@ -515,6 +519,18 @@ describe("Summon Model >", function() {
     it("should return data for an article", function() {
       var data = summon.getData(articleResponse);
       expect(data).toBeDefined();
+    });
+  });
+
+  describe("summon model getIncludedJournal method >", function() {
+    it("should return a journal object", function() {
+      var journal = summon.getIncludedJournal(articleResponse);
+
+      expect(journal).toBeDefined();
+      expect(journal.type).toEqual("journals");
+      expect(journal.id).toEqual(18126);
+      expect(journal.title).toEqual("theBMJ");
+      expect(journal.issn).toEqual("09598138");
     });
   });
 

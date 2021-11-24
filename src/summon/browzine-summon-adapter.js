@@ -156,6 +156,18 @@ browzine.summon = (function() {
     return journal;
   };
 
+  function getIncludedLibrary(response) {
+    var library = null;
+
+    if (response.included && Array.isArray(response.included)) {
+      library = response.included.filter(function(o) {
+        return o.type === "libraries";
+      });
+    }
+
+    return library;
+  };
+
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
@@ -663,10 +675,10 @@ browzine.summon = (function() {
     request.onload = function() {
       if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var response = JSON.parse(request.response);
-        console.log("response", response);
 
         var data = getData(response);
         var journal = getIncludedJournal(response);
+        var library = getIncludedLibrary(response);
 
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
@@ -790,6 +802,7 @@ browzine.summon = (function() {
     getUnpaywallEndpoint: getUnpaywallEndpoint,
     getData: getData,
     getIncludedJournal: getIncludedJournal,
+    getIncludedLibrary: getIncludedLibrary,
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,

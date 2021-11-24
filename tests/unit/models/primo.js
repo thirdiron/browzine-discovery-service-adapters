@@ -918,6 +918,36 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model getData method >", function() {
+    it("should return data when the journal is browzineEnabled", function() {
+      var data = primo.getData(journalResponse);
+      expect(data).toBeDefined();
+    });
+
+    it("should not return data when the journal is not browzineEnabled", function() {
+      journalResponse.data[0].browzineEnabled = false;
+      var data = primo.getData(journalResponse);
+      expect(data).toEqual(undefined);
+    });
+
+    it("should return data for an article", function() {
+      var data = primo.getData(articleResponse);
+      expect(data).toBeDefined();
+    });
+  });
+
+  describe("primo model getIncludedJournal method >", function() {
+    it("should return a journal object", function() {
+      var journal = primo.getIncludedJournal(articleResponse);
+
+      expect(journal).toBeDefined();
+      expect(journal.type).toEqual("journals");
+      expect(journal.id).toEqual(18126);
+      expect(journal.title).toEqual("theBMJ");
+      expect(journal.issn).toEqual("09598138");
+    });
+  });
+
   describe("primo model getDirectToPDFUrl method >", function() {
     it("should not return a direct to pdf url for journal search results", function() {
       var scope = {
