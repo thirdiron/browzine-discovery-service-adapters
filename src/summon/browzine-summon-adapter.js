@@ -151,7 +151,7 @@ browzine.summon = (function() {
 
     if (response.included && Array.isArray(response.included)) {
       journal = response.included.filter(function(obj) {
-        return obj.type.toLowerCase() === "journals";
+        return obj.type && obj.type.toLowerCase() === "journals";
       }).pop();
     }
 
@@ -163,7 +163,7 @@ browzine.summon = (function() {
 
     if (response.included && Array.isArray(response.included)) {
       library = response.included.filter(function(obj) {
-        return obj.type.toLowerCase() === "libraries";
+        return obj.type && obj.type.toLowerCase() === "libraries";
       }).pop();
     }
 
