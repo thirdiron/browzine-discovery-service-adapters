@@ -107,7 +107,7 @@ browzine.summon = (function() {
 
     if (isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
-      endpoint = api + "/articles/doi/" + doi + "?include=journal";
+      endpoint = api + "/articles/doi/" + doi + "?include=journal,library";
     }
 
     if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
@@ -663,6 +663,7 @@ browzine.summon = (function() {
     request.onload = function() {
       if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var response = JSON.parse(request.response);
+        console.log("response", response);
 
         var data = getData(response);
         var journal = getIncludedJournal(response);
