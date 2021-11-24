@@ -534,6 +534,17 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getIncludedLibrary method >", function() {
+    it("should return a library object", function() {
+      var library = summon.getIncludedLibrary(articleResponse);
+
+      expect(library).toBeDefined();
+      expect(library.type).toEqual("libraries");
+      expect(library.id).toEqual(1252);
+      expect(library.discoveryServiceBehavior).toEqual("onelink");
+    });
+  });
+
   describe("summon model getDirectToPDFUrl method >", function() {
     it("should not return a direct to pdf url for journal search results", function() {
       var scope = {

@@ -160,9 +160,9 @@ browzine.summon = (function() {
     var library = null;
 
     if (response.included && Array.isArray(response.included)) {
-      library = response.included.filter(function(o) {
-        return o.type === "libraries";
-      });
+      library = response.included.filter(function(obj) {
+        return obj.type === "libraries";
+      }).pop();
     }
 
     return library;

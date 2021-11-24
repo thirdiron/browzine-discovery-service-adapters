@@ -51,6 +51,10 @@ describe("Primo Model >", function() {
         "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
         "browzineEnabled": true,
         "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+      }, {
+        "id": 1252,
+        "type": "libraries",
+        "discoveryServiceBehavior": "onelink"
       }]
     };
   });
@@ -945,6 +949,17 @@ describe("Primo Model >", function() {
       expect(journal.id).toEqual(18126);
       expect(journal.title).toEqual("theBMJ");
       expect(journal.issn).toEqual("09598138");
+    });
+  });
+
+  describe("primo model getIncludedLibrary method >", function() {
+    it("should return a library object", function() {
+      var library = primo.getIncludedLibrary(articleResponse);
+
+      expect(library).toBeDefined();
+      expect(library.type).toEqual("libraries");
+      expect(library.id).toEqual(1252);
+      expect(library.discoveryServiceBehavior).toEqual("onelink");
     });
   });
 

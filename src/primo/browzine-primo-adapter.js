@@ -168,6 +168,18 @@ browzine.primo = (function() {
     return journal;
   };
 
+  function getIncludedLibrary(response) {
+    var library = null;
+
+    if (response.included && Array.isArray(response.included)) {
+      library = response.included.filter(function(obj) {
+        return obj.type === "libraries";
+      }).pop();
+    }
+
+    return library;
+  };
+
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
@@ -709,6 +721,7 @@ browzine.primo = (function() {
 
         var data = getData(response);
         var journal = getIncludedJournal(response);
+        var library = getIncludedLibrary(response);
 
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(scope, data, journal);
@@ -897,6 +910,7 @@ browzine.primo = (function() {
     shouldEnhance: shouldEnhance,
     getData: getData,
     getIncludedJournal: getIncludedJournal,
+    getIncludedLibrary: getIncludedLibrary,
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
