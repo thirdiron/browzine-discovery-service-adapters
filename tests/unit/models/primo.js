@@ -1727,14 +1727,14 @@ describe("Primo Model >", function() {
       delete browzine.libKeyOneLinkView;
     });
 
-    it("should enable onelink when configuration property is undefined", function() {
+    it("should not enable onelink when configuration property is undefined", function() {
       delete browzine.libKeyOneLinkView;
-      expect(primo.showLibKeyOneLinkView()).toEqual(true);
+      expect(primo.showLibKeyOneLinkView()).toEqual(false);
     });
 
-    it("should enable onelink when configuration property is null", function() {
+    it("should not enable onelink when configuration property is null", function() {
       browzine.libKeyOneLinkView = null;
-      expect(primo.showLibKeyOneLinkView()).toEqual(true);
+      expect(primo.showLibKeyOneLinkView()).toEqual(false);
     });
 
     it("should enable onelink when configuration property is true", function() {
