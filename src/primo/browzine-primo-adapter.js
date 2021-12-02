@@ -452,11 +452,16 @@ browzine.primo = (function() {
   function showLibKeyOneLinkView(library) {
     var featureEnabled = false;
     var config = browzine.libKeyOneLinkView;
-
     var discoveryServiceBehavior = getDiscoveryServiceBehavior(library);
 
     if (config === true) {
       featureEnabled = true;
+    }
+
+    if (typeof config === "undefined" || config === null) {
+      if (discoveryServiceBehavior && discoveryServiceBehavior === "onelink") {
+        featureEnabled = true;
+      }
     }
 
     return featureEnabled;

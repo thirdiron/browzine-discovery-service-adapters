@@ -1738,14 +1738,28 @@ describe("Primo Model >", function() {
 
     it("should not enable onelink when configuration property is undefined", function() {
       delete browzine.libKeyOneLinkView;
+      delete articleResponse.included[1].discoveryServiceBehavior;
       var library = primo.getIncludedLibrary(articleResponse);
       expect(primo.showLibKeyOneLinkView(library)).toEqual(false);
     });
 
     it("should not enable onelink when configuration property is null", function() {
       browzine.libKeyOneLinkView = null;
+      delete articleResponse.included[1].discoveryServiceBehavior;
       var library = primo.getIncludedLibrary(articleResponse);
       expect(primo.showLibKeyOneLinkView(library)).toEqual(false);
+    });
+
+    it("should not enable onelink when configuration property is undefined unless discoveryServiceBehavior is onelink", function() {
+      delete browzine.libKeyOneLinkView;
+      var library = primo.getIncludedLibrary(articleResponse);
+      expect(primo.showLibKeyOneLinkView(library)).toEqual(true);
+    });
+
+    it("should not enable onelink when configuration property is null unless discoveryServiceBehavior is onelink", function() {
+      browzine.libKeyOneLinkView = null;
+      var library = primo.getIncludedLibrary(articleResponse);
+      expect(primo.showLibKeyOneLinkView(library)).toEqual(true);
     });
 
     it("should enable onelink when configuration property is true", function() {
