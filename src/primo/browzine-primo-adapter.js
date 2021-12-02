@@ -449,9 +449,11 @@ browzine.primo = (function() {
     return featureEnabled;
   };
 
-  function showLibKeyOneLinkView() {
+  function showLibKeyOneLinkView(library) {
     var featureEnabled = false;
     var config = browzine.libKeyOneLinkView;
+
+    var discoveryServiceBehavior = getDiscoveryServiceBehavior(library);
 
     if (config === true) {
       featureEnabled = true;
@@ -742,7 +744,6 @@ browzine.primo = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
-        var discoveryServiceBehavior = getDiscoveryServiceBehavior(library);
 
         var element = getElement(scope);
 
@@ -801,7 +802,7 @@ browzine.primo = (function() {
           })();
         }
 
-        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
+        if (showLibKeyOneLinkView(library) && (directToPDFUrl || articleLinkUrl)) {
           var elementParent = getElementParent(element);
           var contentLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
 
@@ -810,7 +811,7 @@ browzine.primo = (function() {
           }
         }
 
-        if (showLibKeyOneLinkView() && directToPDFUrl) {
+        if (showLibKeyOneLinkView(library) && directToPDFUrl) {
           var elementParent = getElementParent(element);
           var quickLinkElement = elementParent.querySelector("prm-quick-link");
 
@@ -831,6 +832,8 @@ browzine.primo = (function() {
           requestUnpaywall.onload = function() {
             if (requestUnpaywall.readyState == XMLHttpRequest.DONE && requestUnpaywall.status == 200) {
               var response = JSON.parse(requestUnpaywall.response);
+
+              var library = getIncludedLibrary(response);
 
               var unpaywallArticlePDFUrl = getUnpaywallArticlePDFUrl(response);
               var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(response);
@@ -868,7 +871,7 @@ browzine.primo = (function() {
                 })();
               }
 
-              if (showLibKeyOneLinkView() && template) {
+              if (showLibKeyOneLinkView(library) && template) {
                 var element = getElement(scope);
 
                 (function poll() {
@@ -883,7 +886,7 @@ browzine.primo = (function() {
                 })();
               }
 
-              if (showLibKeyOneLinkView() && template && pdfAvailable) {
+              if (showLibKeyOneLinkView(library) && template && pdfAvailable) {
                 var element = getElement(scope);
 
                 (function poll() {

@@ -437,9 +437,11 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
-  function showLibKeyOneLinkView() {
+  function showLibKeyOneLinkView(library) {
     var featureEnabled = false;
     var config = browzine.libKeyOneLinkView;
+
+    var discoveryServiceBehavior = getDiscoveryServiceBehavior(library);
 
     if (config === true) {
       featureEnabled = true;
@@ -699,7 +701,6 @@ browzine.summon = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
-        var discoveryServiceBehavior = getDiscoveryServiceBehavior(library);
 
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
@@ -725,7 +726,7 @@ browzine.summon = (function() {
           $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
         }
 
-        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
+        if (showLibKeyOneLinkView(library) && (directToPDFUrl || articleLinkUrl)) {
           var contentLinkElement = $(documentSummary).find(".availabilityContent");
 
           if (contentLinkElement) {
@@ -733,7 +734,7 @@ browzine.summon = (function() {
           }
         }
 
-        if (showLibKeyOneLinkView() && directToPDFUrl) {
+        if (showLibKeyOneLinkView(library) && directToPDFUrl) {
           var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
 
           if (quickLinkElement) {
@@ -753,6 +754,8 @@ browzine.summon = (function() {
           requestUnpaywall.onload = function() {
             if (requestUnpaywall.readyState == XMLHttpRequest.DONE && requestUnpaywall.status == 200) {
               var response = JSON.parse(requestUnpaywall.response);
+
+              var library = getIncludedLibrary(response);
 
               var unpaywallArticlePDFUrl = getUnpaywallArticlePDFUrl(response);
               var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(response);
@@ -779,7 +782,7 @@ browzine.summon = (function() {
                 $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
               }
 
-              if (showLibKeyOneLinkView() && template) {
+              if (showLibKeyOneLinkView(library) && template) {
                 var contentLinkElement = $(documentSummary).find(".availabilityContent");
 
                 if (contentLinkElement) {
@@ -787,7 +790,7 @@ browzine.summon = (function() {
                 }
               }
 
-              if (showLibKeyOneLinkView() && template && pdfAvailable) {
+              if (showLibKeyOneLinkView(library) && template && pdfAvailable) {
                 var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
 
                 if (quickLinkElement) {

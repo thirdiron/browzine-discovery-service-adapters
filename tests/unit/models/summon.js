@@ -1251,22 +1251,26 @@ describe("Summon Model >", function() {
 
     it("should not enable onelink when configuration property is undefined", function() {
       delete browzine.libKeyOneLinkView;
-      expect(summon.showLibKeyOneLinkView()).toEqual(false);
+      var library = summon.getIncludedLibrary(articleResponse);
+      expect(summon.showLibKeyOneLinkView(library)).toEqual(false);
     });
 
     it("should not enable onelink when configuration property is null", function() {
       browzine.libKeyOneLinkView = null;
-      expect(summon.showLibKeyOneLinkView()).toEqual(false);
+      var library = summon.getIncludedLibrary(articleResponse);
+      expect(summon.showLibKeyOneLinkView(library)).toEqual(false);
     });
 
     it("should enable onelink when configuration property is true", function() {
       browzine.libKeyOneLinkView = true;
-      expect(summon.showLibKeyOneLinkView()).toEqual(true);
+      var library = summon.getIncludedLibrary(articleResponse);
+      expect(summon.showLibKeyOneLinkView(library)).toEqual(true);
     });
 
     it("should disable onelink when configuration property is false", function() {
       browzine.libKeyOneLinkView = false;
-      expect(summon.showLibKeyOneLinkView()).toEqual(false);
+      var library = summon.getIncludedLibrary(articleResponse);
+      expect(summon.showLibKeyOneLinkView(library)).toEqual(false);
     });
   });
 
