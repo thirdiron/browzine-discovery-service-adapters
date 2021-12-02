@@ -182,6 +182,16 @@ browzine.primo = (function() {
     return library;
   };
 
+  function getDiscoveryServiceBehavior(library) {
+    var discoveryServiceBehavior;
+
+    if (library && library.discoveryServiceBehavior) {
+      discoveryServiceBehavior = library.discoveryServiceBehavior;
+    }
+
+    return discoveryServiceBehavior;
+  };
+
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
@@ -732,6 +742,7 @@ browzine.primo = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
+        var discoveryServiceBehavior = getDiscoveryServiceBehavior(library);
 
         var element = getElement(scope);
 
@@ -913,6 +924,7 @@ browzine.primo = (function() {
     getData: getData,
     getIncludedJournal: getIncludedJournal,
     getIncludedLibrary: getIncludedLibrary,
+    getDiscoveryServiceBehavior: getDiscoveryServiceBehavior,
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,

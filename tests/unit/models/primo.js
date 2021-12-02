@@ -963,6 +963,15 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model getDiscoveryServiceBehavior method >", function() {
+    it("should return the discoveryServiceBehavior property", function() {
+      var library = primo.getIncludedLibrary(articleResponse);
+      var discoveryServiceBehavior = primo.getDiscoveryServiceBehavior(library);
+
+      expect(discoveryServiceBehavior).toEqual("onelink");
+    });
+  });
+
   describe("primo model getDirectToPDFUrl method >", function() {
     it("should not return a direct to pdf url for journal search results", function() {
       var scope = {

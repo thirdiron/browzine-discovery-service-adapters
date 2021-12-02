@@ -545,6 +545,15 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getDiscoveryServiceBehavior method >", function() {
+    it("should return the discoveryServiceBehavior property", function() {
+      var library = summon.getIncludedLibrary(articleResponse);
+      var discoveryServiceBehavior = summon.getDiscoveryServiceBehavior(library);
+
+      expect(discoveryServiceBehavior).toEqual("onelink");
+    });
+  });
+
   describe("summon model getDirectToPDFUrl method >", function() {
     it("should not return a direct to pdf url for journal search results", function() {
       var scope = {

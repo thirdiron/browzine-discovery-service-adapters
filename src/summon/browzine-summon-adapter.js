@@ -170,6 +170,16 @@ browzine.summon = (function() {
     return library;
   };
 
+  function getDiscoveryServiceBehavior(library) {
+    var discoveryServiceBehavior;
+
+    if (library && library.discoveryServiceBehavior) {
+      discoveryServiceBehavior = library.discoveryServiceBehavior;
+    }
+
+    return discoveryServiceBehavior;
+  };
+
   function getBrowZineWebLink(data) {
     var browzineWebLink = null;
 
@@ -689,6 +699,7 @@ browzine.summon = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
+        var discoveryServiceBehavior = getDiscoveryServiceBehavior(library);
 
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
@@ -805,6 +816,7 @@ browzine.summon = (function() {
     getData: getData,
     getIncludedJournal: getIncludedJournal,
     getIncludedLibrary: getIncludedLibrary,
+    getDiscoveryServiceBehavior: getDiscoveryServiceBehavior,
     getBrowZineWebLink: getBrowZineWebLink,
     getCoverImageUrl: getCoverImageUrl,
     getBrowZineEnabled: getBrowZineEnabled,
