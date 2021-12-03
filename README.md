@@ -100,6 +100,8 @@ var browzine = {
   articleAcceptedManuscriptPDFViaUnpaywallWording: "Article PDF",
   articleAcceptedManuscriptPDFViaUnpaywallLinkText: "Download Now (Accepted Manuscript via Unpaywall)",
 
+  dec2021Update: true,
+
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
   articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (Accepted Manuscript via Unpaywall)",
