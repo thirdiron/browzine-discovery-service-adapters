@@ -2408,5 +2408,87 @@ describe("BrowZine Summon Adapter >", function() {
         });
       });
     });
+
+    describe("search results article extra links and both browzine web link and direct to pdf link and libKeyOneLinkView disabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+        browzine.libKeyOneLinkView = false;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><span class='contentType'>Journal Article </span><a class='availabilityLink' href='#'>Full Text Online </a></div></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1136/bmj.h2575"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }, {
+              "id": 1252,
+              "type": "libraries",
+              "discoveryServiceBehavior": "onelink"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+        delete browzine.libKeyOneLinkView;
+      });
+
+      it("should show the content link option", function() {
+        expect(documentSummary).toBeDefined();
+        expect(documentSummary.text().trim()).toContain("Article PDF Download Now");
+        expect(documentSummary.text().trim()).toContain("Journal Article Full Text Online");
+      });
+
+      it("should show the quick link option", function() {
+        expect(documentSummary).toBeDefined();
+        expect(documentSummary.text().trim()).toContain("Article PDF Download Now");
+
+        var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+        expect(quicklink.length).toEqual(1);
+      });
+    });
   });
 });
