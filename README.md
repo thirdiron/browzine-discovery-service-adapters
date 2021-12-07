@@ -61,6 +61,7 @@ e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" a
 
 Please note a valid institutional email address is required to use the Unpaywall feature in LibKey Discovery.
 
+
 ```
 var browzine = {
   libraryId: "XXX",
@@ -99,8 +100,6 @@ var browzine = {
   articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
   articleAcceptedManuscriptPDFViaUnpaywallWording: "Article PDF",
   articleAcceptedManuscriptPDFViaUnpaywallLinkText: "Download Now (Accepted Manuscript via Unpaywall)",
-
-  dec2021Update: true,
 
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
