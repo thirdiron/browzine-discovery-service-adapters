@@ -5,12 +5,10 @@ describe("BrowZine Summon Adapter with dec2021Update set to true (the non-defaul
 
   describe("search results journal >", function() {
     beforeEach(function() {
-      //console.log('browzine', browzine);
       browzine.dec2021Update = true;
     });
 
     afterEach(function() {
-      //console.log('browzine', browzine);
       delete browzine.dec2021Update;
     });
 
@@ -158,7 +156,6 @@ describe("BrowZine Summon Adapter with dec2021Update set to true (the non-defaul
     });
 
     afterEach(function() {
-      //console.log('browzine', browzine);
       delete browzine.dec2021Update;
     });
 
