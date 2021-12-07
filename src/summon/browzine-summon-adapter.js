@@ -491,7 +491,7 @@ browzine.summon = (function() {
                    "</div>";
     var newSummonUITemplate = "<div class='browzine availability documentSummaryAvailability availabilityContent'>" +
       "<span class='contentType'>{articlePDFDownloadWording}</span>" +
-      "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}&nbsp;{articlePDFDownloadLinkText}</a>" +
+      "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}{articlePDFDownloadLinkText}</a>" +
     "</div>";
     var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
@@ -586,7 +586,7 @@ browzine.summon = (function() {
     "</div>";
     var newSummonUITemplate = "<div class='browzine availability documentSummaryAvailability availabilityContent'>" +
       "<span class='contentType'>{articlePDFDownloadWording}</span>" +
-      "<a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}&nbsp;{articlePDFDownloadLinkText}</a>" +
+      "<a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}{articlePDFDownloadLinkText}</a>" +
     "</div>";
     var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
@@ -611,7 +611,7 @@ browzine.summon = (function() {
       "{articleLinkTextWording} <a class='unpaywall-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{oldSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
     "</div>";
     var newSummonUITemplate = "<div class='browzine availability documentSummaryAvailability availabilityContent'>" +
-      "<span class='contentType'>{articleLinkTextWording}</span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{newSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>{articleLinkText}</a>" +
+      "<span class='contentType'>{articleLinkTextWording}</span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{newSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
     "</div>";
     var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
@@ -646,7 +646,8 @@ browzine.summon = (function() {
       "{articlePDFDownloadWording} <a class='unpaywall-manuscript-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{oldSummonIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
     "</div>";
     var newSummonUITemplate = "<div class='browzine availability documentSummaryAvailability availabilityContent'>" +
-      "<span class='contentType'>{articlePDFDownloadWording}</span><a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}&nbsp;{articlePDFDownloadLinkText}</a>" +
+      "<span class='contentType'>{articlePDFDownloadWording}</span>" +
+      "<a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}{articlePDFDownloadLinkText}</a>" +
     "</div>";
     var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
