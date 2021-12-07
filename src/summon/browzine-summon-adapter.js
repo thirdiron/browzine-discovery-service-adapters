@@ -593,7 +593,6 @@ browzine.summon = (function() {
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
-    template = template.replace(/{pdfIcon}/g, pdfIcon);
     template = template.replace(/{oldSummonIcon}/g, oldSummonIcon);
     template = template.replace(/{newSummonIcon}/g, newSummonIcon);
     template = template.replace(/{pdfIconWidth}/g, pdfIconWidth);
