@@ -5,7 +5,13 @@ describe("BrowZine Summon Adapter with dec2021Update set to true (the non-defaul
 
   describe("search results journal >", function() {
     beforeEach(function() {
+      //console.log('browzine', browzine);
       browzine.dec2021Update = true;
+    });
+
+    afterEach(function() {
+      //console.log('browzine', browzine);
+      delete browzine.dec2021Update;
     });
 
     describe("search results journal with browzine web link >", function() {
@@ -149,6 +155,11 @@ describe("BrowZine Summon Adapter with dec2021Update set to true (the non-defaul
   describe("search results article >", function() {
     beforeEach(function() {
       browzine.dec2021Update = true;
+    });
+
+    afterEach(function() {
+      //console.log('browzine', browzine);
+      delete browzine.dec2021Update;
     });
 
     describe("search results article with both browzine web link and direct to pdf link >", function() {
