@@ -1,4 +1,6 @@
 describe("BrowZine Summon Adapter with dec2021Update set to true (the non-default behavior of the Discovery Service Adapter) >", function() {
+  //TODO BZ-6951 - when we no longer need to support Summon pre-Dec 2021, let's make this file the basic tests/acceptance/browzine-summon-adapter-test.js file
+
   var summon = {}, documentSummary = {};
 
   $("body").append("<div id='results'></div>");

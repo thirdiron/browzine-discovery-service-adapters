@@ -1,4 +1,5 @@
 describe("Summon Model with dec2021Update set to true (the non-default behavior of the Discovery Service Adapter) >", function() {
+  //TODO BZ-6951 - when we no longer need to support Summon pre-Dec 2021, let's make this file the basic unit/models/summon.js file
   var summon = {}, journalResponse = {}, articleResponse = {};
 
   beforeEach(function() {
