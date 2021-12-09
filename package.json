@@ -7,6 +7,7 @@
     "npm": "6.14.0"
   },
   "scripts": {
+    "lint": "eslint .",
     "server": "http-server --cors -p 8080",
     "test": "karma start",
     "tunnel": "ngrok http 8080",
