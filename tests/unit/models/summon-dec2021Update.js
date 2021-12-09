@@ -1215,14 +1215,14 @@ describe("Summon Model with dec2021Update set to true (the non-default behavior 
       delete browzine.libKeyOneLinkView;
     });
 
-    it("should enable onelink when configuration property is undefined", function() {
+    it("should not enable onelink when configuration property is undefined", function() {
       delete browzine.libKeyOneLinkView;
-      expect(summon.showLibKeyOneLinkView()).toEqual(true);
+      expect(summon.showLibKeyOneLinkView()).toEqual(false);
     });
 
-    it("should enable onelink when configuration property is null", function() {
+    it("should not enable onelink when configuration property is null", function() {
       browzine.libKeyOneLinkView = null;
-      expect(summon.showLibKeyOneLinkView()).toEqual(true);
+      expect(summon.showLibKeyOneLinkView()).toEqual(false);
     });
 
     it("should enable onelink when configuration property is true", function() {
