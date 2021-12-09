@@ -3,6 +3,9 @@ browzine.summon = (function() {
   var api = libraryIdOverride(urlRewrite(browzine.api));
   var apiKey = browzine.apiKey;
 
+  // TODO BZ-6960 - Uncomment this next line when we're ready for the new Summon Dec 2021 UI
+  // browzine.dec2021Update = true;
+
   function urlRewrite(url) {
     if (!url) {
       return;
