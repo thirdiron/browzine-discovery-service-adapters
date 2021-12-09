@@ -30,7 +30,8 @@ describe("Summon Model >", function() {
         "endPage": "h2575",
         "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
         "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file",
-        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408"
+        "contentLocation": "https://develop.browzine.com/libraries/XXX/articles/55134408",
+        "retractionNoticeUrl": "https://develop.libkey.io/libraries/1252/10.1155/2019/5730746"
       },
       "included": [{
         "id": 18126,
@@ -611,6 +612,53 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getArticleRetractionUrl method >", function() {
+    it("should not return an article retraction url for journal search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleRetractionUrl(scope, data)).toBeNull();
+    });
+
+    it("should return an article retraction url for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleRetractionUrl(scope, data)).toEqual("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+    });
+
+    it("should not return an article retraction url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article"
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = summon.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(summon.getArticleRetractionUrl(scope, data)).toEqual(null);
+    });
+  });
+
   describe("summon model isTrustedRepository method >", function() {
     it("should expect non nih.gov and non europepmc.org repositories to be untrusted", function() {
       var response = {
@@ -1156,6 +1204,66 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model showLibKeyOneLinkView method >", function() {
+    beforeEach(function() {
+      delete browzine.libKeyOneLinkView;
+    });
+
+    afterEach(function() {
+      delete browzine.libKeyOneLinkView;
+    });
+
+    it("should not enable onelink when configuration property is undefined", function() {
+      delete browzine.libKeyOneLinkView;
+      expect(summon.showLibKeyOneLinkView()).toEqual(false);
+    });
+
+    it("should not enable onelink when configuration property is null", function() {
+      browzine.libKeyOneLinkView = null;
+      expect(summon.showLibKeyOneLinkView()).toEqual(false);
+    });
+
+    it("should enable onelink when configuration property is true", function() {
+      browzine.libKeyOneLinkView = true;
+      expect(summon.showLibKeyOneLinkView()).toEqual(true);
+    });
+
+    it("should disable onelink when configuration property is false", function() {
+      browzine.libKeyOneLinkView = false;
+      expect(summon.showLibKeyOneLinkView()).toEqual(false);
+    });
+  });
+
+  describe("summon model showRetractionWatch method >", function() {
+    beforeEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+    });
+
+    it("should enable retraction watch when configuration property is undefined", function() {
+      delete browzine.articleRetractionWatchEnabled;
+      expect(summon.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should enable retraction watch when configuration property is null", function() {
+      browzine.articleRetractionWatchEnabled = null;
+      expect(summon.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should enable retraction watch when configuration property is true", function() {
+      browzine.articleRetractionWatchEnabled = true;
+      expect(summon.showRetractionWatch()).toEqual(true);
+    });
+
+    it("should disable retraction watch when configuration property is false", function() {
+      browzine.articleRetractionWatchEnabled = false;
+      expect(summon.showRetractionWatch()).toEqual(false);
+    });
+  });
+
   describe("summon model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;
@@ -1246,6 +1354,10 @@ describe("Summon Model >", function() {
       delete browzine.summonArticlePDFDownloadWording;
       delete browzine.articlePDFDownloadLinkText;
       delete browzine.summonArticlePDFDownloadLinkText;
+      delete browzine.articlePDFDownloadLinkText;
+
+      delete browzine.articleRetractionWatchTextWording;
+      delete browzine.articleRetractionWatchText;
     });
 
     afterEach(function() {
@@ -1253,6 +1365,9 @@ describe("Summon Model >", function() {
       delete browzine.summonArticlePDFDownloadWording;
       delete browzine.articlePDFDownloadLinkText;
       delete browzine.summonArticlePDFDownloadLinkText;
+
+      delete browzine.articleRetractionWatchTextWording;
+      delete browzine.articleRetractionWatchText;
     });
 
     it("should build a direct to pdf template for article search results", function() {
@@ -1349,6 +1464,73 @@ describe("Summon Model >", function() {
       var template = summon.directToPDFTemplate(directToPDFUrl);
 
       expect(template).toContain("Download PDF Now");
+    });
+
+
+    it("should build a retracted pdf template for article search results when retraction notice available and retraction watch enabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(data).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+      expect(articleRetractionUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine'>Retracted Article <a class='browzine-direct-to-pdf-link' href='https://develop.libkey.io/libraries/1252/10.1155/2019/5730746' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>More Info</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='17' height='17'/></div>");
+
+      expect(template).toContain("Retracted Article");
+      expect(template).toContain("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+      expect(template).toContain("More");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+
+      expect(template).toContain("text-decoration: underline;");
+      expect(template).toContain("color: #333;");
+    });
+
+    it("should apply the articleRetractionWatchTextWording config property when retraction notice available and retraction watch enabled", function() {
+      browzine.articleRetractionWatchTextWording = "Retracted Article PDF";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(template).toContain("Retracted Article PDF");
+    });
+
+    it("should apply the articleRetractionWatchText config property when retraction notice available and retraction watch enabled", function() {
+      browzine.articleRetractionWatchText = "More Info";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
+
+      expect(template).toContain("More Info");
     });
   });
 

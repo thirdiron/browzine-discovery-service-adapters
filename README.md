@@ -84,6 +84,8 @@ var browzine = {
   articleLinkTextWording: "Article Link",
   articleLinkText: "Read Article",
 
+  libKeyOneLinkView: true,
+
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 
   articlePDFDownloadViaUnpaywallEnabled: true,
@@ -101,6 +103,10 @@ var browzine = {
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
   articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (Accepted Manuscript via Unpaywall)",
+
+  articleRetractionWatchEnabled: true,
+  articleRetractionWatchTextWording: "Retracted Article",
+  articleRetractionWatchText: "More Info",
 };
 ```
 
@@ -227,6 +233,8 @@ window.browzine = {
 
   printRecordsIntegrationEnabled: true,
 
+  libKeyOneLinkView: true,
+
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 
   articlePDFDownloadViaUnpaywallEnabled: true,
@@ -240,6 +248,9 @@ window.browzine = {
 
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
   articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall)",
+
+  articleRetractionWatchEnabled: true,
+  articleRetractionWatchText: "Retracted Article",
 };
 ```
 
