@@ -474,9 +474,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
-    var showRetractedUI = articleRetractionUrl && showRetractionWatch();
-
-    if (showRetractedUI) {
+    if (articleRetractionUrl && showRetractionWatch()) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
@@ -551,9 +549,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
 
-    var showRetractedUI = articleRetractionUrl && showRetractionWatch();
-
-    if (showRetractedUI) {
+    if (articleRetractionUrl && showRetractionWatch()) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
@@ -600,9 +596,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
 
-    var showRetractedUI = articleRetractionUrl && showRetractionWatch();
-
-    if (showRetractedUI) {
+    if (articleRetractionUrl && showRetractionWatch()) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
