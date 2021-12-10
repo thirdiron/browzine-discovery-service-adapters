@@ -476,11 +476,18 @@ browzine.summon = (function() {
     var oldSummonIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var newSummonIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
-    // var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
-    // var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
+    var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
+    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
     var articlePDFDownloadWording = "View Now";
     var articlePDFDownloadLinkText = "PDF";
+
+    var useNewSummonUI = !!browzine.dec2021Update;
+
+    if (useNewSummonUI) {
+      articlePDFDownloadWording = "View Now";
+      articlePDFDownloadLinkText = "PDF";
+    }
 
     var showRetractedUI = articleRetractionUrl && showRetractionWatch();
 
@@ -493,14 +500,15 @@ browzine.summon = (function() {
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
-    var useNewSummonUI = !!browzine.dec2021Update;
     var oldSummonUITemplate = "<div class='browzine'>" +
                      "{articlePDFDownloadWording} <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{oldSummonIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
                    "</div>";
+
     var newSummonUITemplate = "<div class='browzine'>" +
       "<span class='contentType' style='{contentTypeStyling}'>{articlePDFDownloadWording} </span>" +
       "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
+
     var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
