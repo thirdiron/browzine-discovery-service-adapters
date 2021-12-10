@@ -1,6 +1,4 @@
 describe("BrowZine Summon Adapter >", function() {
-  //TODO BZ-6951 - when we no longer need to support Summon pre-Dec 2021, let's make this file the basic tests/acceptance/browzine-summon-adapter-test.js file
-
   var summon = {}, documentSummary = {};
 
   $("body").append("<div id='results'></div>");

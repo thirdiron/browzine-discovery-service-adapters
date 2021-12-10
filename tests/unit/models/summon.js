@@ -1,5 +1,4 @@
 describe("Summon Model >", function() {
-  //TODO BZ-6951 - when we no longer need to support Summon pre-Dec 2021, let's make this file the basic unit/models/summon.js file
   var summon = {}, journalResponse = {}, articleResponse = {};
 
   beforeEach(function() {
