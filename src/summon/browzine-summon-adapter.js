@@ -3,9 +3,6 @@ browzine.summon = (function() {
   var api = libraryIdOverride(urlRewrite(browzine.api));
   var apiKey = browzine.apiKey;
 
-  // TODO BZ-6960 - Uncomment this next line when we're ready for the new Summon Dec 2021 UI
-  // browzine.dec2021Update = true;
-
   function urlRewrite(url) {
     if (!url) {
       return;
@@ -262,8 +259,7 @@ browzine.summon = (function() {
   }
 
   function getRetractionWatchIconImgTag() {
-    return !!browzine.dec2021Update ? "<img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>"
-      : "<img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>";
+    return "<img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>";
   }
 
   function isTrustedRepository(response) {
@@ -472,65 +468,53 @@ browzine.summon = (function() {
     return false;
   };
 
+  function showRetractionWatchUI(articleRetractionUrl) {
+    return articleRetractionUrl && showRetractionWatch();
+  }
+
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl, contentTypeStyling) {
-    var oldSummonIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
-    var newSummonIcon = getPdfIconSvg();
+    var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
     var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
-    var showRetractedUI = articleRetractionUrl && showRetractionWatch();
-    if (showRetractedUI) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
-      oldSummonIcon = 'https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg';
-      newSummonIcon = getRetractionWatchIconImgTag();
+      pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
-    var useNewSummonUI = !!browzine.dec2021Update;
-    var oldSummonUITemplate = "<div class='browzine'>" +
-                     "{articlePDFDownloadWording} <a class='browzine-direct-to-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{oldSummonIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
-                   "</div>";
-    var newSummonUITemplate = "<div class='browzine'>" +
+    var template = "<div class='browzine'>" +
       "<span class='contentType' style='{contentTypeStyling}'>{articlePDFDownloadWording} </span>" +
-      "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}{articlePDFDownloadLinkText}</a>" +
+      "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
-    var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
-    template = template.replace(/{oldSummonIcon}/g, oldSummonIcon);
-    template = template.replace(/{newSummonIcon}/g, newSummonIcon);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
     template = template.replace(/{pdfIconWidth}/g, pdfIconWidth);
 
     return template;
   };
 
   function articleLinkTemplate(articleLinkUrl, contentTypeStyling) {
-    var oldSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
-    var newSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
+    var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
     var articleLinkTextWording = browzine.articleLinkTextWording || "Article Link";
     var articleLinkText = browzine.articleLinkText || "Read Article";
 
-    var useNewSummonUI = !!browzine.dec2021Update;
-    var oldSummonUITemplate = "<div class='browzine'>" +
-                     "{articleLinkTextWording} <a class='browzine-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{oldSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
-                   "</div>";
-    var newSummonUITemplate = "<div class='browzine'>" +
-      "<span class='contentType' style='{contentTypeStyling}'>{articleLinkTextWording} </span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{newSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
+    var template = "<div class='browzine'>" +
+      "<span class='contentType' style='{contentTypeStyling}'>{articleLinkTextWording} </span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
     "</div>";
-    var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
     template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
     template = template.replace(/{articleLinkText}/g, articleLinkText);
-    template = template.replace(/{oldSummonLinkIcon}/g, oldSummonLinkIcon);
-    template = template.replace(/{newSummonLinkIcon}/g, newSummonLinkIcon);
+    template = template.replace(/{paperIcon}/g, paperIcon);
 
     return template;
   };
@@ -538,8 +522,7 @@ browzine.summon = (function() {
   function browzineWebLinkTemplate(scope, browzineWebLink, contentTypeStyling) {
     var wording = "";
     var browzineWebLinkText = "";
-    var oldSummonBookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
-    var newSummonBookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg";
+    var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg";
 
     if (isJournal(scope)) {
       wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
@@ -551,147 +534,109 @@ browzine.summon = (function() {
       browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.summonArticleBrowZineWebLinkText || "Browse Now";
     }
 
-    var useNewSummonUI = !!browzine.dec2021Update;
-    var oldSummonUITemplate = "<div class='browzine'>" +
-                     "{wording} <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{browzineWebLinkText}</a> <img alt='BrowZine Book Icon' class='browzine-book-icon' src='{oldSummonBookIcon}' style='margin-bottom: 1px;' width='16' height='16'/>" +
-                   "</div>";
-    var newSummonUITemplate = "<div class='browzine'>" +
-      "<span class='contentType' style='{contentTypeStyling}'>{wording} </span><a class='browzine-web-link summonBtn customPrimaryLink' href='{browzineWebLink}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='{newSummonBookIcon}' style='margin-bottom: 1px;' width='16' height='16'/> {browzineWebLinkText}</a>" +
+    var template = "<div class='browzine'>" +
+      "<span class='contentType' style='{contentTypeStyling}'>{wording} </span><a class='browzine-web-link summonBtn customPrimaryLink' href='{browzineWebLink}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='{bookIcon}' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> {browzineWebLinkText}</a>" +
     "</div>";
-    var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
     template = template.replace(/{wording}/g, wording);
     template = template.replace(/{browzineWebLink}/g, browzineWebLink);
     template = template.replace(/{browzineWebLinkText}/g, browzineWebLinkText);
-    template = template.replace(/{oldSummonBookIcon}/g, oldSummonBookIcon);
-    template = template.replace(/{newSummonBookIcon}/g, newSummonBookIcon);
+    template = template.replace(/{bookIcon}/g, bookIcon);
 
     return template;
   };
 
   function unpaywallArticlePDFTemplate(directToPDFUrl, articleRetractionUrl, contentTypeStyling) {
-    var oldSummonIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
-    var newSummonIcon = getPdfIconSvg();
+    var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
     var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
 
-    var showRetractedUI = articleRetractionUrl && showRetractionWatch();
-    if (showRetractedUI) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
-      oldSummonIcon = 'https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg';
-      newSummonIcon = getRetractionWatchIconImgTag();
+      pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
-    var useNewSummonUI = !!browzine.dec2021Update;
-    var oldSummonUITemplate = "<div class='browzine'>" +
-      "{articlePDFDownloadWording} <a class='unpaywall-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{oldSummonIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
-    "</div>";
-    var newSummonUITemplate = "<div class='browzine'>" +
+    var template = "<div class='browzine'>" +
       "<span class='contentType' style='{contentTypeStyling}'>{articlePDFDownloadWording} </span>" +
-      "<a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}{articlePDFDownloadLinkText}</a>" +
+      "<a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
-    var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
-    template = template.replace(/{oldSummonIcon}/g, oldSummonIcon);
-    template = template.replace(/{newSummonIcon}/g, newSummonIcon);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
     template = template.replace(/{pdfIconWidth}/g, pdfIconWidth);
 
     return template;
   };
 
   function unpaywallArticleLinkTemplate(articleLinkUrl, contentTypeStyling) {
-    var oldSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
-    var newSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
+    var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
     var articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || "Article Link";
     var articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
 
-    var useNewSummonUI = !!browzine.dec2021Update;
-    var oldSummonUITemplate = "<div class='browzine'>" +
-      "{articleLinkTextWording} <a class='unpaywall-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{oldSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+    var template = "<div class='browzine'>" +
+      "<span class='contentType' style='{contentTypeStyling}'>{articleLinkTextWording} </span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
     "</div>";
-    var newSummonUITemplate = "<div class='browzine'>" +
-      "<span class='contentType' style='{contentTypeStyling}'>{articleLinkTextWording} </span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{newSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
-    "</div>";
-    var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
     template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
     template = template.replace(/{articleLinkText}/g, articleLinkText);
-    template = template.replace(/{oldSummonLinkIcon}/g, oldSummonLinkIcon);
-    template = template.replace(/{newSummonLinkIcon}/g, newSummonLinkIcon);
+    template = template.replace(/{paperIcon}/g, paperIcon);
 
     return template;
   };
 
   function unpaywallManuscriptPDFTemplate(directToPDFUrl, articleRetractionUrl, contentTypeStyling) {
-    var oldSummonIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
-    var newSummonIcon = getPdfIconSvg();
+    var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
     var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
 
-    var showRetractedUI = articleRetractionUrl && showRetractionWatch();
-    if (showRetractedUI) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
-      oldSummonIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
-      newSummonIcon = getRetractionWatchIconImgTag();
+      pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
-    var useNewSummonUI = !!browzine.dec2021Update;
-    var oldSummonUITemplate = "<div class='browzine'>" +
-      "{articlePDFDownloadWording} <a class='unpaywall-manuscript-article-pdf-link' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articlePDFDownloadLinkText}</a> <img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='{oldSummonIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>" +
-    "</div>";
-    var newSummonUITemplate = "<div class='browzine'>" +
+    var template = "<div class='browzine'>" +
       "<span class='contentType' style='{contentTypeStyling}'>{articlePDFDownloadWording} </span>" +
-      "<a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}{articlePDFDownloadLinkText}</a>" +
+      "<a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
-    var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
     template = template.replace(/{articlePDFDownloadWording}/g, articlePDFDownloadWording);
     template = template.replace(/{directToPDFUrl}/g, directToPDFUrl);
     template = template.replace(/{articlePDFDownloadLinkText}/g, articlePDFDownloadLinkText);
-    template = template.replace(/{oldSummonIcon}/g, oldSummonIcon);
-    template = template.replace(/{newSummonIcon}/g, newSummonIcon);
+    template = template.replace(/{pdfIcon}/g, pdfIcon);
     template = template.replace(/{pdfIconWidth}/g, pdfIconWidth);
 
     return template;
   };
 
   function unpaywallManuscriptLinkTemplate(articleLinkUrl, contentTypeStyling) {
-    var oldSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
-    var newSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
+    var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
     var articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "Article Link";
     var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (Accepted Manuscript via Unpaywall)";
 
-    var useNewSummonUI = !!browzine.dec2021Update;
-    var oldSummonUITemplate = "<div class='browzine'>" +
-      "{articleLinkTextWording} <a class='unpaywall-manuscript-article-link' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{articleLinkText}</a> <img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{oldSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/>" +
+    var template = "<div class='browzine'>" +
+      "<span class='contentType' style='{contentTypeStyling}'>{articleLinkTextWording} </span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
     "</div>";
-    var newSummonUITemplate = "<div class='browzine'>" +
-      "<span class='contentType' style='{contentTypeStyling}'>{articleLinkTextWording} </span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{newSummonLinkIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
-    "</div>";
-    var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
     template = template.replace(/{contentTypeStyling}/g, contentTypeStyling);
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
     template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
     template = template.replace(/{articleLinkText}/g, articleLinkText);
-    template = template.replace(/{oldSummonLinkIcon}/g, oldSummonLinkIcon);
-    template = template.replace(/{newSummonLinkIcon}/g, newSummonLinkIcon);
+    template = template.replace(/{paperIcon}/g, paperIcon);
 
 
     return template;

@@ -477,13 +477,17 @@ browzine.primo = (function() {
     return false;
   };
 
+  function showRetractionWatchUI(articleRetractionUrl) {
+    return articleRetractionUrl && showRetractionWatch();
+  }
+
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var pdfIconWidth = "12";
     var pdfIconMarginRight = "4.5px";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.primoArticlePDFDownloadLinkText  || "Download PDF";
 
-    if (articleRetractionUrl && showRetractionWatch()) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
@@ -560,7 +564,7 @@ browzine.primo = (function() {
     var pdfIconMarginRight = "4.5px";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallText  || "Download PDF (via Unpaywall)";
 
-    if (articleRetractionUrl && showRetractionWatch()) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
@@ -610,7 +614,7 @@ browzine.primo = (function() {
     var pdfIconMarginRight = "4.5px";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallText  || "Download PDF (Accepted Manuscript via Unpaywall)";
 
-    if (articleRetractionUrl && showRetractionWatch()) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
