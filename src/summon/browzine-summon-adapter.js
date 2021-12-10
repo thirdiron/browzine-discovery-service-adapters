@@ -468,13 +468,17 @@ browzine.summon = (function() {
     return false;
   };
 
+  function showRetractionWatchUI(articleRetractionUrl) {
+    return articleRetractionUrl && showRetractionWatch();
+  }
+
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl, contentTypeStyling) {
     var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
     var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
 
-    if (articleRetractionUrl && showRetractionWatch()) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
@@ -549,7 +553,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
 
-    if (articleRetractionUrl && showRetractionWatch()) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
@@ -596,7 +600,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
     var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
 
-    if (articleRetractionUrl && showRetractionWatch()) {
+    if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
