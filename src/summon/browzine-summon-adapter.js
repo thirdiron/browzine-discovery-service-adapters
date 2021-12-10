@@ -476,10 +476,14 @@ browzine.summon = (function() {
     var oldSummonIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
     var newSummonIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
-    var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
-    var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
+    // var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
+    // var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
+
+    var articlePDFDownloadWording = "View Now";
+    var articlePDFDownloadLinkText = "PDF";
 
     var showRetractedUI = articleRetractionUrl && showRetractionWatch();
+
     if (showRetractedUI) {
       directToPDFUrl = articleRetractionUrl;
       oldSummonIcon = 'https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg';
@@ -495,7 +499,7 @@ browzine.summon = (function() {
                    "</div>";
     var newSummonUITemplate = "<div class='browzine'>" +
       "<span class='contentType' style='{contentTypeStyling}'>{articlePDFDownloadWording} </span>" +
-      "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}{articlePDFDownloadLinkText}</a>" +
+      "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{newSummonIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
     var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
@@ -513,8 +517,11 @@ browzine.summon = (function() {
   function articleLinkTemplate(articleLinkUrl, contentTypeStyling) {
     var oldSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var newSummonLinkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
-    var articleLinkTextWording = browzine.articleLinkTextWording || "Article Link";
-    var articleLinkText = browzine.articleLinkText || "Read Article";
+    // var articleLinkTextWording = browzine.articleLinkTextWording || "Article Link";
+    // var articleLinkText = browzine.articleLinkText || "Read Article";
+
+    var articleLinkTextWording = "View in Context";
+    var articleLinkText = "Browse Journal";
 
     var useNewSummonUI = !!browzine.dec2021Update;
     var oldSummonUITemplate = "<div class='browzine'>" +
@@ -556,7 +563,7 @@ browzine.summon = (function() {
                      "{wording} <a class='browzine-web-link' href='{browzineWebLink}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{browzineWebLinkText}</a> <img alt='BrowZine Book Icon' class='browzine-book-icon' src='{oldSummonBookIcon}' style='margin-bottom: 1px;' width='16' height='16'/>" +
                    "</div>";
     var newSummonUITemplate = "<div class='browzine'>" +
-      "<span class='contentType' style='{contentTypeStyling}'>{wording} </span><a class='browzine-web-link summonBtn customPrimaryLink' href='{browzineWebLink}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='{newSummonBookIcon}' style='margin-bottom: 1px;' width='16' height='16'/> {browzineWebLinkText}</a>" +
+      "<span class='contentType' style='{contentTypeStyling}'>{wording} </span><a class='browzine-web-link summonBtn customPrimaryLink' href='{browzineWebLink}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='{newSummonBookIcon}' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> {browzineWebLinkText}</a>" +
     "</div>";
     var template = useNewSummonUI ? newSummonUITemplate : oldSummonUITemplate;
 
