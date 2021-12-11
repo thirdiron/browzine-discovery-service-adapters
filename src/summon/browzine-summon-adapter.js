@@ -489,6 +489,11 @@ browzine.summon = (function() {
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
+    if (version >= 2) {
+      articlePDFDownloadWording = browzine.articlePDFDownloadWording || "View Now";
+      articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "PDF";
+    }
+
     var template = "<div class='browzine'>" +
       "<span class='contentType'>{articlePDFDownloadWording} </span>" +
       "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
@@ -509,6 +514,11 @@ browzine.summon = (function() {
     // var articleLinkText = browzine.articleLinkText || "Read Article";
     var articleLinkTextWording = "View Now";
     var articleLinkText = "Article Page";
+
+    if (version >= 2) {
+      articleLinkTextWording = browzine.articleLinkTextWording || "View Now";
+      articleLinkText = browzine.articleLinkText || "Article Page";
+    }
 
     var template = "<div class='browzine'>" +
       "<span class='contentType'>{articleLinkTextWording} </span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
@@ -532,6 +542,11 @@ browzine.summon = (function() {
       // browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.summonJournalBrowZineWebLinkText || "Browse Now";
       wording = "View the Journal";
       browzineWebLinkText = "Browse Now";
+
+      if (version >= 2) {
+        wording = browzine.journalWording || "View the Journal";
+        browzineWebLinkText = browzine.journalBrowZineWebLinkText || "Browse Now";
+      }
     }
 
     if (isArticle(scope)) {
@@ -539,6 +554,11 @@ browzine.summon = (function() {
       // browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.summonArticleBrowZineWebLinkText || "Browse Now";
       wording = "View in Context";
       browzineWebLinkText = "Browse Journal";
+
+      if (version >= 2) {
+        wording = browzine.articleWording || "View in Context";
+        browzineWebLinkText = browzine.articleBrowZineWebLinkText || "Browse Journal";
+      }
     }
 
     var template = "<div class='browzine'>" +
@@ -569,6 +589,11 @@ browzine.summon = (function() {
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
+    if (version >= 2) {
+      articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "View Now (via Unpaywall)";
+      articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "PDF";
+    }
+
     var template = "<div class='browzine'>" +
       "<span class='contentType'>{articlePDFDownloadWording} </span>" +
       "<a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
@@ -589,6 +614,11 @@ browzine.summon = (function() {
     // var articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
+
+    if (version >= 2) {
+      articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || "View Now (via Unpaywall)";
+      articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Article Page";
+    }
 
     var template = "<div class='browzine'>" +
       "<span class='contentType'>{articleLinkTextWording} </span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
@@ -618,6 +648,11 @@ browzine.summon = (function() {
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
     }
 
+    if (version >= 2) {
+      articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "View Now (Accepted Manuscript via Unpaywall)";
+      articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "PDF";
+    }
+
     var template = "<div class='browzine'>" +
       "<span class='contentType'>{articlePDFDownloadWording} </span>" +
       "<a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
@@ -638,6 +673,11 @@ browzine.summon = (function() {
     // var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (Accepted Manuscript via Unpaywall)";
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
+
+    if (version >= 2) {
+      articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "View Now (via Unpaywall)";
+      articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Article Page";
+    }
 
     var template = "<div class='browzine'>" +
       "<span class='contentType'>{articleLinkTextWording} </span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
