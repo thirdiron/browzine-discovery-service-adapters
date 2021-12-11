@@ -532,7 +532,7 @@ browzine.summon = (function() {
       // wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
       // browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.summonJournalBrowZineWebLinkText || "Browse Now";
       wording = "View the Journal";
-      browzineWebLinkText = "Browse Journal";
+      browzineWebLinkText = "Browse Now";
     }
 
     if (isArticle(scope)) {
@@ -560,7 +560,7 @@ browzine.summon = (function() {
     var pdfIconWidth = "13";
     // var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
     // var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
-    var articlePDFDownloadWording = "View Now";
+    var articlePDFDownloadWording = "View Now (via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
     if (showRetractionWatchUI(articleRetractionUrl)) {
@@ -590,7 +590,7 @@ browzine.summon = (function() {
     var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
     // var articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || "Article Link";
     // var articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
-    var articleLinkTextWording = "View Now";
+    var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
     var template = "<div class='browzine'>" +
@@ -611,7 +611,7 @@ browzine.summon = (function() {
     var pdfIconWidth = "13";
     // var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
     // var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
-    var articlePDFDownloadWording = "View Now";
+    var articlePDFDownloadWording = "View Now (Accepted Manuscript via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
     if (showRetractionWatchUI(articleRetractionUrl)) {
@@ -641,7 +641,7 @@ browzine.summon = (function() {
     var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
     // var articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "Article Link";
     // var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (Accepted Manuscript via Unpaywall)";
-    var articleLinkTextWording = "View Now";
+    var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
     var template = "<div class='browzine'>" +
