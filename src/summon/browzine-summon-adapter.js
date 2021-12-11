@@ -481,17 +481,17 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now";
     var articlePDFDownloadLinkText = "PDF";
 
+    if (version >= 2) {
+      articlePDFDownloadWording = browzine.articlePDFDownloadWording || articlePDFDownloadWording;
+      articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || articlePDFDownloadLinkText;
+    }
+
     if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
-    }
-
-    if (version >= 2) {
-      articlePDFDownloadWording = browzine.articlePDFDownloadWording || "View Now";
-      articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || "PDF";
     }
 
     var template = "<div class='browzine'>" +
@@ -516,8 +516,8 @@ browzine.summon = (function() {
     var articleLinkText = "Article Page";
 
     if (version >= 2) {
-      articleLinkTextWording = browzine.articleLinkTextWording || "View Now";
-      articleLinkText = browzine.articleLinkText || "Article Page";
+      articleLinkTextWording = browzine.articleLinkTextWording || articleLinkTextWording;
+      articleLinkText = browzine.articleLinkText || articleLinkText;
     }
 
     var template = "<div class='browzine'>" +
@@ -544,8 +544,8 @@ browzine.summon = (function() {
       browzineWebLinkText = "Browse Now";
 
       if (version >= 2) {
-        wording = browzine.journalWording || "View the Journal";
-        browzineWebLinkText = browzine.journalBrowZineWebLinkText || "Browse Now";
+        wording = browzine.journalWording || wording;
+        browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzineWebLinkText;
       }
     }
 
@@ -556,8 +556,8 @@ browzine.summon = (function() {
       browzineWebLinkText = "Browse Journal";
 
       if (version >= 2) {
-        wording = browzine.articleWording || "View in Context";
-        browzineWebLinkText = browzine.articleBrowZineWebLinkText || "Browse Journal";
+        wording = browzine.articleWording || wording;
+        browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzineWebLinkText;
       }
     }
 
@@ -581,17 +581,17 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now (via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
+    if (version >= 2) {
+      articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || articlePDFDownloadWording;
+      articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || articlePDFDownloadLinkText;
+    }
+
     if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
-    }
-
-    if (version >= 2) {
-      articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "View Now (via Unpaywall)";
-      articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "PDF";
     }
 
     var template = "<div class='browzine'>" +
@@ -616,8 +616,8 @@ browzine.summon = (function() {
     var articleLinkText = "Article Page";
 
     if (version >= 2) {
-      articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || "View Now (via Unpaywall)";
-      articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Article Page";
+      articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || articleLinkTextWording;
+      articleLinkText = browzine.articleLinkViaUnpaywallLinkText || articleLinkText;
     }
 
     var template = "<div class='browzine'>" +
@@ -640,17 +640,17 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now (Accepted Manuscript via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
+    if (version >= 2) {
+      articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || articlePDFDownloadWording;
+      articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || articlePDFDownloadLinkText;
+    }
+
     if (showRetractionWatchUI(articleRetractionUrl)) {
       directToPDFUrl = articleRetractionUrl;
       pdfIcon = getRetractionWatchIconImgTag();
       pdfIconWidth = "17";
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
-    }
-
-    if (version >= 2) {
-      articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "View Now (Accepted Manuscript via Unpaywall)";
-      articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "PDF";
     }
 
     var template = "<div class='browzine'>" +
@@ -675,8 +675,8 @@ browzine.summon = (function() {
     var articleLinkText = "Article Page";
 
     if (version >= 2) {
-      articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "View Now (via Unpaywall)";
-      articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Article Page";
+      articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || articleLinkTextWording;
+      articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || articleLinkText;
     }
 
     var template = "<div class='browzine'>" +
