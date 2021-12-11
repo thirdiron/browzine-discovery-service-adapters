@@ -2,7 +2,6 @@ browzine.summon = (function() {
   var libraryId = browzine.libraryId;
   var api = libraryIdOverride(urlRewrite(browzine.api));
   var apiKey = browzine.apiKey;
-  var version = browzine.version;
 
   function urlRewrite(url) {
     if (!url) {
@@ -260,7 +259,7 @@ browzine.summon = (function() {
   }
 
   function getRetractionWatchIconImgTag() {
-    return "<img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/>";
+    return "<img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='{pdfIconWidth}' height='17'/> ";
   }
 
   function isTrustedRepository(response) {
@@ -481,7 +480,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now";
     var articlePDFDownloadLinkText = "PDF";
 
-    if (version >= 2) {
+    if (browzine.version >= 2) {
       articlePDFDownloadWording = browzine.articlePDFDownloadWording || articlePDFDownloadWording;
       articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || articlePDFDownloadLinkText;
     }
@@ -495,7 +494,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType'>{articlePDFDownloadWording} </span>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articlePDFDownloadWording}</span>" +
       "<a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
 
@@ -515,13 +514,13 @@ browzine.summon = (function() {
     var articleLinkTextWording = "View Now";
     var articleLinkText = "Article Page";
 
-    if (version >= 2) {
+    if (browzine.version >= 2) {
       articleLinkTextWording = browzine.articleLinkTextWording || articleLinkTextWording;
       articleLinkText = browzine.articleLinkText || articleLinkText;
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType'>{articleLinkTextWording} </span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
@@ -543,7 +542,7 @@ browzine.summon = (function() {
       wording = "View the Journal";
       browzineWebLinkText = "Browse Now";
 
-      if (version >= 2) {
+      if (browzine.version >= 2) {
         wording = browzine.journalWording || wording;
         browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzineWebLinkText;
       }
@@ -555,14 +554,14 @@ browzine.summon = (function() {
       wording = "View in Context";
       browzineWebLinkText = "Browse Journal";
 
-      if (version >= 2) {
+      if (browzine.version >= 2) {
         wording = browzine.articleWording || wording;
         browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzineWebLinkText;
       }
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType'>{wording} </span><a class='browzine-web-link summonBtn customPrimaryLink' href='{browzineWebLink}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='{bookIcon}' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> {browzineWebLinkText}</a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{wording}</span><a class='browzine-web-link summonBtn customPrimaryLink' href='{browzineWebLink}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='{bookIcon}' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> {browzineWebLinkText}</a>" +
     "</div>";
 
     template = template.replace(/{wording}/g, wording);
@@ -581,7 +580,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now (via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
-    if (version >= 2) {
+    if (browzine.version >= 2) {
       articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || articlePDFDownloadWording;
       articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || articlePDFDownloadLinkText;
     }
@@ -595,7 +594,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType'>{articlePDFDownloadWording} </span>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articlePDFDownloadWording}</span>" +
       "<a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
 
@@ -615,13 +614,13 @@ browzine.summon = (function() {
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
-    if (version >= 2) {
+    if (browzine.version >= 2) {
       articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || articleLinkTextWording;
       articleLinkText = browzine.articleLinkViaUnpaywallLinkText || articleLinkText;
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType'>{articleLinkTextWording} </span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
@@ -640,7 +639,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now (Accepted Manuscript via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
-    if (version >= 2) {
+    if (browzine.version >= 2) {
       articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || articlePDFDownloadWording;
       articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || articlePDFDownloadLinkText;
     }
@@ -654,7 +653,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType'>{articlePDFDownloadWording} </span>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articlePDFDownloadWording}</span>" +
       "<a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='{directToPDFUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{pdfIcon}<span style='margin-left: 3px;'>{articlePDFDownloadLinkText}</span></a>" +
     "</div>";
 
@@ -674,13 +673,13 @@ browzine.summon = (function() {
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
-    if (version >= 2) {
+    if (browzine.version >= 2) {
       articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || articleLinkTextWording;
       articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || articleLinkText;
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType'>{articleLinkTextWording} </span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);

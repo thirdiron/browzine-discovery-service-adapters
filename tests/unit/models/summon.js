@@ -1354,6 +1354,7 @@ describe("Summon Model >", function() {
 
       delete browzine.articleRetractionWatchTextWording;
       delete browzine.articleRetractionWatchText;
+      delete browzine.version;
     });
 
     afterEach(function() {
@@ -1364,6 +1365,7 @@ describe("Summon Model >", function() {
 
       delete browzine.articleRetractionWatchTextWording;
       delete browzine.articleRetractionWatchText;
+      delete browzine.version;
     });
 
     it("should build a direct to pdf template for article search results", function() {
@@ -1391,6 +1393,7 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articlePDFDownloadWording config property", function() {
+      browzine.version = 2;
       browzine.articlePDFDownloadWording = "Journal Article PDF";
 
       var scope = {
@@ -1404,27 +1407,14 @@ describe("Summon Model >", function() {
       var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
       var template = summon.directToPDFTemplate(directToPDFUrl);
 
-      expect(template).toContain("Journal Article PDF");
-    });
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
 
-    it("should apply the summonArticlePDFDownloadWording config property", function() {
-      browzine.summonArticlePDFDownloadWording = "Journal Article PDF 2";
-
-      var scope = {
-        document: {
-          content_type: "Journal Article",
-          dois: ["10.1136/bmj.h2575"]
-        }
-      };
-
-      var data = summon.getData(articleResponse);
-      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
-      var template = summon.directToPDFTemplate(directToPDFUrl);
-
-      expect(template).toContain("Journal Article PDF 2");
+      expect($template.innerText).toContain("Journal Article PDF");
     });
 
     it("should apply the articlePDFDownloadLinkText config property", function() {
+      browzine.version = 2;
       browzine.articlePDFDownloadLinkText = "Download PDF";
 
       var scope = {
@@ -1438,26 +1428,11 @@ describe("Summon Model >", function() {
       var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
       var template = summon.directToPDFTemplate(directToPDFUrl);
 
-      expect(template).toContain("Download PDF");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Download PDF");
     });
-
-    it("should apply the summonArticlePDFDownloadLinkText config property", function() {
-      browzine.summonArticlePDFDownloadLinkText = "Download PDF Now";
-
-      var scope = {
-        document: {
-          content_type: "Journal Article",
-          dois: ["10.1136/bmj.h2575"]
-        }
-      };
-
-      var data = summon.getData(articleResponse);
-      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
-      var template = summon.directToPDFTemplate(directToPDFUrl);
-
-      expect(template).toContain("Download PDF Now");
-    });
-
 
     it("should build a retracted pdf template for article search results when retraction notice available and retraction watch enabled", function() {
       var scope = {
