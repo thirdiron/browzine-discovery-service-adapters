@@ -2,6 +2,7 @@ browzine.primo = (function() {
   var libraryId = browzine.libraryId;
   var api = libraryIdOverride(urlRewrite(browzine.api));
   var apiKey = browzine.apiKey;
+  var version = browzine.version;
 
   function urlRewrite(url) {
     if (!url) {
@@ -479,7 +480,7 @@ browzine.primo = (function() {
 
   function showRetractionWatchUI(articleRetractionUrl) {
     return articleRetractionUrl && showRetractionWatch();
-  }
+  };
 
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";

@@ -2,6 +2,7 @@ browzine.summon = (function() {
   var libraryId = browzine.libraryId;
   var api = libraryIdOverride(urlRewrite(browzine.api));
   var apiKey = browzine.apiKey;
+  var version = browzine.version;
 
   function urlRewrite(url) {
     if (!url) {
@@ -470,7 +471,7 @@ browzine.summon = (function() {
 
   function showRetractionWatchUI(articleRetractionUrl) {
     return articleRetractionUrl && showRetractionWatch();
-  }
+  };
 
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl, contentTypeStyling) {
     var pdfIcon = getPdfIconSvg();
