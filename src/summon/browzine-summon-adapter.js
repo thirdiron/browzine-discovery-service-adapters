@@ -475,8 +475,7 @@ browzine.summon = (function() {
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
-    // var articlePDFDownloadWording = browzine.articlePDFDownloadWording || browzine.summonArticlePDFDownloadWording || "Article PDF";
-    // var articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || browzine.summonArticlePDFDownloadLinkText || "Download Now";
+
     var articlePDFDownloadWording = "View Now";
     var articlePDFDownloadLinkText = "PDF";
 
@@ -509,8 +508,7 @@ browzine.summon = (function() {
 
   function articleLinkTemplate(articleLinkUrl) {
     var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
-    // var articleLinkTextWording = browzine.articleLinkTextWording || "Article Link";
-    // var articleLinkText = browzine.articleLinkText || "Read Article";
+
     var articleLinkTextWording = "View Now";
     var articleLinkText = "Article Page";
 
@@ -537,8 +535,6 @@ browzine.summon = (function() {
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg";
 
     if (isJournal(scope)) {
-      // wording = browzine.journalWording || browzine.summonJournalWording || "View the Journal";
-      // browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzine.summonJournalBrowZineWebLinkText || "Browse Now";
       wording = "View the Journal";
       browzineWebLinkText = "Browse Now";
 
@@ -549,8 +545,6 @@ browzine.summon = (function() {
     }
 
     if (isArticle(scope)) {
-      // wording = browzine.articleWording || browzine.summonArticleWording || "View Complete Issue";
-      // browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzine.summonArticleBrowZineWebLinkText || "Browse Now";
       wording = "View in Context";
       browzineWebLinkText = "Browse Journal";
 
@@ -575,8 +569,7 @@ browzine.summon = (function() {
   function unpaywallArticlePDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
-    // var articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || "Article PDF";
-    // var articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || "Download Now (via Unpaywall)";
+
     var articlePDFDownloadWording = "View Now (via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
@@ -609,8 +602,7 @@ browzine.summon = (function() {
 
   function unpaywallArticleLinkTemplate(articleLinkUrl) {
     var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
-    // var articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || "Article Link";
-    // var articleLinkText = browzine.articleLinkViaUnpaywallLinkText || "Read Article (via Unpaywall)";
+
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
@@ -634,8 +626,7 @@ browzine.summon = (function() {
   function unpaywallManuscriptPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
-    // var articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || "Article PDF";
-    // var articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || "Download Now (Accepted Manuscript via Unpaywall)";
+
     var articlePDFDownloadWording = "View Now (Accepted Manuscript via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
@@ -668,8 +659,7 @@ browzine.summon = (function() {
 
   function unpaywallManuscriptLinkTemplate(articleLinkUrl) {
     var paperIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg";
-    // var articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || "Article Link";
-    // var articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || "Read Article (Accepted Manuscript via Unpaywall)";
+
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
