@@ -1385,11 +1385,13 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>View Now </span><a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' onclick='browzine.summon.transition(event, this)'><svg name="pdf" alt="PDF icon" class="browzine-pdf-icon" viewBox="0 0 16 16" style=""><path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"></path> <path fill="#639add" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"></path></svg><span style='margin-left: 3px;'>PDF</span></a></div>`)
-      expect(template).toContain("View Now");
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View Now</span><a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file' target='_blank' onclick='browzine.summon.transition(event, this)'><svg name="pdf" alt="PDF icon" class="browzine-pdf-icon" viewBox="0 0 16 16" style=""><path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"></path> <path fill="#639add" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"></path></svg><span style='margin-left: 3px;'>PDF</span></a></div>`);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now PDF");
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file");
-      expect(template).toContain("PDF");
-      expect(template).toContain('<svg name="pdf"');
     });
 
     it("should apply the articlePDFDownloadWording config property", function() {
@@ -1453,7 +1455,7 @@ describe("Summon Model >", function() {
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>Retracted Article </span><a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='https://develop.libkey.io/libraries/1252/10.1155/2019/5730746' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='17' height='17'/><span style='margin-left: 3px;'>More Info</span></a></div>`);
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>Retracted Article</span><a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='https://develop.libkey.io/libraries/1252/10.1155/2019/5730746' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine PDF Icon' class='browzine-pdf-icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='17' height='17'/> <span style='margin-left: 3px;'>More Info</span></a></div>`);
 
       expect(template).toContain("Retracted Article");
       expect(template).toContain("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
@@ -1503,12 +1505,14 @@ describe("Summon Model >", function() {
       delete browzine.articleLinkEnabled;
       delete browzine.articleLinkTextWording;
       delete browzine.articleLinkText;
+      delete browzine.version;
     });
 
     afterEach(function() {
       delete browzine.articleLinkEnabled;
       delete browzine.articleLinkTextWording;
       delete browzine.articleLinkText;
+      delete browzine.version;
     });
 
     it("should build an article link template for article search results", function() {
@@ -1523,19 +1527,24 @@ describe("Summon Model >", function() {
       var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
       var template = summon.articleLinkTemplate(articleLinkUrl);
 
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
       expect(data).toBeDefined();
       expect(articleLinkUrl).toBeDefined();
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>Article Link </span><a class='browzine-article-link summonBtn customPrimaryLink' href='https://develop.browzine.com/libraries/XXX/articles/55134408' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> Read Article</a></div>`);
-      expect(template).toContain("Article Link");
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View Now</span><a class='browzine-article-link summonBtn customPrimaryLink' href='https://develop.browzine.com/libraries/XXX/articles/55134408' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> Article Page</a></div>`);
+
       expect(template).toContain("https://develop.browzine.com/libraries/XXX/articles/55134408");
-      expect(template).toContain("Read Article");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg");
+
+      expect($template.innerText).toContain("View Now Article Page");
     });
 
     it("should apply the articleLinkTextWording config property", function() {
+      browzine.version = 2;
       browzine.articleLinkTextWording = "Article Link";
 
       var scope = {
@@ -1549,10 +1558,14 @@ describe("Summon Model >", function() {
       var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
       var template = summon.articleLinkTemplate(articleLinkUrl);
 
-      expect(template).toContain("Article Link");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Article Link");
     });
 
     it("should apply the articleLinkText config property", function() {
+      browzine.version = 2;
       browzine.articleLinkText = "Read Article";
 
       var scope = {
@@ -1566,7 +1579,10 @@ describe("Summon Model >", function() {
       var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
       var template = summon.articleLinkTemplate(articleLinkUrl);
 
-      expect(template).toContain("Read Article");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now Read Article");
     });
   });
 
@@ -1587,7 +1603,7 @@ describe("Summon Model >", function() {
       expect(browzineWebLink).toBeDefined();
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>View the Journal </span><a class='browzine-web-link summonBtn customPrimaryLink' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> Browse Now</a></div>`);
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View the Journal</span><a class='browzine-web-link summonBtn customPrimaryLink' href='https://browzine.com/libraries/XXX/journals/10292' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> Browse Now</a></div>`);
       expect(template).toContain("View the Journal");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/10292");
       expect(template).toContain("Browse Now");
@@ -1606,17 +1622,20 @@ describe("Summon Model >", function() {
       var browzineWebLink = summon.getBrowZineWebLink(data);
       var template = summon.browzineWebLinkTemplate(scope, browzineWebLink);
 
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
       expect(data).toBeDefined();
       expect(browzineWebLink).toBeDefined();
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>View Complete Issue </span><a class='browzine-web-link summonBtn customPrimaryLink' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> Browse Now</a></div>`);
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View in Context</span><a class='browzine-web-link summonBtn customPrimaryLink' href='https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Book Icon' class='browzine-book-icon' src='https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg' style='margin-right: 2px; margin-bottom: 1px;' width='16' height='16'/> Browse Journal</a></div>`);
 
-      expect(template).toContain("View Complete Issue");
       expect(template).toContain("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575");
-      expect(template).toContain("Browse Now");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon-2.svg");
+
+      expect($template.innerText).toContain("View in Context Browse Journal");
     });
   });
 
@@ -1624,11 +1643,13 @@ describe("Summon Model >", function() {
     beforeEach(function() {
       delete browzine.articlePDFDownloadViaUnpaywallWording;
       delete browzine.articlePDFDownloadViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     afterEach(function() {
       delete browzine.articlePDFDownloadViaUnpaywallWording;
       delete browzine.articlePDFDownloadViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     it("should build an unpaywall article pdf template", function() {
@@ -1652,18 +1673,22 @@ describe("Summon Model >", function() {
       var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
       var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
 
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
       expect(unpaywallArticlePDFUrl).toBeDefined();
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>Article PDF </span><a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='http://jaha.org.ro/index.php/JAHA/article/download/142/119' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><svg name="pdf" alt="PDF icon" class="browzine-pdf-icon" viewBox="0 0 16 16" style=""><path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"></path> <path fill="#639add" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"></path></svg><span style='margin-left: 3px;'>Download Now (via Unpaywall)</span></a></div>`);
-      expect(template).toContain("Article PDF");
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View Now (via Unpaywall)</span><a class='unpaywall-article-pdf-link summonBtn customPrimaryLink' href='http://jaha.org.ro/index.php/JAHA/article/download/142/119' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><svg name="pdf" alt="PDF icon" class="browzine-pdf-icon" viewBox="0 0 16 16" style=""><path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"></path> <path fill="#639add" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"></path></svg><span style='margin-left: 3px;'>PDF</span></a></div>`);
+
       expect(template).toContain("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
-      expect(template).toContain("Download Now (via Unpaywall)");
-      expect(template).toContain('<svg name="pdf"');
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) PDF");
     });
 
     it("should apply the articlePDFDownloadViaUnpaywallWording config property", function() {
+      browzine.version = 2;
       browzine.articlePDFDownloadViaUnpaywallWording = "Journal Article PDF";
 
       var response = {
@@ -1686,10 +1711,14 @@ describe("Summon Model >", function() {
       var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
       var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
 
-      expect(template).toContain("Journal Article PDF");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Journal Article PDF");
     });
 
     it("should apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
+      browzine.version = 2;
       browzine.articlePDFDownloadViaUnpaywallLinkText = "Download PDF";
 
       var response = {
@@ -1712,7 +1741,10 @@ describe("Summon Model >", function() {
       var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
       var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
 
-      expect(template).toContain("Download PDF");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) Download PDF");
     });
   });
 
@@ -1720,11 +1752,13 @@ describe("Summon Model >", function() {
     beforeEach(function() {
       delete browzine.articleLinkViaUnpaywallWording;
       delete browzine.articleLinkViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     afterEach(function() {
       delete browzine.articleLinkViaUnpaywallWording;
       delete browzine.articleLinkViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     it("should build an unpaywall article link template", function() {
@@ -1748,19 +1782,23 @@ describe("Summon Model >", function() {
       var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
       var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
 
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
       expect(unpaywallArticleLinkUrl).toBeDefined();
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>Article Link </span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='https://doi.org/10.1098/rstb.1986.0056' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> Read Article (via Unpaywall)</a></div>`);
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View Now (via Unpaywall)</span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='https://doi.org/10.1098/rstb.1986.0056' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> Article Page</a></div>`);
 
-      expect(template).toContain("Article Link");
       expect(template).toContain("https://doi.org/10.1098/rstb.1986.0056");
-      expect(template).toContain("Read Article (via Unpaywall)");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg");
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) Article Page");
     });
 
     it("should apply the articleLinkViaUnpaywallWording config property", function() {
+      browzine.version = 2;
       browzine.articleLinkViaUnpaywallWording = "Journal Article Link";
 
       var response = {
@@ -1783,10 +1821,14 @@ describe("Summon Model >", function() {
       var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
       var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
 
-      expect(template).toContain("Journal Article Link");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Journal Article Link");
     });
 
     it("should apply the articleLinkViaUnpaywallLinkText config property", function() {
+      browzine.version = 2;
       browzine.articleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
 
       var response = {
@@ -1809,7 +1851,10 @@ describe("Summon Model >", function() {
       var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
       var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
 
-      expect(template).toContain("Read Article Now (via Unpaywall)");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Read Article Now (via Unpaywall)");
     });
   });
 
@@ -1817,11 +1862,13 @@ describe("Summon Model >", function() {
     beforeEach(function() {
       delete browzine.articleAcceptedManuscriptPDFViaUnpaywallWording;
       delete browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     afterEach(function() {
       delete browzine.articleAcceptedManuscriptPDFViaUnpaywallWording;
       delete browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     it("should build an unpaywall article pdf template", function() {
@@ -1845,19 +1892,22 @@ describe("Summon Model >", function() {
       var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
       var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
 
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
       expect(unpaywallManuscriptArticlePDFUrl).toBeDefined();
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>Article PDF </span><a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><svg name="pdf" alt="PDF icon" class="browzine-pdf-icon" viewBox="0 0 16 16" style=""><path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"></path> <path fill="#639add" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"></path></svg><span style='margin-left: 3px;'>Download Now (Accepted Manuscript via Unpaywall)</span></a></div>`);
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View Now (Accepted Manuscript via Unpaywall)</span><a class='unpaywall-manuscript-article-pdf-link summonBtn customPrimaryLink' href='http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><svg name="pdf" alt="PDF icon" class="browzine-pdf-icon" viewBox="0 0 16 16" style=""><path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"></path> <path fill="#639add" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"></path></svg><span style='margin-left: 3px;'>PDF</span></a></div>`);
 
-      expect(template).toContain("Article PDF");
       expect(template).toContain("http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf");
-      expect(template).toContain("Download Now (Accepted Manuscript via Unpaywall)");
-      expect(template).toContain('<svg name="pdf"');
+
+      expect($template.innerText).toContain("View Now (Accepted Manuscript via Unpaywall) PDF");
     });
 
     it("should apply the articlePDFDownloadViaUnpaywallWording config property", function() {
+      browzine.version = 2;
       browzine.articleAcceptedManuscriptPDFViaUnpaywallWording = "Journal Article PDF";
 
       var response = {
@@ -1880,10 +1930,14 @@ describe("Summon Model >", function() {
       var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
       var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
 
-      expect(template).toContain("Journal Article PDF");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Journal Article PDF");
     });
 
     it("should apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
+      browzine.version = 2;
       browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText = "Download PDF";
 
       var response = {
@@ -1906,8 +1960,10 @@ describe("Summon Model >", function() {
       var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
       var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
 
-      expect(template).toContain("Download PDF");
-      expect(template).not.toContain("Download PDF (Accepted Manuscript via Unpaywall)");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (Accepted Manuscript via Unpaywall) Download PDF");
     });
   });
 
@@ -1915,11 +1971,13 @@ describe("Summon Model >", function() {
     beforeEach(function() {
       delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording;
       delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     afterEach(function() {
       delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording;
       delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText;
+      delete browzine.version;
     });
 
     it("should build an unpaywall article link template", function() {
@@ -1943,19 +2001,23 @@ describe("Summon Model >", function() {
       var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
       var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
 
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
       expect(unpaywallManuscriptArticleLinkUrl).toBeDefined();
 
       expect(template).toBeDefined();
 
-      expect(template).toEqual(`<div class='browzine'><span class='contentType'>Article Link </span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> Read Article (Accepted Manuscript via Unpaywall)</a></div>`);
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>View Now (via Unpaywall)</span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> Article Page</a></div>`);
 
-      expect(template).toContain("Article Link");
       expect(template).toContain("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
-      expect(template).toContain("Read Article (Accepted Manuscript via Unpaywall)");
       expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon-2.svg");
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) Article Page");
     });
 
     it("should apply the articleAcceptedManuscriptArticleLinkViaUnpaywallWording config property", function() {
+      browzine.version = 2;
       browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording = "Article Link";
 
       var response = {
@@ -1978,10 +2040,14 @@ describe("Summon Model >", function() {
       var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
       var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
 
-      expect(template).toContain("Article Link");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Article Link");
     });
 
     it("should apply the articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText config property", function() {
+      browzine.version = 2;
       browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
 
       var response = {
@@ -2004,8 +2070,10 @@ describe("Summon Model >", function() {
       var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
       var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
 
-      expect(template).toContain("Read Article Now (via Unpaywall)");
-      expect(template).not.toContain("Read Article (Accepted Manuscript via Unpaywall)");
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Read Article Now (via Unpaywall)");
     });
   });
 
