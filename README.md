@@ -61,8 +61,7 @@ e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" a
 
 Please note a valid institutional email address is required to use the Unpaywall feature in LibKey Discovery.
 
-Script version 2 or greater allows the customer to override default text.
-
+BrowZine discovery service adapter script version 2 or greater allows the customer to override default text.
 
 ```
 var browzine = {
