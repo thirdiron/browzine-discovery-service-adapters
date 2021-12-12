@@ -757,7 +757,6 @@ browzine.summon = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
-        var primaryColor = getPrimaryColor(documentSummary);
 
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
