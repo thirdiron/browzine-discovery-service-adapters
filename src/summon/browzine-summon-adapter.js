@@ -708,6 +708,28 @@ browzine.summon = (function() {
     return validation;
   };
 
+  function getPrimaryColor(documentSummary) {
+    var primaryColor = "";
+
+    var customPrimaryLink = $(documentSummary).find(".customPrimaryLink");
+
+    if (customPrimaryLink && customPrimaryLink.length > 0) {
+      var element = customPrimaryLink[0];
+
+      if (element) {
+        var computedStyle = window.getComputedStyle(element);
+
+        if (computedStyle && computedStyle.color) {
+          primaryColor = computedStyle.color;
+        } else if (element.style && element.style.color) {
+          primaryColor = element.style.color;
+        }
+      }
+    }
+
+    return primaryColor;
+  };
+
   function adapter(documentSummary) {
     var scope = getScope(documentSummary);
 
@@ -735,6 +757,7 @@ browzine.summon = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
+        var primaryColor = getPrimaryColor(documentSummary);
 
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
@@ -843,6 +866,7 @@ browzine.summon = (function() {
   return {
     adapter: adapter,
     getScope: getScope,
+    getPrimaryColor: getPrimaryColor,
     shouldEnhance: shouldEnhance,
     getIssn: getIssn,
     getDoi: getDoi,

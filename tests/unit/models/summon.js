@@ -77,7 +77,29 @@ describe("Summon Model >", function() {
     });
   });
 
-  describe("serSol360Core model urlRewrite method >", function() {
+  describe("summon model getPrimaryColor method >", function() {
+    it("should retrieve the scope from a search result", function() {
+      var documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='shortSummary'><a class='customPrimaryLink' style='color: rgb(38, 89, 171);'></a></div><div class='docFooter'><div class='row'></div></div></div>");
+
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope.document = {
+          content_type: "Journal",
+          issns: ["0028-4793"]
+        };
+
+        documentSummary = $compile(documentSummary)($scope);
+      });
+
+      var primaryColor = summon.getPrimaryColor(documentSummary);
+
+      expect(primaryColor).toBeDefined();
+      expect(primaryColor).toEqual("rgb(38, 89, 171)");
+    });
+  });
+
+  describe("summon model urlRewrite method >", function() {
     it("should rewrite the public api domain", function() {
       var url = "https://api.thirdiron.com/public/v1/libraries/XXX";
       expect(summon.urlRewrite(url)).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
