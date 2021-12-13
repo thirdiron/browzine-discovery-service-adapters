@@ -277,7 +277,7 @@ browzine.summon = (function() {
   function getPaperIconSvg() {
     var color = browzine.iconColor || "#639add";
 
-    var template = '<svg name="paper" alt="paper icon" class="browzine-paper-icon" width="16px" viewBox="0 0 384 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Artboard" fill="{color}" fill-rule="nonzero"><g id="file-alt"><path d="M224,136 L224,0 L24,0 C10.7,0 0,10.7 0,24 L0,488 C0,501.3 10.7,512 24,512 L360,512 C373.3,512 384,501.3 384,488 L384,160 L248,160 C234.8,160 224,149.2 224,136 Z M288,372 C288,378.6 282.6,384 276,384 L108,384 C101.4,384 96,378.6 96,372 L96,364 C96,357.4 101.4,352 108,352 L276,352 C282.6,352 288,357.4 288,364 L288,372 Z M288,308 C288,314.6 282.6,320 276,320 L108,320 C101.4,320 96,314.6 96,308 L96,300 C96,293.4 101.4,288 108,288 L276,288 C282.6,288 288,293.4 288,300 L288,308 Z M288,236 L288,244 C288,250.6 282.6,256 276,256 L108,256 C101.4,256 96,250.6 96,244 L96,236 C96,229.4 101.4,224 108,224 L276,224 C282.6,224 288,229.4 288,236 Z M384,121.9 L384,128 L256,128 L256,0 L262.1,0 C268.5,0 274.6,2.5 279.1,7 L377,105 C381.5,109.5 384,115.6 384,121.9 Z" id="Shape"></path></g></g></g></svg>';
+    var template = '<svg name="paper" alt="paper icon" class="browzine-paper-icon" width="16px" viewBox="0 0 384 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="Artboard" fill="{color}" fill-rule="nonzero"><g id="file-alt"><path d="M224,136 L224,0 L24,0 C10.7,0 0,10.7 0,24 L0,488 C0,501.3 10.7,512 24,512 L360,512 C373.3,512 384,501.3 384,488 L384,160 L248,160 C234.8,160 224,149.2 224,136 Z M288,372 C288,378.6 282.6,384 276,384 L108,384 C101.4,384 96,378.6 96,372 L96,364 C96,357.4 101.4,352 108,352 L276,352 C282.6,352 288,357.4 288,364 L288,372 Z M288,308 C288,314.6 282.6,320 276,320 L108,320 C101.4,320 96,314.6 96,308 L96,300 C96,293.4 101.4,288 108,288 L276,288 C282.6,288 288,293.4 288,300 L288,308 Z M288,236 L288,244 C288,250.6 282.6,256 276,256 L108,256 C101.4,256 96,250.6 96,244 L96,236 C96,229.4 101.4,224 108,224 L276,224 C282.6,224 288,229.4 288,236 Z M384,121.9 L384,128 L256,128 L256,0 L262.1,0 C268.5,0 274.6,2.5 279.1,7 L377,105 C381.5,109.5 384,115.6 384,121.9 Z" id="Shape"></path></g></g></g></svg> ';
 
     template = template.replace(/{color}/g, color);
 
@@ -543,7 +543,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 3px;'>{articleLinkText}</span></a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
@@ -636,7 +636,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='unpaywall-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 3px;'>{articleLinkText}</span></a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
@@ -692,7 +692,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'><img alt='BrowZine Article Link Icon' class='browzine-article-link-icon' src='{paperIcon}' style='margin-bottom: 2px; margin-right: 4.5px;' width='13' height='17'/> {articleLinkText}</a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='unpaywall-manuscript-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' style='text-decoration: underline; color: #333;' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 3px;'>{articleLinkText}</span></a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
