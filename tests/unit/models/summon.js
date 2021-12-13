@@ -1458,6 +1458,48 @@ describe("Summon Model >", function() {
       expect($template.innerText).toContain("Download PDF");
     });
 
+    it("should not apply the articlePDFDownloadWording config property", function() {
+      delete browzine.version;
+      browzine.articlePDFDownloadWording = "Journal Article PDF";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now PDF");
+    });
+
+    it("should not apply the articlePDFDownloadLinkText config property", function() {
+      delete browzine.version;
+      browzine.articlePDFDownloadLinkText = "Download PDF";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now PDF");
+    });
+
     it("should build a retracted pdf template for article search results when retraction notice available and retraction watch enabled", function() {
       var scope = {
         document: {
@@ -1603,6 +1645,48 @@ describe("Summon Model >", function() {
       $template.innerHTML = template;
 
       expect($template.innerText).toContain("View Now Read Article");
+    });
+
+    it("should not apply the articleLinkTextWording config property", function() {
+      delete browzine.version;
+      browzine.articleLinkTextWording = "Article Link";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
+      var template = summon.articleLinkTemplate(articleLinkUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now Article Page");
+    });
+
+    it("should not apply the articleLinkText config property", function() {
+      delete browzine.version;
+      browzine.articleLinkText = "Read Article";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleLinkUrl = summon.getArticleLinkUrl(scope, data);
+      var template = summon.articleLinkTemplate(articleLinkUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now Article Page");
     });
   });
 
@@ -1764,6 +1848,66 @@ describe("Summon Model >", function() {
 
       expect($template.innerText).toContain("View Now (via Unpaywall) Download PDF");
     });
+
+    it("should not apply the articlePDFDownloadViaUnpaywallWording config property", function() {
+      delete browzine.version;
+      browzine.articlePDFDownloadViaUnpaywallWording = "Journal Article PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
+      var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) PDF");
+    });
+
+    it("should not apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
+      delete browzine.version;
+      browzine.articlePDFDownloadViaUnpaywallLinkText = "Download PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "open (via free pdf)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": "cc-by-nc-nd",
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2019-10-11T20:52:04.790279",
+          "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+          "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticlePDFUrl = summon.getUnpaywallArticlePDFUrl(response);
+      var template = summon.unpaywallArticlePDFTemplate(unpaywallArticlePDFUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) PDF");
+    });
   });
 
   describe("summon model unpaywallArticleLinkTemplate method >", function() {
@@ -1872,6 +2016,66 @@ describe("Summon Model >", function() {
       $template.innerHTML = template;
 
       expect($template.innerText).toContain("Read Article Now (via Unpaywall)");
+    });
+
+    it("should not apply the articleLinkViaUnpaywallWording config property", function() {
+      delete browzine.version;
+      browzine.articleLinkViaUnpaywallWording = "Journal Article Link";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
+      var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) Article Page");
+    });
+
+    it("should not apply the articleLinkViaUnpaywallLinkText config property", function() {
+      delete browzine.version;
+      browzine.articleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa journal (via observed oa rate)",
+          "host_type": "publisher",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T00:58:09.389993",
+          "url": "https://doi.org/10.1098/rstb.1986.0056-do-not-use",
+          "url_for_landing_page": "https://doi.org/10.1098/rstb.1986.0056",
+          "url_for_pdf": null,
+          "version": "publishedVersion"
+        }
+      };
+
+      var unpaywallArticleLinkUrl = summon.getUnpaywallArticleLinkUrl(response);
+      var template = summon.unpaywallArticleLinkTemplate(unpaywallArticleLinkUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) Article Page");
     });
   });
 
@@ -1982,6 +2186,66 @@ describe("Summon Model >", function() {
 
       expect($template.innerText).toContain("View Now (Accepted Manuscript via Unpaywall) Download PDF");
     });
+
+    it("should not apply the articlePDFDownloadViaUnpaywallWording config property", function() {
+      delete browzine.version;
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallWording = "Journal Article PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
+      var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (Accepted Manuscript via Unpaywall) PDF");
+    });
+
+    it("should not apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
+      delete browzine.version;
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText = "Download PDF";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": "e32e740fde0998433a4",
+          "evidence": "oa repository (via OAI-PMH doi match)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": "cc0",
+          "pmh_id": "oai:diposit.ub.edu:2445/147225",
+          "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+          "updated": "2020-02-20T17:30:21.829852",
+          "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+          "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+          "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticlePDFUrl = summon.getUnpaywallManuscriptArticlePDFUrl(response);
+      var template = summon.unpaywallManuscriptPDFTemplate(unpaywallManuscriptArticlePDFUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (Accepted Manuscript via Unpaywall) PDF");
+    });
   });
 
   describe("summon model unpaywallManuscriptLinkTemplate method >", function() {
@@ -2090,6 +2354,66 @@ describe("Summon Model >", function() {
       $template.innerHTML = template;
 
       expect($template.innerText).toContain("Read Article Now (via Unpaywall)");
+    });
+
+    it("should not apply the articleAcceptedManuscriptArticleLinkViaUnpaywallWording config property", function() {
+      delete browzine.version;
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording = "Article Link";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa repository (via pmcid lookup)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T01:10:19.539950",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+          "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_pdf": null,
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
+      var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) Article Page");
+    });
+
+    it("should not apply the articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText config property", function() {
+      delete browzine.version;
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
+
+      var response = {
+        "best_oa_location": {
+          "endpoint_id": null,
+          "evidence": "oa repository (via pmcid lookup)",
+          "host_type": "repository",
+          "is_best": true,
+          "license": null,
+          "pmh_id": null,
+          "repository_institution": null,
+          "updated": "2020-02-22T01:10:19.539950",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472-do-not-use",
+          "url_for_landing_page": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472",
+          "url_for_pdf": null,
+          "version": "acceptedVersion"
+        }
+      };
+
+      var unpaywallManuscriptArticleLinkUrl = summon.getUnpaywallManuscriptArticleLinkUrl(response);
+      var template = summon.unpaywallManuscriptLinkTemplate(unpaywallManuscriptArticleLinkUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("View Now (via Unpaywall) Article Page");
     });
   });
 
