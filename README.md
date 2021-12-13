@@ -108,7 +108,7 @@ var browzine = {
   articleRetractionWatchTextWording: "Retracted Article",
   articleRetractionWatchText: "More Info",
 
-  iconColor: #639add,
+  iconColor: "#639add",
 };
 ```
 
