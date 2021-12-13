@@ -505,7 +505,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now";
     var articlePDFDownloadLinkText = "PDF";
 
-    if (browzine.version >= 2) {
+    if (+browzine.version >= 2) {
       articlePDFDownloadWording = browzine.articlePDFDownloadWording || articlePDFDownloadWording;
       articlePDFDownloadLinkText = browzine.articlePDFDownloadLinkText || articlePDFDownloadLinkText;
     }
@@ -537,7 +537,7 @@ browzine.summon = (function() {
     var articleLinkTextWording = "View Now";
     var articleLinkText = "Article Page";
 
-    if (browzine.version >= 2) {
+    if (+browzine.version >= 2) {
       articleLinkTextWording = browzine.articleLinkTextWording || articleLinkTextWording;
       articleLinkText = browzine.articleLinkText || articleLinkText;
     }
@@ -563,7 +563,7 @@ browzine.summon = (function() {
       wording = "View the Journal";
       browzineWebLinkText = "Browse Now";
 
-      if (browzine.version >= 2) {
+      if (+browzine.version >= 2) {
         wording = browzine.journalWording || wording;
         browzineWebLinkText = browzine.journalBrowZineWebLinkText || browzineWebLinkText;
       }
@@ -573,7 +573,7 @@ browzine.summon = (function() {
       wording = "View in Context";
       browzineWebLinkText = "Browse Journal";
 
-      if (browzine.version >= 2) {
+      if (+browzine.version >= 2) {
         wording = browzine.articleWording || wording;
         browzineWebLinkText = browzine.articleBrowZineWebLinkText || browzineWebLinkText;
       }
@@ -598,7 +598,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now (via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
-    if (browzine.version >= 2) {
+    if (+browzine.version >= 2) {
       articlePDFDownloadWording = browzine.articlePDFDownloadViaUnpaywallWording || articlePDFDownloadWording;
       articlePDFDownloadLinkText = browzine.articlePDFDownloadViaUnpaywallLinkText || articlePDFDownloadLinkText;
     }
@@ -630,7 +630,7 @@ browzine.summon = (function() {
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
-    if (browzine.version >= 2) {
+    if (+browzine.version >= 2) {
       articleLinkTextWording = browzine.articleLinkViaUnpaywallWording || articleLinkTextWording;
       articleLinkText = browzine.articleLinkViaUnpaywallLinkText || articleLinkText;
     }
@@ -654,7 +654,7 @@ browzine.summon = (function() {
     var articlePDFDownloadWording = "View Now (Accepted Manuscript via Unpaywall)";
     var articlePDFDownloadLinkText = "PDF";
 
-    if (browzine.version >= 2) {
+    if (+browzine.version >= 2) {
       articlePDFDownloadWording = browzine.articleAcceptedManuscriptPDFViaUnpaywallWording || articlePDFDownloadWording;
       articlePDFDownloadLinkText = browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText || articlePDFDownloadLinkText;
     }
@@ -686,7 +686,7 @@ browzine.summon = (function() {
     var articleLinkTextWording = "View Now (via Unpaywall)";
     var articleLinkText = "Article Page";
 
-    if (browzine.version >= 2) {
+    if (+browzine.version >= 2) {
       articleLinkTextWording = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallWording || articleLinkTextWording;
       articleLinkText = browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText || articleLinkText;
     }
