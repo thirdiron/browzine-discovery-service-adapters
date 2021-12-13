@@ -543,7 +543,7 @@ browzine.summon = (function() {
     }
 
     var template = "<div class='browzine'>" +
-      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 3px;'>{articleLinkText}</span></a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 0px;'>{articleLinkText}</span></a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
