@@ -479,7 +479,7 @@ browzine.primo = (function() {
 
   function showRetractionWatchUI(articleRetractionUrl) {
     return articleRetractionUrl && showRetractionWatch();
-  }
+  };
 
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl) {
     var pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg";
