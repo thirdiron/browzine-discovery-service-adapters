@@ -1438,7 +1438,7 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articlePDFDownloadLinkText config property", function() {
-      browzine.version = 2;
+      browzine.version = "2";
       browzine.articlePDFDownloadLinkText = "Download PDF";
 
       var scope = {
@@ -1627,7 +1627,7 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articleLinkText config property", function() {
-      browzine.version = 2;
+      browzine.version = "2";
       browzine.articleLinkText = "Read Article";
 
       var scope = {
@@ -1820,7 +1820,7 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
-      browzine.version = 2;
+      browzine.version = "2";
       browzine.articlePDFDownloadViaUnpaywallLinkText = "Download PDF";
 
       var response = {
@@ -1989,7 +1989,7 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articleLinkViaUnpaywallLinkText config property", function() {
-      browzine.version = 2;
+      browzine.version = "2";
       browzine.articleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
 
       var response = {
@@ -2158,7 +2158,7 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articlePDFDownloadViaUnpaywallLinkText config property", function() {
-      browzine.version = 2;
+      browzine.version = "2";
       browzine.articleAcceptedManuscriptPDFViaUnpaywallLinkText = "Download PDF";
 
       var response = {
@@ -2327,7 +2327,7 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText config property", function() {
-      browzine.version = 2;
+      browzine.version = "2";
       browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText = "Read Article Now (via Unpaywall)";
 
       var response = {
