@@ -61,52 +61,54 @@ e.g. You can customize "View the Journal", "View Complete Issue", "Browse Now" a
 
 Please note a valid institutional email address is required to use the Unpaywall feature in LibKey Discovery.
 
+BrowZine discovery service adapter script version 2 or greater allows the customer to override default text.
+
 ```
 var browzine = {
+  version: 2,
+
   libraryId: "XXX",
   apiKey: "ENTER API KEY",
 
-  journalCoverImagesEnabled: true,
+  articlePDFDownloadLinkEnabled: true,
+  articlePDFDownloadWording: "View Now",
+  articlePDFDownloadLinkText: "PDF",
 
-  journalBrowZineWebLinkTextEnabled: true,
+  articleLinkEnabled: true,
+  articleLinkTextWording: "View Now",
+  articleLinkText: "Article Page",
+
+  articleWording: "View in Context",
+  articleBrowZineWebLinkText: "Browse Journal",
+
   journalWording: "View the Journal",
   journalBrowZineWebLinkText: "Browse Now",
 
-  articleBrowZineWebLinkTextEnabled: true,
-  articleWording: "View Complete Issue",
-  articleBrowZineWebLinkText: "Browse Now",
+  printRecordsIntegrationEnabled: true,
 
-  articlePDFDownloadLinkEnabled: true,
-  articlePDFDownloadWording: "Article PDF",
-  articlePDFDownloadLinkText: "Download Now",
-
-  articleLinkEnabled: true,
-  articleLinkTextWording: "Article Link",
-  articleLinkText: "Read Article",
-
-  libKeyOneLinkView: true,
-
-  unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
+  unpaywallEmailAddressKey: "info@thirdiron.com",
 
   articlePDFDownloadViaUnpaywallEnabled: true,
-  articlePDFDownloadViaUnpaywallWording: "Article PDF",
-  articlePDFDownloadViaUnpaywallLinkText: "Download Now (via Unpaywall)",
+  articlePDFDownloadViaUnpaywallWording: "View Now (via Unpaywall)",
+  articlePDFDownloadViaUnpaywallLinkText: "PDF",
 
   articleLinkViaUnpaywallEnabled: true,
-  articleLinkViaUnpaywallWording: "Article Link",
-  articleLinkViaUnpaywallLinkText: "Read Article (via Unpaywall)",
+  articleLinkViaUnpaywallWording: "View Now (via Unpaywall)",
+  articleLinkViaUnpaywallLinkText: "Article Page",
 
   articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
-  articleAcceptedManuscriptPDFViaUnpaywallWording: "Article PDF",
-  articleAcceptedManuscriptPDFViaUnpaywallLinkText: "Download Now (Accepted Manuscript via Unpaywall)",
+  articleAcceptedManuscriptPDFViaUnpaywallWording: "View Now (Accepted Manuscript via Unpaywall)",
+  articleAcceptedManuscriptPDFViaUnpaywallLinkText: "PDF",
 
   articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
-  articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "Article Link",
-  articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Read Article (Accepted Manuscript via Unpaywall)",
+  articleAcceptedManuscriptArticleLinkViaUnpaywallWording: "View Now (via Unpaywall)",
+  articleAcceptedManuscriptArticleLinkViaUnpaywallLinkText: "Article Page",
 
   articleRetractionWatchEnabled: true,
   articleRetractionWatchTextWording: "Retracted Article",
   articleRetractionWatchText: "More Info",
+
+  iconColor: "#639add",
 };
 ```
 
