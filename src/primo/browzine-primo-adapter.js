@@ -735,30 +735,28 @@ browzine.primo = (function() {
 
         var element = getElement(scope);
 
+        var libKeyLinkOptimizer = document.createElement("div");
+        libKeyLinkOptimizer.className = "libkey-link-optimizer";
+        libKeyLinkOptimizer.style = "display: flex; justify-content: flex-start;";
+
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
-
-          (function poll() {
-            var elementParent = getElementParent(element);
-            var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
-
-            if (availabilityLine) {
-              availabilityLine.insertAdjacentHTML('afterbegin', template);
-            } else {
-              requestAnimationFrame(poll);
-            }
-          })();
+          libKeyLinkOptimizer.innerHTML += template;
         }
 
         if ((!directToPDFUrl || showFormatChoice()) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl);
+          libKeyLinkOptimizer.innerHTML += template;
+        }
 
+        if (libKeyLinkOptimizer.innerHTML) {
           (function poll() {
             var elementParent = getElementParent(element);
             var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
 
             if (availabilityLine) {
-              availabilityLine.insertAdjacentHTML('afterbegin', template);
+              availabilityLine.insertAdjacentHTML('afterbegin', libKeyLinkOptimizer.outerHTML);
+              // availabilityLine.append(libKeyLinkOptimizer);
             } else {
               requestAnimationFrame(poll);
             }

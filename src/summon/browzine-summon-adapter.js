@@ -792,14 +792,28 @@ browzine.summon = (function() {
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
 
+        var libKeyLinkOptimizer = document.createElement("div");
+        libKeyLinkOptimizer.className = "libkey-link-optimizer";
+        libKeyLinkOptimizer.style = "display: flex; justify-content: flex-start;";
+
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
-          $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+          libKeyLinkOptimizer.innerHTML += template;
         }
 
         if ((!directToPDFUrl || showFormatChoice()) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl);
-          $(documentSummary).find(".docFooter .row:eq(0)").append(template);
+          libKeyLinkOptimizer.innerHTML += template;
+        }
+
+        if (libKeyLinkOptimizer.innerHTML) {
+          var secondaryTitle = libKeyLinkOptimizer.querySelector(".browzine:nth-child(2) .contentType");
+
+          if (secondaryTitle) {
+            secondaryTitle.remove();
+          }
+
+          $(documentSummary).find(".docFooter .row:eq(0)").append(libKeyLinkOptimizer);
         }
 
         if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
@@ -825,7 +839,7 @@ browzine.summon = (function() {
         }
 
         if (directToPDFUrl) {
-          var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+          var quickLinkElement = $(documentSummary).find(".customPrimaryLinkContainer");
 
           if (quickLinkElement) {
             quickLinkElement.remove();
@@ -879,7 +893,7 @@ browzine.summon = (function() {
               }
 
               if (template && pdfAvailable) {
-                var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+                var quickLinkElement = $(documentSummary).find(".customPrimaryLinkContainer");
 
                 if (quickLinkElement) {
                   quickLinkElement.remove();
