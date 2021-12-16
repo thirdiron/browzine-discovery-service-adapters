@@ -819,7 +819,7 @@ browzine.summon = (function() {
             }
           }
 
-          if (contentLinkElement && contentLinkElement.innerHTML) {
+          if (contentLinkElement && contentLinkElement.outerHTML) {
             libKeyLinkOptimizer.innerHTML += contentLinkElement.outerHTML;
           }
         }
