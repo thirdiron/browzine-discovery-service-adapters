@@ -756,7 +756,6 @@ browzine.primo = (function() {
 
             if (availabilityLine) {
               availabilityLine.insertAdjacentHTML('afterbegin', libKeyLinkOptimizer.outerHTML);
-              // availabilityLine.append(libKeyLinkOptimizer);
             } else {
               requestAnimationFrame(poll);
             }

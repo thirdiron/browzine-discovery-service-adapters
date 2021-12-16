@@ -806,6 +806,24 @@ browzine.summon = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
+        if (showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
+          var contentLinkElement;
+          var summonBtns = documentSummary.querySelectorAll(".summonBtn");
+
+          for (var summonBtn of summonBtns) {
+            if (summonBtn.innerHTML.toLowerCase().indexOf("full text online") > -1) {
+              contentLinkElement = summonBtn;
+              contentLinkElement.style = "margin-left: 6px;";
+              contentLinkElement.classList.remove("summonDropdownIntro");
+              break;
+            }
+          }
+
+          if (contentLinkElement && contentLinkElement.innerHTML) {
+            libKeyLinkOptimizer.innerHTML += contentLinkElement.outerHTML;
+          }
+        }
+
         if (libKeyLinkOptimizer.innerHTML) {
           var secondaryTitle = libKeyLinkOptimizer.querySelector(".browzine:nth-child(2) .contentType");
 
@@ -839,7 +857,7 @@ browzine.summon = (function() {
         }
 
         if (directToPDFUrl) {
-          var quickLinkElement = $(documentSummary).find(".customPrimaryLinkContainer");
+          var quickLinkElement = $(documentSummary).find(".docFooter .customPrimaryLinkContainer");
 
           if (quickLinkElement) {
             quickLinkElement.remove();
