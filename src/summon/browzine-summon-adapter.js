@@ -911,7 +911,7 @@ browzine.summon = (function() {
               }
 
               if (template && pdfAvailable) {
-                var quickLinkElement = $(documentSummary).find(".customPrimaryLinkContainer");
+                var quickLinkElement = $(documentSummary).find(".docFooter .customPrimaryLinkContainer");
 
                 if (quickLinkElement) {
                   quickLinkElement.remove();
