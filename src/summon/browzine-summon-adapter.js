@@ -808,7 +808,7 @@ browzine.summon = (function() {
 
         if (showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
           var contentLinkElement;
-          var summonBtns = documentSummary.querySelectorAll(".summonBtn");
+          var summonBtns = $(documentSummary).find(".summonBtn");
 
           for (var summonBtn of summonBtns) {
             if (summonBtn.innerHTML.toLowerCase().indexOf("full text online") > -1) {
