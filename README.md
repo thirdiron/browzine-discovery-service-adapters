@@ -109,6 +109,9 @@ var browzine = {
   articleRetractionWatchText: "More Info",
 
   iconColor: "#639add",
+
+  showFormatChoice: true,
+  showLinkResolverLink: true,
 };
 ```
 
@@ -235,8 +238,6 @@ window.browzine = {
 
   printRecordsIntegrationEnabled: true,
 
-  libKeyOneLinkView: true,
-
   unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
 
   articlePDFDownloadViaUnpaywallEnabled: true,
@@ -253,6 +254,9 @@ window.browzine = {
 
   articleRetractionWatchEnabled: true,
   articleRetractionWatchText: "Retracted Article",
+
+  showFormatChoice: true,
+  showLinkResolverLink: true,
 };
 ```
 

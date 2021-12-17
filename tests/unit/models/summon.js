@@ -378,7 +378,7 @@ describe("Summon Model >", function() {
         }
       };
 
-      expect(summon.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575?include=journal");
+      expect(summon.getEndpoint(scope)).toContain("articles/doi/10.1136%2Fbmj.h2575?include=journal,library");
     });
 
     it("should build a journal endpoint for an article search result with a journal issn but no article doi", function() {
@@ -1222,36 +1222,6 @@ describe("Summon Model >", function() {
     });
   });
 
-  describe("summon model showLibKeyOneLinkView method >", function() {
-    beforeEach(function() {
-      delete browzine.libKeyOneLinkView;
-    });
-
-    afterEach(function() {
-      delete browzine.libKeyOneLinkView;
-    });
-
-    it("should not enable onelink when configuration property is undefined", function() {
-      delete browzine.libKeyOneLinkView;
-      expect(summon.showLibKeyOneLinkView()).toEqual(false);
-    });
-
-    it("should not enable onelink when configuration property is null", function() {
-      browzine.libKeyOneLinkView = null;
-      expect(summon.showLibKeyOneLinkView()).toEqual(false);
-    });
-
-    it("should enable onelink when configuration property is true", function() {
-      browzine.libKeyOneLinkView = true;
-      expect(summon.showLibKeyOneLinkView()).toEqual(true);
-    });
-
-    it("should disable onelink when configuration property is false", function() {
-      browzine.libKeyOneLinkView = false;
-      expect(summon.showLibKeyOneLinkView()).toEqual(false);
-    });
-  });
-
   describe("summon model showRetractionWatch method >", function() {
     beforeEach(function() {
       delete browzine.articleRetractionWatchEnabled;
@@ -1279,6 +1249,66 @@ describe("Summon Model >", function() {
     it("should disable retraction watch when configuration property is false", function() {
       browzine.articleRetractionWatchEnabled = false;
       expect(summon.showRetractionWatch()).toEqual(false);
+    });
+  });
+
+  describe("summon model showFormatChoice method >", function() {
+    beforeEach(function() {
+      delete browzine.showFormatChoice;
+    });
+
+    afterEach(function() {
+      delete browzine.showFormatChoice;
+    });
+
+    it("should enable format choice when configuration property is undefined", function() {
+      delete browzine.showFormatChoice;
+      expect(summon.showFormatChoice()).toEqual(true);
+    });
+
+    it("should enable format choice when configuration property is null", function() {
+      browzine.showFormatChoice = null;
+      expect(summon.showFormatChoice()).toEqual(true);
+    });
+
+    it("should enable format choice when configuration property is true", function() {
+      browzine.showFormatChoice = true;
+      expect(summon.showFormatChoice()).toEqual(true);
+    });
+
+    it("should disable format choice when configuration property is false", function() {
+      browzine.showFormatChoice = false;
+      expect(summon.showFormatChoice()).toEqual(false);
+    });
+  });
+
+  describe("summon model showLinkResolverLink method >", function() {
+    beforeEach(function() {
+      delete browzine.showLinkResolverLink;
+    });
+
+    afterEach(function() {
+      delete browzine.showLinkResolverLink;
+    });
+
+    it("should enable link resolver link when configuration property is undefined", function() {
+      delete browzine.showLinkResolverLink;
+      expect(summon.showLinkResolverLink()).toEqual(true);
+    });
+
+    it("should enable link resolver link when configuration property is null", function() {
+      browzine.showLinkResolverLink = null;
+      expect(summon.showLinkResolverLink()).toEqual(true);
+    });
+
+    it("should enable link resolver link when configuration property is true", function() {
+      browzine.showLinkResolverLink = true;
+      expect(summon.showLinkResolverLink()).toEqual(true);
+    });
+
+    it("should disable link resolver link when configuration property is false", function() {
+      browzine.showLinkResolverLink = false;
+      expect(summon.showLinkResolverLink()).toEqual(false);
     });
   });
 

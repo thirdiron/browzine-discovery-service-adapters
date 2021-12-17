@@ -1853,12 +1853,81 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("search results article extra links and both browzine web link and direct to pdf link content links disabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+        browzine.showLinkResolverLink = false;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><span class='contentType'>Journal Article </span><a class='summonBtn' href='#'>Full Text Online </a></div></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1136/bmj.h2575"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        delete browzine.showLinkResolverLink;
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should not show the content link option", function() {
+        expect(documentSummary).toBeDefined();
+        expect(documentSummary.text().trim()).toContain("View Now PDF");
+        expect(documentSummary.text().trim()).not.toContain("Full Text Online");
+      });
+    });
+
     describe("search results article extra links and both browzine web link and direct to pdf link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
-        browzine.libKeyOneLinkView = true;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><span class='contentType'>Journal Article </span><a class='availabilityLink' href='#'>Full Text Online </a></div></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='summonBtn'><span class='contentType'>Journal Article </span><a class='summonBtn' href='#'>Full Text Online </a></div></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1913,20 +1982,19 @@ describe("BrowZine Summon Adapter >", function() {
 
       afterEach(function() {
         jasmine.Ajax.uninstall();
-        delete browzine.libKeyOneLinkView;
       });
 
-      it("should not show the content link option", function() {
+      it("should show the content link option by default", function() {
         expect(documentSummary).toBeDefined();
         expect(documentSummary.text().trim()).toContain("View Now PDF");
-        expect(documentSummary.text().trim()).not.toContain("Journal Article Full Text Online");
+        expect(documentSummary.text().trim()).toContain("Full Text Online");
       });
 
-      it("should not show the quick link option", function() {
+      it("should not show the quick link option by default", function() {
         expect(documentSummary).toBeDefined();
         expect(documentSummary.text().trim()).toContain("View Now PDF");
 
-        var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+        var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
         expect(quicklink.length).toEqual(0);
       });
     });
@@ -1940,7 +2008,6 @@ describe("BrowZine Summon Adapter >", function() {
         browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
 
         summon = browzine.summon;
-        browzine.libKeyOneLinkView = true;
 
         documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
 
@@ -1972,8 +2039,6 @@ describe("BrowZine Summon Adapter >", function() {
         delete browzine.articleLinkViaUnpaywallEnabled;
         delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
         delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
-
-        delete browzine.libKeyOneLinkView;
 
         jasmine.Ajax.uninstall();
       });
@@ -2012,7 +2077,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
         });
 
@@ -2050,7 +2115,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
       });
@@ -2088,7 +2153,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-link").attr("href")).toEqual("https://doi.org/10.1098/rstb.1986.0056");
           expect(template.find("a.unpaywall-article-link").attr("target")).toEqual("_blank");
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
 
@@ -2126,7 +2191,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-article-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
       });
@@ -2165,7 +2230,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
         });
 
@@ -2203,7 +2268,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
       });
@@ -2241,7 +2306,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-link").attr("href")).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
           expect(template.find("a.unpaywall-manuscript-article-link").attr("target")).toEqual("_blank");
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
 
@@ -2279,7 +2344,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-manuscript-article-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
       });
@@ -2318,7 +2383,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
         });
       });
@@ -2357,7 +2422,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(0);
         });
       });
@@ -2378,7 +2443,7 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template.length).toEqual(0);
 
-          var quicklink = documentSummary.find("span.customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
           expect(quicklink.length).toEqual(1);
         });
       });
