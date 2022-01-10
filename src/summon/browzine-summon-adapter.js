@@ -856,7 +856,7 @@ browzine.summon = (function() {
           }
         }
 
-        if (directToPDFUrl) {
+        if (directToPDFUrl || articleLinkUrl) {
           var quickLinkElement = $(documentSummary).find(".docFooter .customPrimaryLinkContainer");
 
           if (quickLinkElement) {
