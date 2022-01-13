@@ -1712,14 +1712,14 @@ describe("Primo Model >", function() {
       delete browzine.showFormatChoice;
     });
 
-    it("should enable format choice when configuration property is undefined", function() {
+    it("should disable format choice when configuration property is undefined", function() {
       delete browzine.showFormatChoice;
-      expect(primo.showFormatChoice()).toEqual(true);
+      expect(primo.showFormatChoice()).toEqual(false);
     });
 
-    it("should enable format choice when configuration property is null", function() {
+    it("should disable format choice when configuration property is null", function() {
       browzine.showFormatChoice = null;
-      expect(primo.showFormatChoice()).toEqual(true);
+      expect(primo.showFormatChoice()).toEqual(false);
     });
 
     it("should enable format choice when configuration property is true", function() {
