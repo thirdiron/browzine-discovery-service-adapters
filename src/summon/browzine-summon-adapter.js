@@ -806,24 +806,6 @@ browzine.summon = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
-          var contentLinkElement;
-          var summonBtns = $(documentSummary).find(".summonBtn");
-
-          for (var summonBtn of summonBtns) {
-            if (summonBtn.innerHTML.toLowerCase().indexOf("full text online") > -1) {
-              contentLinkElement = summonBtn;
-              contentLinkElement.style = "margin-left: 6px;";
-              contentLinkElement.classList.remove("summonDropdownIntro");
-              break;
-            }
-          }
-
-          if (contentLinkElement && contentLinkElement.outerHTML) {
-            libKeyLinkOptimizer.innerHTML += contentLinkElement.outerHTML;
-          }
-        }
-
         if (libKeyLinkOptimizer.innerHTML) {
           var secondaryTitle = libKeyLinkOptimizer.querySelector(".browzine:nth-child(2) .contentType");
 
@@ -831,7 +813,7 @@ browzine.summon = (function() {
             secondaryTitle.remove();
           }
 
-          $(documentSummary).find(".docFooter .row:eq(0)").append(libKeyLinkOptimizer);
+          $(documentSummary).find(".docFooter .row:eq(0)").prepend(libKeyLinkOptimizer);
         }
 
         if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
@@ -848,20 +830,29 @@ browzine.summon = (function() {
           $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
         }
 
-        if (!showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
-          var contentLinkElement = $(documentSummary).find(".availabilityContent");
+        // if (!showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
+        //   var contentLinkElement = $(documentSummary).find(".availabilityContent");
+        //
+        //   if (contentLinkElement) {
+        //     contentLinkElement.remove();
+        //   }
+        // }
 
-          if (contentLinkElement) {
-            contentLinkElement.remove();
-          }
-        }
+        if ((directToPDFUrl || articleLinkUrl)) {
+          var cycles = 0;
 
-        if (directToPDFUrl || articleLinkUrl) {
-          var quickLinkElement = $(documentSummary).find(".docFooter .customPrimaryLinkContainer");
+          (function poll() {
+            var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
 
-          if (quickLinkElement) {
-            quickLinkElement.remove();
-          }
+            if (quickLinkElement.length > 0) {
+              quickLinkElement.remove();
+            } else {
+              if (cycles < 120) {
+                cycles++;
+                requestAnimationFrame(poll);
+              }
+            }
+          })();
         }
       }
 
@@ -902,20 +893,29 @@ browzine.summon = (function() {
                 $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
               }
 
-              if (!showLinkResolverLink() && template) {
-                var contentLinkElement = $(documentSummary).find(".availabilityContent");
+              // if (!showLinkResolverLink() && template) {
+              //   var contentLinkElement = $(documentSummary).find(".availabilityContent");
+              //
+              //   if (contentLinkElement) {
+              //     contentLinkElement.remove();
+              //   }
+              // }
 
-                if (contentLinkElement) {
-                  contentLinkElement.remove();
-                }
-              }
+              if ((template && pdfAvailable)) {
+                var cycles = 0;
 
-              if (template && pdfAvailable) {
-                var quickLinkElement = $(documentSummary).find(".docFooter .customPrimaryLinkContainer");
+                (function poll() {
+                  var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
 
-                if (quickLinkElement) {
-                  quickLinkElement.remove();
-                }
+                  if (quickLinkElement.length > 0) {
+                    quickLinkElement.remove();
+                  } else {
+                    if (cycles < 120) {
+                      cycles++;
+                      requestAnimationFrame(poll);
+                    }
+                  }
+                })();
               }
             }
           };

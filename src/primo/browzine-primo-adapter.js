@@ -796,7 +796,7 @@ browzine.primo = (function() {
           }
         }
 
-        if (directToPDFUrl) {
+        if (directToPDFUrl || articleLinkUrl) {
           var elementParent = getElementParent(element);
           var quickLinkElement = elementParent.querySelector("prm-quick-link");
 
