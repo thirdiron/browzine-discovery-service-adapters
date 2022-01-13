@@ -869,7 +869,7 @@ browzine.primo = (function() {
                 })();
               }
 
-              if (template && pdfAvailable) {
+              if (template) {
                 var element = getElement(scope);
 
                 (function poll() {
