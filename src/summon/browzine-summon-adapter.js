@@ -462,7 +462,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.showFormatChoice;
 
-    if (typeof config === "undefined" || config === null || config === true) {
+    if (config === true) {
       featureEnabled = true;
     }
 
