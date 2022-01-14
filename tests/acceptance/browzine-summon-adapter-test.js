@@ -1858,7 +1858,7 @@ describe("BrowZine Summon Adapter >", function() {
         summon = browzine.summon;
         browzine.showLinkResolverLink = false;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><span class='contentType'>Journal Article </span><a class='summonBtn' href='#'>Full Text Online </a></div></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1927,7 +1927,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='summonBtn'><span class='contentType'>Journal Article </span><a class='summonBtn' href='#'>Full Text Online </a></div></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1994,7 +1994,7 @@ describe("BrowZine Summon Adapter >", function() {
         expect(documentSummary).toBeDefined();
         expect(documentSummary.text().trim()).toContain("View Now PDF");
 
-        var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+        var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
         expect(quicklink.length).toEqual(0);
       });
     });
@@ -2009,7 +2009,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div><div class='row'><span class='customPrimaryLinkContainer'><a target='_blank'>PDF</a></span></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2077,7 +2077,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(0);
         });
 
@@ -2115,13 +2115,13 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(1);
         });
       });
 
       describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
-        it("should enhance the article with an unpaywall article link and not show libkey one link view", function() {
+        it("should enhance the article with an unpaywall article link and show libkey one link view", function() {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2153,8 +2153,8 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-link").attr("href")).toEqual("https://doi.org/10.1098/rstb.1986.0056");
           expect(template.find("a.unpaywall-article-link").attr("target")).toEqual("_blank");
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
-          expect(quicklink.length).toEqual(1);
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
+          expect(quicklink.length).toEqual(0);
         });
 
         it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
@@ -2191,7 +2191,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-article-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(1);
         });
       });
@@ -2230,7 +2230,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(0);
         });
 
@@ -2268,13 +2268,13 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(1);
         });
       });
 
       describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-        it("should enhance the article with an unpaywall manuscript article link and not show libkey one link view", function() {
+        it("should enhance the article with an unpaywall manuscript article link and show libkey one link view", function() {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2306,8 +2306,8 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-link").attr("href")).toEqual("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6041472");
           expect(template.find("a.unpaywall-manuscript-article-link").attr("target")).toEqual("_blank");
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
-          expect(quicklink.length).toEqual(1);
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
+          expect(quicklink.length).toEqual(0);
         });
 
         it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
@@ -2344,7 +2344,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-link").attr("href")).toEqual(undefined);
           expect(template.find("a.unpaywall-manuscript-article-link").attr("target")).toEqual(undefined);
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(1);
         });
       });
@@ -2383,7 +2383,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(0);
         });
       });
@@ -2422,7 +2422,7 @@ describe("BrowZine Summon Adapter >", function() {
           expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual("_blank");
           expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(0);
         });
       });
@@ -2443,7 +2443,7 @@ describe("BrowZine Summon Adapter >", function() {
 
           expect(template.length).toEqual(0);
 
-          var quicklink = documentSummary.find(".docFooter .customPrimaryLinkContainer");
+          var quicklink = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
           expect(quicklink.length).toEqual(1);
         });
       });

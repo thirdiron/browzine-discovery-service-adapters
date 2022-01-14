@@ -2492,7 +2492,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall article link and not show libkey one link view", function() {
+      it("should enhance the article with an unpaywall article link and show libkey one link view", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2526,7 +2526,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
 
         var quickLink = searchResult.find("prm-quick-link");
-        expect(quickLink.length).toEqual(1);
+        expect(quickLink.length).toEqual(0);
       });
 
       it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
@@ -2648,7 +2648,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall manuscript article link and not show libkey one link view", function() {
+      it("should enhance the article with an unpaywall manuscript article link and show libkey one link view", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2682,7 +2682,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
 
         var quickLink = searchResult.find("prm-quick-link");
-        expect(quickLink.length).toEqual(1);
+        expect(quickLink.length).toEqual(0);
       });
 
       it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
