@@ -462,7 +462,7 @@ browzine.summon = (function() {
     var featureEnabled = false;
     var config = browzine.showFormatChoice;
 
-    if (typeof config === "undefined" || config === null || config === true) {
+    if (config === true) {
       featureEnabled = true;
     }
 
@@ -806,24 +806,6 @@ browzine.summon = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
-          var contentLinkElement;
-          var summonBtns = $(documentSummary).find(".summonBtn");
-
-          for (var summonBtn of summonBtns) {
-            if (summonBtn.innerHTML.toLowerCase().indexOf("full text online") > -1) {
-              contentLinkElement = summonBtn;
-              contentLinkElement.style = "margin-left: 6px;";
-              contentLinkElement.classList.remove("summonDropdownIntro");
-              break;
-            }
-          }
-
-          if (contentLinkElement && contentLinkElement.outerHTML) {
-            libKeyLinkOptimizer.innerHTML += contentLinkElement.outerHTML;
-          }
-        }
-
         if (libKeyLinkOptimizer.innerHTML) {
           var secondaryTitle = libKeyLinkOptimizer.querySelector(".browzine:nth-child(2) .contentType");
 
@@ -831,7 +813,7 @@ browzine.summon = (function() {
             secondaryTitle.remove();
           }
 
-          $(documentSummary).find(".docFooter .row:eq(0)").append(libKeyLinkOptimizer);
+          $(documentSummary).find(".docFooter .row:eq(0)").prepend(libKeyLinkOptimizer);
         }
 
         if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
@@ -856,12 +838,21 @@ browzine.summon = (function() {
           }
         }
 
-        if (directToPDFUrl) {
-          var quickLinkElement = $(documentSummary).find(".docFooter .customPrimaryLinkContainer");
+        if ((directToPDFUrl || articleLinkUrl)) {
+          var intervals = 0;
 
-          if (quickLinkElement) {
-            quickLinkElement.remove();
-          }
+          (function poll() {
+            var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
+
+            if (quickLinkElement.length > 0) {
+              quickLinkElement.remove();
+            } else {
+              if (intervals < 120) {
+                intervals++;
+                requestAnimationFrame(poll);
+              }
+            }
+          })();
         }
       }
 
@@ -910,12 +901,21 @@ browzine.summon = (function() {
                 }
               }
 
-              if (template && pdfAvailable) {
-                var quickLinkElement = $(documentSummary).find(".docFooter .customPrimaryLinkContainer");
+              if (template) {
+                var intervals = 0;
 
-                if (quickLinkElement) {
-                  quickLinkElement.remove();
-                }
+                (function poll() {
+                  var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
+
+                  if (quickLinkElement.length > 0) {
+                    quickLinkElement.remove();
+                  } else {
+                    if (intervals < 120) {
+                      intervals++;
+                      requestAnimationFrame(poll);
+                    }
+                  }
+                })();
               }
             }
           };
