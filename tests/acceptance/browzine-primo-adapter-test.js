@@ -2414,7 +2414,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
-      it("should enhance the article with an unpaywall article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2451,7 +2451,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articlePDFDownloadViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2492,7 +2492,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall article link and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall article link and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2529,7 +2529,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articleLinkViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2570,7 +2570,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function() {
-      it("should enhance the article with an unpaywall manuscript article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2607,7 +2607,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2648,7 +2648,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall manuscript article link and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall manuscript article link and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2685,7 +2685,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2726,7 +2726,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
-      it("should enhance the article with an unpaywall article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2765,7 +2765,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function() {
-      it("should enhance the article with an unpaywall manuscript article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2804,7 +2804,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall no best open access location >", function() {
-      it("should not enhance the article with an unpaywall link and not show libkey one link view", function() {
+      it("should not enhance the article with an unpaywall link and disable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
