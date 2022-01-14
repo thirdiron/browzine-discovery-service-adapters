@@ -839,7 +839,7 @@ browzine.summon = (function() {
         }
 
         if ((directToPDFUrl || articleLinkUrl)) {
-          var cycles = 0;
+          var intervals = 0;
 
           (function poll() {
             var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
@@ -847,8 +847,8 @@ browzine.summon = (function() {
             if (quickLinkElement.length > 0) {
               quickLinkElement.remove();
             } else {
-              if (cycles < 120) {
-                cycles++;
+              if (intervals < 120) {
+                intervals++;
                 requestAnimationFrame(poll);
               }
             }
@@ -902,7 +902,7 @@ browzine.summon = (function() {
               }
 
               if (template) {
-                var cycles = 0;
+                var intervals = 0;
 
                 (function poll() {
                   var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
@@ -910,8 +910,8 @@ browzine.summon = (function() {
                   if (quickLinkElement.length > 0) {
                     quickLinkElement.remove();
                   } else {
-                    if (cycles < 120) {
-                      cycles++;
+                    if (intervals < 120) {
+                      intervals++;
                       requestAnimationFrame(poll);
                     }
                   }
