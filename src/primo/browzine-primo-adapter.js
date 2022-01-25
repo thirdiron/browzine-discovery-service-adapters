@@ -119,7 +119,7 @@ browzine.primo = (function() {
 
     if (isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
-      endpoint = api + "/articles/doi/" + doi + "?include=journal";
+      endpoint = api + "/articles/doi/" + doi + "?include=journal,library";
     }
 
     if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
@@ -425,9 +425,20 @@ browzine.primo = (function() {
     return featureEnabled;
   };
 
-  function showLibKeyOneLinkView() {
+  function showRetractionWatch() {
     var featureEnabled = false;
-    var config = browzine.libKeyOneLinkView;
+    var config = browzine.articleRetractionWatchEnabled;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
+  function showFormatChoice() {
+    var featureEnabled = false;
+    var config = browzine.showFormatChoice;
 
     if (config === true) {
       featureEnabled = true;
@@ -436,9 +447,9 @@ browzine.primo = (function() {
     return featureEnabled;
   };
 
-  function showRetractionWatch() {
+  function showLinkResolverLink() {
     var featureEnabled = false;
-    var config = browzine.articleRetractionWatchEnabled;
+    var config = browzine.showLinkResolverLink;
 
     if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
@@ -724,30 +735,27 @@ browzine.primo = (function() {
 
         var element = getElement(scope);
 
+        var libKeyLinkOptimizer = document.createElement("div");
+        libKeyLinkOptimizer.className = "libkey-link-optimizer";
+        libKeyLinkOptimizer.style = "display: flex; justify-content: flex-start;";
+
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
-
-          (function poll() {
-            var elementParent = getElementParent(element);
-            var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
-
-            if (availabilityLine) {
-              availabilityLine.insertAdjacentHTML('afterbegin', template);
-            } else {
-              requestAnimationFrame(poll);
-            }
-          })();
+          libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
+        if ((!directToPDFUrl || showFormatChoice()) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl);
+          libKeyLinkOptimizer.innerHTML += template;
+        }
 
+        if (libKeyLinkOptimizer.innerHTML) {
           (function poll() {
             var elementParent = getElementParent(element);
             var availabilityLine = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start");
 
             if (availabilityLine) {
-              availabilityLine.insertAdjacentHTML('afterbegin', template);
+              availabilityLine.insertAdjacentHTML('afterbegin', libKeyLinkOptimizer.outerHTML);
             } else {
               requestAnimationFrame(poll);
             }
@@ -779,7 +787,7 @@ browzine.primo = (function() {
           })();
         }
 
-        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
+        if (!showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
           var elementParent = getElementParent(element);
           var contentLinkElement = elementParent.querySelector("prm-search-result-availability-line .layout-align-start-start .layout-row");
 
@@ -788,7 +796,7 @@ browzine.primo = (function() {
           }
         }
 
-        if (showLibKeyOneLinkView() && directToPDFUrl) {
+        if (directToPDFUrl || articleLinkUrl) {
           var elementParent = getElementParent(element);
           var quickLinkElement = elementParent.querySelector("prm-quick-link");
 
@@ -846,7 +854,7 @@ browzine.primo = (function() {
                 })();
               }
 
-              if (showLibKeyOneLinkView() && template) {
+              if (!showLinkResolverLink() && template) {
                 var element = getElement(scope);
 
                 (function poll() {
@@ -861,7 +869,7 @@ browzine.primo = (function() {
                 })();
               }
 
-              if (showLibKeyOneLinkView() && template && pdfAvailable) {
+              if (template) {
                 var element = getElement(scope);
 
                 (function poll() {
@@ -920,8 +928,9 @@ browzine.primo = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
-    showLibKeyOneLinkView: showLibKeyOneLinkView,
     showRetractionWatch: showRetractionWatch,
+    showFormatChoice: showFormatChoice,
+    showLinkResolverLink: showLinkResolverLink,
     transition: transition,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,

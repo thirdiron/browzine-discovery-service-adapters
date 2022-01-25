@@ -2182,10 +2182,92 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
+    describe("search results article extra links and both browzine web link and direct to pdf link content links disabled >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+        browzine.showLinkResolverLink = false;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-quick-link><a target='_blank'><span>PDF</span></a></prm-quick-link><prm-search-result-availability-line><div class='layout-align-start-start'><div class='layout-row'><span class='availability-status'>Available Online</span></div></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1136/bmj.h2575"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575",
+              "fullTextFile": "https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file"
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1136%2Fbmj.h2575/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        delete browzine.showLinkResolverLink;
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should not show the content link option", function() {
+        expect(searchResult).toBeDefined();
+        expect(searchResult.text().trim()).toContain("Download PDF");
+        expect(searchResult.text().trim()).not.toContain("Available Online");
+      });
+    });
+
     describe("search results article extra links and both browzine web link and direct to pdf link >", function() {
       beforeEach(function() {
         primo = browzine.primo;
-        browzine.libKeyOneLinkView = true;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-quick-link><a target='_blank'><span>PDF</span></a></prm-quick-link><prm-search-result-availability-line><div class='layout-align-start-start'><div class='layout-row'><span class='availability-status'>Available Online</span></div></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
@@ -2255,16 +2337,15 @@ describe("BrowZine Primo Adapter >", function() {
 
       afterEach(function() {
         jasmine.Ajax.uninstall();
-        delete browzine.libKeyOneLinkView;
       });
 
-      it("should not show the content link option", function() {
+      it("should show the content link option by default", function() {
         expect(searchResult).toBeDefined();
         expect(searchResult.text().trim()).toContain("Download PDF");
-        expect(searchResult.text().trim()).not.toContain("Available Online");
+        expect(searchResult.text().trim()).toContain("Available Online");
       });
 
-      it("should not show the quick link option", function() {
+      it("should not show the quick link option by default", function() {
         expect(searchResult).toBeDefined();
         expect(searchResult.text().trim()).toContain("Download PDF");
 
@@ -2283,7 +2364,6 @@ describe("BrowZine Primo Adapter >", function() {
       browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
 
       primo = browzine.primo;
-      browzine.libKeyOneLinkView = true;
 
       searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-quick-link><a target='_blank'><span>PDF</span></a></prm-quick-link><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
@@ -2330,13 +2410,11 @@ describe("BrowZine Primo Adapter >", function() {
       delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
       delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
 
-      delete browzine.libKeyOneLinkView;
-
       jasmine.Ajax.uninstall();
     });
 
     describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
-      it("should enhance the article with an unpaywall article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2373,7 +2451,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articlePDFDownloadViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2414,7 +2492,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall article link and not show libkey one link view", function() {
+      it("should enhance the article with an unpaywall article link and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2448,10 +2526,10 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
 
         var quickLink = searchResult.find("prm-quick-link");
-        expect(quickLink.length).toEqual(1);
+        expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articleLinkViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2492,7 +2570,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function() {
-      it("should enhance the article with an unpaywall manuscript article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2529,7 +2607,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2570,7 +2648,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall manuscript article link and not show libkey one link view", function() {
+      it("should enhance the article with an unpaywall manuscript article link and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2604,10 +2682,10 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
 
         var quickLink = searchResult.find("prm-quick-link");
-        expect(quickLink.length).toEqual(1);
+        expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and not show libkey one link view", function() {
+      it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
         browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -2648,7 +2726,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
-      it("should enhance the article with an unpaywall article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2687,7 +2765,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function() {
-      it("should enhance the article with an unpaywall manuscript article pdf and show libkey one link view", function() {
+      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -2726,7 +2804,7 @@ describe("BrowZine Primo Adapter >", function() {
     });
 
     describe("unpaywall no best open access location >", function() {
-      it("should not enhance the article with an unpaywall link and not show libkey one link view", function() {
+      it("should not enhance the article with an unpaywall link and disable libkey link optimizer", function() {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({

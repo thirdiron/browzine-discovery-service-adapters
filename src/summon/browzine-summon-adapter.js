@@ -107,7 +107,7 @@ browzine.summon = (function() {
 
     if (isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
-      endpoint = api + "/articles/doi/" + doi + "?include=journal";
+      endpoint = api + "/articles/doi/" + doi + "?include=journal,library";
     }
 
     if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
@@ -447,9 +447,20 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
-  function showLibKeyOneLinkView() {
+  function showRetractionWatch() {
     var featureEnabled = false;
-    var config = browzine.libKeyOneLinkView;
+    var config = browzine.articleRetractionWatchEnabled;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
+  function showFormatChoice() {
+    var featureEnabled = false;
+    var config = browzine.showFormatChoice;
 
     if (config === true) {
       featureEnabled = true;
@@ -458,9 +469,9 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
-  function showRetractionWatch() {
+  function showLinkResolverLink() {
     var featureEnabled = false;
-    var config = browzine.articleRetractionWatchEnabled;
+    var config = browzine.showLinkResolverLink;
 
     if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
@@ -781,14 +792,28 @@ browzine.summon = (function() {
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
 
+        var libKeyLinkOptimizer = document.createElement("div");
+        libKeyLinkOptimizer.className = "libkey-link-optimizer";
+        libKeyLinkOptimizer.style = "display: flex; justify-content: flex-start;";
+
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
           var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
-          $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+          libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (!directToPDFUrl && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
+        if ((!directToPDFUrl || showFormatChoice()) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl);
-          $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+          libKeyLinkOptimizer.innerHTML += template;
+        }
+
+        if (libKeyLinkOptimizer.innerHTML) {
+          var secondaryTitle = libKeyLinkOptimizer.querySelector(".browzine:nth-child(2) .contentType");
+
+          if (secondaryTitle) {
+            secondaryTitle.remove();
+          }
+
+          $(documentSummary).find(".docFooter .row:eq(0)").prepend(libKeyLinkOptimizer);
         }
 
         if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
@@ -805,7 +830,7 @@ browzine.summon = (function() {
           $(documentSummary).find(".coverImage img").attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", "1px 1px 2px #ccc");
         }
 
-        if (showLibKeyOneLinkView() && (directToPDFUrl || articleLinkUrl)) {
+        if (!showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
           var contentLinkElement = $(documentSummary).find(".availabilityContent");
 
           if (contentLinkElement) {
@@ -813,12 +838,21 @@ browzine.summon = (function() {
           }
         }
 
-        if (showLibKeyOneLinkView() && directToPDFUrl) {
-          var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+        if ((directToPDFUrl || articleLinkUrl)) {
+          var intervals = 0;
 
-          if (quickLinkElement) {
-            quickLinkElement.remove();
-          }
+          (function poll() {
+            var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
+
+            if (quickLinkElement.length > 0) {
+              quickLinkElement.remove();
+            } else {
+              if (intervals < 120) {
+                intervals++;
+                requestAnimationFrame(poll);
+              }
+            }
+          })();
         }
       }
 
@@ -859,7 +893,7 @@ browzine.summon = (function() {
                 $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
               }
 
-              if (showLibKeyOneLinkView() && template) {
+              if (!showLinkResolverLink() && template) {
                 var contentLinkElement = $(documentSummary).find(".availabilityContent");
 
                 if (contentLinkElement) {
@@ -867,12 +901,21 @@ browzine.summon = (function() {
                 }
               }
 
-              if (showLibKeyOneLinkView() && template && pdfAvailable) {
-                var quickLinkElement = $(documentSummary).find("span.customPrimaryLinkContainer");
+              if (template) {
+                var intervals = 0;
 
-                if (quickLinkElement) {
-                  quickLinkElement.remove();
-                }
+                (function poll() {
+                  var quickLinkElement = $(documentSummary).find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
+
+                  if (quickLinkElement.length > 0) {
+                    quickLinkElement.remove();
+                  } else {
+                    if (intervals < 120) {
+                      intervals++;
+                      requestAnimationFrame(poll);
+                    }
+                  }
+                })();
               }
             }
           };
@@ -915,8 +958,9 @@ browzine.summon = (function() {
     showDirectToPDFLink: showDirectToPDFLink,
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
-    showLibKeyOneLinkView: showLibKeyOneLinkView,
     showRetractionWatch: showRetractionWatch,
+    showFormatChoice: showFormatChoice,
+    showLinkResolverLink: showLinkResolverLink,
     isFiltered: isFiltered,
     transition: transition,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
