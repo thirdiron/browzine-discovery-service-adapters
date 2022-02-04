@@ -544,6 +544,142 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
+    describe("search results article with both retracted article link and article link >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+        browzine.showFormatChoice = true;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1186/s11671-016-1523-5"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 59474947,
+              "type": "articles",
+              "title": "RETRACTED ARTICLE: Flexible Field Emitter for X-ray Generation by Implanting CNTs into Nickel Foil",
+              "date": "2016-07-11",
+              "authors": "Sun, Bin; Wang, Yan; Ding, Guifu",
+              "inPress": false,
+              "doi": "10.1186/s11671-016-1523-5",
+              "ILLURL": "https://illiad.mines.edu/illiad//illiad.dll?Action=10&Form=30&&rft.genre=article&rft.aulast=Sun&rft.issn=1931-7573&rft.jtitle=Nanoscale%20Research%20Letters&rft.atitle=RETRACTED%20ARTICLE%3A%20Flexible%20Field%20Emitter%20for%20X-ray%20Generation%20by%20Implanting%20CNTs%20into%20Nickel%20Foil&rft.volume=11&rft.issue=1&rft.spage=326&rft.epage=&rft.date=2016-07-11&rfr_id=BrowZine",
+              "pmid": "27401089",
+              "openAccess": true,
+              "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/59474947/full-text-file?utm_source=api_716",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/59474947/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "326",
+              "endPage": "",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 8645
+                  }
+                }
+              },
+              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5"
+            },
+            "included": [
+              {
+                "id": 8645,
+                "type": "journals",
+                "title": "Nanoscale Research Letters",
+                "issn": "19317573",
+                "sjrValue": 0.782,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1931-7573.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/8645?utm_source=api_716"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1186%2Fs11671-016-1523-5/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+        delete browzine.showFormatChoice;
+      });
+
+      it("should have an enhanced browse article in browzine option", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Issue Contents");
+        expect(template.text().trim()).toContain("Retracted Article");
+        expect(template.text().trim()).not.toContain("Read Article");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1931-7573.png");
+          });
+
+          done();
+        });
+      });
+
+      it("should open a new window when a retracted article link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716", "_blank");
+      });
+    });
+
     describe("search results article with a journal issn but no article doi >", function() {
       beforeEach(function() {
         primo = browzine.primo;
