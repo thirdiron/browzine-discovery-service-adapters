@@ -801,7 +801,7 @@ browzine.summon = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if ((!directToPDFUrl || showFormatChoice()) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
+        if ((!directToPDFUrl || (showFormatChoice() && !articleRetractionUrl)) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
