@@ -636,7 +636,7 @@ describe("BrowZine Primo Adapter >", function() {
         delete browzine.showFormatChoice;
       });
 
-      it("should have an enhanced browse article in browzine option", function() {
+      it("should have an enhanced browse article showing retraction watch only", function() {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
