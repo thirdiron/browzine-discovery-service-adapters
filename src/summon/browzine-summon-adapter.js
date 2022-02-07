@@ -542,7 +542,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function articleLinkTemplate(articleLinkUrl) {
+  function articleLinkTemplate(articleLinkUrl, articleRetractionUrl) {
     var paperIcon = getPaperIconSvg();
 
     var articleLinkTextWording = "View Now";
@@ -553,8 +553,16 @@ browzine.summon = (function() {
       articleLinkText = browzine.articleLinkText || articleLinkText;
     }
 
+    if (showRetractionWatchUI(articleRetractionUrl)) {
+      articleLinkUrl = articleRetractionUrl;
+      paperIcon = getRetractionWatchIconSvg();
+      articleLinkTextWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
+      articleLinkText = browzine.articleRetractionWatchText || "More Info";
+    }
+
     var template = "<div class='browzine'>" +
-      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span><a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 0px;'>{articleLinkText}</span></a>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span>" +
+      "<a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 0px;'>{articleLinkText}</span></a>" +
     "</div>";
 
     template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
@@ -802,7 +810,7 @@ browzine.summon = (function() {
         }
 
         if ((!directToPDFUrl || (showFormatChoice() && !articleRetractionUrl)) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
-          var template = articleLinkTemplate(articleLinkUrl);
+          var template = articleLinkTemplate(articleLinkUrl, articleRetractionUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 
