@@ -554,6 +554,30 @@ browzine.primo = (function() {
     return template;
   };
 
+  function retractionLinkTemplate(articleRetractionUrl) {
+    var articleLinkUrl = articleRetractionUrl;
+    var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+    var linkIconWidth = "15";
+    var linkIconMarginRight = "1.5px";
+    var articleLinkText = browzine.articleRetractionWatchText || "Retracted Article";
+
+    var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
+                      "<a class='browzine-article-link' href='{articleLinkUrl}' target='_blank' onclick='browzine.primo.transition(event, this)'>" +
+                          "<img alt='BrowZine Article Link Icon' src='{linkIcon}' class='browzine-article-link-icon' style='margin-bottom: -3px; margin-right: {linkIconMarginRight};' aria-hidden='true' width='{linkIconWidth}' height='16'/> " +
+                          "<span class='browzine-article-link-text'>{articleLinkText}</span> " +
+                          "<md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon>" +
+                      "</a>" +
+                   "</div>";
+
+    template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
+    template = template.replace(/{articleLinkText}/g, articleLinkText);
+    template = template.replace(/{linkIcon}/g, linkIcon);
+    template = template.replace(/{linkIconWidth}/g, linkIconWidth);
+    template = template.replace(/{linkIconMarginRight}/g, linkIconMarginRight);
+
+    return template;
+  };
+
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var browzineWebLinkText = "";
     var bookIcon = "https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg";
@@ -758,6 +782,11 @@ browzine.primo = (function() {
 
         if ((!directToPDFUrl || (showFormatChoice() && !articleRetractionUrl)) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl, articleRetractionUrl);
+          libKeyLinkOptimizer.innerHTML += template;
+        }
+
+        if (!directToPDFUrl && !articleLinkUrl && articleRetractionUrl && isArticle(scope) && showRetractionWatch()) {
+          var template = retractionLinkTemplate(articleRetractionUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 

@@ -682,6 +682,132 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
+    describe("retraction notice and no pdf link or article link >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0898929X"],
+                    doi: ["10.1162/jocn_a_00867"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 56171427,
+              "type": "articles",
+              "title": "Effects of Transcranial Direct Current Stimulation over Left Dorsolateral pFC on the Attentional Blink Depend on Individual Baseline Performance",
+              "date": "2015-12-01",
+              "authors": "London, Raquel E.; Slagter, Heleen A.",
+              "inPress": false,
+              "doi": "10.1162/jocn_a_00867",
+              "ILLURL": "",
+              "pmid": "26284996",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "",
+              "availableThroughBrowzine": false,
+              "startPage": "2382",
+              "endPage": "2393",
+              "relationships": {
+                "library": {
+                  "data": {
+                    "type": "libraries",
+                    "id": 1466
+                  }
+                }
+              },
+              "retractionNoticeUrl": "https://libkey.io/libraries/1466/10.1162/jocn_a_00867"
+            },
+            "included": [
+              {
+                "id": 32127,
+                "type": "journals",
+                "title": "Journal of Cognitive Neuroscience",
+                "issn": "0898929X",
+                "sjrValue": 2.132,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/0898-929X.png",
+                "browzineEnabled": false,
+                "externalLink": "https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?query=issn,exact,0898-929X,OR&query=issn,exact,,AND&pfilter=pfilter,exact,journals,AND&tab=default_tab&search_scope=default_scope&sortby=rank&vid=UBIN&lang=no_NO&mode=advanced&offset=0"
+              },
+              {
+                "id": 1466,
+                "type": "libraries",
+                "discoveryServiceBehavior": "classic"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1162%2Fjocn_a_00867/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show retraction notices when available even if no pdf link or article link available", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Retracted Article");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://libkey.io/libraries/1466/10.1162/jocn_a_00867");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0898-929X.png");
+          });
+
+          done();
+        });
+      });
+
+      it("should open a new window when a retracted article link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-article-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://libkey.io/libraries/1466/10.1162/jocn_a_00867", "_blank");
+      });
+    });
+
     describe("search results article with both retracted article link and article link >", function() {
       beforeEach(function() {
         primo = browzine.primo;

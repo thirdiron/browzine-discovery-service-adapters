@@ -573,6 +573,31 @@ browzine.summon = (function() {
     return template;
   };
 
+  function retractionLinkTemplate(articleRetractionUrl) {
+    var articleLinkUrl = articleRetractionUrl;
+    var paperIcon = getRetractionWatchIconSvg();
+
+    var articleLinkTextWording = "Retracted Article";
+    var articleLinkText = "More Info";
+
+    if (+browzine.version >= 2) {
+      articleLinkTextWording = browzine.articleRetractionWatchTextWording || articleLinkTextWording;
+      articleLinkText = browzine.articleRetractionWatchText || articleLinkText;
+    }
+
+    var template = "<div class='browzine'>" +
+      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span>" +
+      "<a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 0px;'>{articleLinkText}</span></a>" +
+    "</div>";
+
+    template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
+    template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
+    template = template.replace(/{articleLinkText}/g, articleLinkText);
+    template = template.replace(/{paperIcon}/g, paperIcon);
+
+    return template;
+  };
+
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
@@ -811,6 +836,11 @@ browzine.summon = (function() {
 
         if ((!directToPDFUrl || (showFormatChoice() && !articleRetractionUrl)) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl, articleRetractionUrl);
+          libKeyLinkOptimizer.innerHTML += template;
+        }
+
+        if (!directToPDFUrl && !articleLinkUrl && articleRetractionUrl && isArticle(scope) && showRetractionWatch()) {
+          var template = retractionLinkTemplate(articleRetractionUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 
