@@ -573,7 +573,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function retractionLinkTemplate(articleRetractionUrl) {
+  function retractionWatchLinkTemplate(articleRetractionUrl) {
     var articleLinkUrl = articleRetractionUrl;
     var paperIcon = getRetractionWatchIconSvg();
 
@@ -840,7 +840,7 @@ browzine.summon = (function() {
         }
 
         if (!directToPDFUrl && !articleLinkUrl && articleRetractionUrl && isArticle(scope) && showRetractionWatch()) {
-          var template = retractionLinkTemplate(articleRetractionUrl);
+          var template = retractionWatchLinkTemplate(articleRetractionUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 
@@ -1004,6 +1004,7 @@ browzine.summon = (function() {
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,
+    retractionWatchLinkTemplate: retractionWatchLinkTemplate,
     unpaywallArticlePDFTemplate: unpaywallArticlePDFTemplate,
     unpaywallArticleLinkTemplate: unpaywallArticleLinkTemplate,
     unpaywallManuscriptPDFTemplate: unpaywallManuscriptPDFTemplate,

@@ -554,7 +554,7 @@ browzine.primo = (function() {
     return template;
   };
 
-  function retractionLinkTemplate(articleRetractionUrl) {
+  function retractionWatchLinkTemplate(articleRetractionUrl) {
     var articleLinkUrl = articleRetractionUrl;
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
     var linkIconWidth = "15";
@@ -786,7 +786,7 @@ browzine.primo = (function() {
         }
 
         if (!directToPDFUrl && !articleLinkUrl && articleRetractionUrl && isArticle(scope) && showRetractionWatch()) {
-          var template = retractionLinkTemplate(articleRetractionUrl);
+          var template = retractionWatchLinkTemplate(articleRetractionUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 
@@ -975,6 +975,7 @@ browzine.primo = (function() {
     transition: transition,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,
+    retractionWatchLinkTemplate: retractionWatchLinkTemplate,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
     unpaywallArticlePDFTemplate: unpaywallArticlePDFTemplate,
     unpaywallArticleLinkTemplate: unpaywallArticleLinkTemplate,
