@@ -2088,6 +2088,75 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model retractionWatchLinkTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+      delete browzine.articleRetractionWatchText;
+    });
+
+    afterEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+      delete browzine.articleRetractionWatchText;
+    });
+
+    it("should build a retraction watch template for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var articleRetractionUrl = primo.getArticleRetractionUrl(scope, data);
+      var template = primo.retractionWatchLinkTemplate(articleRetractionUrl);
+
+      expect(data).toBeDefined();
+      expect(articleRetractionUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-article-link' href='https://develop.libkey.io/libraries/1252/10.1155/2019/5730746' target='_blank' onclick='browzine.primo.transition(event, this)'><img alt='BrowZine Article Link Icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg' class='browzine-article-link-icon' style='margin-bottom: -3px; margin-right: 1.5px;' aria-hidden='true' width='15' height='16'/> <span class='browzine-article-link-text'>Retracted Article</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+
+      expect(template).toContain("Retracted Article");
+      expect(template).toContain("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+    });
+
+    it("should apply the articleRetractionWatchText config property", function() {
+      browzine.articleRetractionWatchText = "Retracted Article (DO NOT REFERENCE)";
+
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(articleResponse);
+      var articleRetractionUrl = primo.getArticleRetractionUrl(scope, data);
+      var template = primo.retractionWatchLinkTemplate(articleRetractionUrl);
+
+      expect(template).toContain("Retracted Article (DO NOT REFERENCE)");
+    });
+  });
+
   describe("primo model browzineWebLinkTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var scope = {
