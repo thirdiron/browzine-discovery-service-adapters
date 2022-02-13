@@ -1312,6 +1312,36 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model enableLinkOptimizer method >", function() {
+    beforeEach(function() {
+      delete browzine.enableLinkOptimizer;
+    });
+
+    afterEach(function() {
+      delete browzine.enableLinkOptimizer;
+    });
+
+    it("should enable link optimizer when configuration property is undefined", function() {
+      delete browzine.enableLinkOptimizer;
+      expect(summon.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should enable link optimizer when configuration property is null", function() {
+      browzine.enableLinkOptimizer = null;
+      expect(summon.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should enable link optimizer when configuration property is true", function() {
+      browzine.enableLinkOptimizer = true;
+      expect(summon.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should disable link optimizer when configuration property is false", function() {
+      browzine.enableLinkOptimizer = false;
+      expect(summon.enableLinkOptimizer()).toEqual(false);
+    });
+  });
+
   describe("summon model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;

@@ -1763,6 +1763,36 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model enableLinkOptimizer method >", function() {
+    beforeEach(function() {
+      delete browzine.enableLinkOptimizer;
+    });
+
+    afterEach(function() {
+      delete browzine.enableLinkOptimizer;
+    });
+
+    it("should enable link optimizer when configuration property is undefined", function() {
+      delete browzine.enableLinkOptimizer;
+      expect(primo.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should enable link optimizer when configuration property is null", function() {
+      browzine.enableLinkOptimizer = null;
+      expect(primo.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should enable link optimizer when configuration property is true", function() {
+      browzine.enableLinkOptimizer = true;
+      expect(primo.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should disable link optimizer when configuration property is false", function() {
+      browzine.enableLinkOptimizer = false;
+      expect(primo.enableLinkOptimizer()).toEqual(false);
+    });
+  });
+
   describe("primo model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;

@@ -458,6 +458,17 @@ browzine.primo = (function() {
     return featureEnabled;
   };
 
+  function enableLinkOptimizer() {
+    var featureEnabled = false;
+    var config = browzine.enableLinkOptimizer;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function isFiltered(scope) {
     var validation = false;
     var result = getResult(scope);
@@ -837,7 +848,7 @@ browzine.primo = (function() {
           }
         }
 
-        if (directToPDFUrl || articleLinkUrl) {
+        if ((directToPDFUrl || articleLinkUrl) && enableLinkOptimizer()) {
           var elementParent = getElementParent(element);
           var quickLinkElement = elementParent.querySelector("prm-quick-link");
 
@@ -972,6 +983,7 @@ browzine.primo = (function() {
     showRetractionWatch: showRetractionWatch,
     showFormatChoice: showFormatChoice,
     showLinkResolverLink: showLinkResolverLink,
+    enableLinkOptimizer: enableLinkOptimizer,
     transition: transition,
     directToPDFTemplate: directToPDFTemplate,
     articleLinkTemplate: articleLinkTemplate,

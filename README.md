@@ -112,6 +112,8 @@ var browzine = {
 
   showFormatChoice: true,
   showLinkResolverLink: true,
+
+  enableLinkOptimizer: true,
 };
 ```
 
@@ -257,6 +259,8 @@ window.browzine = {
 
   showFormatChoice: true,
   showLinkResolverLink: true,
+
+  enableLinkOptimizer: true,
 };
 ```
 
