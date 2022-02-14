@@ -1343,9 +1343,9 @@ describe("BrowZine Primo Adapter >", function() {
         browzine.journalCoverImagesEnabled = false;
         browzine.articleBrowZineWebLinkTextEnabled = false;
         browzine.articlePDFDownloadLinkEnabled = false;
-        browzine.printRecordsIntegrationEnabled = false;
+        browzine.enableLinkOptimizer = false;
 
-        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-quick-link><a target='_blank'><span>PDF</span></a></prm-quick-link><prm-search-result-availability-line><div class='layout-align-start-start'><div class='layout-row'><span class='availability-status'>Available Online</span></div></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1424,6 +1424,7 @@ describe("BrowZine Primo Adapter >", function() {
         delete browzine.articleBrowZineWebLinkTextEnabled;
         delete browzine.articlePDFDownloadLinkEnabled;
         delete browzine.printRecordsIntegrationEnabled;
+        delete browzine.enableLinkOptimizer;
       });
 
       it("should not have a browzine direct to pdf link", function() {
@@ -1451,6 +1452,15 @@ describe("BrowZine Primo Adapter >", function() {
       it("should not enhance a print record when print record integration is disabled", function() {
         var template = searchResult.find(".browzine-web-link");
         expect(template.length).toEqual(0);
+      });
+
+      it("should not remove basic pdf link when link optimizer is disabled", function(done) {
+        requestAnimationFrame(function() {
+          var template = searchResult.find("prm-quick-link");
+          expect(template.length).toEqual(1);
+
+          done();
+        });
       });
     });
 

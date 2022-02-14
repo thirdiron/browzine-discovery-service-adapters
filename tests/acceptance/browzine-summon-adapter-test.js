@@ -994,9 +994,9 @@ describe("BrowZine Summon Adapter >", function() {
         browzine.journalCoverImagesEnabled = false;
         browzine.articleBrowZineWebLinkTextEnabled = false;
         browzine.articlePDFDownloadLinkEnabled = false;
-        browzine.printRecordsIntegrationEnabled = false;
+        browzine.enableLinkOptimizer = false;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1058,6 +1058,7 @@ describe("BrowZine Summon Adapter >", function() {
         delete browzine.articleBrowZineWebLinkTextEnabled;
         delete browzine.articlePDFDownloadLinkEnabled;
         delete browzine.printRecordsIntegrationEnabled;
+        delete browzine.enableLinkOptimizer;
       });
 
       it("should not have a browzine direct to pdf link", function() {
@@ -1078,6 +1079,15 @@ describe("BrowZine Summon Adapter >", function() {
       it("should not enhance a print record when print record integration is disabled", function() {
         var template = documentSummary.find(".browzine-web-link");
         expect(template.length).toEqual(0);
+      });
+
+      it("should not remove basic pdf link when link optimizer is disabled", function(done) {
+        requestAnimationFrame(function() {
+          var template = documentSummary.find(".docFooter .availabilityFullText a[display-text='::i18n.translations.PDF']");
+          expect(template.length).toEqual(1);
+
+          done();
+        });
       });
     });
 

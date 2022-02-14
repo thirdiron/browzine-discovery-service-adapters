@@ -480,6 +480,17 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
+  function enableLinkOptimizer() {
+    var featureEnabled = false;
+    var config = browzine.enableLinkOptimizer;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  };
+
   function isFiltered(scope) {
     var result = false;
 
@@ -876,7 +887,7 @@ browzine.summon = (function() {
           }
         }
 
-        if ((directToPDFUrl || articleLinkUrl)) {
+        if ((directToPDFUrl || articleLinkUrl) && enableLinkOptimizer()) {
           var intervals = 0;
 
           (function poll() {
@@ -999,6 +1010,7 @@ browzine.summon = (function() {
     showRetractionWatch: showRetractionWatch,
     showFormatChoice: showFormatChoice,
     showLinkResolverLink: showLinkResolverLink,
+    enableLinkOptimizer: enableLinkOptimizer,
     isFiltered: isFiltered,
     transition: transition,
     browzineWebLinkTemplate: browzineWebLinkTemplate,
