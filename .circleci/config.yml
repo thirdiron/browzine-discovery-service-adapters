@@ -192,11 +192,12 @@ workflows:
             branches:
               only: master
       - renogen:
-           requires:
-             - deploy-develop
+          #  requires:
+          #    - deploy-develop
            filters:
              branches:
                only:
+                 - feature/run-renogen-on-merge-to-develop
                  - develop
 
 experimental:
