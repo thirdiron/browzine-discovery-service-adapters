@@ -147,10 +147,11 @@ jobs:
     steps:
       - add_ssh_keys
       - run:
+          name: create ssh directory
+          command: mkdir ~/.ssh/
+      - run:
           name: add github.com to known_hosts
-          command: >
-            mkdir ~/.ssh/
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
+          command: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Clone release_notes_generator repository
           command: git clone git@github.com:thirdiron/release_notes_generator.git .
