@@ -141,6 +141,29 @@ jobs:
           command: |
             . ~/.nvm/nvm.sh
             npm run deploy-primo-master
+  renogen:
+    docker:
+      - image: cimg/node:12.18
+    steps:
+      - add_ssh_keys
+      - run:
+          name: create ssh directory
+          command: mkdir ~/.ssh/
+      - run:
+          name: add github.com to known_hosts
+          command: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Clone release_notes_generator repository
+          command: git clone git@github.com:thirdiron/release_notes_generator.git .
+      - run:
+          name: Install release_notes_generator dependencies
+          command: npm ci
+      - run:
+          name: Build release_notes_generator
+          command: npm run build
+      - run:
+          name: Generate release notes
+          command: npm run start -- browzine-discovery-service-adapters
 
 workflows:
   version: 2
@@ -171,6 +194,13 @@ workflows:
           filters:
             branches:
               only: master
+      - renogen:
+           requires:
+             - deploy-develop
+           filters:
+             branches:
+               only:
+                 - develop
 
 experimental:
   notify:
