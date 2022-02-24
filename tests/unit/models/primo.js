@@ -1874,12 +1874,22 @@ describe("Primo Model >", function() {
       expect(primo.isFiltered(scope)).toEqual(true);
     });
 
-    it("should not filter print records when deliveryCategory is unknown", function() {
+    it("should not filter print records when deliveryCategory is empty", function() {
       var scope = {
         result: {
           delivery: {
             deliveryCategory: []
           }
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(primo.isFiltered(scope)).toEqual(false);
+    });
+
+    it("should not filter print records when deliveryCategory is not present", function() {
+      var scope = {
+        result: {
+          delivery: {}
         }
       };
       browzine.printRecordsIntegrationEnabled = true;
