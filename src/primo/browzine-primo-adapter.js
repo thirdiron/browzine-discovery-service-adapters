@@ -474,7 +474,7 @@ browzine.primo = (function() {
     var result = getResult(scope);
 
     if (result && result.delivery) {
-      if (result.delivery.deliveryCategory) {
+      if (result.delivery.deliveryCategory && result.delivery.deliveryCategory.length > 0) {
         var deliveryCategory = result.delivery.deliveryCategory[0].trim().toLowerCase();
 
         if (deliveryCategory === "alma-p" && !showPrintRecords()) {

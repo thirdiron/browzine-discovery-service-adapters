@@ -1874,7 +1874,7 @@ describe("Primo Model >", function() {
       expect(primo.isFiltered(scope)).toEqual(true);
     });
 
-    it("should not error out when deliveryCategory is empty", function() {
+    it("should not filter print records when deliveryCategory is unknown", function() {
       var scope = {
         result: {
           delivery: {
@@ -1882,8 +1882,8 @@ describe("Primo Model >", function() {
           }
         }
       };
-      browzine.printRecordsIntegrationEnabled = false;
-      expect(primo.isFiltered(scope)).toEqual(true);
+      browzine.printRecordsIntegrationEnabled = true;
+      expect(primo.isFiltered(scope)).toEqual(false);
     });
   });
 
