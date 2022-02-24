@@ -544,6 +544,406 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
+    describe("retraction notice and only an article link >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0898929X"],
+                    doi: ["10.1162/jocn_a_00867"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 56171427,
+              "type": "articles",
+              "title": "Effects of Transcranial Direct Current Stimulation over Left Dorsolateral pFC on the Attentional Blink Depend on Individual Baseline Performance",
+              "date": "2015-12-01",
+              "authors": "London, Raquel E.; Slagter, Heleen A.",
+              "inPress": false,
+              "doi": "10.1162/jocn_a_00867",
+              "ILLURL": "https://sfu-primo.hosted.exlibrisgroup.com/primo-explore/openurl?ctx_ver=Z39.88-2004&rft.genre=article&ctx_enc=info:ofi%2Fenc:UTF-8&url_ver=Z39.88-2004&url_ctx_fmt=infofi%2Ffmt:kev:mtx:ctx&url_ctx_fmt=infofi%2Ffmt:kev:mtx:ctx&rfr_id=info:sid%2Fprimo.exlibrisgroup.com:primo4-article-cLinker&rft_val_fmt=info:ofi%2Ffmt:kev:mtx:article&rft.aulast=London&rft.issn=0898-929X&rft.jtitle=Journal%20of%20Cognitive%20Neuroscience&rft.atitle=Effects%20of%20Transcranial%20Direct%20Current%20Stimulation%20over%20Left%20Dorsolateral%20pFC%20on%20the%20Attentional%20Blink%20Depend%20on%20Individual%20Baseline%20Performance&rft.volume=27&rft.issue=12&rft.spage=2382&rft.epage=2393&rft.date=2015-12-01&rft.doi=10.1162%2Fjocn_a_00867&vid=SFUL&institution=01SFUL&url_ctx_val=&isSerivcesPage=true",
+              "pmid": "26284996",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "https://libkey.io/libraries/513/articles/56171427/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://browzine.com/libraries/513/journals/32127/issues/7986254?showArticleInContext=doi:10.1162%2Fjocn_a_00867&utm_source=api_572",
+              "relationships": {
+                "library": {
+                  "data": {
+                    "type": "libraries",
+                    "id": 513
+                  }
+                }
+              },
+              "retractionNoticeUrl": "https://libkey.io/libraries/513/10.1162/jocn_a_00867"
+            },
+            "included": [
+              {
+                "id": 32127,
+                "type": "journals",
+                "title": "Journal of Cognitive Neuroscience",
+                "issn": "0898929X",
+                "sjrValue": 2.132,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/0898-929X.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://browzine.com/libraries/513/journals/32127?utm_source=api_572"
+              },
+              {
+                "id": 513,
+                "type": "libraries",
+                "discoveryServiceBehavior": "classic"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1162%2Fjocn_a_00867/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show retraction notices when there is only an article link", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Issue Contents");
+        expect(template.text().trim()).toContain("Retracted Article");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/513/journals/32127/issues/7986254?showArticleInContext=doi:10.1162%2Fjocn_a_00867&utm_source=api_572");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://libkey.io/libraries/513/10.1162/jocn_a_00867");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0898-929X.png");
+          });
+
+          done();
+        });
+      });
+
+      it("should open a new window when a retracted article link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-article-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://libkey.io/libraries/513/10.1162/jocn_a_00867", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/513/journals/32127/issues/7986254?showArticleInContext=doi:10.1162%2Fjocn_a_00867&utm_source=api_572", "_blank");
+      });
+    });
+
+    describe("retraction notice and no pdf link or article link >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0898929X"],
+                    doi: ["10.1162/jocn_a_00867"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 56171427,
+              "type": "articles",
+              "title": "Effects of Transcranial Direct Current Stimulation over Left Dorsolateral pFC on the Attentional Blink Depend on Individual Baseline Performance",
+              "date": "2015-12-01",
+              "authors": "London, Raquel E.; Slagter, Heleen A.",
+              "inPress": false,
+              "doi": "10.1162/jocn_a_00867",
+              "ILLURL": "",
+              "pmid": "26284996",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "",
+              "availableThroughBrowzine": false,
+              "startPage": "2382",
+              "endPage": "2393",
+              "relationships": {
+                "library": {
+                  "data": {
+                    "type": "libraries",
+                    "id": 1466
+                  }
+                }
+              },
+              "retractionNoticeUrl": "https://libkey.io/libraries/1466/10.1162/jocn_a_00867"
+            },
+            "included": [
+              {
+                "id": 32127,
+                "type": "journals",
+                "title": "Journal of Cognitive Neuroscience",
+                "issn": "0898929X",
+                "sjrValue": 2.132,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/0898-929X.png",
+                "browzineEnabled": false,
+                "externalLink": "https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?query=issn,exact,0898-929X,OR&query=issn,exact,,AND&pfilter=pfilter,exact,journals,AND&tab=default_tab&search_scope=default_scope&sortby=rank&vid=UBIN&lang=no_NO&mode=advanced&offset=0"
+              },
+              {
+                "id": 1466,
+                "type": "libraries",
+                "discoveryServiceBehavior": "classic"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1162%2Fjocn_a_00867/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show retraction notices when available even if no pdf link or article link available", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Retracted Article");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://libkey.io/libraries/1466/10.1162/jocn_a_00867");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0898-929X.png");
+          });
+
+          done();
+        });
+      });
+
+      it("should open a new window when a retracted article link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-article-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://libkey.io/libraries/1466/10.1162/jocn_a_00867", "_blank");
+      });
+    });
+
+    describe("search results article with both retracted article link and article link >", function() {
+      beforeEach(function() {
+        primo = browzine.primo;
+        browzine.showFormatChoice = true;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1186/s11671-016-1523-5"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 59474947,
+              "type": "articles",
+              "title": "RETRACTED ARTICLE: Flexible Field Emitter for X-ray Generation by Implanting CNTs into Nickel Foil",
+              "date": "2016-07-11",
+              "authors": "Sun, Bin; Wang, Yan; Ding, Guifu",
+              "inPress": false,
+              "doi": "10.1186/s11671-016-1523-5",
+              "ILLURL": "https://illiad.mines.edu/illiad//illiad.dll?Action=10&Form=30&&rft.genre=article&rft.aulast=Sun&rft.issn=1931-7573&rft.jtitle=Nanoscale%20Research%20Letters&rft.atitle=RETRACTED%20ARTICLE%3A%20Flexible%20Field%20Emitter%20for%20X-ray%20Generation%20by%20Implanting%20CNTs%20into%20Nickel%20Foil&rft.volume=11&rft.issue=1&rft.spage=326&rft.epage=&rft.date=2016-07-11&rfr_id=BrowZine",
+              "pmid": "27401089",
+              "openAccess": true,
+              "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/59474947/full-text-file?utm_source=api_716",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/59474947/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "326",
+              "endPage": "",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 8645
+                  }
+                }
+              },
+              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5"
+            },
+            "included": [
+              {
+                "id": 8645,
+                "type": "journals",
+                "title": "Nanoscale Research Letters",
+                "issn": "19317573",
+                "sjrValue": 0.782,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1931-7573.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/8645?utm_source=api_716"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1186%2Fs11671-016-1523-5/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+        delete browzine.showFormatChoice;
+      });
+
+      it("should have an enhanced browse article showing retraction watch only", function() {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Issue Contents");
+        expect(template.text().trim()).toContain("Retracted Article");
+        expect(template.text().trim()).not.toContain("Read Article");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function(done) {
+        requestAnimationFrame(function() {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function(coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1931-7573.png");
+          });
+
+          done();
+        });
+      });
+
+      it("should open a new window when a retracted article link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716", "_blank");
+      });
+    });
+
     describe("search results article with a journal issn but no article doi >", function() {
       beforeEach(function() {
         primo = browzine.primo;
@@ -943,9 +1343,9 @@ describe("BrowZine Primo Adapter >", function() {
         browzine.journalCoverImagesEnabled = false;
         browzine.articleBrowZineWebLinkTextEnabled = false;
         browzine.articlePDFDownloadLinkEnabled = false;
-        browzine.printRecordsIntegrationEnabled = false;
+        browzine.enableLinkOptimizer = false;
 
-        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-quick-link><a target='_blank'><span>PDF</span></a></prm-quick-link><prm-search-result-availability-line><div class='layout-align-start-start'><div class='layout-row'><span class='availability-status'>Available Online</span></div></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1024,6 +1424,7 @@ describe("BrowZine Primo Adapter >", function() {
         delete browzine.articleBrowZineWebLinkTextEnabled;
         delete browzine.articlePDFDownloadLinkEnabled;
         delete browzine.printRecordsIntegrationEnabled;
+        delete browzine.enableLinkOptimizer;
       });
 
       it("should not have a browzine direct to pdf link", function() {
@@ -1051,6 +1452,15 @@ describe("BrowZine Primo Adapter >", function() {
       it("should not enhance a print record when print record integration is disabled", function() {
         var template = searchResult.find(".browzine-web-link");
         expect(template.length).toEqual(0);
+      });
+
+      it("should not remove basic pdf link when link optimizer is disabled", function(done) {
+        requestAnimationFrame(function() {
+          var template = searchResult.find("prm-quick-link");
+          expect(template.length).toEqual(1);
+
+          done();
+        });
       });
     });
 

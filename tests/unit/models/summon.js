@@ -1312,6 +1312,36 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model enableLinkOptimizer method >", function() {
+    beforeEach(function() {
+      delete browzine.enableLinkOptimizer;
+    });
+
+    afterEach(function() {
+      delete browzine.enableLinkOptimizer;
+    });
+
+    it("should enable link optimizer when configuration property is undefined", function() {
+      delete browzine.enableLinkOptimizer;
+      expect(summon.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should enable link optimizer when configuration property is null", function() {
+      browzine.enableLinkOptimizer = null;
+      expect(summon.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should enable link optimizer when configuration property is true", function() {
+      browzine.enableLinkOptimizer = true;
+      expect(summon.enableLinkOptimizer()).toEqual(true);
+    });
+
+    it("should disable link optimizer when configuration property is false", function() {
+      browzine.enableLinkOptimizer = false;
+      expect(summon.enableLinkOptimizer()).toEqual(false);
+    });
+  });
+
   describe("summon model isFiltered method >", function() {
     beforeEach(function() {
       delete browzine.printRecordsIntegrationEnabled;
@@ -1715,6 +1745,133 @@ describe("Summon Model >", function() {
       $template.innerHTML = template;
 
       expect($template.innerText).toContain("View Now Article Page");
+    });
+  });
+
+  describe("summon model retractionWatchLinkTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+      delete browzine.articleRetractionWatchTextWording;
+      delete browzine.articleRetractionWatchText;
+      delete browzine.version;
+    });
+
+    afterEach(function() {
+      delete browzine.articleRetractionWatchEnabled;
+      delete browzine.articleRetractionWatchTextWording;
+      delete browzine.articleRetractionWatchText;
+      delete browzine.version;
+    });
+
+    it("should build a retraction watch link template for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.retractionWatchLinkTemplate(articleRetractionUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect(data).toBeDefined();
+      expect(articleRetractionUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toContain("https://develop.libkey.io/libraries/1252/10.1155/2019/5730746");
+
+      expect($template.innerText).toContain("Retracted Article More Info");
+    });
+
+    it("should apply the articleRetractionWatchTextWording config property", function() {
+      browzine.version = 2;
+      browzine.articleRetractionWatchTextWording = "Retracted Article (DO NOT REFERENCE)";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.retractionWatchLinkTemplate(articleRetractionUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Retracted Article (DO NOT REFERENCE)");
+    });
+
+    it("should apply the articleRetractionWatchText config property", function() {
+      browzine.version = "2";
+      browzine.articleRetractionWatchText = "Learn More";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.retractionWatchLinkTemplate(articleRetractionUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Retracted Article Learn More");
+    });
+
+    it("should not apply the articleRetractionWatchTextWording config property", function() {
+      delete browzine.version;
+      browzine.articleLinkTextWording = "Retracted Article (DO NOT REFERENCE)";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.retractionWatchLinkTemplate(articleRetractionUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Retracted Article More Info");
+      expect($template.innerText).not.toContain("Retracted Article (DO NOT REFERENCE)");
+    });
+
+    it("should not apply the articleRetractionWatchText config property", function() {
+      delete browzine.version;
+      browzine.articleRetractionWatchText = "Learn More";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var template = summon.retractionWatchLinkTemplate(articleRetractionUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Retracted Article More Info");
+      expect($template.innerText).not.toContain("Learn More");
     });
   });
 
