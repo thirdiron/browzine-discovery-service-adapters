@@ -1873,6 +1873,18 @@ describe("Primo Model >", function() {
       browzine.printRecordsIntegrationEnabled = false;
       expect(primo.isFiltered(scope)).toEqual(true);
     });
+
+    it("should not error out when deliveryCategory is empty", function() {
+      var scope = {
+        result: {
+          delivery: {
+            deliveryCategory: []
+          }
+        }
+      };
+      browzine.printRecordsIntegrationEnabled = false;
+      expect(primo.isFiltered(scope)).toEqual(true);
+    });
   });
 
   describe("primo model transition method >", function() {
