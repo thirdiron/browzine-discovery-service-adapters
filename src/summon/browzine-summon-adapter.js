@@ -852,6 +852,7 @@ browzine.summon = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
+        var unpaywallUsable = getUnpaywallUsable(scope, data);
 
         var libKeyLinkOptimizer = document.createElement("div");
         libKeyLinkOptimizer.className = "libkey-link-optimizer";
@@ -922,7 +923,7 @@ browzine.summon = (function() {
         }
       }
 
-      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
+      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
         var endpoint = getUnpaywallEndpoint(scope);
 
         if (endpoint && isUnpaywallEnabled()) {
