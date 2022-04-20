@@ -246,12 +246,14 @@ browzine.primo = (function() {
     var unpaywallUsable = true;
     if (isArticle(scope)) {
       if (data) {
-        if (data.unpaywallUsable) {
-          unpaywallUsable = data.unpaywallUsable;
+        if (data.hasOwnProperty('unpaywallUsable')) {
+          unpaywallUsable = !!data.unpaywallUsable;
         }
       } else {
         unpaywallUsable = true;
       }
+    } else {
+      unpaywallUsable = false;
     }
 
     return unpaywallUsable;
