@@ -242,6 +242,17 @@ browzine.primo = (function() {
     return directToPDFUrl;
   };
 
+  function getUnpaywallUsable(scope, data) {
+    var unpaywallUsable = false;
+    if (isArticle(scope)) {
+      if (data && data.unpaywallUsable) {
+        unpaywallUsable = data.unpaywallUsable;
+      }
+    }
+
+    return unpaywallUsable;
+  };
+
   function getArticleLinkUrl(scope, data) {
     var articleLinkUrl = null;
 
@@ -859,9 +870,10 @@ browzine.primo = (function() {
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
+        var unpaywallUsable = getUnpaywallUsable(scope);
         var endpoint = getUnpaywallEndpoint(scope);
 
-        if (endpoint && isUnpaywallEnabled()) {
+        if (unpaywallUsable && endpoint && isUnpaywallEnabled()) {
           var requestUnpaywall = new XMLHttpRequest();
           requestUnpaywall.open("GET", endpoint, true);
           requestUnpaywall.setRequestHeader("Content-type", "application/json");
@@ -966,6 +978,7 @@ browzine.primo = (function() {
     getBrowZineEnabled: getBrowZineEnabled,
     isDefaultCoverImage: isDefaultCoverImage,
     getDirectToPDFUrl: getDirectToPDFUrl,
+    getUnpaywallUsable: getUnpaywallUsable,
     getArticleLinkUrl: getArticleLinkUrl,
     getArticleRetractionUrl: getArticleRetractionUrl,
     isUnknownVersion: isUnknownVersion,
