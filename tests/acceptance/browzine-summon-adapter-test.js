@@ -1284,6 +1284,185 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("search results article with browzine results, no pdf url, and unpaywall not usable >", function() {
+      beforeEach(function() {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1136/bmj.h2575"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var cmsRequest = jasmine.Ajax.requests.mostRecent();
+        cmsRequest.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "contentLocation": "",
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "",
+              "fullTextFile": "",
+              "unpaywallUsable": false
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": false,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+      });
+
+      afterEach(function() {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should not enhance the article with an unpaywall article pdf", function() {
+        var template = documentSummary.find(".browzine");
+        expect(template).toBeDefined();
+        expect(template.text().trim()).not.toContain("View Now (via Unpaywall) PDF");
+      });
+    });
+
+    describe("search results article with browzine results, no pdf url, and unpaywall usable >", function() {
+      beforeEach(function() {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1136/bmj.h2575"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var cmsRequest = jasmine.Ajax.requests.mostRecent();
+        cmsRequest.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": true,
+              "contentLocation": "",
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "",
+              "fullTextFile": "",
+              "unpaywallUsable": true
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": false,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+      });
+
+      afterEach(function() {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should enhance the article with an unpaywall article pdf", function() {
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "best_oa_location": {
+              "endpoint_id": null,
+              "evidence": "open (via free pdf)",
+              "host_type": "publisher",
+              "is_best": true,
+              "license": "cc-by-nc-nd",
+              "pmh_id": null,
+              "repository_institution": null,
+              "updated": "2019-10-11T20:52:04.790279",
+              "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+              "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+              "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+              "version": "publishedVersion"
+            }
+          })
+        });
+
+        var template = documentSummary.find(".browzine");
+        expect(template).toBeDefined();
+        expect(template.text().trim()).toContain("View Now (via Unpaywall) PDF");
+      });
+    });
+
     describe("search results article with no browzine results that calls unpaywall >", function() {
       beforeEach(function() {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
