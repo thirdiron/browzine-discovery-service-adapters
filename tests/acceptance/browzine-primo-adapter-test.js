@@ -2523,9 +2523,7 @@ describe("BrowZine Primo Adapter >", function() {
 
         primo.searchResult($scope);
 
-        var request = jasmine.Ajax.requests.mostRecent();
-
-        request.respondWith({
+        jasmine.Ajax.requests.at(0).respondWith({
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
@@ -2568,10 +2566,123 @@ describe("BrowZine Primo Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      it("should not enhance the article with an unpaywall article pdf", function() {
+      it("should not call unpaywall and not add a Download PDF link", function() {
+        expect(jasmine.Ajax.requests.count()).toBe(1);
         var template = searchResult.find(".browzine");
         expect(template).toBeDefined();
         expect(searchResult.text().trim()).not.toContain("Download PDF (via Unpaywall)");
+      });
+    });
+
+    describe("search results article with browzine results, no pdf url, and unpaywall usable >", function() {
+      beforeEach(function() {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.$ctrl = {
+            parentCtrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0028-4793"],
+                    doi: ["10.1136/bmj.h2575"]
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$ctrl.parentCtrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        jasmine.Ajax.requests.at(0).respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 55134408,
+              "type": "articles",
+              "title": "New England Journal of Medicine reconsiders relationship with industry",
+              "date": "2015-05-12",
+              "authors": "McCarthy, M.",
+              "inPress": false,
+              "availableThroughBrowzine": false,
+              "contentLocation": "",
+              "startPage": "h2575",
+              "endPage": "h2575",
+              "browzineWebLink": "",
+              "fullTextFile": "",
+              "unpaywallUsable": true
+            },
+            "included": [{
+              "id": 18126,
+              "type": "journals",
+              "title": "theBMJ",
+              "issn": "09598138",
+              "sjrValue": 2.567,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0959-8138.png",
+              "browzineEnabled": false,
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
+            }]
+          })
+        });
+        jasmine.Ajax.requests.at(1).respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "best_oa_location": {
+              "endpoint_id": null,
+              "evidence": "open (via free pdf)",
+              "host_type": "publisher",
+              "is_best": true,
+              "license": "cc-by-nc-nd",
+              "pmh_id": null,
+              "repository_institution": null,
+              "updated": "2019-10-11T20:52:04.790279",
+              "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+              "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+              "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+              "version": "publishedVersion"
+            }
+          })
+        });
+      });
+
+      afterEach(function() {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should call unpaywall and add a Download PDF link", function() {
+        var template = searchResult.find(".browzine");
+        expect(template).toBeDefined();
+        expect(searchResult.text().trim()).toContain("Download PDF (via Unpaywall)");
+        expect(jasmine.Ajax.requests.count()).toBe(2);
       });
     });
 
