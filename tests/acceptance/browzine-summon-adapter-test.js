@@ -1311,8 +1311,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon.adapter(documentSummary);
 
-        var cmsRequest = jasmine.Ajax.requests.mostRecent();
-        cmsRequest.respondWith({
+        jasmine.Ajax.requests.at(0).respondWith({
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
@@ -1355,7 +1354,8 @@ describe("BrowZine Summon Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      it("should not enhance the article with an unpaywall article pdf", function() {
+      it("should call unpaywall and not enhance the article with an unpaywall article pdf", function() {
+        expect(jasmine.Ajax.requests.count()).toBe(1);
         var template = documentSummary.find(".browzine");
         expect(template).toBeDefined();
         expect(template.text().trim()).not.toContain("View Now (via Unpaywall) PDF");
@@ -1389,8 +1389,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon.adapter(documentSummary);
 
-        var cmsRequest = jasmine.Ajax.requests.mostRecent();
-        cmsRequest.respondWith({
+        jasmine.Ajax.requests.at(0).respondWith({
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
@@ -1421,6 +1420,28 @@ describe("BrowZine Summon Adapter >", function() {
             }]
           })
         });
+        jasmine.Ajax.requests.at(1).respondWith(
+          {
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "open (via free pdf)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": "cc-by-nc-nd",
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2019-10-11T20:52:04.790279",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+                "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "version": "publishedVersion"
+              }
+            })
+          }
+        );
       });
 
       afterEach(function() {
@@ -1433,30 +1454,8 @@ describe("BrowZine Summon Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      it("should enhance the article with an unpaywall article pdf", function() {
-        var request = jasmine.Ajax.requests.mostRecent();
-
-        request.respondWith({
-          status: 200,
-          contentType: "application/json",
-          response: JSON.stringify({
-            "best_oa_location": {
-              "endpoint_id": null,
-              "evidence": "open (via free pdf)",
-              "host_type": "publisher",
-              "is_best": true,
-              "license": "cc-by-nc-nd",
-              "pmh_id": null,
-              "repository_institution": null,
-              "updated": "2019-10-11T20:52:04.790279",
-              "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
-              "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
-              "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
-              "version": "publishedVersion"
-            }
-          })
-        });
-
+      it("should call unpaywall and enhance the article with an unpaywall article pdf", function() {
+        expect(jasmine.Ajax.requests.count()).toBe(2);
         var template = documentSummary.find(".browzine");
         expect(template).toBeDefined();
         expect(template.text().trim()).toContain("View Now (via Unpaywall) PDF");

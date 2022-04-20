@@ -2679,10 +2679,10 @@ describe("BrowZine Primo Adapter >", function() {
       });
 
       it("should call unpaywall and add a Download PDF link", function() {
+        expect(jasmine.Ajax.requests.count()).toBe(2);
         var template = searchResult.find(".browzine");
         expect(template).toBeDefined();
         expect(searchResult.text().trim()).toContain("Download PDF (via Unpaywall)");
-        expect(jasmine.Ajax.requests.count()).toBe(2);
       });
     });
 
