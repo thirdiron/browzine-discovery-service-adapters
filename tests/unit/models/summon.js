@@ -393,6 +393,74 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getUnpaywallUsable method >", function() {
+
+    it("should return true if an article and data unpaywallUsable is true", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = true;
+      var data = summon.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return false if an article and data unpaywallUsable is false", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = summon.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
+    it("should return true if an article and data has no unpaywallUsable field", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      var data = summon.getData(articleResponse);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return true if an article and no data", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      expect(summon.getUnpaywallUsable(scope, undefined)).toEqual(true);
+    });
+
+    it("should return false if not an article", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+      const journalResponseWithUnpaywallUsable = {...journalResponse};
+      journalResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = summon.getData(journalResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
+  });
+
   describe("summon model getUnpaywallEndpoint method >", function() {
     afterEach(function() {
       delete browzine.unpaywallEmailAddressKey;
