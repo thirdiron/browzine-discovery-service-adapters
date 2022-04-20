@@ -230,6 +230,23 @@ browzine.summon = (function() {
     return directToPDFUrl;
   };
 
+  function getUnpaywallUsable(scope, data) {
+    var unpaywallUsable = true;
+    if (isArticle(scope)) {
+      if (data) {
+        if (data.hasOwnProperty('unpaywallUsable')) {
+          unpaywallUsable = !!data.unpaywallUsable;
+        }
+      } else {
+        unpaywallUsable = true;
+      }
+    } else {
+      unpaywallUsable = false;
+    }
+
+    return unpaywallUsable;
+  };
+
   function getArticleLinkUrl(scope, data) {
     var articleLinkUrl = null;
 
@@ -1001,6 +1018,7 @@ browzine.summon = (function() {
     getUnpaywallArticleLinkUrl: getUnpaywallArticleLinkUrl,
     getUnpaywallManuscriptArticlePDFUrl: getUnpaywallManuscriptArticlePDFUrl,
     getUnpaywallManuscriptArticleLinkUrl: getUnpaywallManuscriptArticleLinkUrl,
+    getUnpaywallUsable: getUnpaywallUsable,
     showJournalCoverImages: showJournalCoverImages,
     showJournalBrowZineWebLinkText: showJournalBrowZineWebLinkText,
     showArticleBrowZineWebLinkText: showArticleBrowZineWebLinkText,
