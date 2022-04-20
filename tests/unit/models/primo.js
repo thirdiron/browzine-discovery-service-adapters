@@ -800,6 +800,24 @@ describe("Primo Model >", function() {
       expect(primo.getUnpaywallUsable(scope, data)).toEqual(true);
     });
 
+    it("should return true if no data", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      expect(primo.getUnpaywallUsable(scope, undefined)).toEqual(true);
+    });
+
     it("should return false if data unpaywallUsable is false", function() {
       var scope = {
         result: {
