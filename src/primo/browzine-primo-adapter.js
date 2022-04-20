@@ -243,7 +243,7 @@ browzine.primo = (function() {
   };
 
   function getUnpaywallUsable(scope, data) {
-    var unpaywallUsable = false;
+    var unpaywallUsable = true;
     if (isArticle(scope)) {
       if (data) {
         if (data.unpaywallUsable) {
@@ -792,6 +792,7 @@ browzine.primo = (function() {
         var browzineEnabled = getBrowZineEnabled(scope, data, journal);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
+        var unpaywallUsable = getUnpaywallUsable(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
 
@@ -873,11 +874,9 @@ browzine.primo = (function() {
         }
       }
 
-      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
-        var unpaywallUsable = getUnpaywallUsable(scope);
+      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
         var endpoint = getUnpaywallEndpoint(scope);
-
-        if (unpaywallUsable && endpoint && isUnpaywallEnabled()) {
+        if (endpoint && isUnpaywallEnabled()) {
           var requestUnpaywall = new XMLHttpRequest();
           requestUnpaywall.open("GET", endpoint, true);
           requestUnpaywall.setRequestHeader("Content-type", "application/json");
