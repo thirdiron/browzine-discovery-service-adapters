@@ -231,20 +231,13 @@ browzine.summon = (function() {
   };
 
   function getUnpaywallUsable(scope, data) {
-    var unpaywallUsable = true;
-    if (isArticle(scope)) {
-      if (data) {
-        if (data.hasOwnProperty('unpaywallUsable')) {
-          unpaywallUsable = !!data.unpaywallUsable;
-        }
-      } else {
-        unpaywallUsable = true;
-      }
-    } else {
-      unpaywallUsable = false;
+    if (!isArticle(scope)) {
+      return false;
     }
-
-    return unpaywallUsable;
+    if (!data || !data.hasOwnProperty("unpaywallUsable")) {
+      return true;
+    }
+    return !!data.unpaywallUsable;
   };
 
   function getArticleLinkUrl(scope, data) {
