@@ -230,6 +230,16 @@ browzine.summon = (function() {
     return directToPDFUrl;
   };
 
+  function getUnpaywallUsable(scope, data) {
+    if (!isArticle(scope)) {
+      return false;
+    }
+    if (!data || !data.hasOwnProperty("unpaywallUsable")) {
+      return true;
+    }
+    return !!data.unpaywallUsable;
+  };
+
   function getArticleLinkUrl(scope, data) {
     var articleLinkUrl = null;
 
@@ -835,6 +845,7 @@ browzine.summon = (function() {
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
+        var unpaywallUsable = getUnpaywallUsable(scope, data);
 
         var libKeyLinkOptimizer = document.createElement("div");
         libKeyLinkOptimizer.className = "libkey-link-optimizer";
@@ -905,7 +916,7 @@ browzine.summon = (function() {
         }
       }
 
-      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
+      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
         var endpoint = getUnpaywallEndpoint(scope);
 
         if (endpoint && isUnpaywallEnabled()) {
@@ -1001,6 +1012,7 @@ browzine.summon = (function() {
     getUnpaywallArticleLinkUrl: getUnpaywallArticleLinkUrl,
     getUnpaywallManuscriptArticlePDFUrl: getUnpaywallManuscriptArticlePDFUrl,
     getUnpaywallManuscriptArticleLinkUrl: getUnpaywallManuscriptArticleLinkUrl,
+    getUnpaywallUsable: getUnpaywallUsable,
     showJournalCoverImages: showJournalCoverImages,
     showJournalBrowZineWebLinkText: showJournalBrowZineWebLinkText,
     showArticleBrowZineWebLinkText: showArticleBrowZineWebLinkText,

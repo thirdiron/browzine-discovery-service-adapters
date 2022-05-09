@@ -776,6 +776,113 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model getUnpaywallUsable method >", function() {
+
+    it("should return true if an article and data unpaywallUsable is true", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = true;
+      var data = primo.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return false if an article and data unpaywallUsable is false", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = primo.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
+    it("should return true if an article and data has no unpaywallUsable field", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      var data = primo.getData(articleResponse);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return true if an article and no data", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      expect(primo.getUnpaywallUsable(scope, undefined)).toEqual(true);
+    });
+
+    it("should return false if not an article", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+            }
+          }
+        }
+      };
+      const journalResponseWithUnpaywallUsable = {...journalResponse};
+      journalResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = primo.getData(journalResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
+  });
+
   describe("primo model getBrowZineWebLink method >", function() {
     it("should include a browzineWebLink in the BrowZine API response for a journal", function() {
       var data = primo.getData(journalResponse);
