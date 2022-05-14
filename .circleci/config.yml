@@ -29,6 +29,11 @@ jobs:
           paths:
             - node_modules
       - run:
+          name: Lint
+          command: |
+            . ~/.nvm/nvm.sh
+            npm run lint
+      - run:
           name: Automated Tests
           command: |
             . ~/.nvm/nvm.sh
