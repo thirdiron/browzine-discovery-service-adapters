@@ -969,16 +969,18 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0096-6762", "0028-4793"]
+                    addata: {
+                      issn: ["0096-6762", "0028-4793"]
+                    }
                   }
                 }
               }
@@ -988,7 +990,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -1052,17 +1054,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -1072,7 +1076,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -1160,17 +1164,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -1180,7 +1186,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -1261,17 +1267,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -1281,7 +1289,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -1366,22 +1374,24 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
+
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                  delivery: {
+                    deliveryCategory: ["Alma-P"]
                   }
-                },
-
-                delivery: {
-                  deliveryCategory: ["Alma-P"]
                 }
               }
             }
@@ -1390,7 +1400,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -1489,17 +1499,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -1509,7 +1521,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -1571,16 +1583,18 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["1543687X"]
+                    addata: {
+                      issn: ["1543687X"]
+                    }
                   }
                 }
               }
@@ -1590,7 +1604,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -1648,17 +1662,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -1668,7 +1684,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -2085,17 +2101,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -2105,7 +2123,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -2513,17 +2531,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -2533,7 +2553,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -2605,17 +2625,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -2625,7 +2647,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -2711,17 +2733,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["21582440"],
-                    doi: ["10.1177/2158244020915900"]
+                    addata: {
+                      issn: ["21582440"],
+                      doi: ["10.1177/2158244020915900"]
+                    }
                   }
                 }
               }
@@ -2731,7 +2755,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
@@ -2822,17 +2846,19 @@ describe("BrowZine Primo Adapter >", function() {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.$ctrl = {
-            parentCtrl: {
-              result: {
-                pnx: {
-                  display: {
-                    type: ["article"]
-                  },
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
 
-                  addata: {
-                    issn: ["0028-4793"],
-                    doi: ["10.1136/bmj.h2575"]
+                    addata: {
+                      issn: ["0028-4793"],
+                      doi: ["10.1136/bmj.h2575"]
+                    }
                   }
                 }
               }
@@ -2842,7 +2868,7 @@ describe("BrowZine Primo Adapter >", function() {
           searchResult = $compile(searchResult)($scope);
         });
 
-        $scope.$ctrl.parentCtrl.$element = searchResult;
+        $scope.$parent.$ctrl.$element = searchResult;
 
         jasmine.Ajax.install();
 
