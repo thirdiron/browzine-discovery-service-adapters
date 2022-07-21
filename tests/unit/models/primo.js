@@ -180,16 +180,18 @@ describe("Primo Model >", function() {
 
   describe("primo model getScope method >", function() {
     it("should retrieve the scope from a search result", function() {
-      $scope.$ctrl = {
-        parentCtrl: {
-          result: {
-            pnx: {
-              display: {
-                type: ["journal"]
-              },
+      var $scope = {
+        $parent: {
+          $ctrl: {
+            result: {
+              pnx: {
+                display: {
+                  type: ["journal"]
+                },
 
-              addata: {
-                issn: ["0096-6762", "0028-4793"]
+                addata: {
+                  issn: ["0096-6762", "0028-4793"]
+                }
               }
             }
           }

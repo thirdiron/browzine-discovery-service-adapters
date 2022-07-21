@@ -739,7 +739,7 @@ browzine.primo = (function() {
   };
 
   function getScope($scope) {
-    return $scope && $scope.$ctrl && $scope.$ctrl.parentCtrl ? $scope.$ctrl.parentCtrl : undefined;
+    return $scope && $scope.$parent && $scope.$parent.$ctrl ? $scope.$parent.$ctrl : undefined;
   };
 
   function shouldEnhance(scope) {
