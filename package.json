@@ -8,7 +8,7 @@
   },
   "scripts": {
     "server": "http-server --cors -p 8080",
-    "test": "karma start",
+    "test": "./node_modules/karma/bin/karma start",
     "tunnel": "ngrok http 8080",
     "deploy-summon-hotfix": "AWS_BUCKET_FOLDER=summon/hotfix deploy-web-to-s3 src/summon",
     "deploy-summon-feature": "AWS_BUCKET_FOLDER=summon/feature deploy-web-to-s3 src/summon",
