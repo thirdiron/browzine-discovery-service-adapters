@@ -183,6 +183,7 @@ describe("Primo Model >", function() {
       var $scope = {
         $parent: {
           $ctrl: {
+            $element: {},
             result: {
               pnx: {
                 display: {
