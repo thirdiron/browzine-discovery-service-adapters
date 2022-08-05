@@ -6,6 +6,8 @@ browzine.summon = (function() {
   function urlRewrite(url) {
     if (!url) {
       return;
+    } else if (url.indexOf("staging-api.thirdiron.com") > -1) {
+      return url;
     }
 
     return url.indexOf("public-api.thirdiron.com") > -1 ? url : url.replace("api.thirdiron.com", "public-api.thirdiron.com");
