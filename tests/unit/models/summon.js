@@ -139,6 +139,23 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model libraryIdOverride method staging >", function() {
+    beforeEach(function() {
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(summon.libraryIdOverride(summon.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("summon model shouldEnhance method >", function() {
     it("should not enhance a search result without a document", function() {
       var scope = {};

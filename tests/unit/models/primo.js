@@ -295,6 +295,23 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model libraryIdOverride method staging >", function() {
+    beforeEach(function() {
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("primo model shouldEnhance method >", function() {
     it("should not enhance a search result without scope data", function() {
       var scope = {};
