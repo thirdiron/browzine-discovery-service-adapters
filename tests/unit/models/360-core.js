@@ -173,11 +173,6 @@ describe("SerSol 360 Core Model >", function() {
       expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
     });
 
-    it("should override the libraryId on the api endpoint even when an api endpoint is specified", function() {
-      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
-      expect(serSol360Core.libraryIdOverride(serSol360Core.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
-    });
-
     it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
       delete browzine.libraryId;
       browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";

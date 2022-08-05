@@ -154,11 +154,6 @@ describe("Summon Model >", function() {
       expect(summon.libraryIdOverride(summon.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
     });
 
-    it("should override the libraryId on the api endpoint even when an api endpoint is specified", function() {
-      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
-      expect(summon.libraryIdOverride(summon.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
-    });
-
     it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
       delete browzine.libraryId;
       browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
