@@ -6,6 +6,8 @@ browzine.primo = (function() {
   function urlRewrite(url) {
     if (!url) {
       return;
+    } else if (url.indexOf("staging-api.thirdiron.com") > -1) {
+      return url;
     }
 
     return url.indexOf("public-api.thirdiron.com") > -1 ? url : url.replace("api.thirdiron.com", "public-api.thirdiron.com");
@@ -240,6 +242,16 @@ browzine.primo = (function() {
     }
 
     return directToPDFUrl;
+  };
+
+  function getUnpaywallUsable(scope, data) {
+    if (!isArticle(scope)) {
+      return false;
+    }
+    if (!data || !data.hasOwnProperty("unpaywallUsable")) {
+      return true;
+    }
+    return !!data.unpaywallUsable;
   };
 
   function getArticleLinkUrl(scope, data) {
@@ -729,7 +741,15 @@ browzine.primo = (function() {
   };
 
   function getScope($scope) {
-    return $scope && $scope.$ctrl && $scope.$ctrl.parentCtrl ? $scope.$ctrl.parentCtrl : undefined;
+    var scope;
+
+    if ($scope && $scope.$ctrl && $scope.$ctrl.parentCtrl && $scope.$ctrl.parentCtrl.$element) {
+      scope = $scope.$ctrl.parentCtrl;
+    } else if ($scope && $scope.$parent && $scope.$parent.$ctrl && $scope.$parent.$ctrl.$element) {
+      scope = $scope.$parent.$ctrl;
+    }
+
+    return scope;
   };
 
   function shouldEnhance(scope) {
@@ -777,6 +797,7 @@ browzine.primo = (function() {
         var browzineEnabled = getBrowZineEnabled(scope, data, journal);
         var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
         var directToPDFUrl = getDirectToPDFUrl(scope, data);
+        var unpaywallUsable = getUnpaywallUsable(scope, data);
         var articleLinkUrl = getArticleLinkUrl(scope, data);
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
 
@@ -858,9 +879,8 @@ browzine.primo = (function() {
         }
       }
 
-      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl))) {
+      if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
         var endpoint = getUnpaywallEndpoint(scope);
-
         if (endpoint && isUnpaywallEnabled()) {
           var requestUnpaywall = new XMLHttpRequest();
           requestUnpaywall.open("GET", endpoint, true);
@@ -966,6 +986,7 @@ browzine.primo = (function() {
     getBrowZineEnabled: getBrowZineEnabled,
     isDefaultCoverImage: isDefaultCoverImage,
     getDirectToPDFUrl: getDirectToPDFUrl,
+    getUnpaywallUsable: getUnpaywallUsable,
     getArticleLinkUrl: getArticleLinkUrl,
     getArticleRetractionUrl: getArticleRetractionUrl,
     isUnknownVersion: isUnknownVersion,

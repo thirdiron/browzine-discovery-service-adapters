@@ -139,6 +139,23 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model libraryIdOverride method staging >", function() {
+    beforeEach(function() {
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(summon.libraryIdOverride(summon.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
   describe("summon model shouldEnhance method >", function() {
     it("should not enhance a search result without a document", function() {
       var scope = {};
@@ -391,6 +408,74 @@ describe("Summon Model >", function() {
 
       expect(summon.getEndpoint(scope)).toContain("search?issns=00284793");
     });
+  });
+
+  describe("summon model getUnpaywallUsable method >", function() {
+
+    it("should return true if an article and data unpaywallUsable is true", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = true;
+      var data = summon.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return false if an article and data unpaywallUsable is false", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = summon.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
+    it("should return true if an article and data has no unpaywallUsable field", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      var data = summon.getData(articleResponse);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return true if an article and no data", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1136/bmj.h2575"]
+        }
+      };
+      expect(summon.getUnpaywallUsable(scope, undefined)).toEqual(true);
+    });
+
+    it("should return false if not an article", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+      const journalResponseWithUnpaywallUsable = {...journalResponse};
+      journalResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = summon.getData(journalResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(summon.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
   });
 
   describe("summon model getUnpaywallEndpoint method >", function() {

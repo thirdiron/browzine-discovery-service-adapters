@@ -180,16 +180,19 @@ describe("Primo Model >", function() {
 
   describe("primo model getScope method >", function() {
     it("should retrieve the scope from a search result", function() {
-      $scope.$ctrl = {
-        parentCtrl: {
-          result: {
-            pnx: {
-              display: {
-                type: ["journal"]
-              },
+      var $scope = {
+        $parent: {
+          $ctrl: {
+            $element: {},
+            result: {
+              pnx: {
+                display: {
+                  type: ["journal"]
+                },
 
-              addata: {
-                issn: ["0096-6762", "0028-4793"]
+                addata: {
+                  issn: ["0096-6762", "0028-4793"]
+                }
               }
             }
           }
@@ -289,6 +292,23 @@ describe("Primo Model >", function() {
       browzine.api = "https://public-api.thirdiron.com/public/v1/libraries/XXX";
 
       expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://public-api.thirdiron.com/public/v1/libraries/XXX");
+    });
+  });
+
+  describe("primo model libraryIdOverride method staging >", function() {
+    beforeEach(function() {
+      delete browzine.api;
+    });
+
+    afterEach(function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+    });
+
+    it("should return the customer supplied api endpoint when a libraryId is not specified", function() {
+      delete browzine.libraryId;
+      browzine.api = "https://staging-api.thirdiron.com/public/v1/libraries/XXX";
+      expect(primo.libraryIdOverride(primo.urlRewrite(browzine.api))).toEqual("https://staging-api.thirdiron.com/public/v1/libraries/XXX");
     });
   });
 
@@ -774,6 +794,113 @@ describe("Primo Model >", function() {
 
       expect(primo.getUnpaywallEndpoint(scope)).toBeUndefined();
     });
+  });
+
+  describe("primo model getUnpaywallUsable method >", function() {
+
+    it("should return true if an article and data unpaywallUsable is true", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = true;
+      var data = primo.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return false if an article and data unpaywallUsable is false", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      const articleResponseWithUnpaywallUsable = {...articleResponse};
+      articleResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = primo.getData(articleResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
+    it("should return true if an article and data has no unpaywallUsable field", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      var data = primo.getData(articleResponse);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(true);
+    });
+
+    it("should return true if an article and no data", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+      expect(primo.getUnpaywallUsable(scope, undefined)).toEqual(true);
+    });
+
+    it("should return false if not an article", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+            }
+          }
+        }
+      };
+      const journalResponseWithUnpaywallUsable = {...journalResponse};
+      journalResponseWithUnpaywallUsable.data.unpaywallUsable = false;
+      var data = primo.getData(journalResponseWithUnpaywallUsable);
+      expect(data).toBeDefined();
+      expect(primo.getUnpaywallUsable(scope, data)).toEqual(false);
+    });
+
   });
 
   describe("primo model getBrowZineWebLink method >", function() {
