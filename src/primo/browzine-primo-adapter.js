@@ -761,15 +761,6 @@ browzine.primo = (function() {
       // 3i Normal Integration: ✓
       // Primo Studio Integration: ✗
       scope = $scope.$parent.$ctrl;
-    } else if ($scope && $scope.$parent && $scope.$parent.$ctrl && $scope.$parent.$ctrl.parentCtrl && $scope.$parent.$ctrl.parentCtrl.$element) {
-      // Pre-Primo Angular 1.8.3
-      // 3i Normal Integration: ✗
-      // Primo Studio Integration: ✗
-
-      // Post-Primo Angular 1.8.3
-      // 3i Normal Integration: ✗
-      // Primo Studio Integration: ✓
-      scope = $scope.$parent.$ctrl.parentCtrl;
     }
 
     return scope;
