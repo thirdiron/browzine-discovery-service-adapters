@@ -228,7 +228,7 @@ describe("Primo Model >", function() {
                   },
 
                   addata: {
-                    issn: ["1388-9842", "1388-9843"]
+                    doi: ["10.1002/ejhf.2115"]
                   }
                 }
               }
@@ -247,11 +247,10 @@ describe("Primo Model >", function() {
       expect(scope.result.pnx.display).toBeDefined();
       expect(scope.result.pnx.display.type).toBeDefined();
       expect(scope.result.pnx.addata).toBeDefined();
-      expect(scope.result.pnx.addata.issn).toBeDefined();
+      expect(scope.result.pnx.addata.doi).toBeDefined();
 
       expect(scope.result.pnx.display.type[0]).toEqual("article");
-      expect(scope.result.pnx.addata.issn[0]).toEqual("1388-9842");
-      expect(scope.result.pnx.addata.issn[1]).toEqual("1388-9843");
+      expect(scope.result.pnx.addata.doi[0]).toEqual("10.1002/ejhf.2115");
     });
   });
 
