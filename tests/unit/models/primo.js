@@ -213,7 +213,47 @@ describe("Primo Model >", function() {
       expect(scope.result.pnx.addata.issn[0]).toEqual("0096-6762");
       expect(scope.result.pnx.addata.issn[1]).toEqual("0028-4793");
     });
+
+
+    it("should retrieve the scope after clicking a specific search result", function() {
+      var $scope = {
+        $parent: {
+          $ctrl: {
+            parentCtrl: {
+              $element: {},
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    doi: ["10.1002/ejhf.2115"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+
+
+
+      var scope = primo.getScope($scope);
+
+      expect(scope).toBeDefined();
+      expect(scope.result).toBeDefined();
+      expect(scope.result.pnx).toBeDefined();
+      expect(scope.result.pnx.display).toBeDefined();
+      expect(scope.result.pnx.display.type).toBeDefined();
+      expect(scope.result.pnx.addata).toBeDefined();
+      expect(scope.result.pnx.addata.doi).toBeDefined();
+
+      expect(scope.result.pnx.display.type[0]).toEqual("article");
+      expect(scope.result.pnx.addata.doi[0]).toEqual("10.1002/ejhf.2115");
+    });
   });
+
 
   describe("primo model getResult method >", function() {
     it("should include a result object from prmSearchResultAvailabilityLineAfterController $scope", function() {
