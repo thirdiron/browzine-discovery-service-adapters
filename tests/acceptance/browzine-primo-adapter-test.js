@@ -637,7 +637,6 @@ describe("BrowZine Primo Adapter >", function() {
               {
                 "id": 513,
                 "type": "libraries",
-                "discoveryServiceBehavior": "classic"
               }
             ]
           })
@@ -776,7 +775,6 @@ describe("BrowZine Primo Adapter >", function() {
               {
                 "id": 1466,
                 "type": "libraries",
-                "discoveryServiceBehavior": "classic"
               }
             ]
           })

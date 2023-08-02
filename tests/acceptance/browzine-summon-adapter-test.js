@@ -417,7 +417,6 @@ describe("BrowZine Summon Adapter >", function() {
               {
                 "id": 513,
                 "type": "libraries",
-                "discoveryServiceBehavior": "classic"
               }
             ]
           })
@@ -532,7 +531,6 @@ describe("BrowZine Summon Adapter >", function() {
               {
                 "id": 1466,
                 "type": "libraries",
-                "discoveryServiceBehavior": "classic"
               }
             ]
           })
