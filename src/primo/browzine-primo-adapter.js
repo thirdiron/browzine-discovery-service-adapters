@@ -1120,7 +1120,7 @@ browzine.primo = (function() {
     showArticleLink: showArticleLink,
     showPrintRecords: showPrintRecords,
     showRetractionWatch: showRetractionWatch,
-    showExpressionOfConcern: showExpressionOfConcern;
+    showExpressionOfConcern: showExpressionOfConcern,
     showFormatChoice: showFormatChoice,
     showLinkResolverLink: showLinkResolverLink,
     enableLinkOptimizer: enableLinkOptimizer,
