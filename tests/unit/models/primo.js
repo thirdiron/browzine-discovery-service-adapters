@@ -1,5 +1,5 @@
 describe("Primo Model >", function() {
-  var primo = {}, journalResponse = {}, articleResponse = {};
+  var primo = {}, journalResponse = {}, articleResponse = {}, eocArticleResponse = {};
 
   beforeEach(function() {
     primo = browzine.primo;
@@ -23,7 +23,18 @@ describe("Primo Model >", function() {
         "coverImageUrl": "https://assets.thirdiron.com/default-journal-cover.png",
         "browzineEnabled": false,
         "externalLink": "http://za2uf4ps7f.search.serialssolutions.com/?V=1.0&N=100&L=za2uf4ps7f&S=I_M&C=0096-6762"
-      }]
+        },
+        {
+          "id": 13016,
+          "type": "journals",
+          "title": "International Journal of Cancer",
+          "issn": "00207136",
+          "sjrValue": 2.259,
+          "coverImageUrl": "https://assets.thirdiron.com/images/covers/0020-7136.png",
+          "browzineEnabled": true,
+          "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016?utm_source=api_716"
+        }
+      ]
     };
 
     articleResponse = {
@@ -53,6 +64,38 @@ describe("Primo Model >", function() {
         "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
       }]
     };
+
+    eocArticleResponse = {
+      "data": {
+        "id": 26652324,
+        "type": "articles",
+        "title": "A tritherapy combination of a fusion protein vaccine with immune‐modulating doses of sequential chemotherapies in an optimized regimen completely eradicates large tumors in mice",
+        "date": "2010-05-12",
+        "authors": "Song, Xinxin; Guo, Wenzhong; Cui, Jianfeng; Qian, Xinlai; Yi, Linan; Chang, Mengjiao; Cai, Qiliang; Zhao, Qingzheng",
+        "inPress": false,
+        "doi": "10.1002/ijc.25451",
+        "openAccess": true,
+        "startPage": "326",
+        "endPage": "",
+        "availableThroughBrowzine": true,
+        "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/26652324/full-text-file?utm_source=api_716",
+        "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/26652324/content-location",
+        "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016/issues/4629899?showArticleInContext=doi:10.1002%2Fijc.25451&utm_source=api_716",
+        "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451",
+        "included": [
+          {
+            "id": 13016,
+            "type": "journals",
+            "title": "International Journal of Cancer",
+            "issn": "00207136",
+            "sjrValue": 2.259,
+            "coverImageUrl": "https://assets.thirdiron.com/images/covers/0020-7136.png",
+            "browzineEnabled": true,
+            "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016?utm_source=api_716"
+          }
+        ]
+      }
+    }
   });
 
   afterEach(function() {
@@ -947,7 +990,7 @@ describe("Primo Model >", function() {
     it("should include a browzineWebLink in the BrowZine API response for a journal", function() {
       var data = primo.getData(journalResponse);
       expect(data).toBeDefined();
-      expect(primo.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/10292");
+      expect(primo.getBrowZineWebLink(data)).toEqual("https://develop.browzine.com/libraries/XXXX/journals/13016?utm_source=api_716");
     });
 
     it("should include a browzineWebLink in the BrowZine API response for an article", function() {
@@ -967,7 +1010,7 @@ describe("Primo Model >", function() {
             },
 
             addata: {
-              issn: ["0096-6762", "0028-4793"]
+              issn: ["0096-6762", "0028-4793", "0020-7136"]
             }
           }
         }
@@ -979,7 +1022,7 @@ describe("Primo Model >", function() {
       expect(data).toBeDefined();
       expect(journal).toBeNull();
 
-      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0020-7136.png");
     });
 
     it("should include a coverImageUrl in the BrowZine API response for an article", function() {
@@ -1016,7 +1059,7 @@ describe("Primo Model >", function() {
             },
 
             addata: {
-              issn: ["0096-6762", "0028-4793"]
+              issn: ["0096-6762", "0028-4793", "0020-7136"]
             }
           }
         }
@@ -1028,7 +1071,7 @@ describe("Primo Model >", function() {
       expect(data).toBeDefined();
       expect(journal).toBeNull();
 
-      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
+      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0020-7136.png");
     });
   });
 
@@ -1075,6 +1118,7 @@ describe("Primo Model >", function() {
 
     it("should not return data when the journal is not browzineEnabled", function() {
       journalResponse.data[0].browzineEnabled = false;
+      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
       expect(data).toEqual(undefined);
     });
@@ -1147,6 +1191,7 @@ describe("Primo Model >", function() {
       };
 
       journalResponse.data[0].browzineEnabled = false;
+      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
 
       expect(data).toEqual(undefined);
@@ -1217,6 +1262,7 @@ describe("Primo Model >", function() {
       };
 
       journalResponse.data[0].browzineEnabled = false;
+      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
 
       expect(data).toEqual(undefined);
@@ -1287,6 +1333,7 @@ describe("Primo Model >", function() {
       };
 
       journalResponse.data[0].browzineEnabled = false;
+      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
 
       expect(data).toEqual(undefined);
@@ -1294,6 +1341,77 @@ describe("Primo Model >", function() {
       expect(primo.getArticleRetractionUrl(scope, data)).toEqual(null);
     });
   });
+
+  describe("primo model getArticleEOCNoticeUrl method >", function () {
+    it("should not return an eoc url for journal search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["journal"]
+            },
+
+            addata: {
+              issn: ["0096-6762", "0028-4793, 0020-7136"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleEOCNoticeUrl(scope, data)).toBeNull();
+    });
+
+    it("should return an eoc url for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0020-7136"],
+              doi: ["10.1002/ijc.25451"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(eocArticleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(primo.getArticleEOCNoticeUrl(scope, data)).toEqual("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451");
+    });
+
+    it("should not return an eoc url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0020-7136"]
+            }
+          }
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      journalResponse.data[2].browzineEnabled = false;
+      var data = primo.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(primo.getArticleEOCNoticeUrl(scope, data)).toEqual(null);
+    });
+  })
 
   describe("primo model isTrustedRepository method >", function() {
     it("should expect non nih.gov and non europepmc.org repositories to be untrusted", function() {
@@ -1870,6 +1988,36 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model showExpressionOfConcern method >", function() {
+    beforeEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+    });
+
+    it("should enable expression of concern when configuration property is undefined", function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+      expect(primo.showExpressionOfConcern()).toEqual(true);
+    });
+
+    it("should enable expression of concern when configuration property is null", function() {
+      browzine.articleExpressionOfConcernEnabled = null;
+      expect(primo.showExpressionOfConcern()).toEqual(true);
+    });
+
+    it("should enable expression of concern when configuration property is true", function() {
+      browzine.articleExpressionOfConcernEnabled = true;
+      expect(primo.showExpressionOfConcern()).toEqual(true);
+    });
+
+    it("should disable expression of concern when configuration property is false", function() {
+      browzine.articleExpressionOfConcernEnabled = false;
+      expect(primo.showExpressionOfConcern()).toEqual(false);
+    });
+  });
+
   describe("primo model showFormatChoice method >", function() {
     beforeEach(function() {
       delete browzine.showFormatChoice;
@@ -2086,6 +2234,7 @@ describe("Primo Model >", function() {
       delete browzine.primoArticlePDFDownloadLinkText;
 
       delete browzine.articleRetractionWatchText;
+      delete browzine.articleExpressionOfConcernText;
     });
 
     afterEach(function() {
@@ -2093,6 +2242,7 @@ describe("Primo Model >", function() {
       delete browzine.primoArticlePDFDownloadLinkText;
 
       delete browzine.articleRetractionWatchText;
+      delete browzine.articleExpressionOfConcernText;
     });
 
     it("should build a direct to pdf template for article search results", function() {
@@ -2236,6 +2386,67 @@ describe("Primo Model >", function() {
 
       expect(template).toContain("Retracted Article PDF");
     });
+
+    it("should build a direct to pdf template for article search results when eoc available and expression of concern enabled", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0020-7136"],
+              doi: ["10.1002/ijc.25451"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(eocArticleResponse);
+      var directToPDFUrl = primo.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = primo.getArticleRetractionUrl(scope, data);
+      var articleEOCUrl = primo.getArticleEOCNoticeUrl(scope, data);
+      var template = primo.directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEOCUrl);
+
+      expect(data).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-direct-to-pdf-link' href='https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451' target='_blank' onclick='browzine.primo.transition(event, this)'><img alt='BrowZine PDF Icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg' class='browzine-pdf-icon' style='margin-bottom: -3px; margin-right: 1.5px;' aria-hidden='true' width='15' height='16'/> <span class='browzine-web-link-text'>Expression of Concern</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+
+      expect(template).toContain("Expression of Concern");
+      expect(template).toContain("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+    });
+
+    it("should apply the articleExpressionOfConcernText config property when eoc notice available and eoc enabled", function() {
+      browzine.articleExpressionOfConcernText = "Expression of Concern PDF";
+
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0020-7136"],
+              doi: ["10.1002/ijc.25451"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(eocArticleResponse);
+      var directToPDFUrl = primo.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = primo.getArticleRetractionUrl(scope, data);
+      var articleEOCUrl = primo.getArticleEOCNoticeUrl(scope, data);
+      var template = primo.directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEOCUrl);
+
+      expect(template).toContain("Expression of Concern PDF");
+    });
   });
 
   describe("primo model articleLinkTemplate method >", function() {
@@ -2376,6 +2587,75 @@ describe("Primo Model >", function() {
     });
   });
 
+  describe("primo model eocLinkTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+      delete browzine.articleExpressionOfConcernText;
+    });
+
+    afterEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+      delete browzine.articleExpressionOfConcernText;
+    });
+
+    it("should build an expression of concern template for article search results", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0020-7136"],
+              doi: ["10.1002/ijc.25451"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(eocArticleResponse);
+      var articleEocNoticeUrl = primo.getArticleEOCNoticeUrl(scope, data)
+      var template = primo.eocLinkTemplate(articleEocNoticeUrl);
+
+      expect(data).toBeDefined();
+      expect(articleEocNoticeUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual("<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'><a class='browzine-article-link' href='https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451' target='_blank' onclick='browzine.primo.transition(event, this)'><img alt='BrowZine Article Link Icon' src='https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg' class='browzine-article-link-icon' style='margin-bottom: -3px; margin-right: 1.5px;' aria-hidden='true' width='15' height='16'/> <span class='browzine-article-link-text'>Expression of Concern</span> <md-icon md-svg-icon='primo-ui:open-in-new' class='md-primoExplore-theme' aria-hidden='true' style='height: 15px; width: 15px; min-height: 15px; min-width: 15px; margin-top: -2px;'><svg width='100%' height='100%' viewBox='0 0 24 24' y='504' xmlns='http://www.w3.org/2000/svg' fit='' preserveAspectRatio='xMidYMid meet' focusable='false'><path d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'></path></svg></md-icon></a></div>");
+
+      expect(template).toContain("Expression of Concern");
+      expect(template).toContain("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451");
+      expect(template).toContain("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
+    });
+
+    it("should apply the articleExpressionOfConcernText config property", function() {
+      browzine.articleExpressionOfConcernText = "Expression of Concern (Proceed with Caution)";
+
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["article"]
+            },
+
+            addata: {
+              issn: ["0020-7136"],
+              doi: ["10.1002/ijc.25451"]
+            }
+          }
+        }
+      };
+
+      var data = primo.getData(eocArticleResponse);
+      var articleEocNoticeUrl = primo.getArticleEOCNoticeUrl(scope, data)
+      var template = primo.eocLinkTemplate(articleEocNoticeUrl);
+
+      expect(template).toContain("Expression of Concern (Proceed with Caution)");
+    });
+  });
+
   describe("primo model browzineWebLinkTemplate method >", function() {
     it("should build an enhancement template for journal search results", function() {
       var scope = {
@@ -2386,12 +2666,13 @@ describe("Primo Model >", function() {
             },
 
             addata: {
-              issn: ["0096-6762", "0028-4793"]
+              issn: ["0096-6762", "0028-4793", "0020-7136"]
             }
           }
         }
       };
 
+      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
       var browzineWebLink = primo.getBrowZineWebLink(data);
       var template = primo.browzineWebLinkTemplate(scope, browzineWebLink);
