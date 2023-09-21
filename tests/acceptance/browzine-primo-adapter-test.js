@@ -644,12 +644,10 @@ describe("BrowZine Primo Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      //Need to edit the following tests to be about EOC rather than Retraction
       it("should have an enhanced browse article in browzine option", function() {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
-        console.log(template.text(), 'this is our template text');
 
         expect(template.text().trim()).toContain("View Issue Contents");
         expect(template.text().trim()).toContain("Expression of Concern");
@@ -1205,7 +1203,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when a retracted article link is clicked", function() {
+      it("should open a new window when an eoc article link is clicked", function() {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-article-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307", "_blank");
