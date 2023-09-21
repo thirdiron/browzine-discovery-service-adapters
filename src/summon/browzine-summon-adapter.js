@@ -271,7 +271,6 @@ browzine.summon = (function() {
 
     if (isArticle(scope)) {
       if (data && data.expressionOfConcernNoticeUrl) {
-        console.log(data.expressionOfConcernNoticeUrl, 'here is our expressionOfConcernNoticeUrl');
         articleEocNoticeUrl = data.expressionOfConcernNoticeUrl;
       }
     }
