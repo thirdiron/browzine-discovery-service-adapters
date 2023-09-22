@@ -257,6 +257,9 @@ window.browzine = {
   articleRetractionWatchEnabled: true,
   articleRetractionWatchText: "Retracted Article",
 
+  articleExpressionOfConcernEnabled: true,
+  articleExpressionOfConcernText: "Expression of Concern",
+
   showFormatChoice: true,
   showLinkResolverLink: true,
 

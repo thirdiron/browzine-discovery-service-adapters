@@ -248,7 +248,6 @@ browzine.primo = (function() {
     if (!isArticle(scope)) {
       return false;
     }
-    //We can maybe get rid of this now? Per Karl, the reasons for doing this may no longer matter. May need more investigation.
     if (!data || !data.hasOwnProperty("unpaywallUsable")) {
       return true;
     }
@@ -284,7 +283,6 @@ browzine.primo = (function() {
 
     if (isArticle(scope)) {
       if (data && data.expressionOfConcernNoticeUrl) {
-        console.log(data.expressionOfConcernNoticeUrl, 'here is our expressionOfConcernNoticeUrl');
         articleEocNoticeUrl = data.expressionOfConcernNoticeUrl;
       }
     }
@@ -555,9 +553,7 @@ browzine.primo = (function() {
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "Retracted Article";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       directToPDFUrl = articleEocNoticeUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
@@ -594,9 +590,7 @@ browzine.primo = (function() {
       linkIconWidth = "15";
       linkIconMarginRight = "1.5px";
       articleLinkText = browzine.articleRetractionWatchText || "Retracted Article";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       articleLinkUrl = articleEocNoticeUrl;
       linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       linkIconWidth = "15";
@@ -709,9 +703,7 @@ browzine.primo = (function() {
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "Retracted Article";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       directToPDFUrl = articleEocNoticeUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
@@ -770,9 +762,7 @@ browzine.primo = (function() {
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "Retracted Article";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       directToPDFUrl = articleEocNoticeUrl;
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";

@@ -24,16 +24,6 @@ describe("Primo Model >", function() {
         "browzineEnabled": false,
         "externalLink": "http://za2uf4ps7f.search.serialssolutions.com/?V=1.0&N=100&L=za2uf4ps7f&S=I_M&C=0096-6762"
         },
-        {
-          "id": 13016,
-          "type": "journals",
-          "title": "International Journal of Cancer",
-          "issn": "00207136",
-          "sjrValue": 2.259,
-          "coverImageUrl": "https://assets.thirdiron.com/images/covers/0020-7136.png",
-          "browzineEnabled": true,
-          "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016?utm_source=api_716"
-        }
       ]
     };
 
@@ -990,7 +980,7 @@ describe("Primo Model >", function() {
     it("should include a browzineWebLink in the BrowZine API response for a journal", function() {
       var data = primo.getData(journalResponse);
       expect(data).toBeDefined();
-      expect(primo.getBrowZineWebLink(data)).toEqual("https://develop.browzine.com/libraries/XXXX/journals/13016?utm_source=api_716");
+      expect(primo.getBrowZineWebLink(data)).toEqual("https://browzine.com/libraries/XXX/journals/10292");
     });
 
     it("should include a browzineWebLink in the BrowZine API response for an article", function() {
@@ -1010,7 +1000,7 @@ describe("Primo Model >", function() {
             },
 
             addata: {
-              issn: ["0096-6762", "0028-4793", "0020-7136"]
+              issn: ["0096-6762", "0028-4793"]
             }
           }
         }
@@ -1022,7 +1012,7 @@ describe("Primo Model >", function() {
       expect(data).toBeDefined();
       expect(journal).toBeNull();
 
-      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0020-7136.png");
+      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
 
     it("should include a coverImageUrl in the BrowZine API response for an article", function() {
@@ -1059,7 +1049,7 @@ describe("Primo Model >", function() {
             },
 
             addata: {
-              issn: ["0096-6762", "0028-4793", "0020-7136"]
+              issn: ["0096-6762", "0028-4793"]
             }
           }
         }
@@ -1071,7 +1061,7 @@ describe("Primo Model >", function() {
       expect(data).toBeDefined();
       expect(journal).toBeNull();
 
-      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0020-7136.png");
+      expect(primo.getCoverImageUrl(scope, data, journal)).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
     });
   });
 
@@ -1118,7 +1108,6 @@ describe("Primo Model >", function() {
 
     it("should not return data when the journal is not browzineEnabled", function() {
       journalResponse.data[0].browzineEnabled = false;
-      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
       expect(data).toEqual(undefined);
     });
@@ -1191,7 +1180,6 @@ describe("Primo Model >", function() {
       };
 
       journalResponse.data[0].browzineEnabled = false;
-      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
 
       expect(data).toEqual(undefined);
@@ -1262,7 +1250,6 @@ describe("Primo Model >", function() {
       };
 
       journalResponse.data[0].browzineEnabled = false;
-      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
 
       expect(data).toEqual(undefined);
@@ -1333,7 +1320,6 @@ describe("Primo Model >", function() {
       };
 
       journalResponse.data[0].browzineEnabled = false;
-      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
 
       expect(data).toEqual(undefined);
@@ -1404,7 +1390,6 @@ describe("Primo Model >", function() {
       };
 
       journalResponse.data[0].browzineEnabled = false;
-      journalResponse.data[2].browzineEnabled = false;
       var data = primo.getData(journalResponse);
 
       expect(data).toEqual(undefined);
@@ -2422,7 +2407,7 @@ describe("Primo Model >", function() {
     });
 
     it("should apply the articleExpressionOfConcernText config property when eoc notice available and eoc enabled", function() {
-      browzine.articleExpressionOfConcernText = "Expression of Concern PDF";
+      browzine.articleExpressionOfConcernText = "An area of grave concern";
 
       var scope = {
         result: {
@@ -2445,7 +2430,7 @@ describe("Primo Model >", function() {
       var articleEOCUrl = primo.getArticleEOCNoticeUrl(scope, data);
       var template = primo.directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEOCUrl);
 
-      expect(template).toContain("Expression of Concern PDF");
+      expect(template).toContain("An area of grave concern");
     });
   });
 
@@ -2672,7 +2657,7 @@ describe("Primo Model >", function() {
         }
       };
 
-      journalResponse.data[2].browzineEnabled = false;
+      journalResponse.data[1].browzineEnabled = false;
       var data = primo.getData(journalResponse);
       var browzineWebLink = primo.getBrowZineWebLink(data);
       var template = primo.browzineWebLinkTemplate(scope, browzineWebLink);
