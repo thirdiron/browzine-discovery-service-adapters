@@ -108,6 +108,10 @@ var browzine = {
   articleRetractionWatchTextWording: "Retracted Article",
   articleRetractionWatchText: "More Info",
 
+  articleExpressionOfConcernEnabled: true,
+  articleExpressionOfConcernWording: "Expression of Concern",
+  articleExpressionOfConcernText: "More Info",
+
   iconColor: "#639add",
 
   showFormatChoice: true,

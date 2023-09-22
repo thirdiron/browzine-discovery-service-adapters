@@ -575,9 +575,7 @@ browzine.summon = (function() {
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       directToPDFUrl = articleEocNoticeUrl;
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
@@ -614,9 +612,7 @@ browzine.summon = (function() {
       paperIcon = getRetractionWatchIconSvg();
       articleLinkTextWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articleLinkText = browzine.articleRetractionWatchText || "More Info";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       articleLinkUrl = articleEocNoticeUrl;
       pdfIcon = getRetractionWatchIconSvg();
       articleLinkTextWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
@@ -740,9 +736,7 @@ browzine.summon = (function() {
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       directToPDFUrl = articleEocNoticeUrl;
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
@@ -803,9 +797,7 @@ browzine.summon = (function() {
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.articleRetractionWatchTextWording || "Retracted Article";
       articlePDFDownloadLinkText = browzine.articleRetractionWatchText || "More Info";
-    }
-
-    if (showEocNoticeUI(articleEocNoticeUrl) && !showRetractionWatchUI(articleRetractionUrl)) {
+    } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       directToPDFUrl = articleEocNoticeUrl;
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
