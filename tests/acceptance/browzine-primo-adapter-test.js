@@ -486,7 +486,8 @@ describe("BrowZine Primo Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5"
+              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5",
             },
             "included": [
               {
@@ -518,6 +519,7 @@ describe("BrowZine Primo Adapter >", function() {
 
         expect(template.text().trim()).toContain("View Issue Contents");
         expect(template.text().trim()).toContain("Retracted Article");
+        expect(template.text().trim()).not.toContain("Expression of Concern");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
@@ -754,7 +756,8 @@ describe("BrowZine Primo Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://libkey.io/libraries/513/10.1162/jocn_a_00867"
+              "retractionNoticeUrl": "https://libkey.io/libraries/513/10.1162/jocn_a_00867",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1162/jocn_a_00867",
             },
             "included": [
               {
@@ -784,13 +787,14 @@ describe("BrowZine Primo Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      it("should show retraction notices when there is only an article link", function() {
+      it("should show retraction notices when there is only an article link", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
 
         expect(template.text().trim()).toContain("View Issue Contents");
         expect(template.text().trim()).toContain("Retracted Article");
+        expect(template.text().trim()).not.toContain("Expression of Concern");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/513/journals/32127/issues/7986254?showArticleInContext=doi:10.1162%2Fjocn_a_00867&utm_source=api_572");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
@@ -1026,7 +1030,8 @@ describe("BrowZine Primo Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://libkey.io/libraries/1466/10.1162/jocn_a_00867"
+              "retractionNoticeUrl": "https://libkey.io/libraries/1466/10.1162/jocn_a_00867",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1162/jocn_a_00867",
             },
             "included": [
               {
@@ -1062,6 +1067,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template).toBeDefined();
 
         expect(template.text().trim()).toContain("Retracted Article");
+        expect(template.text().trim()).not.toContain("Expression of Concern");
 
         expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://libkey.io/libraries/1466/10.1162/jocn_a_00867");
         expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
@@ -1278,7 +1284,8 @@ describe("BrowZine Primo Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5"
+              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5",
             },
             "included": [
               {
@@ -1311,6 +1318,7 @@ describe("BrowZine Primo Adapter >", function() {
 
         expect(template.text().trim()).toContain("View Issue Contents");
         expect(template.text().trim()).toContain("Retracted Article");
+        expect(template.text().trim()).not.toContain("Expression of Concern");
         expect(template.text().trim()).not.toContain("Read Article");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716");

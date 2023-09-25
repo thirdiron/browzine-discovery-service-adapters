@@ -728,9 +728,7 @@ browzine.primo = (function() {
     return template;
   };
 
-  //There's a bit of a question on whether we would need a retraction notice/eoc notice on this as we'd only get to this function
-  //if we don't already have a PDF link-we might only link to these live unpaywall responses if they have a direct-to-PDF link
-  //But we may want to investigate this to be sure...
+  //TODO: BZ 8196 - Will address the need here for retraction/eoc handling as well as ironing out some logic.
   function unpaywallArticleLinkTemplate(articleLinkUrl) {
     var linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg";
     var articleLinkText = browzine.articleLinkViaUnpaywallText  || "Read Article (via Unpaywall)";
@@ -919,7 +917,7 @@ browzine.primo = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (!directToPDFUrl && !articleLinkUrl && articleRetractionUrl && !articleEocNoticeUrl && isArticle(scope) && showRetractionWatch()) {
+        if (!directToPDFUrl && !articleLinkUrl && articleRetractionUrl && isArticle(scope) && showRetractionWatch()) {
           var template = retractionWatchLinkTemplate(articleRetractionUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
