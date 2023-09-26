@@ -289,7 +289,8 @@ describe("BrowZine Summon Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746"
+              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746"
             },
             "included": [
               {
@@ -321,6 +322,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         expect(template.text().trim()).toContain("View in Context Browse Journal");
         expect(template.text().trim()).toContain("Retracted Article More Info");
+        expect(template.text().trim()).not.toContain("Expression of Concern More Info");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/36603/issues/205373599?showArticleInContext=doi:10.1155%2F2019%2F5730746&utm_source=api_716");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
@@ -511,7 +513,9 @@ describe("BrowZine Summon Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://libkey.io/libraries/513/10.1162/jocn_a_00867"
+              "retractionNoticeUrl": "https://libkey.io/libraries/513/10.1162/jocn_a_00867",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1162/jocn_a_00867",
+
             },
             "included": [
               {
@@ -547,6 +551,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         expect(template.text().trim()).toContain("View in Context Browse Journal");
         expect(template.text().trim()).toContain("Retracted Article More Info");
+        expect(template.text().trim()).not.toContain("Expression of Concern More Info");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://browzine.com/libraries/513/journals/32127/issues/7986254?showArticleInContext=doi:10.1162%2Fjocn_a_00867&utm_source=api_572");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
@@ -734,7 +739,8 @@ describe("BrowZine Summon Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://libkey.io/libraries/1466/10.1162/jocn_a_00867"
+              "retractionNoticeUrl": "https://libkey.io/libraries/1466/10.1162/jocn_a_00867",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1162/jocn_a_00867",
             },
             "included": [
               {
@@ -769,6 +775,7 @@ describe("BrowZine Summon Adapter >", function() {
         expect(template).toBeDefined();
 
         expect(template.text().trim()).toContain("Retracted Article More Info");
+        expect(template.text().trim()).not.toContain("Expression of Concern More Info");
 
         expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://libkey.io/libraries/1466/10.1162/jocn_a_00867");
         expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
@@ -939,7 +946,8 @@ describe("BrowZine Summon Adapter >", function() {
                   }
                 }
               },
-              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746"
+              "retractionNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746",
+              "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1155/2019/5730746"
             },
             "included": [
               {
@@ -972,6 +980,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         expect(template.text().trim()).toContain("View in Context Browse Journal");
         expect(template.text().trim()).toContain("Retracted Article More Info");
+        expect(template.text().trim()).not.toContain("Expression of Concern More Info");
         expect(template.text().trim()).not.toContain("Article Page");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/36603/issues/205373599?showArticleInContext=doi:10.1155%2F2019%2F5730746&utm_source=api_716");
