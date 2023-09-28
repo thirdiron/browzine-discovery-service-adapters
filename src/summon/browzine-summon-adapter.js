@@ -661,13 +661,8 @@ browzine.summon = (function() {
     var articleLinkUrl = articleEocNoticeUrl;
     var paperIcon = getRetractionWatchIconSvg();
 
-    var articleLinkTextWording = "Expression of Concern";
-    var articleLinkText = "More Info";
-
-    if (+browzine.version >= 2) {
-      articleLinkTextWording = browzine.articleExpressionOfConcernWording || articleLinkTextWording;
-      articleLinkText = browzine.articleExpressionOfConcernText || articleLinkText;
-    }
+   var articleLinkTextWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
+   var articleLinkText = browzine.articleExpressionOfConcernText || "More Info";
 
     var template = "<div class='browzine'>" +
       "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span>" +

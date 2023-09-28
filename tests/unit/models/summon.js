@@ -2179,7 +2179,6 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articleExpressionOfConcernWording config property", function() {
-      browzine.version = 2;
       browzine.articleExpressionOfConcernWording = "Expression of Concern(Proceed with Caution)";
 
       var scope = {
@@ -2200,7 +2199,6 @@ describe("Summon Model >", function() {
     });
 
     it("should apply the articleExpressionOfConcernText config property", function() {
-      browzine.version = "2";
       browzine.articleExpressionOfConcernText = "I got the tea right here";
 
       var scope = {
@@ -2218,50 +2216,6 @@ describe("Summon Model >", function() {
       $template.innerHTML = template;
 
       expect($template.innerText).toContain("I got the tea right here");
-    });
-
-    it("should not apply the articleExpressionOfConcernWording config property", function() {
-      delete browzine.version;
-      browzine.articleLinkTextWording = "Actually I ran out of tea";
-
-      var scope = {
-        document: {
-          content_type: "Journal Article",
-          dois: ["10.1002/ijc.25451"]
-        }
-      };
-
-      var data = summon.getData(eocArticleResponse);
-      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data);
-      var template = summon.eocLinkTemplate(articleEOCNoticeUrl);
-
-      var $template = document.createElement("div");
-      $template.innerHTML = template;
-
-      expect($template.innerText).toContain("Expression of Concern More Info");
-      expect($template.innerText).not.toContain("Actually I ran out of tea");
-    });
-
-    it("should not apply the articleExpressionOfConcernText config property", function() {
-      delete browzine.version;
-      browzine.articleExpressionOfConcernText = "Any Questions?";
-
-      var scope = {
-        document: {
-          content_type: "Journal Article",
-          dois: ["10.1002/ijc.25451"]
-        }
-      };
-
-      var data = summon.getData(eocArticleResponse);
-      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data);
-      var template = summon.eocLinkTemplate(articleEOCNoticeUrl);
-
-      var $template = document.createElement("div");
-      $template.innerHTML = template;
-
-      expect($template.innerText).toContain("Expression of Concern More Info");
-      expect($template.innerText).not.toContain("Any Questions?");
     });
   });
 
