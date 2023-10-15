@@ -9,6 +9,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
+    // More info here: https://karma-runner.github.io/6.4/config/files.html
     files: [
       'node_modules/jquery/dist/jquery.js',
       'node_modules/angular/angular.js',

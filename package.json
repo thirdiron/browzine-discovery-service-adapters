@@ -3,8 +3,8 @@
   "version": "1.8.3",
   "description": "Primo, Summon, and 360 Core adapter to augment journal results with custom BrowZine API data.",
   "engines": {
-    "node": "16.16.0",
-    "npm": "8.11.0"
+    "node": "18.16.0",
+    "npm": "9.5.1"
   },
   "scripts": {
     "server": "http-server --cors -p 8080",
@@ -34,10 +34,10 @@
     "jasmine-ajax": "^3.3.1",
     "jasmine-core": "2.8.0",
     "jquery": "^3.3.1",
-    "karma": "1.7.1",
-    "karma-jasmine": "1.1.0",
+    "karma": "6.4.2",
+    "karma-jasmine": "5.1.0",
     "karma-mocha-reporter": "^2.2.4",
-    "karma-chrome-launcher": "2.2.0",
+    "karma-chrome-launcher": "3.2.0",
     "ngrok": "^2.2.21",
     "recursive-replace": "^1.0.1"
   }
