@@ -108,6 +108,10 @@ var browzine = {
   articleRetractionWatchTextWording: "Retracted Article",
   articleRetractionWatchText: "More Info",
 
+  articleExpressionOfConcernEnabled: true,
+  articleExpressionOfConcernWording: "Expression of Concern",
+  articleExpressionOfConcernText: "More Info",
+
   iconColor: "#639add",
 
   showFormatChoice: true,
@@ -257,6 +261,9 @@ window.browzine = {
   articleRetractionWatchEnabled: true,
   articleRetractionWatchText: "Retracted Article",
 
+  articleExpressionOfConcernEnabled: true,
+  articleExpressionOfConcernText: "Expression of Concern",
+
   showFormatChoice: true,
   showLinkResolverLink: true,
 
@@ -282,6 +289,7 @@ Care should be taken to validate JavaScript features used are available in IE11+
 
 * `npm run server` (Runs a local webserver, visit http://localhost:8080)
 * `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/summon/browzine-summon-adapter.js)
+* For Primo, add the url given by the ngrok tunnel and add it to the custom.js file of the template package. Then upload that into the School of Mines Primo sandbox. Make sure to change the library ID and API key in order to fetch the data you want if you need to test something like retractions or EOCs.
 
 ### Running Tests
 

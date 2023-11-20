@@ -1,5 +1,5 @@
 describe("Summon Model >", function() {
-  var summon = {}, journalResponse = {}, articleResponse = {};
+  var summon = {}, journalResponse = {}, articleResponse = {}, eocArticleResponse = {};
 
   beforeEach(function() {
     summon = browzine.summon;
@@ -44,6 +44,38 @@ describe("Summon Model >", function() {
         "browzineWebLink": "https://develop.browzine.com/libraries/XXX/journals/18126"
       }]
     };
+
+    eocArticleResponse = {
+      "data": {
+        "id": 26652324,
+        "type": "articles",
+        "title": "A tritherapy combination of a fusion protein vaccine with immune‐modulating doses of sequential chemotherapies in an optimized regimen completely eradicates large tumors in mice",
+        "date": "2010-05-12",
+        "authors": "Song, Xinxin; Guo, Wenzhong; Cui, Jianfeng; Qian, Xinlai; Yi, Linan; Chang, Mengjiao; Cai, Qiliang; Zhao, Qingzheng",
+        "inPress": false,
+        "doi": "10.1002/ijc.25451",
+        "openAccess": true,
+        "startPage": "326",
+        "endPage": "",
+        "availableThroughBrowzine": true,
+        "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/26652324/full-text-file?utm_source=api_716",
+        "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/26652324/content-location",
+        "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016/issues/4629899?showArticleInContext=doi:10.1002%2Fijc.25451&utm_source=api_716",
+        "expressionOfConcernNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451",
+        "included": [
+          {
+            "id": 13016,
+            "type": "journals",
+            "title": "International Journal of Cancer",
+            "issn": "00207136",
+            "sjrValue": 2.259,
+            "coverImageUrl": "https://assets.thirdiron.com/images/covers/0020-7136.png",
+            "browzineEnabled": true,
+            "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016?utm_source=api_716"
+          }
+        ]
+      }
+    }
   });
 
   it("summon model should exist", function() {
@@ -762,6 +794,53 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model getArticleEOCNoticeUrl method >", function() {
+    it("should not return an article eoc url for journal search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal",
+          issns: ["0082-3974"]
+        }
+      };
+
+      var data = summon.getData(journalResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleEOCNoticeUrl(scope, data)).toBeNull();
+    });
+
+    it("should return an article eoc url for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1002/ijc.25451"]
+        }
+      };
+
+      var data = summon.getData(eocArticleResponse);
+
+      expect(data).toBeDefined();
+
+      expect(summon.getArticleEOCNoticeUrl(scope, data)).toEqual("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451");
+    });
+
+    it("should not return an article eoc url for article search results with no doi and in a journal that is not browzineEnabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article"
+        }
+      };
+
+      journalResponse.data[0].browzineEnabled = false;
+      var data = summon.getData(journalResponse);
+
+      expect(data).toEqual(undefined);
+
+      expect(summon.getArticleEOCNoticeUrl(scope, data)).toEqual(null);
+    });
+  });
+
   describe("summon model isTrustedRepository method >", function() {
     it("should expect non nih.gov and non europepmc.org repositories to be untrusted", function() {
       var response = {
@@ -1337,6 +1416,36 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model showExpressionOfConcern method >", function() {
+    beforeEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+    });
+
+    it("should enable eoc when configuration property is undefined", function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+      expect(summon.showExpressionOfConcern()).toEqual(true);
+    });
+
+    it("should enable eoc when configuration property is null", function() {
+      browzine.articleExpressionOfConcernEnabled = null;
+      expect(summon.showExpressionOfConcern()).toEqual(true);
+    });
+
+    it("should enable eoc when configuration property is true", function() {
+      browzine.articleExpressionOfConcernEnabled = true;
+      expect(summon.showExpressionOfConcern()).toEqual(true);
+    });
+
+    it("should disable eoc when configuration property is false", function() {
+      browzine.articleExpressionOfConcernEnabled = false;
+      expect(summon.showExpressionOfConcern()).toEqual(false);
+    });
+  });
+
   describe("summon model showFormatChoice method >", function() {
     beforeEach(function() {
       delete browzine.showFormatChoice;
@@ -1521,6 +1630,8 @@ describe("Summon Model >", function() {
 
       delete browzine.articleRetractionWatchTextWording;
       delete browzine.articleRetractionWatchText;
+      delete browzine.articleExpressionOfConcernWording;
+      delete browzine.articleExpressionOfConcernText;
       delete browzine.version;
     });
 
@@ -1532,6 +1643,8 @@ describe("Summon Model >", function() {
 
       delete browzine.articleRetractionWatchTextWording;
       delete browzine.articleRetractionWatchText;
+      delete browzine.articleExpressionOfConcernWording;
+      delete browzine.articleExpressionOfConcernText;
       delete browzine.version;
     });
 
@@ -1671,6 +1784,33 @@ describe("Summon Model >", function() {
       expect(template).toContain("More");
     });
 
+    it("should build an eoc pdf template for article search results when eoc notice available and eoc enabled", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1002/ijc.25451"]
+        }
+      };
+
+      var data = summon.getData(eocArticleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data)
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEOCNoticeUrl);
+
+      expect(data).toBeDefined();
+      expect(directToPDFUrl).toBeDefined();
+      expect(articleEOCNoticeUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toEqual(`<div class='browzine'><span class='contentType' style='margin-right: 4.5px;'>Expression of Concern</span><a class='browzine-direct-to-pdf-link summonBtn customPrimaryLink' href='https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451' target='_blank' onclick='browzine.summon.transition(event, this)'><svg name="warning" alt="warning icon" class="browzine-warning-icon" width="16px" viewBox="0 0 576 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="retraction-watch-icon-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="exclamation-triangle" transform="translate(1.000000, 0.000000)" fill="#EB0000" fill-rule="nonzero"><path d="M569.517287,440.013005 C587.975287,472.007005 564.806287,512 527.940287,512 L48.0542867,512 C11.1172867,512 -11.9447133,471.945005 6.47728668,440.013005 L246.423287,23.9850049 C264.890287,-8.02399507 311.143287,-7.96599507 329.577287,23.9850049 L569.517287,440.013005 Z M288.000287,354.000005 C262.595287,354.000005 242.000287,374.595005 242.000287,400.000005 C242.000287,425.405005 262.595287,446.000005 288.000287,446.000005 C313.405287,446.000005 334.000287,425.405005 334.000287,400.000005 C334.000287,374.595005 313.405287,354.000005 288.000287,354.000005 Z M244.327287,188.654005 L251.745287,324.654005 C252.092287,331.018005 257.354287,336.000005 263.727287,336.000005 L312.273287,336.000005 C318.646287,336.000005 323.908287,331.018005 324.255287,324.654005 L331.673287,188.654005 C332.048287,181.780005 326.575287,176.000005 319.691287,176.000005 L256.308287,176.000005 C249.424287,176.000005 243.952287,181.780005 244.327287,188.654005 L244.327287,188.654005 Z" id="Shape"></path></g></g></svg> <span style='margin-left: 3px;'>More Info</span></a></div>`);
+
+      expect(template).toContain("Expression of Concern");
+      expect(template).toContain("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451");
+      expect(template).toContain("More");
+    });
+
     it("should apply the articleRetractionWatchTextWording config property when retraction notice available and retraction watch enabled", function() {
       browzine.articleRetractionWatchTextWording = "Retracted Article PDF";
 
@@ -1689,6 +1829,25 @@ describe("Summon Model >", function() {
       expect(template).toContain("Retracted Article PDF");
     });
 
+    it("should apply the articleExpressionOfConcernWording config property when eoc notice available and eoc enabled", function() {
+      browzine.articleRetractionWatchTextWording = "Caution Expressions of Concern May Be Hot";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1002/ijc.25451"]
+        }
+      };
+
+      var data = summon.getData(articleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data);
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEOCNoticeUrl);
+
+      expect(template).toContain("Caution Expressions of Concern May Be Hot");
+    });
+
     it("should apply the articleRetractionWatchText config property when retraction notice available and retraction watch enabled", function() {
       browzine.articleRetractionWatchText = "More Info";
 
@@ -1705,6 +1864,25 @@ describe("Summon Model >", function() {
       var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl);
 
       expect(template).toContain("More Info");
+    });
+
+    it("should apply the articleExpressionOfConcernText config property when eoc notice available and eoc enabled", function() {
+      browzine.articleExpressionOfConcernText = "Pssst Here Are Some Deets";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1002/ijc.25451"]
+        }
+      };
+
+      var data = summon.getData(eocArticleResponse);
+      var directToPDFUrl = summon.getDirectToPDFUrl(scope, data);
+      var articleRetractionUrl = summon.getArticleRetractionUrl(scope, data);
+      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data)
+      var template = summon.directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEOCNoticeUrl);
+
+      expect(template).toContain("Pssst Here Are Some Deets");
     });
   });
 
@@ -1957,6 +2135,87 @@ describe("Summon Model >", function() {
 
       expect($template.innerText).toContain("Retracted Article More Info");
       expect($template.innerText).not.toContain("Learn More");
+    });
+  });
+
+  describe("summon model eocLinkTemplate method >", function() {
+    beforeEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+      delete browzine.articleExpressionOfConcernWording;
+      delete browzine.articleExpressionOfConcernText;
+      delete browzine.version;
+    });
+
+    afterEach(function() {
+      delete browzine.articleExpressionOfConcernEnabled;
+      delete browzine.articleExpressionOfConcernWording;
+      delete browzine.articleExpressionOfConcernText;
+      delete browzine.version;
+    });
+
+    it("should build an eoc link template for article search results", function() {
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1002/ijc.25451"]
+        }
+      };
+
+      var data = summon.getData(eocArticleResponse);
+      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data);
+      var template = summon.eocLinkTemplate(articleEOCNoticeUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect(data).toBeDefined();
+      expect(articleEOCNoticeUrl).toBeDefined();
+
+      expect(template).toBeDefined();
+
+      expect(template).toContain("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451");
+
+      expect($template.innerText).toContain("Expression of Concern More Info");
+    });
+
+    it("should apply the articleExpressionOfConcernWording config property", function() {
+      browzine.articleExpressionOfConcernWording = "Expression of Concern(Proceed with Caution)";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1002/ijc.25451"]
+        }
+      };
+
+      var data = summon.getData(eocArticleResponse);
+      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data);
+      var template = summon.eocLinkTemplate(articleEOCNoticeUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("Expression of Concern(Proceed with Caution)");
+    });
+
+    it("should apply the articleExpressionOfConcernText config property", function() {
+      browzine.articleExpressionOfConcernText = "I got the tea right here";
+
+      var scope = {
+        document: {
+          content_type: "Journal Article",
+          dois: ["10.1002/ijc.25451"]
+        }
+      };
+
+      var data = summon.getData(eocArticleResponse);
+      var articleEOCNoticeUrl = summon.getArticleEOCNoticeUrl(scope, data);
+      var template = summon.eocLinkTemplate(articleEOCNoticeUrl);
+
+      var $template = document.createElement("div");
+      $template.innerHTML = template;
+
+      expect($template.innerText).toContain("I got the tea right here");
     });
   });
 
