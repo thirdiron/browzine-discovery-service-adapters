@@ -121,7 +121,7 @@ browzine.primo = (function() {
 
     if (isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
-      endpoint = api + "/articles/doi/" + doi + "?include=journal,library";
+      endpoint = api + "/articles/doi/" + doi + "?include=journal,library&include_suppressed=true";
     }
 
     if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
@@ -871,6 +871,14 @@ browzine.primo = (function() {
     return validation;
   };
 
+  function shouldUnpaywallLiveCallWhen404(response) {
+    if (response.hasOwnProperty('unpaywallUsable')) {
+      return response.unpaywallUsable;
+    } else {
+      return true;
+    };
+  }
+
   function searchResult($scope) {
     var scope = getScope($scope);
 
@@ -985,6 +993,13 @@ browzine.primo = (function() {
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
+
+        var response = JSON.parse(request.response || '{}');
+        var shouldUnpaywallLiveCall = shouldUnpaywallLiveCallWhen404(response);
+        if (!shouldUnpaywallLiveCall) {
+          return
+        }
+
         var endpoint = getUnpaywallEndpoint(scope);
         if (endpoint && isUnpaywallEnabled()) {
           var requestUnpaywall = new XMLHttpRequest();
