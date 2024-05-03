@@ -886,6 +886,14 @@ browzine.summon = (function() {
     return primaryColor;
   };
 
+  function shouldUnpaywallLiveCallWhen404(response) {
+    if (response.hasOwnProperty('unpaywallUsable')) {
+      return response.unpaywallUsable;
+    } else {
+      return true;
+    };
+  }
+
   function adapter(documentSummary) {
     var scope = getScope(documentSummary);
 
@@ -991,6 +999,13 @@ browzine.summon = (function() {
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
+
+        var response = JSON.parse(request.response || '{}');
+        var shouldUnpaywallLiveCall = shouldUnpaywallLiveCallWhen404(response);
+        if (!shouldUnpaywallLiveCall) {
+          return
+        }
+
         var endpoint = getUnpaywallEndpoint(scope);
 
         if (endpoint && isUnpaywallEnabled()) {

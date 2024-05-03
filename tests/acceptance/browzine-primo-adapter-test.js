@@ -4044,7 +4044,7 @@ describe("BrowZine Primo Adapter >", function() {
 
                   addata: {
                     issn: ["0028-4793"],//let's make these two unique
-                    doi: ["10.1136/bmj.h2575"]
+                    doi: ["10.35684/JLCI.2019.5202"]
                   }
                 }
               }
