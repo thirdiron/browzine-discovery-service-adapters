@@ -3461,8 +3461,13 @@ describe("BrowZine Summon Adapter >", function() {
       });
       it("Does not call unpaywall when unpaywallUsable=false", function () {
         //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
+        const thirdIronApiDoiRequestUrl = jasmine.Ajax.requests.mostRecent().url;
+        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response
         expect(jasmine.Ajax.requests.count()).toBe(1);
-        var template = documentSummary.find(".browzine");
+        expect(thirdIronApiDoiRequestUrl).toContain("include_suppressed=true");
+        expect(thirdIronApiDoiRequestResponse).toEqual('{"unpaywallUsable":false}');
+
+        const template = documentSummary.find(".browzine");
         expect(template.length).toEqual(0);
         expect(documentSummary.text().trim()).not.toContain("Download PDF (via Unpaywall)");
       })
