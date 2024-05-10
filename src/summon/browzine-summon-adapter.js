@@ -887,7 +887,7 @@ browzine.summon = (function() {
   };
 
   function shouldUnpaywallLiveCallWhen404(response) {
-    if (response.hasOwnProperty('unpaywallUsable')) {
+    if (response.hasOwnProperty('meta') && response.meta.hasOwnProperty('unpaywallUsable')) {
       return response.unpaywallUsable;
     } else {
       return true;

@@ -872,8 +872,8 @@ browzine.primo = (function() {
   };
 
   function shouldUnpaywallLiveCallWhen404(response) {
-    if (response.hasOwnProperty('unpaywallUsable')) {
-      return response.unpaywallUsable;
+    if (response.hasOwnProperty('meta')&& response.meta.hasOwnProperty('unpaywallUsable')) {
+      return response.meta.unpaywallUsable;
     } else {
       return true;
     };
