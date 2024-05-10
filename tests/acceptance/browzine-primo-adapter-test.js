@@ -4043,7 +4043,7 @@ describe("BrowZine Primo Adapter >", function() {
                   },
 
                   addata: {
-                    issn: ["0028-4793"],//let's make these two unique
+                    issn: ["0089-9347"],
                     doi: ["10.35684/JLCI.2019.5202"]
                   }
                 }
@@ -4066,7 +4066,12 @@ describe("BrowZine Primo Adapter >", function() {
       thirdIronApiDoiRequest.respondWith({
         status: 404,
         response: JSON.stringify({
-          "unpaywallUsable": false
+          "errors": [{
+            "status": '404'
+          }],
+          "meta": {
+            "unpaywallUsable": false
+          }
         })
       });
     });
@@ -4083,10 +4088,8 @@ describe("BrowZine Primo Adapter >", function() {
 
     it('does not call unpaywall when unpaywallUsable=false', function () {
       //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
-      const thirdIronApiDoiRequestUrl = jasmine.Ajax.requests.mostRecent().url;
       const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response
       expect(jasmine.Ajax.requests.count()).toBe(1);
-      expect(thirdIronApiDoiRequestUrl).toContain("include_suppressed=true");
       expect(thirdIronApiDoiRequestResponse).toEqual('{"unpaywallUsable":false}');
 
       const template = searchResult.find(".browzine");

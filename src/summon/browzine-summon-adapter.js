@@ -109,7 +109,7 @@ browzine.summon = (function() {
 
     if (isArticle(scope) && getDoi(scope)) {
       var doi = getDoi(scope);
-      endpoint = api + "/articles/doi/" + doi + "?include=journal,library&include_suppressed=true";
+      endpoint = api + "/articles/doi/" + doi + "?include=journal,library";
     }
 
     if (isArticle(scope) && !getDoi(scope) && getIssn(scope)) {
