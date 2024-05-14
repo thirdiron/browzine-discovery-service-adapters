@@ -886,11 +886,11 @@ browzine.summon = (function() {
     return primaryColor;
   };
 
-  function shouldUnpaywallLiveCallWhen404(response) {
-    if (response.hasOwnProperty('meta') && response.meta.hasOwnProperty('unpaywallUsable')) {
-      return response.meta.unpaywallUsable;
+  function shouldAvoidUnpaywall(response) {
+    if (response.hasOwnProperty('meta') && response.meta.hasOwnProperty('avoidUnpaywall')) {
+      return response.meta.avoidUnpaywall;
     } else {
-      return true;
+      return false;
     };
   }
 
@@ -1001,8 +1001,8 @@ browzine.summon = (function() {
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
 
         var response = JSON.parse(request.response || '{}');
-        var shouldUnpaywallLiveCall = shouldUnpaywallLiveCallWhen404(response);
-        if (!shouldUnpaywallLiveCall) {
+        var shouldAvoidUnpaywallLiveCall = shouldAvoidUnpaywall(response);
+        if (shouldAvoidUnpaywallLiveCall) {
           return
         }
 
