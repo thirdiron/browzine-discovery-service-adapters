@@ -886,6 +886,14 @@ browzine.summon = (function() {
     return primaryColor;
   };
 
+  function shouldAvoidUnpaywall(response) {
+    if (response.hasOwnProperty('meta') && response.meta.hasOwnProperty('avoidUnpaywall')) {
+      return response.meta.avoidUnpaywall;
+    } else {
+      return false;
+    };
+  }
+
   function adapter(documentSummary) {
     var scope = getScope(documentSummary);
 
@@ -991,6 +999,13 @@ browzine.summon = (function() {
       }
 
       if ((request.readyState == XMLHttpRequest.DONE && request.status == 404) || (isArticle(scope) && (!directToPDFUrl && !articleLinkUrl && unpaywallUsable))) {
+
+        var response = JSON.parse(request.response || '{}');
+        var shouldAvoidUnpaywallLiveCall = shouldAvoidUnpaywall(response);
+        if (shouldAvoidUnpaywallLiveCall) {
+          return
+        }
+
         var endpoint = getUnpaywallEndpoint(scope);
 
         if (endpoint && isUnpaywallEnabled()) {

@@ -3412,5 +3412,68 @@ describe("BrowZine Summon Adapter >", function() {
         });
       });
     });
+
+    describe("When an article is suppressed > ", function () {
+      beforeEach(function() {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.35684/JLCI.2019.5202"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var thirdIronApiDoiRequest = jasmine.Ajax.requests.mostRecent();
+
+        thirdIronApiDoiRequest.respondWith({
+          status: 404,
+          response: JSON.stringify({
+            "errors": [{
+              "status": '404'
+            }],
+            "meta": {
+              "avoidUnpaywall": true
+            }
+          })
+        });
+      });
+
+      afterEach(function() {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+      it("Does not call unpaywall when avoidUnpaywall=true", function () {
+        //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
+        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response
+        expect(jasmine.Ajax.requests.count()).toBe(1);
+        expect(thirdIronApiDoiRequestResponse).toEqual('{"errors":[{"status":"404"}],"meta":{"avoidUnpaywall":true}}');
+
+        const template = documentSummary.find(".browzine");
+        expect(template.length).toEqual(0);
+        expect(documentSummary.text().trim()).not.toContain("Download PDF (via Unpaywall)");
+      })
+    })
   });
 });

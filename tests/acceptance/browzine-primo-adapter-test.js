@@ -4017,6 +4017,88 @@ describe("BrowZine Primo Adapter >", function() {
     });
   });
 
+  describe("When an article is suppressed > ", function () {
+
+    beforeEach(function() {
+      browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+      primo = browzine.primo;
+
+      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+      inject(function ($compile, $rootScope) {
+        $scope = $rootScope.$new();
+
+        $scope = {
+          $parent: {
+            $ctrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
+
+                  addata: {
+                    issn: ["0089-9347"],
+                    doi: ["10.35684/JLCI.2019.5202"]
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        searchResult = $compile(searchResult)($scope);
+      });
+
+      $scope.$parent.$ctrl.$element = searchResult;
+
+      jasmine.Ajax.install();
+
+      primo.searchResult($scope);
+
+      var thirdIronApiDoiRequest = jasmine.Ajax.requests.mostRecent();
+
+      thirdIronApiDoiRequest.respondWith({
+        status: 404,
+        response: JSON.stringify({
+          "errors": [{
+            "status": '404'
+          }],
+          "meta": {
+            "avoidUnpaywall": true
+          }
+        })
+      });
+    });
+
+    afterEach(function() {
+      delete browzine.unpaywallEmailAddressKey;
+      delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+      delete browzine.articleLinkViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+      jasmine.Ajax.uninstall();
+    });
+
+    it('does not call unpaywall when avoidUnpaywall=true', function () {
+      //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
+      const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response
+      expect(jasmine.Ajax.requests.count()).toBe(1);
+      expect(thirdIronApiDoiRequestResponse).toEqual('{"errors":[{"status":"404"}],"meta":{"avoidUnpaywall":true}}');
+
+      const template = searchResult.find(".browzine");
+      expect(template.length).toEqual(0);
+      expect(searchResult.text().trim()).not.toContain("Download PDF (via Unpaywall)");
+
+    });
+  })
+
   describe("search results without scope data >", function() {
     beforeEach(function() {
       primo = browzine.primo;
