@@ -874,6 +874,8 @@ browzine.primo = (function() {
   function shouldAvoidUnpaywall(response) {
     if (response.hasOwnProperty('meta') && response.meta.hasOwnProperty('avoidUnpaywall')) {
       return response.meta.avoidUnpaywall;
+    } else if (response.data.avoidUnpaywallPublisherLinks) {
+      return true;
     } else {
       return false;
     };
