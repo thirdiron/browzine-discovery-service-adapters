@@ -1,11 +1,11 @@
-describe("BrowZine Primo Adapter >", function() {
+describe("BrowZine Primo Adapter >", function () {
   var primo = {}, searchResult = {}, $scope = {};
 
   $("body").append("<prm-search-result-list><div class='results-container'></div></prm-search-result-list>");
 
-  describe("search results journal >", function() {
-    describe("search results journal with cover image, issue link and direct to pdf link >", function() {
-      beforeEach(function() {
+  describe("search results journal >", function () {
+    describe("search results journal with cover image, issue link and direct to pdf link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -72,11 +72,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should have an enhanced browse journal in browzine option", function() {
+      it("should have an enhanced browse journal in browzine option", function () {
         var template = searchResult.find(".browzine");
         expect(template).toBeDefined();
         expect(template.text().trim()).toEqual("View Journal Contents");
@@ -85,11 +85,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
           });
 
@@ -98,8 +98,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results journal with configuration flags disabled >", function() {
-      beforeEach(function() {
+    describe("search results journal with configuration flags disabled >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
         browzine.journalCoverImagesEnabled = false;
         browzine.journalBrowZineWebLinkTextEnabled = false;
@@ -175,23 +175,23 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
         delete browzine.journalCoverImagesEnabled;
         delete browzine.journalBrowZineWebLinkTextEnabled;
         delete browzine.printRecordsIntegrationEnabled;
       });
 
-      it("should not have an browzine web issue link", function() {
+      it("should not have an browzine web issue link", function () {
         var template = searchResult.find(".browzine-web-link");
         expect(template.length).toEqual(0);
       });
 
-      it("should not have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should not have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).not.toContain("https://assets.thirdiron.com/images/covers/0959-8138.png");
           });
 
@@ -199,14 +199,14 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should not enhance a print record when print record integration is disabled", function() {
+      it("should not enhance a print record when print record integration is disabled", function () {
         var template = searchResult.find(".browzine-web-link");
         expect(template.length).toEqual(0);
       });
     });
 
-    describe("search result with pluralized journal type >", function() {
-      beforeEach(function() {
+    describe("search result with pluralized journal type >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -272,11 +272,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should have an enhanced browse journal in browzine option", function() {
+      it("should have an enhanced browse journal in browzine option", function () {
         var template = searchResult.find(".browzine");
         expect(template).toBeDefined();
         expect(template.text().trim()).toEqual("View Journal Contents");
@@ -285,11 +285,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
           });
 
@@ -299,9 +299,9 @@ describe("BrowZine Primo Adapter >", function() {
     });
   });
 
-  describe("search results article >", function() {
-    describe("search results article with both browzine web link and direct to pdf link >", function() {
-      beforeEach(function() {
+  describe("search results article >", function () {
+    describe("search results article with both browzine web link and direct to pdf link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -372,11 +372,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should have an enhanced browse article in browzine option", function() {
+      it("should have an enhanced browse article in browzine option", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -393,12 +393,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
           });
 
@@ -406,21 +406,21 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when a direct to pdf link is clicked", function() {
+      it("should open a new window when a direct to pdf link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXX/articles/55134408/full-text-file", "_blank");
       });
 
-      it("should open a new window when a browzine web link is clicked", function() {
+      it("should open a new window when a browzine web link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-web-link").click();
         expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/XXX/journals/18126/issues/7764583?showArticleInContext=doi:10.1136/bmj.h2575", "_blank");
       });
     });
 
-    describe("search results article with both browzine web link and retracted article link >", function() {
-      beforeEach(function() {
+    describe("search results article with both browzine web link and retracted article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -508,11 +508,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should have an enhanced browse article in browzine option", function() {
+      it("should have an enhanced browse article in browzine option", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -530,12 +530,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1931-7573.png");
           });
 
@@ -543,21 +543,21 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when a retracted article link is clicked", function() {
+      it("should open a new window when a retracted article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5", "_blank");
       });
 
-      it("should open a new window when a browzine web link is clicked", function() {
+      it("should open a new window when a browzine web link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-web-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716", "_blank");
       });
     });
 
-    describe("search results article with both browzine web link and eoc article link >", function() {
-      beforeEach(function() {
+    describe("search results article with both browzine web link and eoc article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -642,11 +642,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should have an enhanced browse article in browzine option", function() {
+      it("should have an enhanced browse article in browzine option", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -663,12 +663,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1538-3598.png");
           });
 
@@ -676,21 +676,21 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when an eoc article link is clicked", function() {
+      it("should open a new window when an eoc article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1001/jama.298.4.413", "_blank");
       });
 
-      it("should open a new window when a browzine web link is clicked", function() {
+      it("should open a new window when a browzine web link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-web-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/10278/issues/4699582?showArticleInContext=doi:10.1001%2Fjama.298.4.413&utm_source=api_716", "_blank");
       });
     });
 
-    describe("retraction notice and only an article link >", function() {
-      beforeEach(function() {
+    describe("retraction notice and only an article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -782,7 +782,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
@@ -804,12 +804,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0898-929X.png");
           });
 
@@ -817,21 +817,21 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when a retracted article link is clicked", function() {
+      it("should open a new window when a retracted article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-article-link").click();
         expect(window.open).toHaveBeenCalledWith("https://libkey.io/libraries/513/10.1162/jocn_a_00867", "_blank");
       });
 
-      it("should open a new window when a browzine web link is clicked", function() {
+      it("should open a new window when a browzine web link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-web-link").click();
         expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/513/journals/32127/issues/7986254?showArticleInContext=doi:10.1162%2Fjocn_a_00867&utm_source=api_572", "_blank");
       });
     });
 
-    describe("eoc notice and only an article link >", function() {
-      beforeEach(function() {
+    describe("eoc notice and only an article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -916,11 +916,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should show eoc notices when there is only an article link", function() {
+      it("should show eoc notices when there is only an article link", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -937,12 +937,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
           });
 
@@ -950,21 +950,21 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when an eoc article link is clicked", function() {
+      it("should open a new window when an eoc article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-article-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307", "_blank");
       });
 
-      it("should open a new window when a browzine web link is clicked", function() {
+      it("should open a new window when a browzine web link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-web-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572", "_blank");
       });
     });
 
-    describe("retraction notice and no pdf link or article link >", function() {
-      beforeEach(function() {
+    describe("retraction notice and no pdf link or article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -1055,11 +1055,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should show retraction notices when available even if no pdf link or article link available", function() {
+      it("should show retraction notices when available even if no pdf link or article link available", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -1072,12 +1072,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0898-929X.png");
           });
 
@@ -1085,15 +1085,15 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when a retracted article link is clicked", function() {
+      it("should open a new window when a retracted article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-article-link").click();
         expect(window.open).toHaveBeenCalledWith("https://libkey.io/libraries/1466/10.1162/jocn_a_00867", "_blank");
       });
     });
 
-    describe("eoc notice and no pdf link or article link >", function() {
-      beforeEach(function() {
+    describe("eoc notice and no pdf link or article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -1178,11 +1178,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should show eoc notices when available even if no pdf link or article link available", function() {
+      it("should show eoc notices when available even if no pdf link or article link available", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -1194,12 +1194,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
           });
 
@@ -1207,15 +1207,15 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when an eoc article link is clicked", function() {
+      it("should open a new window when an eoc article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-article-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307", "_blank");
       });
     });
 
-    describe("search results article with both retracted article link and article link >", function() {
-      beforeEach(function() {
+    describe("search results article with both retracted article link and article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
         browzine.showFormatChoice = true;
 
@@ -1304,12 +1304,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
         delete browzine.showFormatChoice;
       });
 
-      it("should have an enhanced browse article showing retraction watch only", function() {
+      it("should have an enhanced browse article showing retraction watch only", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -1328,12 +1328,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1931-7573.png");
           });
 
@@ -1341,21 +1341,21 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when a retracted article link is clicked", function() {
+      it("should open a new window when a retracted article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1186/s11671-016-1523-5", "_blank");
       });
 
-      it("should open a new window when a browzine web link is clicked", function() {
+      it("should open a new window when a browzine web link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-web-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/8645/issues/8065238?showArticleInContext=doi:10.1186%2Fs11671-016-1523-5&utm_source=api_716", "_blank");
       });
     });
 
-    describe("search results article with both eoc article link and article link >", function() {
-      beforeEach(function() {
+    describe("search results article with both eoc article link and article link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
         browzine.showFormatChoice = true;
 
@@ -1443,12 +1443,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
         delete browzine.showFormatChoice;
       });
 
-      it("should have an enhanced browse article showing eoc only", function() {
+      it("should have an enhanced browse article showing eoc only", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -1466,12 +1466,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0020-7136.png");
           });
 
@@ -1479,21 +1479,21 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when an eoc article link is clicked", function() {
+      it("should open a new window when an eoc article link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451", "_blank");
       });
 
-      it("should open a new window when a browzine web link is clicked", function() {
+      it("should open a new window when a browzine web link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-web-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/13016/issues/4629899?showArticleInContext=doi:10.1002%2Fijc.25451&utm_source=api_716", "_blank");
       });
     });
 
-    describe("search results article with a journal issn but no article doi >", function() {
-      beforeEach(function() {
+    describe("search results article with a journal issn but no article doi >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -1559,15 +1559,15 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0028-4793.png");
           });
 
@@ -1576,8 +1576,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article with no direct to pdf link and an article link >", function() {
-      beforeEach(function() {
+    describe("search results article with no direct to pdf link and an article link >", function () {
+      beforeEach(function () {
         browzine.articleLinkEnabled = true;
         primo = browzine.primo;
 
@@ -1650,12 +1650,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
         delete browzine.articleLinkEnabled;
       });
 
-      it("should enhance the search result with an article link", function() {
+      it("should enhance the search result with an article link", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -1672,12 +1672,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
           });
 
@@ -1686,8 +1686,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article with an article in context link but no direct to pdf link and no article link >", function() {
-      beforeEach(function() {
+    describe("search results article with an article in context link but no direct to pdf link and no article link >", function () {
+      beforeEach(function () {
         browzine.articleLinkEnabled = true;
         primo = browzine.primo;
 
@@ -1760,12 +1760,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
         delete browzine.articleLinkEnabled;
       });
 
-      it("should not enhance the search result with an article in context link", function() {
+      it("should not enhance the search result with an article in context link", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -1775,12 +1775,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.text().trim()).not.toContain("View Issue Contents");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
           });
 
@@ -1789,8 +1789,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article with browzine web link and disabled direct to pdf link >", function() {
-      beforeEach(function() {
+    describe("search results article with browzine web link and disabled direct to pdf link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
         browzine.articlePDFDownloadLinkEnabled = false;
 
@@ -1862,12 +1862,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
         delete browzine.articlePDFDownloadLinkEnabled;
       });
 
-      it("should have an enhanced browse article in browzine option", function() {
+      it("should have an enhanced browse article in browzine option", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -1879,12 +1879,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/0959-8138.png");
           });
 
@@ -1893,8 +1893,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article with configuration flags disabled >", function() {
-      beforeEach(function() {
+    describe("search results article with configuration flags disabled >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
         browzine.journalCoverImagesEnabled = false;
         browzine.articleBrowZineWebLinkTextEnabled = false;
@@ -1976,7 +1976,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
         delete browzine.journalCoverImagesEnabled;
         delete browzine.articleBrowZineWebLinkTextEnabled;
@@ -1985,21 +1985,21 @@ describe("BrowZine Primo Adapter >", function() {
         delete browzine.enableLinkOptimizer;
       });
 
-      it("should not have a browzine direct to pdf link", function() {
+      it("should not have a browzine direct to pdf link", function () {
         var template = searchResult.find(".browzine-direct-to-pdf-link");
         expect(template.length).toEqual(0);
       });
 
-      it("should not have an article in browzine context web link", function() {
+      it("should not have an article in browzine context web link", function () {
         var template = searchResult.find(".browzine-web-link");
         expect(template.length).toEqual(0);
       });
 
-      it("should not have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should not have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).not.toContain("https://assets.thirdiron.com/images/covers/0959-8138.png");
           });
 
@@ -2007,13 +2007,13 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should not enhance a print record when print record integration is disabled", function() {
+      it("should not enhance a print record when print record integration is disabled", function () {
         var template = searchResult.find(".browzine-web-link");
         expect(template.length).toEqual(0);
       });
 
-      it("should not remove basic pdf link when link optimizer is disabled", function(done) {
-        requestAnimationFrame(function() {
+      it("should not remove basic pdf link when link optimizer is disabled", function (done) {
+        requestAnimationFrame(function () {
           var template = searchResult.find("prm-quick-link");
           expect(template.length).toEqual(1);
 
@@ -2022,8 +2022,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article not browzineEnabled >", function() {
-      beforeEach(function() {
+    describe("search results article not browzineEnabled >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -2091,23 +2091,23 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should not have an enhanced browse article in browzine link in search result", function() {
+      it("should not have an enhanced browse article in browzine link in search result", function () {
         var template = searchResult.find(".browzine .browzine-web-link");
         expect(template.text().trim()).toEqual("");
       });
 
-      it("should not have an enhanced direct to pdf link in search result", function() {
+      it("should not have an enhanced direct to pdf link in search result", function () {
         var template = searchResult.find(".browzine .browzine-direct-to-pdf-link");
         expect(template.text().trim()).toEqual("");
       });
     });
 
-    describe("search results article with no doi and journal not browzineEnabled >", function() {
-      beforeEach(function() {
+    describe("search results article with no doi and journal not browzineEnabled >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -2164,23 +2164,23 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should not have an enhanced browse article in browzine link in search result", function() {
+      it("should not have an enhanced browse article in browzine link in search result", function () {
         var template = searchResult.find(".browzine .browzine-web-link");
         expect(template.text().trim()).toEqual("");
       });
 
-      it("should not have an enhanced direct to pdf link in search result", function() {
+      it("should not have an enhanced direct to pdf link in search result", function () {
         var template = searchResult.find(".browzine .browzine-direct-to-pdf-link");
         expect(template.text().trim()).toEqual("");
       });
     });
 
-    describe("search results article with no browzine results that calls unpaywall >", function() {
-      beforeEach(function() {
+    describe("search results article with no browzine results that calls unpaywall >", function () {
+      beforeEach(function () {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articlePDFDownloadViaUnpaywallEnabled = true;
         browzine.articleLinkViaUnpaywallEnabled = true;
@@ -2229,7 +2229,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      afterEach(function() {
+      afterEach(function () {
         delete browzine.unpaywallEmailAddressKey;
         delete browzine.articlePDFDownloadViaUnpaywallEnabled;
         delete browzine.articleLinkViaUnpaywallEnabled;
@@ -2239,8 +2239,8 @@ describe("BrowZine Primo Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
-        it("should enhance the article with an unpaywall article pdf", function() {
+      describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function () {
+        it("should enhance the article with an unpaywall article pdf", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2274,7 +2274,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
         });
 
-        it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false", function () {
           browzine.articlePDFDownloadViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2311,8 +2311,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
-        it("should enhance the article with an unpaywall article link", function() {
+      describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function () {
+        it("should enhance the article with an unpaywall article link", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2346,7 +2346,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
         });
 
-        it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false", function () {
           browzine.articleLinkViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2383,8 +2383,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function() {
-        it("should enhance the article with an unpaywall manuscript article pdf", function() {
+      describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function () {
+        it("should enhance the article with an unpaywall manuscript article pdf", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2418,7 +2418,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
         });
 
-        it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false", function () {
           browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2455,8 +2455,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-        it("should enhance the article with an unpaywall manuscript article link", function() {
+      describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function () {
+        it("should enhance the article with an unpaywall manuscript article link", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2490,7 +2490,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
         });
 
-        it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false", function () {
           browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2527,8 +2527,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
-        it("should enhance the article with an unpaywall article pdf", function() {
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function () {
+        it("should enhance the article with an unpaywall article pdf", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2563,8 +2563,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function() {
-        it("should enhance the article with an unpaywall manuscript article pdf", function() {
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function () {
+        it("should enhance the article with an unpaywall manuscript article pdf", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2599,8 +2599,9 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall no best open access location >", function() {
-        it("should not enhance the article with an unpaywall link", function() {
+
+      describe("unpaywall no best open access location >", function () {
+        it("should not enhance the article with an unpaywall link", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2618,8 +2619,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article with browzine results but no pdf url that calls unpaywall >", function() {
-      beforeEach(function() {
+    describe("search results article with browzine results but no pdf url that calls unpaywall >", function () {
+      beforeEach(function () {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articlePDFDownloadViaUnpaywallEnabled = true;
         browzine.articleLinkViaUnpaywallEnabled = true;
@@ -2695,7 +2696,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      afterEach(function() {
+      afterEach(function () {
         delete browzine.unpaywallEmailAddressKey;
         delete browzine.articlePDFDownloadViaUnpaywallEnabled;
         delete browzine.articleLinkViaUnpaywallEnabled;
@@ -2705,8 +2706,8 @@ describe("BrowZine Primo Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
-        it("should enhance the article with an unpaywall article pdf", function() {
+      describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function () {
+        it("should enhance the article with an unpaywall article pdf", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2740,7 +2741,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
         });
 
-        it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false", function () {
           browzine.articlePDFDownloadViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2777,8 +2778,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
-        it("should enhance the article with an unpaywall article link", function() {
+      describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function () {
+        it("should enhance the article with an unpaywall article link", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2812,7 +2813,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
         });
 
-        it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false", function () {
           browzine.articleLinkViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2849,8 +2850,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function() {
-        it("should enhance the article with an unpaywall manuscript article pdf", function() {
+      describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function () {
+        it("should enhance the article with an unpaywall manuscript article pdf", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2884,7 +2885,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
         });
 
-        it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false", function () {
           browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2921,8 +2922,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-        it("should enhance the article with an unpaywall manuscript article link", function() {
+      describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function () {
+        it("should enhance the article with an unpaywall manuscript article link", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -2956,7 +2957,7 @@ describe("BrowZine Primo Adapter >", function() {
           expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
         });
 
-        it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false", function() {
+        it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false", function () {
           browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = false;
 
           var request = jasmine.Ajax.requests.mostRecent();
@@ -2993,8 +2994,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
-        it("should enhance the article with an unpaywall article pdf", function() {
+      describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function () {
+        it("should enhance the article with an unpaywall article pdf", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -3029,8 +3030,8 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      describe("unpaywall no best open access location >", function() {
-        it("should not enhance the article with an unpaywall link", function() {
+      describe("unpaywall no best open access location >", function () {
+        it("should not enhance the article with an unpaywall link", function () {
           var request = jasmine.Ajax.requests.mostRecent();
 
           request.respondWith({
@@ -3048,8 +3049,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article with browzine results, no pdf url, and unpaywall not usable >", function() {
-      beforeEach(function() {
+    describe("search results article with browzine results, no pdf url, and unpaywall not usable >", function () {
+      beforeEach(function () {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articlePDFDownloadViaUnpaywallEnabled = true;
         browzine.articleLinkViaUnpaywallEnabled = true;
@@ -3124,7 +3125,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      afterEach(function() {
+      afterEach(function () {
         delete browzine.unpaywallEmailAddressKey;
         delete browzine.articlePDFDownloadViaUnpaywallEnabled;
         delete browzine.articleLinkViaUnpaywallEnabled;
@@ -3134,7 +3135,7 @@ describe("BrowZine Primo Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      it("should not call unpaywall and not add a Download PDF link", function() {
+      it("should not call unpaywall and not add a Download PDF link", function () {
         expect(jasmine.Ajax.requests.count()).toBe(1);
         var template = searchResult.find(".browzine");
         expect(template).toBeDefined();
@@ -3142,8 +3143,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results article with browzine results, no pdf url, and unpaywall usable >", function() {
-      beforeEach(function() {
+    describe("search results article with browzine results, no pdf url, and unpaywall usable >", function () {
+      beforeEach(function () {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articlePDFDownloadViaUnpaywallEnabled = true;
         browzine.articleLinkViaUnpaywallEnabled = true;
@@ -3238,7 +3239,7 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      afterEach(function() {
+      afterEach(function () {
         delete browzine.unpaywallEmailAddressKey;
         delete browzine.articlePDFDownloadViaUnpaywallEnabled;
         delete browzine.articleLinkViaUnpaywallEnabled;
@@ -3248,7 +3249,7 @@ describe("BrowZine Primo Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      it("should call unpaywall and add a Download PDF link", function() {
+      it("should call unpaywall and add a Download PDF link", function () {
         expect(jasmine.Ajax.requests.count()).toBe(2);
         var template = searchResult.find(".browzine");
         expect(template).toBeDefined();
@@ -3256,8 +3257,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("search results open access article with a direct to pdf link and journal not browzineEnabled >", function() {
-      beforeEach(function() {
+    describe("search results open access article with a direct to pdf link and journal not browzineEnabled >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -3332,11 +3333,11 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should have an enhanced browse article in browzine option", function() {
+      it("should have an enhanced browse article in browzine option", function () {
         var template = searchResult.find(".browzine");
 
         expect(template).toBeDefined();
@@ -3348,12 +3349,12 @@ describe("BrowZine Primo Adapter >", function() {
         expect(template.find("img.browzine-pdf-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-pdf-download-icon.svg");
       });
 
-      it("should have an enhanced browzine journal cover", function(done) {
-        requestAnimationFrame(function() {
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
           var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
           expect(coverImages).toBeDefined();
 
-          Array.prototype.forEach.call(coverImages, function(coverImage) {
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
             expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/2158-2440.png");
           });
 
@@ -3361,15 +3362,15 @@ describe("BrowZine Primo Adapter >", function() {
         });
       });
 
-      it("should open a new window when a direct to pdf link is clicked", function() {
+      it("should open a new window when a direct to pdf link is clicked", function () {
         spyOn(window, "open");
         searchResult.find(".browzine .browzine-direct-to-pdf-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/articles/379795373/full-text-file", "_blank");
       });
     });
 
-    describe("search results article extra links and both browzine web link and direct to pdf link content links disabled >", function() {
-      beforeEach(function() {
+    describe("search results article extra links and both browzine web link and direct to pdf link content links disabled >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
         browzine.showLinkResolverLink = false;
 
@@ -3441,20 +3442,20 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         delete browzine.showLinkResolverLink;
         jasmine.Ajax.uninstall();
       });
 
-      it("should not show the content link option", function() {
+      it("should not show the content link option", function () {
         expect(searchResult).toBeDefined();
         expect(searchResult.text().trim()).toContain("Download PDF");
         expect(searchResult.text().trim()).not.toContain("Available Online");
       });
     });
 
-    describe("search results article extra links and both browzine web link and direct to pdf link >", function() {
-      beforeEach(function() {
+    describe("search results article extra links and both browzine web link and direct to pdf link >", function () {
+      beforeEach(function () {
         primo = browzine.primo;
 
         searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-quick-link><a target='_blank'><span>PDF</span></a></prm-quick-link><prm-search-result-availability-line><div class='layout-align-start-start'><div class='layout-row'><span class='availability-status'>Available Online</span></div></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
@@ -3525,17 +3526,17 @@ describe("BrowZine Primo Adapter >", function() {
         expect(request.method).toBe('GET');
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it("should show the content link option by default", function() {
+      it("should show the content link option by default", function () {
         expect(searchResult).toBeDefined();
         expect(searchResult.text().trim()).toContain("Download PDF");
         expect(searchResult.text().trim()).toContain("Available Online");
       });
 
-      it("should not show the quick link option by default", function() {
+      it("should not show the quick link option by default", function () {
         expect(searchResult).toBeDefined();
         expect(searchResult.text().trim()).toContain("Download PDF");
 
@@ -3545,8 +3546,8 @@ describe("BrowZine Primo Adapter >", function() {
     });
   });
 
-  describe("search results article with extra links and with no browzine results that calls unpaywall >", function() {
-    beforeEach(function() {
+  describe("search results article with extra links and with no browzine results that calls unpaywall >", function () {
+    beforeEach(function () {
       browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
       browzine.articlePDFDownloadViaUnpaywallEnabled = true;
       browzine.articleLinkViaUnpaywallEnabled = true;
@@ -3595,7 +3596,7 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    afterEach(function() {
+    afterEach(function () {
       delete browzine.unpaywallEmailAddressKey;
       delete browzine.articlePDFDownloadViaUnpaywallEnabled;
       delete browzine.articleLinkViaUnpaywallEnabled;
@@ -3605,8 +3606,8 @@ describe("BrowZine Primo Adapter >", function() {
       jasmine.Ajax.uninstall();
     });
 
-    describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function() {
-      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function() {
+    describe("unpaywall best open access location host type publisher and version publishedVersion and has a pdf url >", function () {
+      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function () {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -3643,7 +3644,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
+      it("should not show an unpaywall article pdf when articlePDFDownloadViaUnpaywallEnabled is false and disable libkey link optimizer", function () {
         browzine.articlePDFDownloadViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -3683,8 +3684,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall article link and enable libkey link optimizer", function() {
+    describe("unpaywall best open access location host type publisher and version publishedVersion and does not have a pdf url >", function () {
+      it("should enhance the article with an unpaywall article link and enable libkey link optimizer", function () {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -3721,7 +3722,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
+      it("should not show an unpaywall article link when articleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function () {
         browzine.articleLinkViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -3761,8 +3762,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function() {
-      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function() {
+    describe("unpaywall best open access location host type repository and version acceptedVersion and has a pdf url >", function () {
+      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function () {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -3799,7 +3800,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
+      it("should not show an unpaywall manuscript article pdf when articleAcceptedManuscriptPDFViaUnpaywallEnabled is false and disable libkey link optimizer", function () {
         browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -3839,8 +3840,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function() {
-      it("should enhance the article with an unpaywall manuscript article link and enable libkey link optimizer", function() {
+    describe("unpaywall best open access location host type repository and version acceptedVersion and does not have a pdf url >", function () {
+      it("should enhance the article with an unpaywall manuscript article link and enable libkey link optimizer", function () {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -3877,7 +3878,7 @@ describe("BrowZine Primo Adapter >", function() {
         expect(quickLink.length).toEqual(0);
       });
 
-      it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function() {
+      it("should not show an unpaywall manuscript article link when articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled is false and disable libkey link optimizer", function () {
         browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = false;
 
         var request = jasmine.Ajax.requests.mostRecent();
@@ -3917,8 +3918,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function() {
-      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function() {
+    describe(`unpaywall best open access location host type repository and version null and has a pdf url from nih.gov or europepmc.org >`, function () {
+      it("should enhance the article with an unpaywall article pdf and enable libkey link optimizer", function () {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -3956,8 +3957,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function() {
-      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function() {
+    describe(`unpaywall best open access location host type repository and version null and has a pdf url not from nih.gov or europepmc.org >`, function () {
+      it("should enhance the article with an unpaywall manuscript article pdf and enable libkey link optimizer", function () {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -3995,8 +3996,8 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    describe("unpaywall no best open access location >", function() {
-      it("should not enhance the article with an unpaywall link and disable libkey link optimizer", function() {
+    describe("unpaywall no best open access location >", function () {
+      it("should not enhance the article with an unpaywall link and disable libkey link optimizer", function () {
         var request = jasmine.Ajax.requests.mostRecent();
 
         request.respondWith({
@@ -4019,7 +4020,7 @@ describe("BrowZine Primo Adapter >", function() {
 
   describe("When an article is suppressed > ", function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
       browzine.articlePDFDownloadViaUnpaywallEnabled = true;
       browzine.articleLinkViaUnpaywallEnabled = true;
@@ -4076,7 +4077,7 @@ describe("BrowZine Primo Adapter >", function() {
       });
     });
 
-    afterEach(function() {
+    afterEach(function () {
       delete browzine.unpaywallEmailAddressKey;
       delete browzine.articlePDFDownloadViaUnpaywallEnabled;
       delete browzine.articleLinkViaUnpaywallEnabled;
@@ -4088,7 +4089,7 @@ describe("BrowZine Primo Adapter >", function() {
 
     it('does not call unpaywall when avoidUnpaywall=true', function () {
       //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
-      const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response
+      const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
       expect(jasmine.Ajax.requests.count()).toBe(1);
       expect(thirdIronApiDoiRequestResponse).toEqual('{"errors":[{"status":"404"}],"meta":{"avoidUnpaywall":true}}');
 
@@ -4097,13 +4098,19 @@ describe("BrowZine Primo Adapter >", function() {
       expect(searchResult.text().trim()).not.toContain("Download PDF (via Unpaywall)");
 
     });
-  })
+  });
 
-  describe("search results without scope data >", function() {
-    beforeEach(function() {
+  describe("When an article has an open access status of false and avoidUnpaywallPublisherLink = true >", function () {
+    beforeEach(function () {
+      browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+      browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+      browzine.articleLinkViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+      browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
       primo = browzine.primo;
 
-      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img src=''/><img src=''/><img src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+      searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
 
       inject(function ($compile, $rootScope) {
         $scope = $rootScope.$new();
@@ -4111,7 +4118,18 @@ describe("BrowZine Primo Adapter >", function() {
         $scope = {
           $parent: {
             $ctrl: {
+              result: {
+                pnx: {
+                  display: {
+                    type: ["article"]
+                  },
 
+                  addata: {
+                    issn: ["0974-4053"],
+                    doi: ["10.1163/09744061-bja10082"]
+                  }
+                }
+              }
             }
           }
         };
@@ -4125,18 +4143,121 @@ describe("BrowZine Primo Adapter >", function() {
 
       primo.searchResult($scope);
 
-      var request = jasmine.Ajax.requests.mostRecent();
-      expect(request).toBeUndefined();
+      var thirdIronApiDoiRequest = jasmine.Ajax.requests.mostRecent();
+
+      thirdIronApiDoiRequest.respondWith({
+        status: 200,
+        response: JSON.stringify({
+          "data": {
+            "id": 572672990,
+            "type": "articles",
+            "title": "The Residents of The Comoros and Sustainable Tourism",
+            "date": "2023-06-02",
+            "authors": "Sarı, Ömer; Meydan Uygur, Selma; Abdourahmane, Ali",
+            "inPress": false,
+            "abandoned": false,
+            "doi": "10.1163/09744061-bja10082",
+            "linkResolverOpenUrl": "",
+            "pmid": "",
+            "openAccess": false,
+            "unpaywallUsable": true,
+            "fullTextFile": "",
+            "contentLocation": "",
+            "availableThroughBrowzine": false,
+            "startPage": "347",
+            "endPage": "376",
+            "avoidUnpaywallPublisherLinks": true,
+            "relationships": {
+              "issue": {
+                "links": {
+                  "related": "/public/v1/libraries/1939/issues/539825402"
+                }
+              },
+              "journal": {
+                "links": {
+                  "related": "/public/v1/libraries/1939/journals/314336"
+                }
+              }
+            },
+            "abstract": null,
+            "contentLocationDestinationUrl": "",
+            "contentLocationRawDestinationUrl": "",
+            "fullTextFileDestinationUrl": "",
+            "fullTextFileRawDestinationUrl": ""
+          },
+          "included": [{
+            "id": 314336,
+            "type": "journals",
+            "title": "Africa Review",
+            "issn": "09744053",
+            "sjrValue": 2.34,
+            "coverImageUrl": "",
+            "browzineEnabled": true,
+            "browzineWebLink": ""
+          }]
+        })
+      });
     });
 
-    afterEach(function() {
+    afterEach(function () {
+      delete browzine.unpaywallEmailAddressKey;
+      delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+      delete browzine.articleLinkViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+      delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
       jasmine.Ajax.uninstall();
     });
+    it("Should not call unpaywall and not enhance the search result", function () {
+      //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
+      const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
+      expect(jasmine.Ajax.requests.count()).toBe(1);
+      expect(thirdIronApiDoiRequestResponse).toContain('"avoidUnpaywallPublisherLinks":false,');
 
-    it("should not enhance a search result without scope data", function() {
-      var template = searchResult.find(".browzine");
+      const template = searchResult.find(".browzine");
       expect(template.length).toEqual(0);
-      expect(template[0]).toBeUndefined();
+      expect(searchResult.text().trim()).not.toContain("Download PDF (via Unpaywall)");
+     });
+});
+
+describe("search results without scope data >", function () {
+  beforeEach(function () {
+    primo = browzine.primo;
+
+    searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img src=''/><img src=''/><img src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+    inject(function ($compile, $rootScope) {
+      $scope = $rootScope.$new();
+
+      $scope = {
+        $parent: {
+          $ctrl: {
+
+          }
+        }
+      };
+
+      searchResult = $compile(searchResult)($scope);
     });
+
+    $scope.$parent.$ctrl.$element = searchResult;
+
+    jasmine.Ajax.install();
+
+    primo.searchResult($scope);
+
+    var request = jasmine.Ajax.requests.mostRecent();
+    expect(request).toBeUndefined();
+  });
+
+  afterEach(function () {
+    jasmine.Ajax.uninstall();
+  });
+
+  it("should not enhance a search result without scope data", function () {
+    var template = searchResult.find(".browzine");
+    expect(template.length).toEqual(0);
+    expect(template[0]).toBeUndefined();
+  });
   });
 });
