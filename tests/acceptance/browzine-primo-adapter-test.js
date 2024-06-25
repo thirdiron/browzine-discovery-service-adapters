@@ -4218,7 +4218,7 @@ describe("BrowZine Primo Adapter >", function () {
       expect(template.length).toEqual(0);
       expect(searchResult.text().trim()).not.toContain("Download PDF (via Unpaywall)");
      });
-});
+  });
 
 describe("search results without scope data >", function () {
   beforeEach(function () {

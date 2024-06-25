@@ -3414,7 +3414,7 @@ describe("BrowZine Summon Adapter >", function() {
     });
 
     describe("When an article is suppressed > ", function () {
-      beforeEach(function() {
+      beforeEach(function () {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articlePDFDownloadViaUnpaywallEnabled = true;
         browzine.articleLinkViaUnpaywallEnabled = true;
@@ -3455,7 +3455,7 @@ describe("BrowZine Summon Adapter >", function() {
         });
       });
 
-      afterEach(function() {
+      afterEach(function () {
         delete browzine.unpaywallEmailAddressKey;
         delete browzine.articlePDFDownloadViaUnpaywallEnabled;
         delete browzine.articleLinkViaUnpaywallEnabled;
@@ -3466,14 +3466,118 @@ describe("BrowZine Summon Adapter >", function() {
       });
       it("Does not call unpaywall when avoidUnpaywall=true", function () {
         //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
-        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response
+        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
         expect(jasmine.Ajax.requests.count()).toBe(1);
         expect(thirdIronApiDoiRequestResponse).toEqual('{"errors":[{"status":"404"}],"meta":{"avoidUnpaywall":true}}');
 
         const template = documentSummary.find(".browzine");
         expect(template.length).toEqual(0);
         expect(documentSummary.text().trim()).not.toContain("Download PDF (via Unpaywall)");
-      })
-    })
+      });
+    });
+
+    describe("When an article has an open access status of false and avoidUnpaywallPublisherLink = true >", function () {
+      beforeEach(function () {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois:["10.1163/09744061-bja10082"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var thirdIronApiDoiRequest = jasmine.Ajax.requests.mostRecent();
+
+        thirdIronApiDoiRequest.respondWith({
+          status: 200,
+          response: JSON.stringify({
+            "data": {
+              "id": 572672990,
+              "type": "articles",
+              "title": "The Residents of The Comoros and Sustainable Tourism",
+              "date": "2023-06-02",
+              "authors": "Sarı, Ömer; Meydan Uygur, Selma; Abdourahmane, Ali",
+              "inPress": false,
+              "abandoned": false,
+              "doi": "10.1163/09744061-bja10082",
+              "linkResolverOpenUrl": "",
+              "pmid": "",
+              "openAccess": false,
+              "unpaywallUsable": true,
+              "fullTextFile": "",
+              "contentLocation": "",
+              "availableThroughBrowzine": false,
+              "startPage": "347",
+              "endPage": "376",
+              "avoidUnpaywallPublisherLinks": true,
+              "relationships": {
+                "issue": {
+                  "links": {
+                    "related": "/public/v1/libraries/1939/issues/539825402"
+                  }
+                },
+                "journal": {
+                  "links": {
+                    "related": "/public/v1/libraries/1939/journals/314336"
+                  }
+                }
+              },
+              "abstract": null,
+              "contentLocationDestinationUrl": "",
+              "contentLocationRawDestinationUrl": "",
+              "fullTextFileDestinationUrl": "",
+              "fullTextFileRawDestinationUrl": ""
+            },
+            "included": [{
+              "id": 314336,
+              "type": "journals",
+              "title": "Africa Review",
+              "issn": "09744053",
+              "sjrValue": 2.34,
+              "coverImageUrl": "",
+              "browzineEnabled": true,
+              "browzineWebLink": ""
+            }]
+          })
+        });
+      });
+
+      afterEach(function () {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+      it("Should not call unpaywall and not enhance the search result", function () {
+        //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
+        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
+        expect(jasmine.Ajax.requests.count()).toBe(1);
+        expect(thirdIronApiDoiRequestResponse).toContain('"avoidUnpaywallPublisherLinks":false,');
+
+        const template = documentSummary.find(".browzine");
+        expect(template.length).toEqual(0);
+        expect(documentSummary.text().trim()).not.toContain("Download PDF (via Unpaywall)");
+       });
+    });
   });
 });
