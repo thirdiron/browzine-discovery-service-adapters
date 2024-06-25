@@ -3572,7 +3572,7 @@ describe("BrowZine Summon Adapter >", function() {
         //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
         const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
         expect(jasmine.Ajax.requests.count()).toBe(1);
-        expect(thirdIronApiDoiRequestResponse).toContain('"avoidUnpaywallPublisherLinks":false,');
+        expect(thirdIronApiDoiRequestResponse).toContain('"avoidUnpaywallPublisherLinks":true,');
 
         const template = documentSummary.find(".browzine");
         expect(template.length).toEqual(0);
