@@ -1,6 +1,6 @@
 ## Summary - [BZ-XXXX](https://thirdiron.atlassian.net/browse/BZ-XXXX)
 
-<!--Required: The high level goal of the desired outcome of this PR. This will be included in the auto-generated release notes for a prod deployment.-->
+<!--Required section. The high level goal of the desired outcome of this PR. This will be included in the auto-generated release notes for a prod deployment.-->
 
 
 
@@ -16,13 +16,41 @@
 
 1. ​
 
+
+## Technical Debt
+
+<!-- Optional: Outline any technical debt along with tradeoffs considered and possible changes for future implementations -->
+
+## Deploy Prerequisites
+
+<!-- Things that must be completed before deployment can safely proceed. Delete any of the items below that do not apply to this PR. Feel free to go into further detail on any of the points you decide to keep.-->
+
+- :stop_sign: Depends on another getting into production first: 
+- :stop_sign: Other:
+- None
+
 ## Deploy Precautions
 
-<!-- Required: Potential things to look out for during the deployment process. Delete any of the hazards below that do not apply to this PR. Feel free to go into further detail on any of the points you decide to keep.-->
+<!--Potential things to look out for during the deployment process. Delete any of the hazards below that do not apply to this PR. Feel free to go into further detail on any of the points you decide to keep.-->
 
-- :warning: Depends on another PR getting into production first: 
-- :warning: Another PR is waiting on this one to get merged:
 - :warning: Has to be deployed concurrently with another system: 
 - :warning: Potential to break other untested functionality in production:
+- :warning: Modifies an endpoint that saves data, like from the Public Admin Portal:
+- :warning: Non backwards compatible DB changes: 
+- Potentially disruptive DB migration
+  - :warning: Column Drop
+  - :warning: Table Drop
+  - :warning: Long-Running
+  - :warning: Materialized View Change
+  - :warning: Auth System table modified: api_client_registrations, api_client_tokens, bps_ips, bps_server, users, user_roles, user_library_affiliations, role_permissions, permissions, roles, sso_accounts
 - :warning: Other: 
 - None
+
+## Deploy Informational Notes
+
+<!--Things that are not concerns that would hold up a deployment or shape how a deployment is executed, but may be useful to know about when preparing for a deployment or after a deployment is completed. Delete any of the notices below that do not apply to this PR. Feel free to go into further detail on any of the points you decide to keep.-->
+
+- :information_source: Another PR is waiting on this one to get merged:
+- :information_source: Other:
+- None
+
