@@ -25,7 +25,7 @@
 
 <!-- Things that must be completed before deployment can safely proceed. Delete any of the items below that do not apply to this PR. Feel free to go into further detail on any of the points you decide to keep.-->
 
-- :stop_sign: Depends on another getting into production first: 
+- :stop_sign: Depends on another PR getting into production first:
 - :stop_sign: Other:
 - None
 
@@ -33,17 +33,17 @@
 
 <!--Potential things to look out for during the deployment process. Delete any of the hazards below that do not apply to this PR. Feel free to go into further detail on any of the points you decide to keep.-->
 
-- :warning: Has to be deployed concurrently with another system: 
+- :warning: Has to be deployed concurrently with another system:
 - :warning: Potential to break other untested functionality in production:
 - :warning: Modifies an endpoint that saves data, like from the Public Admin Portal:
-- :warning: Non backwards compatible DB changes: 
+- :warning: Non backwards compatible DB changes:
 - Potentially disruptive DB migration
   - :warning: Column Drop
   - :warning: Table Drop
   - :warning: Long-Running
   - :warning: Materialized View Change
   - :warning: Auth System table modified: api_client_registrations, api_client_tokens, bps_ips, bps_server, users, user_roles, user_library_affiliations, role_permissions, permissions, roles, sso_accounts
-- :warning: Other: 
+- :warning: Other:
 - None
 
 ## Deploy Informational Notes
