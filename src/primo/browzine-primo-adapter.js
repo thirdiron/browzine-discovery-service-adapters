@@ -1019,9 +1019,9 @@ browzine.primo = (function() {
             if (requestUnpaywall.readyState == XMLHttpRequest.DONE && requestUnpaywall.status == 200) {
               var responseUnpaywall = JSON.parse(requestUnpaywall.response);
 
-              // if (shouldIgnoreUnpaywallResponse(response, responseUnpaywall)) {
-              //   return;
-              // }
+              if (shouldIgnoreUnpaywallResponse(response, responseUnpaywall)) {
+                return;
+              }
 
               var unpaywallArticlePDFUrl = getUnpaywallArticlePDFUrl(responseUnpaywall);
               var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(responseUnpaywall);
