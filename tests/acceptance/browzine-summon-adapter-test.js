@@ -3476,7 +3476,7 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
-    describe("When an article has an open access status of false and avoidUnpaywallPublisherLink = true >", function () {
+    describe("When an article has an open access status of false and avoidUnpaywallPublisherLink = true and unpaywall response has a host_type of publisher >", function () {
       beforeEach(function () {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articlePDFDownloadViaUnpaywallEnabled = true;
@@ -3568,11 +3568,33 @@ describe("BrowZine Summon Adapter >", function() {
 
         jasmine.Ajax.uninstall();
       });
-      it("Should not call unpaywall and not enhance the search result", function () {
+      it("Should call unpaywall, see host_type of publisher, and not enhance the search result", function () {
+        var requestToUnpaywall = jasmine.Ajax.requests.mostRecent();
+        requestToUnpaywall.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "best_oa_location": {
+              "endpoint_id": "e32e740fde0998433a4",
+              "evidence": "oa repository (via OAI-PMH doi match)",
+              "host_type": "publisher",
+              "is_best": true,
+              "license": "cc0",
+              "pmh_id": "oai:diposit.ub.edu:2445/147225",
+              "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+              "updated": "2020-02-20T17:30:21.829852",
+              "url": "http://some.great.site/article/page",
+              "url_for_landing_page": "http://some.great.site/article/page",
+              "url_for_pdf": "http://some.great.site/article/page/stuff.pdf",
+              "version": "publishedVersion"
+            }
+          })
+        });
+
         //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
-        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
-        expect(jasmine.Ajax.requests.count()).toBe(1);
-        expect(thirdIronApiDoiRequestResponse).toContain('"avoidUnpaywallPublisherLinks":true,');
+        const unpaywallApiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
+        expect(jasmine.Ajax.requests.count()).toBe(2);
+        expect(unpaywallApiRequestResponse).toContain('"host_type":"publisher",');
 
         const template = documentSummary.find(".browzine");
         expect(template.length).toEqual(0);
