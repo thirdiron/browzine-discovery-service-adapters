@@ -889,10 +889,7 @@ browzine.summon = (function() {
   function shouldAvoidUnpaywall(response) {
     if (response.hasOwnProperty('meta') && response.meta.hasOwnProperty('avoidUnpaywall')) {
       return response.meta.avoidUnpaywall;
-    } else if (response.hasOwnProperty('data') && response.data.hasOwnProperty('avoidUnpaywallPublisherLinks')) {
-      return response.data.avoidUnpaywallPublisherLinks
-     }
-    else {
+    } else {
       return false;
     };
   }
