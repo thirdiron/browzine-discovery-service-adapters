@@ -1013,7 +1013,7 @@ browzine.summon = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (!directToPDFUrl && !articleLinkUrl && !articleRetractionUrl && !articleEocNoticeUrl && problematicJournalArticleNoticeUrl && isArticle(scope) && showExpressionOfConcern()) {
+        if (!directToPDFUrl && !articleLinkUrl && !articleRetractionUrl && !articleEocNoticeUrl && problematicJournalArticleNoticeUrl && isArticle(scope)) {
           var template = problematicJournalArticleNoticeLinkTemplate(problematicJournalArticleNoticeUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
