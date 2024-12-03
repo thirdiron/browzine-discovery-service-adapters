@@ -579,7 +579,7 @@ browzine.primo = (function() {
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
-      articlePDFDownloadLinkText = browzine.articleExpressionOfConcernText || "Problematic Journal";
+      articlePDFDownloadLinkText = browzine.problematicJournalText || "Problematic Journal";
     }
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
@@ -619,10 +619,10 @@ browzine.primo = (function() {
       articleLinkText = browzine.articleExpressionOfConcernText || "Expression of Concern";
     } else if (showProblematicJournalArticleNoticeUI(problematicJournalArticleNoticeUrl)) {
       articleLinkUrl = problematicJournalArticleNoticeUrl;
-      pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
-      pdfIconWidth = "15";
-      pdfIconMarginRight = "1.5px";
-      articlePDFDownloadLinkText = browzine.articleExpressionOfConcernText || "Problematic Journal";
+      linkIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
+      linkIconWidth = "15";
+      linkIconMarginRight = "1.5px";
+      articleLinkText = browzine.problematicJournalText || "Problematic Journal";
     }
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
@@ -765,7 +765,7 @@ browzine.primo = (function() {
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
-      articlePDFDownloadLinkText = browzine.articleExpressionOfConcernText || "Problematic Journal";
+      articlePDFDownloadLinkText = browzine.problematicJournalText || "Problematic Journal";
     }
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
@@ -828,7 +828,7 @@ browzine.primo = (function() {
       pdfIcon = "https://assets.thirdiron.com/images/integrations/browzine-retraction-watch-icon.svg";
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
-      articlePDFDownloadLinkText = browzine.articleExpressionOfConcernText || "Problematic Journal";
+      articlePDFDownloadLinkText = browzine.problematicJournalText || "Problematic Journal";
     }
 
     var template = "<div class='browzine' style='line-height: 1.4em; margin-right: 4.5em;'>" +
