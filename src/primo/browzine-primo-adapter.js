@@ -874,11 +874,18 @@ browzine.primo = (function() {
   function shouldAvoidUnpaywall(response) {
     if (response.hasOwnProperty('meta') && response.meta.hasOwnProperty('avoidUnpaywall')) {
       return response.meta.avoidUnpaywall;
-    } else if (response.hasOwnProperty('data') && response.data.hasOwnProperty('avoidUnpaywallPublisherLinks')) {
-      return response.data.avoidUnpaywallPublisherLinks;
     } else {
       return false;
     };
+  }
+
+  function shouldIgnoreUnpaywallResponse(response, unpaywallResponse) {
+    if (response.hasOwnProperty('data') && response.data.hasOwnProperty('avoidUnpaywallPublisherLinks')) {
+      if (unpaywallResponse.best_oa_location && unpaywallResponse.best_oa_location.host_type === "publisher") {
+        return true;
+      }
+    }
+    return false;
   }
 
   function searchResult($scope) {
@@ -1010,12 +1017,16 @@ browzine.primo = (function() {
 
           requestUnpaywall.onload = function() {
             if (requestUnpaywall.readyState == XMLHttpRequest.DONE && requestUnpaywall.status == 200) {
-              var response = JSON.parse(requestUnpaywall.response);
+              var responseUnpaywall = JSON.parse(requestUnpaywall.response);
 
-              var unpaywallArticlePDFUrl = getUnpaywallArticlePDFUrl(response);
-              var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(response);
-              var unpaywallManuscriptArticlePDFUrl = getUnpaywallManuscriptArticlePDFUrl(response);
-              var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(response);
+              if (shouldIgnoreUnpaywallResponse(response, responseUnpaywall)) {
+                return;
+              }
+
+              var unpaywallArticlePDFUrl = getUnpaywallArticlePDFUrl(responseUnpaywall);
+              var unpaywallArticleLinkUrl = getUnpaywallArticleLinkUrl(responseUnpaywall);
+              var unpaywallManuscriptArticlePDFUrl = getUnpaywallManuscriptArticlePDFUrl(responseUnpaywall);
+              var unpaywallManuscriptArticleLinkUrl = getUnpaywallManuscriptArticleLinkUrl(responseUnpaywall);
               var articleRetractionUrl = getArticleRetractionUrl(scope, data);
               var articleEocNoticeUrl = getArticleEOCNoticeUrl(scope, data);
 
