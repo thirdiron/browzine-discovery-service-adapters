@@ -27,15 +27,15 @@ browzine.serSol360Core = (function() {
 
   function getIssn(title) {
     if (title.identifiers) {
-      var issnIdentifier = title.identifiers.filter(function(identifier) {
+      var issnIdentifierArray = title.identifiers.filter(function(identifier) {
         if (identifier.type && identifier.value) {
           return identifier.type.toLowerCase() === "issn" && identifier.value.length > 0;
         }
-      }).pop();
+      });
 
-      if (issnIdentifier) {
-        return encodeURIComponent(issnIdentifier.value);
-      }
+      if (issnIdentifierArray[0]) {
+        return encodeURIComponent(issnIdentifierArray[0].value);
+      };
 
       var eissnIdentifier = title.identifiers.filter(function(identifier) {
         if (identifier.type && identifier.value) {
@@ -55,15 +55,14 @@ browzine.serSol360Core = (function() {
     return (title && title.title) ? title.title : '';
   };
 
-  function getTarget(title) {
-    var issn = getIssn(title).toLowerCase().trim();
+  function getTarget(index){
+    var elements = $(".results-identifier").closest(".results-title-row");
 
-    var element = $(".results-identifier").filter(function() {
-      return $.trim($(this).text()).toLowerCase().indexOf(issn) > -1 && issn.length > 0;
-    }).closest(".results-title-row");
-
-    var target = element.length > 0 ? element[0] : undefined;
-
+    if(index > elements.length){
+      var target = undefined;
+    } else {
+      var target = elements[index];
+    }
     return target;
   };
 
@@ -81,9 +80,9 @@ browzine.serSol360Core = (function() {
   function addTargets(titles) {
     var titlesToEnhance = [];
 
-    titles.forEach(function(title) {
+    titles.forEach(function(title, index) {
       var issn = getIssn(title);
-      title.target = getTarget(title);
+      title.target = getTarget(index);
       title.endpoint = getEndpoint(issn);
       title.shouldEnhance = shouldEnhance(issn);
 
