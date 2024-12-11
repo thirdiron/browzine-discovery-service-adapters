@@ -311,43 +311,26 @@ describe("SerSol 360 Core Model >", function() {
 
   describe("serSol360Core model getTarget method >", function() {
     it("should retrieve target element for a journal search result", function() {
-      var title = titles[0];
-      var target = serSol360Core.getTarget(title);
+      var index = 0;
+      var target = serSol360Core.getTarget(index);
       expect(target).toBeDefined();
       expect(target.innerHTML).toContain("The New England journal of medicine");
     });
 
-    it("should return undefined for a journal search result with no journal issn", function() {
-      var title = titles[0];
-      delete title.identifiers;
-      var target = serSol360Core.getTarget(title);
+    it("should return undefined for a journal search result when there are more titles than elements on the page", function() {
+      expect(titles.length).toEqual(4);
+      var index = 4
+      var target = serSol360Core.getTarget(index);
       expect(target).toBeUndefined();
     });
 
     it("should retrieve target element when the results identifier element contains the journal issn", function() {
-      var title = titles[0];
-      var target = serSol360Core.getTarget(title);
+      var index = 0
+      var target = serSol360Core.getTarget(index);
 
       expect(target).toBeDefined();
       expect(target.innerHTML).toContain("The New England journal of medicine");
       expect(target.innerHTML).toContain("0028-4793");
-    });
-  });
-
-  describe("serSol360Core model getEndpoint method >", function() {
-    it("should build a journal endpoint for a journal search result", function() {
-      var title = titles[0];
-      expect(title.endpoint).toContain("search?issns=00284793");
-    });
-
-    it("should select the issn over the eissn when a journal search result includes both", function() {
-      var title = titles[0];
-      expect(title.endpoint).toContain("search?issns=00284793");
-    });
-
-    it("should select the eissn when the journal search result has no issn", function() {
-      var title = titles[1];
-      expect(title.endpoint).toContain("search?issns=2163307X");
     });
   });
 
