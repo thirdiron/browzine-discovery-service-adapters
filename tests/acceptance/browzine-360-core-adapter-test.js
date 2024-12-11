@@ -1,6 +1,6 @@
 describe("BrowZine SerSol 360 Core Adapter >", function() {
   var serSol360Core = {}, searchResults = {};
-  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
+  results = "<div ui-view='searchResultsForCoreAdapterTest'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
 
   $("body").append(results);
 
@@ -11,7 +11,7 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
         browzine.journalCoverImagesEnabled = false;
         browzine.journalBrowZineWebLinkTextEnabled = false;
 
-        searchResults = $("div[ui-view='searchResults']");
+        searchResults = $("div[ui-view='searchResultsForCoreAdapterTest']");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -68,10 +68,10 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
     });
 
     describe("search results journal with browzine web link >", function() {
-      beforeEach(function() {
+      beforeEach(function () {
         serSol360Core = browzine.serSol360Core;
 
-        searchResults = $("div[ui-view='searchResults']");
+        searchResults = $("div[ui-view='searchResultsForCoreAdapterTest']");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();

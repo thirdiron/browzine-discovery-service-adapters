@@ -1,13 +1,13 @@
 describe("SerSol 360 Core Model >", function() {
   var serSol360Core = {}, journalResponse = {}, scope = {}, titles = [], searchResults = {};
-  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-title'>The Base Journal</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
+  var results = "<div ui-view='searchResultsForCoreModelTest'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'><img src='' ng-src='' class='results-title-image'/></div><div class='results-title-details'><div class='results-title'>The Base Journal: A Test!</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
 
   $("body").append(results);
 
   beforeEach(function() {
     serSol360Core = browzine.serSol360Core;
 
-    searchResults = $("div[ui-view='searchResults']");
+    searchResults = $("div[ui-view='searchResultsForCoreModelTest']");
 
     inject(function ($compile, $rootScope) {
       $scope = $rootScope.$new();
