@@ -461,6 +461,116 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("search results article with both browzine web link and problematic journal notice link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1001/jama.298.4.413"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 4699582,
+              "type": "articles",
+              "title": "Efficacy of a Hip Protector to Prevent Hip Fracture in Nursing Home Residents",
+              "date": "2007-05-13",
+              "authors": "Kiel, Douglas P.; Magaziner, Jay; Zimmerman, Sheryl; Birge, Stanley J.",
+              "inPress": false,
+              "doi": "10.1001/jama.298.4.413",
+              "openAccess": true,
+              "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/4699582/full-text-file?utm_source=api_716",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/4699582/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "413",
+              "endPage": "",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/10278/issues/4699582?showArticleInContext=doi:10.1001%2Fjama.298.4.413&utm_source=api_716",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 10278
+                  }
+                }
+              },
+              "problematicJournalArticleNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1001/jama.298.4.413.problematic"
+            },
+            "included": [
+              {
+                "id": 10278,
+                "type": "journals",
+                "title": "JAMA: Journal of the American Medical Association",
+                "issn": "15383598",
+                "sjrValue": 6.695,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1538-3598.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/10278?utm_source=api_716"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1001%2Fjama.298.4.413/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should have an enhanced browse article in browzine option", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View in Context Browse Journal");
+        expect(template.text().trim()).toContain("Problematic Journal More Info");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/10278/issues/4699582?showArticleInContext=doi:10.1001%2Fjama.298.4.413&utm_source=api_716");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1001/jama.298.4.413.problematic");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/1538-3598.png");
+      });
+
+      it("should open a new window when a problematic journal article notice link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1001/jama.298.4.413.problematic", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/10278/issues/4699582?showArticleInContext=doi:10.1001%2Fjama.298.4.413&utm_source=api_716", "_blank");
+      });
+    });
+
     describe("retraction notice and only an article link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
@@ -688,6 +798,115 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("problematic journal notice and only an article link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1634/theoncologist.8-4-307"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/43816537/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "problematicJournalArticleNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic"
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show problematic journal article notices when there is only an article link", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View in Context Browse Journal");
+        expect(template.text().trim()).toContain("Problematic Journal More Info");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
+      });
+
+      it("should open a new window when a problematic journal article notice link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-article-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572", "_blank");
+      });
+    });
+
     describe("retraction notice and no pdf link or article link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
@@ -890,6 +1109,105 @@ describe("BrowZine Summon Adapter >", function() {
         spyOn(window, "open");
         documentSummary.find(".browzine .browzine-article-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307", "_blank");
+      });
+    });
+
+    describe("problematic journal notice and no pdf link or article link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1634/theoncologist.8-4-307"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "",
+              "availableThroughBrowzine": false,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "problematicJournalArticleNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic"
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show problematic journal notices when available even if no pdf link or article link available", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Problematic Journal More Info");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
+      });
+
+      it("should open a new window when a problematic journal article notice link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-article-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic", "_blank");
       });
     });
 
@@ -1116,6 +1434,121 @@ describe("BrowZine Summon Adapter >", function() {
         spyOn(window, "open");
         documentSummary.find(".browzine .browzine-direct-to-pdf-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/13016/issues/4629899?showArticleInContext=doi:10.1002%2Fijc.25451&utm_source=api_716", "_blank");
+      });
+    });
+
+    describe("search results article with both problematic journal notice link and article link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+        browzine.showFormatChoice = true;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1002/ijc.25451"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 26652324,
+              "type": "articles",
+              "title": "A tritherapy combination of a fusion protein vaccine with immune‐modulating doses of sequential chemotherapies in an optimized regimen completely eradicates large tumors in mice",
+              "date": "2010-05-12",
+              "authors": "Song, Xinxin; Guo, Wenzhong; Cui, Jianfeng; Qian, Xinlai; Yi, Linan; Chang, Mengjiao; Cai, Qiliang; Zhao, Qingzheng",
+              "inPress": false,
+              "doi": "10.1002/ijc.25451",
+              "ILLURL": "",
+              "pmid": "",
+              "openAccess": true,
+              "fullTextFile": "https://develop.libkey.io/libraries/XXXX/articles/26652324/full-text-file?utm_source=api_716",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/26652324/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "326",
+              "endPage": "",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016/issues/4629899?showArticleInContext=doi:10.1002%2Fijc.25451&utm_source=api_716",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 13016
+                  }
+                }
+              },
+              "problematicJournalArticleNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451.problematic"
+            },
+            "included": [
+              {
+                "id": 13016,
+                "type": "journals",
+                "title": "International Journal of Cancer",
+                "issn": "00207136",
+                "sjrValue": 2.259,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/0020-7136.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/13016?utm_source=api_716"
+              }
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1002%2Fijc.25451/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+        delete browzine.showFormatChoice;
+      });
+
+      it("should have an enhanced browse article showing problematic journal article notice only", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View in Context Browse Journal");
+        expect(template.text().trim()).toContain("Problematic Journal More Info");
+        expect(template.text().trim()).not.toContain("Article Page");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/13016/issues/4629899?showArticleInContext=doi:10.1002%2Fijc.25451&utm_source=api_716");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451.problematic");
+        expect(template.find("a.browzine-direct-to-pdf-link").attr("target")).toEqual("_blank");
+        expect(template.find("svg.browzine-pdf-icon")).toBeDefined();
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/0020-7136.png");
+      });
+
+      it("should open a new window when a problematic journal article notice link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-direct-to-pdf-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1002/ijc.25451.problematic", "_blank");
       });
 
       it("should open a new window when a browzine web link is clicked", function() {
@@ -3414,7 +3847,7 @@ describe("BrowZine Summon Adapter >", function() {
     });
 
     describe("When an article is suppressed > ", function () {
-      beforeEach(function() {
+      beforeEach(function () {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articlePDFDownloadViaUnpaywallEnabled = true;
         browzine.articleLinkViaUnpaywallEnabled = true;
@@ -3455,7 +3888,7 @@ describe("BrowZine Summon Adapter >", function() {
         });
       });
 
-      afterEach(function() {
+      afterEach(function () {
         delete browzine.unpaywallEmailAddressKey;
         delete browzine.articlePDFDownloadViaUnpaywallEnabled;
         delete browzine.articleLinkViaUnpaywallEnabled;
@@ -3466,14 +3899,140 @@ describe("BrowZine Summon Adapter >", function() {
       });
       it("Does not call unpaywall when avoidUnpaywall=true", function () {
         //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
-        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response
+        const thirdIronApiDoiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
         expect(jasmine.Ajax.requests.count()).toBe(1);
         expect(thirdIronApiDoiRequestResponse).toEqual('{"errors":[{"status":"404"}],"meta":{"avoidUnpaywall":true}}');
 
         const template = documentSummary.find(".browzine");
         expect(template.length).toEqual(0);
         expect(documentSummary.text().trim()).not.toContain("Download PDF (via Unpaywall)");
-      })
-    })
+      });
+    });
+
+    describe("When an article has an open access status of false and avoidUnpaywallPublisherLink = true and unpaywall response has a host_type of publisher >", function () {
+      beforeEach(function () {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+        browzine.articleLinkViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled = true;
+
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois:["10.1163/09744061-bja10082"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var thirdIronApiDoiRequest = jasmine.Ajax.requests.mostRecent();
+
+        thirdIronApiDoiRequest.respondWith({
+          status: 200,
+          response: JSON.stringify({
+            "data": {
+              "id": 572672990,
+              "type": "articles",
+              "title": "The Residents of The Comoros and Sustainable Tourism",
+              "date": "2023-06-02",
+              "authors": "Sarı, Ömer; Meydan Uygur, Selma; Abdourahmane, Ali",
+              "inPress": false,
+              "abandoned": false,
+              "doi": "10.1163/09744061-bja10082",
+              "linkResolverOpenUrl": "",
+              "pmid": "",
+              "openAccess": false,
+              "unpaywallUsable": true,
+              "fullTextFile": "",
+              "contentLocation": "",
+              "availableThroughBrowzine": false,
+              "startPage": "347",
+              "endPage": "376",
+              "avoidUnpaywallPublisherLinks": true,
+              "relationships": {
+                "issue": {
+                  "links": {
+                    "related": "/public/v1/libraries/1939/issues/539825402"
+                  }
+                },
+                "journal": {
+                  "links": {
+                    "related": "/public/v1/libraries/1939/journals/314336"
+                  }
+                }
+              },
+              "abstract": null,
+              "contentLocationDestinationUrl": "",
+              "contentLocationRawDestinationUrl": "",
+              "fullTextFileDestinationUrl": "",
+              "fullTextFileRawDestinationUrl": ""
+            },
+            "included": [{
+              "id": 314336,
+              "type": "journals",
+              "title": "Africa Review",
+              "issn": "09744053",
+              "sjrValue": 2.34,
+              "coverImageUrl": "",
+              "browzineEnabled": true,
+              "browzineWebLink": ""
+            }]
+          })
+        });
+      });
+
+      afterEach(function () {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+        delete browzine.articleLinkViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+      it("Should call unpaywall, see host_type of publisher, and not enhance the search result", function () {
+        var requestToUnpaywall = jasmine.Ajax.requests.mostRecent();
+        requestToUnpaywall.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "best_oa_location": {
+              "endpoint_id": "e32e740fde0998433a4",
+              "evidence": "oa repository (via OAI-PMH doi match)",
+              "host_type": "publisher",
+              "is_best": true,
+              "license": "cc0",
+              "pmh_id": "oai:diposit.ub.edu:2445/147225",
+              "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+              "updated": "2020-02-20T17:30:21.829852",
+              "url": "http://some.great.site/article/page",
+              "url_for_landing_page": "http://some.great.site/article/page",
+              "url_for_pdf": "http://some.great.site/article/page/stuff.pdf",
+              "version": "publishedVersion"
+            }
+          })
+        });
+
+        //We are expecting to call our TIApi but not Unpaywall, thus we should only see one request in the jasmine ajax request queue
+        const unpaywallApiRequestResponse = jasmine.Ajax.requests.mostRecent().response;
+        expect(jasmine.Ajax.requests.count()).toBe(2);
+        expect(unpaywallApiRequestResponse).toContain('"host_type":"publisher",');
+
+        const template = documentSummary.find(".browzine");
+        expect(template.length).toEqual(0);
+        expect(documentSummary.text().trim()).not.toContain("Download PDF (via Unpaywall)");
+       });
+    });
   });
 });
