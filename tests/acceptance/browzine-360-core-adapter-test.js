@@ -187,7 +187,7 @@ describe("BrowZine SerSol 360 Core Adapter >", function () {
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
 
-          $scope.searchResultsSameIssnCtrl = {
+          $scope.searchResultsCtrl = {
             titleData: {
               titles: [
                 {
