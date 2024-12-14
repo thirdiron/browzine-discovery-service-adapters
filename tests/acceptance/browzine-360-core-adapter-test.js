@@ -256,7 +256,7 @@ describe("BrowZine SerSol 360 Core Adapter >", function () {
         I've added logs so you can run locally and see what i'm seeing, but it seems like it's not recognizing the data
         Previously I tried using 'searchResults' instead of 'searchResultsSameIssn' but then I was getting data from the core test again
       */
-      fit("should have enhanced view journal in browzine options", function() {
+      it("should have enhanced view journal in browzine options", function() {
         var template = searchResultsSameIssn.find(".browzine");
         console.log(template, 'our template in our new tests');
         expect(template).toBeDefined();
