@@ -56,7 +56,6 @@ browzine.serSol360Core = (function() {
   };
 
   function getTarget(index) {
-    console.log(index, 'our index inside getTarget');
     var elements = $(".results-identifier").closest(".results-title-row");
 
     if (index >= elements.length) {
@@ -80,8 +79,6 @@ browzine.serSol360Core = (function() {
 
   function addTargets(titles) {
     var titlesToEnhance = [];
-    console.log(titles.length, 'how many titles do we have?');
-    console.log(titles, 'our titles');
     titles.forEach(function(title, index) {
       var issn = getIssn(title);
       title.target = getTarget(index);
@@ -91,7 +88,6 @@ browzine.serSol360Core = (function() {
       if (title.shouldEnhance) {
         titlesToEnhance.push(title);
       }
-      console.log(titles, 'our list of titles');
     });
 
     return titlesToEnhance;
@@ -222,7 +218,7 @@ browzine.serSol360Core = (function() {
     var title = titles.shift();
 
     if (title) {
-      $.getJSON(title.endpoint, function(response) {
+      $.getJSON(title.endpoint, function (response) {
         var data = getData(response);
         var browzineWebLink = getBrowZineWebLink(data);
         var coverImageUrl = getCoverImageUrl(data);
