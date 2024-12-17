@@ -1,6 +1,6 @@
-describe("BrowZine SerSol 360 Core Adapter >", function() {
+describe("BrowZine SerSol 360 Core Adapter >", function () {
   var serSol360Core = {}, searchResults = {};
-  var results = "<div ui-view='searchResults'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
+  results = "<div ui-view='searchResultsForCoreAdapterTest'><div class='results-title-data'><div class='results-title-row'><div class='results-title-image-div'></div><div class='results-title-details'><div class='results-title'>The New England journal of medicine</div><div class='results-identifier'>ISSN: 0028-4793</div></div></div></div></div>";
 
   $("body").append(results);
 
@@ -11,7 +11,7 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
         browzine.journalCoverImagesEnabled = false;
         browzine.journalBrowZineWebLinkTextEnabled = false;
 
-        searchResults = $("div[ui-view='searchResults']");
+        searchResults = $("div[ui-view='searchResultsForCoreAdapterTest']");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -68,10 +68,10 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
     });
 
     describe("search results journal with browzine web link >", function() {
-      beforeEach(function() {
+      beforeEach(function () {
         serSol360Core = browzine.serSol360Core;
 
-        searchResults = $("div[ui-view='searchResults']");
+        searchResults = $("div[ui-view='searchResultsForCoreAdapterTest']");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -144,5 +144,123 @@ describe("BrowZine SerSol 360 Core Adapter >", function() {
         expect(window.open).toHaveBeenCalledWith("https://browzine.com/libraries/XXX/journals/10292", "_blank");
       });
     });
+
+    xdescribe("multiple search results for journals with the same issn with browzine web links >", function () {
+      var serSol360Core = {}, searchResultsSameIssn = {};
+      beforeEach(function () {
+
+        const testData =
+          `<div ui-view="searchResultsMultipleJournalsSameIssnTest">
+            <div class="results-title-data">
+              <div class="results-title-row">
+                <div class="results-title-image-div"></div>
+                <div class="results-title-details">
+                  <div class="results-title">The New England Journal of Medicine (NEJM)</div>
+                  <div class="results-identifier">ISSN: 0028-4793</div>
+                </div>
+              </div>
+              <div class="results-title-row">
+                <div class="results-title-image-div"></div>
+                <div class="results-title-details">
+                  <div class="results-title">The New England Journal of Medicine - international ED</div>
+                  <div class="results-identifier">ISSN: 0028-4793</div>
+                </div>
+              </div>
+              <div class="results-title-row">
+                <div class="results-title-image-div"></div>
+                <div class="results-title-details">
+                  <div class="results-title">The New England Journal of Medicine in Espanol</div>
+                  <div class="results-identifier">ISSN: 0028-4793</div>
+                </div>
+              </div>
+            </div>
+          </div>`
+
+        var multipleResultsSameIssn = testData;
+        $("body").append(multipleResultsSameIssn);
+
+        serSol360Core = browzine.serSol360Core;
+
+        searchResultsSameIssn = $("div[ui-view='searchResultsMultipleJournalsSameIssnTest']");
+
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.searchResultsCtrl = {
+            titleData: {
+              titles: [
+                {
+                  title: "New England Journal of Medicine (NEJM)",
+                  syndeticsImageUrl: "https://secure.syndetics.com/index.aspx?isbn=/mc.gif&issn=0028-4793&client=mistatesum",
+                  identifiers: [{type: "ISSN", value: "0028-4793"}, {type: "eISSN", value: ""}]
+                },
+                {
+                  title: "The New England Journal of Medicine - international ED",
+                  syndeticsImageUrl: "https://secure.syndetics.com/index.aspx?isbn=/mc.gif&issn=0028-4793&client=mistatesum",
+                  identifiers: [{type: "ISSN", value: "0028-4793"}, {type: "eISSN", value: ""}]
+                },
+                {
+                  title: "The New England Journal of Medicine in Espanol",
+                  syndeticsImageUrl: "https://secure.syndetics.com/index.aspx?isbn=/mc.gif&issn=0028-4793&client=mistatesum",
+                  identifiers: [{type: "ISSN", value: "0028-4793"}, {type: "eISSN", value: ""}]
+                }
+              ]
+            }
+          };
+
+          searchResultsSameIssn = $compile(searchResultsSameIssn)($scope);
+        });
+
+        $.getJSON = function (endpoint, callback) {
+          //this getJSON and the callback correspond to our searchTitles function's getJSON. This is essentially our mocked response
+          //The problem is our function is looping through and only expecting one piece of data, and if there is more, it is only taking the first piece.
+          return callback({
+            "data": [{
+              "id": 10292,
+              "type": "journals",
+              "title": "New England Journal of Medicine (NEJM)",
+              "issn": "00284793",
+              "sjrValue": 14.619,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10292"
+              },
+              {
+              "id": 10293,
+              "type": "journals",
+              "title": "The New England Journal of Medicine - international ED",
+              "issn": "00284793",
+              "sjrValue": 14.619,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10293"
+              },
+              {
+                "id": 10294,
+              "type": "journals",
+              "title": "The New England Journal of Medicine in Espanol",
+              "issn": "00284793",
+              "sjrValue": 14.619,
+              "coverImageUrl": "https://assets.thirdiron.com/images/covers/0028-4793.png",
+              "browzineEnabled": true,
+              "browzineWebLink": "https://browzine.com/libraries/XXX/journals/10294"
+              }
+            ]
+          });
+        };
+
+        serSol360Core.adapter(searchResultsSameIssn);
+      });
+
+      it("should have enhanced view journal in browzine options for each result", function() {
+        var template = searchResultsSameIssn.find(".browzine");
+        console.log(template, 'our template in our new tests');
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toEqual("View Journal in BrowZine");
+        expect((template.text().trim().match(/View Journal in BrowZine/g) || []).length).toEqual(3);
+      });
+    })
   });
 });
