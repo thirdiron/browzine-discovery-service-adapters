@@ -214,43 +214,36 @@ browzine.serSol360Core = (function() {
     return template;
   };
 
-  function searchTitles(titles, callback) {
-    var title = titles.shift();
+  function searchTitles(titles) {
 
-    if (title) {
-      $.getJSON(title.endpoint, function (response) {
-        var data = getData(response);
-        var browzineWebLink = getBrowZineWebLink(data);
-        var coverImageUrl = getCoverImageUrl(data);
-        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
+    titles.forEach(title => {
+      if (title) {
+        $.getJSON(title.endpoint, function (response) {
+          var data = getData(response);
+          var browzineWebLink = getBrowZineWebLink(data);
+          var coverImageUrl = getCoverImageUrl(data);
+          var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
-        if (browzineWebLink && showJournalBrowZineWebLinkText()) {
-          var template = browzineWebLinkTemplate(browzineWebLink);
-          $(title.target).find(".results-identifier").append(template);
-        }
-
-        if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
-          var resultsTitleImageContainerSelector = ".results-title-image-div";
-          var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
-          var boxShadow = "1px 1px 2px #ccc";
-
-          if ($(title.target).find(resultsTitleImageSelector).length > 0) {
-            $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
-          } else {
-            $(title.target).find(resultsTitleImageContainerSelector).append("<img alt='Results Title Image' class='results-title-image'/>");
-            $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+          if (browzineWebLink && showJournalBrowZineWebLinkText()) {
+            var template = browzineWebLinkTemplate(browzineWebLink);
+            $(title.target).find(".results-identifier").append(template);
           }
-        }
 
-        if (titles.length > 0) {
-          searchTitles(titles, callback);
-        } else {
-          if (callback) {
-            return callback();
+          if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
+            var resultsTitleImageContainerSelector = ".results-title-image-div";
+            var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
+            var boxShadow = "1px 1px 2px #ccc";
+
+            if ($(title.target).find(resultsTitleImageSelector).length > 0) {
+              $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+            } else {
+              $(title.target).find(resultsTitleImageContainerSelector).append("<img alt='Results Title Image' class='results-title-image'/>");
+              $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+            }
           }
-        }
-      });
-    }
+        });
+      }
+     });
   };
 
   function adapter(searchResults) {
