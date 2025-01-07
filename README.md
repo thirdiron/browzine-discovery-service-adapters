@@ -287,9 +287,21 @@ Care should be taken to validate JavaScript features used are available in IE11+
 
 ## Running / Development
 
-* `npm run server` (Runs a local webserver, visit http://localhost:8080)
-* `npm run tunnel` (Creates an ngrok tunnel, place this in the "Summon 2.0 External Script", e.g. https://9f9981c8.ngrok.io/src/summon/browzine-summon-adapter.js)
-* For Primo, add the url given by the ngrok tunnel and add it to the custom.js file of the template package. Then upload that into the School of Mines Primo sandbox. Make sure to change the library ID and API key in order to fetch the data you want if you need to test something like retractions or EOCs.
+* There are two ways to run code locally in order to test changes
+  1. Copy code into a Google override.
+    - When facing a customer problem with Primo for example, this is the easiest way to test changes to their custom.js file. This method is also used when determining problems that may
+      stem from the code, such as when working on SerSol 360 problems.
+      * To do this, open the dev tools in Chrome on the problem instance of Primo. Click the source tab and navigate either to the customer's custom.js file, or to the Amazon S3 file to see our code.
+      * From here you can make changes to the code and press CTRL/CMD + S to save a local override. Note, you may need to enable local overrides by checking the box under the overrides tab ![seen here](<CleanShot 2024-12-17 at 15.30.21.png>)
+  2. Uploading a Copy to the S3 Test Bucket
+    - When making a code change and needing to test out new code functions, the easiest way to test is to upload a copy of the code to the S3 Test Bucket.
+      * Once you've made changes to the code log into your TI S3 account.
+      * Once in click S3 > browzine-adapters > primo-test
+      * Here you can click upload, and drag your local copy of the browzine-primo-adapter.js into S3
+      * Scroll down and uncollapse the permissions dropdown and check "Grant public read access". Everything else can stay as is.
+      * In the custom.js we use for testing, change the S3 url to point to this test bucket and upload to our sandbox as normal.
+      * The sandbox instance should now be pointing to code with your new changes!
+      * You will need to repeat the process each time you make a change.
 
 ### Running Tests
 
