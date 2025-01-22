@@ -27,15 +27,15 @@ browzine.serSol360Core = (function() {
 
   function getIssn(title) {
     if (title.identifiers) {
-      var issnIdentifier = title.identifiers.filter(function(identifier) {
+      var issnIdentifierArray = title.identifiers.filter(function(identifier) {
         if (identifier.type && identifier.value) {
           return identifier.type.toLowerCase() === "issn" && identifier.value.length > 0;
         }
-      }).pop();
+      });
 
-      if (issnIdentifier) {
-        return encodeURIComponent(issnIdentifier.value);
-      }
+      if (issnIdentifierArray[0]) {
+        return encodeURIComponent(issnIdentifierArray[0].value);
+      };
 
       var eissnIdentifier = title.identifiers.filter(function(identifier) {
         if (identifier.type && identifier.value) {
@@ -55,15 +55,14 @@ browzine.serSol360Core = (function() {
     return (title && title.title) ? title.title : '';
   };
 
-  function getTarget(title) {
-    var issn = getIssn(title).toLowerCase().trim();
+  function getTarget(index) {
+    var elements = $(".results-identifier").closest(".results-title-row");
 
-    var element = $(".results-identifier").filter(function() {
-      return $.trim($(this).text()).toLowerCase().indexOf(issn) > -1 && issn.length > 0;
-    }).closest(".results-title-row");
-
-    var target = element.length > 0 ? element[0] : undefined;
-
+    if (index >= elements.length) {
+      var target = undefined;
+    } else {
+      var target = elements[index];
+    }
     return target;
   };
 
@@ -80,10 +79,9 @@ browzine.serSol360Core = (function() {
 
   function addTargets(titles) {
     var titlesToEnhance = [];
-
-    titles.forEach(function(title) {
+    titles.forEach(function(title, index) {
       var issn = getIssn(title);
-      title.target = getTarget(title);
+      title.target = getTarget(index);
       title.endpoint = getEndpoint(issn);
       title.shouldEnhance = shouldEnhance(issn);
 
@@ -216,43 +214,36 @@ browzine.serSol360Core = (function() {
     return template;
   };
 
-  function searchTitles(titles, callback) {
-    var title = titles.shift();
+  function searchTitles(titles) {
 
-    if (title) {
-      $.getJSON(title.endpoint, function(response) {
-        var data = getData(response);
-        var browzineWebLink = getBrowZineWebLink(data);
-        var coverImageUrl = getCoverImageUrl(data);
-        var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
+    titles.forEach(title => {
+      if (title) {
+        $.getJSON(title.endpoint, function (response) {
+          var data = getData(response);
+          var browzineWebLink = getBrowZineWebLink(data);
+          var coverImageUrl = getCoverImageUrl(data);
+          var defaultCoverImage = isDefaultCoverImage(coverImageUrl);
 
-        if (browzineWebLink && showJournalBrowZineWebLinkText()) {
-          var template = browzineWebLinkTemplate(browzineWebLink);
-          $(title.target).find(".results-identifier").append(template);
-        }
-
-        if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
-          var resultsTitleImageContainerSelector = ".results-title-image-div";
-          var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
-          var boxShadow = "1px 1px 2px #ccc";
-
-          if ($(title.target).find(resultsTitleImageSelector).length > 0) {
-            $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
-          } else {
-            $(title.target).find(resultsTitleImageContainerSelector).append("<img alt='Results Title Image' class='results-title-image'/>");
-            $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+          if (browzineWebLink && showJournalBrowZineWebLinkText()) {
+            var template = browzineWebLinkTemplate(browzineWebLink);
+            $(title.target).find(".results-identifier").append(template);
           }
-        }
 
-        if (titles.length > 0) {
-          searchTitles(titles, callback);
-        } else {
-          if (callback) {
-            return callback();
+          if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
+            var resultsTitleImageContainerSelector = ".results-title-image-div";
+            var resultsTitleImageSelector = ".results-title-image-div img.results-title-image";
+            var boxShadow = "1px 1px 2px #ccc";
+
+            if ($(title.target).find(resultsTitleImageSelector).length > 0) {
+              $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+            } else {
+              $(title.target).find(resultsTitleImageContainerSelector).append("<img alt='Results Title Image' class='results-title-image'/>");
+              $(title.target).find(resultsTitleImageSelector).attr("src", coverImageUrl).attr("ng-src", coverImageUrl).css("box-shadow", boxShadow);
+            }
           }
-        }
-      });
-    }
+        });
+      }
+     });
   };
 
   function adapter(searchResults) {
