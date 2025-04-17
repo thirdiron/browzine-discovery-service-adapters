@@ -503,6 +503,17 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
+  function showProblematicJournal() {
+    var featureEnabled = false;
+    var config = browzine.problematicJournalEnabled;
+
+    if (typeof config === "undefined" || config === null || config === true) {
+      featureEnabled = true;
+    }
+
+    return featureEnabled;
+  }
+
   function showFormatChoice() {
     var featureEnabled = false;
     var config = browzine.showFormatChoice;
@@ -570,7 +581,7 @@ browzine.summon = (function() {
   }
 
   function showProblematicJournalArticleNoticeUI(problematicJournalArticleNoticeUrl) {
-    return !!problematicJournalArticleNoticeUrl;
+    return !!problematicJournalArticleNoticeUrl && showProblematicJournal();
   }
 
   function directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl) {
@@ -1013,7 +1024,7 @@ browzine.summon = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (!directToPDFUrl && !articleLinkUrl && !articleRetractionUrl && !articleEocNoticeUrl && problematicJournalArticleNoticeUrl && isArticle(scope)) {
+        if (!directToPDFUrl && !articleLinkUrl && !articleRetractionUrl && !articleEocNoticeUrl && problematicJournalArticleNoticeUrl && isArticle(scope) && showProblematicJournal()) {
           var template = problematicJournalArticleNoticeLinkTemplate(problematicJournalArticleNoticeUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
@@ -1189,6 +1200,7 @@ browzine.summon = (function() {
     showPrintRecords: showPrintRecords,
     showRetractionWatch: showRetractionWatch,
     showExpressionOfConcern: showExpressionOfConcern,
+    showProblematicJournal: showProblematicJournal,
     showFormatChoice: showFormatChoice,
     showLinkResolverLink: showLinkResolverLink,
     enableLinkOptimizer: enableLinkOptimizer,
