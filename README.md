@@ -116,6 +116,9 @@ var browzine = {
   problematicJournalWording: "Problematic Journal",
   problematicJournalText: "More Info",
 
+  documentDeliveryFulfillmentWording: "Request Now",
+  documentDeliveryFulfillmentText: "PDF",
+
   iconColor: "#639add",
 
   showFormatChoice: true,
