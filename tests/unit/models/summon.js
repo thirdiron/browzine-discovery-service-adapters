@@ -1446,6 +1446,36 @@ describe("Summon Model >", function() {
     });
   });
 
+  describe("summon model showProblematicJournal method >", function() {
+    beforeEach(function() {
+      delete browzine.problematicJournalEnabled;
+    });
+
+    afterEach(function() {
+      delete browzine.problematicJournalEnabled;
+    });
+
+    it("should enable problematic journals when configuration property is undefined", function() {
+      delete browzine.problematicJournalEnabled;
+      expect(summon.showProblematicJournal()).toEqual(true);
+    });
+
+    it("should enable problematic journals when configuration property is null", function() {
+      browzine.problematicJournalEnabled = null;
+      expect(summon.showProblematicJournal()).toEqual(true);
+    });
+
+    it("should enable problematic journals when configuration property is true", function() {
+      browzine.problematicJournalEnabled = true;
+      expect(summon.showProblematicJournal()).toEqual(true);
+    });
+
+    it("should disable problematic journals when configuration property is false", function() {
+      browzine.problematicJournalEnabled = false;
+      expect(summon.showProblematicJournal()).toEqual(false);
+    });
+  });
+
   describe("summon model showFormatChoice method >", function() {
     beforeEach(function() {
       delete browzine.showFormatChoice;
