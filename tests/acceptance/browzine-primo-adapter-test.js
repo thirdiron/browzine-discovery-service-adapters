@@ -1435,6 +1435,244 @@ describe("BrowZine Primo Adapter >", function () {
       });
     });
 
+    describe("document delivery fulfillment on an article link >", function () {
+      beforeEach(function () {
+        primo = browzine.primo;
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
+
+                    addata: {
+                      issn: ["10837159"],
+                      doi: ["10.1634/theoncologist.8-4-307"]
+                    }
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$parent.$ctrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/43816537/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "documentDeliveryFulfillmentUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572",
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function () {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show document delivery fulfillment", function () {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Issue Contents");
+        expect(template.text().trim()).toContain("Request PDF");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-book-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-open-book-icon.svg");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+        expect(template.find("img.browzine-article-link-icon").attr("src")).toEqual("https://assets.thirdiron.com/images/integrations/browzine-article-link-icon.svg");
+      });
+
+      it("should have an enhanced browzine journal cover", function (done) {
+        requestAnimationFrame(function () {
+          var coverImages = searchResult.find("prm-search-result-thumbnail-container img");
+          expect(coverImages).toBeDefined();
+
+          Array.prototype.forEach.call(coverImages, function (coverImage) {
+            expect(coverImage.src).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
+          });
+
+          done();
+        });
+      });
+
+      it("should open a new window when a document delivery fulfillment link is clicked", function () {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-article-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function () {
+        spyOn(window, "open");
+        searchResult.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572", "_blank");
+      });
+    });
+
+
+    describe("document delivery fulfillment with custom label >", function () {
+      beforeEach(function () {
+        primo = browzine.primo;
+
+        browzine.documentDeliveryFulfillmentText = 'Get me that PDF'; // when I have "Request for the best", it intermittently fails!
+
+        searchResult = $("<div class='list-item-wrapper'><prm-brief-result-container><div class='result-item-image'><prm-search-result-thumbnail-container><img class='main-img fan-img-1' src=''/><img class='main-img fan-img-2' src=''/><img class='main-img fan-img-3' src=''/></prm-search-result-thumbnail-container></div><div class='result-item-text'><prm-search-result-availability-line><div class='layout-align-start-start'></div></prm-search-result-availability-line></div></prm-brief-result-container></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope = {
+            $parent: {
+              $ctrl: {
+                result: {
+                  pnx: {
+                    display: {
+                      type: ["article"]
+                    },
+
+                    addata: {
+                      issn: ["10837159"],
+                      doi: ["10.1634/theoncologist.8-4-307"]
+                    }
+                  }
+                }
+              }
+            }
+          };
+
+          searchResult = $compile(searchResult)($scope);
+        });
+
+        $scope.$parent.$ctrl.$element = searchResult;
+
+        jasmine.Ajax.install();
+
+        primo.searchResult($scope);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/43816537/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "documentDeliveryFulfillmentUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572",
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function () {
+        delete browzine.documentDeliveryFulfillmentText;
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show document delivery fulfillment", function () {
+        var template = searchResult.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View Issue Contents");
+        expect(template.text().trim()).toContain("Get me that PDF");
+      });
+    });
+
+
     describe("retraction notice and no pdf link or article link >", function () {
       beforeEach(function () {
         primo = browzine.primo;
