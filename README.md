@@ -274,6 +274,8 @@ window.browzine = {
   problematicJournalEnabled: true,
   problematicJournalText: "Problematic Journal",
 
+  documentDeliveryFulfillmentText: "Request PDF",
+
   showFormatChoice: true,
   showLinkResolverLink: true,
 
