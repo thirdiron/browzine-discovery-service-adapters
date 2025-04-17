@@ -112,6 +112,9 @@ var browzine = {
   articleExpressionOfConcernWording: "Expression of Concern",
   articleExpressionOfConcernText: "More Info",
 
+  problematicJournalWording: "Problematic Journal",
+  problematicJournalText: "More Info",
+
   iconColor: "#639add",
 
   showFormatChoice: true,
@@ -263,6 +266,8 @@ window.browzine = {
 
   articleExpressionOfConcernEnabled: true,
   articleExpressionOfConcernText: "Expression of Concern",
+
+  problematicJournalText: "Problematic Journal",
 
   showFormatChoice: true,
   showLinkResolverLink: true,
