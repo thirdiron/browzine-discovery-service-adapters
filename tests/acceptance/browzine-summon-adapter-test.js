@@ -1268,6 +1268,8 @@ describe("BrowZine Summon Adapter >", function() {
       });
 
       afterEach(function() {
+        delete browzine.documentDeliveryFulfillmentWording;
+        delete browzine.documentDeliveryFulfillmentText;
         jasmine.Ajax.uninstall();
       });
 
