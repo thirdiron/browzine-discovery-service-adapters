@@ -116,6 +116,9 @@ var browzine = {
   problematicJournalWording: "Problematic Journal",
   problematicJournalText: "More Info",
 
+  documentDeliveryFulfillmentWording: "Request Now",
+  documentDeliveryFulfillmentText: "PDF",
+
   iconColor: "#639add",
 
   showFormatChoice: true,
@@ -270,6 +273,8 @@ window.browzine = {
 
   problematicJournalEnabled: true,
   problematicJournalText: "Problematic Journal",
+
+  documentDeliveryFulfillmentText: "Request PDF",
 
   showFormatChoice: true,
   showLinkResolverLink: true,
