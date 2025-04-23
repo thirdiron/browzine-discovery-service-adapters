@@ -907,6 +907,184 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("problematic journal notice with customized problematic journal wording and only an article link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        browzine.problematicJournalWording = 'This Might Be Problematic';
+        browzine.problematicJournalText = 'Even More Info';
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1634/theoncologist.8-4-307"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/43816537/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "problematicJournalArticleNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic"
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        delete browzine.problematicJournalWording;
+        delete browzine.problematicJournalText;
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show problematic journal article notices when there is only an article link", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View in Context Browse Journal");
+        expect(template.text().trim()).toContain("This Might Be Problematic Even More Info");
+      });
+    });
+
+    describe("problematic journal notice disabled >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        browzine.problematicJournalEnabled = false;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1634/theoncologist.8-4-307"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/43816537/content-location",
+              "availableThroughBrowzine": true,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "problematicJournalArticleNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic"
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        delete browzine.problematicJournalEnabled;
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show no problematic journal label when it is disabled", function() {
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("View in Context Browse Journal");
+        expect(template.text().trim()).not.toContain("Problematic Journal More Info");
+      });
+    });
+
     describe("retraction notice and no pdf link or article link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
