@@ -1181,7 +1181,7 @@ describe("BrowZine Summon Adapter >", function() {
         expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
       });
 
-      it("should open a new window when a problematic journal article notice link is clicked", function() {
+      it("should open a new window when a document delivery fulfillment link is clicked", function() {
         spyOn(window, "open");
         documentSummary.find(".browzine .browzine-article-link").click();
         expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572", "_blank");
