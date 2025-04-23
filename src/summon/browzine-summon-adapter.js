@@ -678,17 +678,17 @@ browzine.summon = (function() {
       articleLinkText = browzine.articleRetractionWatchText || "More Info";
     } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       articleLinkUrl = articleEocNoticeUrl;
-      pdfIcon = getRetractionWatchIconSvg();
+      paperIcon = getRetractionWatchIconSvg();
       articleLinkTextWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
       articleLinkText = browzine.articleExpressionOfConcernText || "More Info";
     } else if (showProblematicJournalArticleNoticeUI(problematicJournalArticleNoticeUrl)) {
       articleLinkUrl = problematicJournalArticleNoticeUrl;
-      pdfIcon = getRetractionWatchIconSvg();
+      paperIcon = getRetractionWatchIconSvg();
       articleLinkTextWording = browzine.problematicJournalWording || "Problematic Journal";
       articleLinkText = browzine.problematicJournalText || "More Info";
     } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
       articleLinkUrl = documentDeliveryFulfillmentUrl;
-      pdfIcon = getRetractionWatchIconSvg();
+      // paperIcon should stay the same
       articleLinkTextWording = browzine.documentDeliveryFulfillmentWording || "Request Now";
       articleLinkText = browzine.documentDeliveryFulfillmentText || "PDF";
     }
