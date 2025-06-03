@@ -436,14 +436,9 @@ browzine.primo = (function() {
   function showDirectToPDFLink() {
     var featureEnabled = false;
     var config = browzine.articlePDFDownloadLinkEnabled;
-    var prefixConfig = browzine.primoArticlePDFDownloadLinkEnabled;
 
     if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
-    }
-
-    if (typeof prefixConfig !== "undefined" && prefixConfig !== null && prefixConfig === false) {
-      featureEnabled = false;
     }
 
     return featureEnabled;
