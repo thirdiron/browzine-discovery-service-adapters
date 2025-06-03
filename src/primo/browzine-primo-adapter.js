@@ -436,14 +436,9 @@ browzine.primo = (function() {
   function showDirectToPDFLink() {
     var featureEnabled = false;
     var config = browzine.articlePDFDownloadLinkEnabled;
-    var prefixConfig = browzine.primoArticlePDFDownloadLinkEnabled;
 
     if (typeof config === "undefined" || config === null || config === true) {
       featureEnabled = true;
-    }
-
-    if (typeof prefixConfig !== "undefined" && prefixConfig !== null && prefixConfig === false) {
-      featureEnabled = false;
     }
 
     return featureEnabled;
@@ -1068,7 +1063,7 @@ browzine.primo = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if ((!directToPDFUrl || (showFormatChoice() && !articleRetractionUrl && !articleEocNoticeUrl && !problematicJournalArticleNoticeUrl)) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
+        if ((!directToPDFUrl || (showFormatChoice() && !articleRetractionUrl && !articleEocNoticeUrl && !problematicJournalArticleNoticeUrl)) && articleLinkUrl && isArticle(scope) && showArticleLink()) {
           var template = articleLinkTemplate(articleLinkUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl, documentDeliveryFulfillmentUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }

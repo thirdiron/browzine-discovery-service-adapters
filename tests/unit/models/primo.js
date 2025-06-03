@@ -1888,11 +1888,6 @@ describe("Primo Model >", function() {
       browzine.primoArticlePDFDownloadLinkEnabled = true;
       expect(primo.showDirectToPDFLink()).toEqual(true);
     });
-
-    it("should hide direct to pdf link when the platform prefixed configuration property is false", function() {
-      browzine.primoArticlePDFDownloadLinkEnabled = false;
-      expect(primo.showDirectToPDFLink()).toEqual(false);
-    });
   });
 
   describe("primo model showArticleLink method >", function() {
