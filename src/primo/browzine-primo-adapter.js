@@ -613,7 +613,7 @@ browzine.primo = (function() {
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
       articlePDFDownloadLinkText = browzine.problematicJournalText || "Problematic Journal";
-    } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
+    } else if (!directToPDFUrl && showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
       directToPDFUrl = documentDeliveryFulfillmentUrl;
       // pdfIcon stays the same
       articlePDFDownloadLinkText = browzine.documentDeliveryFulfillmentText || "Request PDF";
@@ -660,7 +660,7 @@ browzine.primo = (function() {
       linkIconWidth = "15";
       linkIconMarginRight = "1.5px";
       articleLinkText = browzine.problematicJournalText || "Problematic Journal";
-    } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
+    } else if (!articleLinkUrl && showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
       articleLinkUrl = documentDeliveryFulfillmentUrl;
       // link icon stays the same
       articleLinkText = browzine.documentDeliveryFulfillmentText || "Request PDF";
@@ -831,7 +831,7 @@ browzine.primo = (function() {
       pdfIconWidth = "15";
       pdfIconMarginRight = "1.5px";
       articlePDFDownloadLinkText = browzine.problematicJournalText || "Problematic Journal";
-    } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
+    } else if (!directToPDFUrl && showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
       directToPDFUrl = documentDeliveryFulfillmentUrl;
       // pdfIcon stays the same
       articlePDFDownloadLinkText = browzine.documentDeliveryFulfillmentText || "Request PDF";
