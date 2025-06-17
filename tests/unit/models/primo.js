@@ -2003,67 +2003,6 @@ describe("Primo Model >", function() {
     });
   });
 
-  describe("primo model showProblematicJournal method >", function() {
-    beforeEach(function() {
-      delete browzine.problematicJournalEnabled;
-    });
-
-    afterEach(function() {
-      delete browzine.problematicJournalEnabled;
-    });
-
-    it("should enable problematic journals when configuration property is undefined", function() {
-      delete browzine.problematicJournalEnabled;
-      expect(primo.showProblematicJournal()).toEqual(true);
-    });
-
-    it("should enable problematic journals when configuration property is null", function() {
-      browzine.problematicJournalEnabled = null;
-      expect(primo.showProblematicJournal()).toEqual(true);
-    });
-
-    it("should enable problematic journals when configuration property is true", function() {
-      browzine.problematicJournalEnabled = true;
-      expect(primo.showProblematicJournal()).toEqual(true);
-    });
-
-    it("should disable problematic journals when configuration property is false", function() {
-      browzine.problematicJournalEnabled = false;
-      expect(primo.showProblematicJournal()).toEqual(false);
-    });
-  });
-
-  describe("primo model showDocumentDeliveryFulfillment method >", function() {
-    beforeEach(function() {
-      delete browzine.documentDeliveryFulfillmentEnabled;
-    });
-
-    afterEach(function() {
-      delete browzine.documentDeliveryFulfillmentEnabled;
-    });
-
-    it("should enable document delivery fulfillment when configuration property is undefined", function() {
-      delete browzine.documentDeliveryFulfillmentEnabled;
-      expect(primo.showDocumentDeliveryFulfillment()).toEqual(true);
-    });
-
-    it("should enable document delivery fulfillment when configuration property is null", function() {
-      browzine.documentDeliveryFulfillmentEnabled = null;
-      expect(primo.showDocumentDeliveryFulfillment()).toEqual(true);
-    });
-
-    it("should enable document delivery fulfillment when configuration property is true", function() {
-      browzine.documentDeliveryFulfillmentEnabled = true;
-      expect(primo.showDocumentDeliveryFulfillment()).toEqual(true);
-    });
-
-    it("should disable document delivery fulfillment when configuration property is false", function() {
-      browzine.documentDeliveryFulfillmentEnabled = false;
-      expect(primo.showDocumentDeliveryFulfillment()).toEqual(false);
-    });
-  });
-
-
   describe("primo model showFormatChoice method >", function() {
     beforeEach(function() {
       delete browzine.showFormatChoice;

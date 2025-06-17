@@ -288,18 +288,6 @@ browzine.summon = (function() {
     return problematicJournalArticleNoticeUrl;
   }
 
-  function getDocumentDeliveryFulfillmentUrl(scope, data) {
-    var documentDeliveryFulfillmentUrl = null;
-
-    if (isArticle(scope)) {
-      if (data && data.documentDeliveryFulfillmentUrl) {
-        documentDeliveryFulfillmentUrl = data.documentDeliveryFulfillmentUrl;
-      }
-    }
-    return documentDeliveryFulfillmentUrl;
-  }
-
-
   function getPdfIconSvg() {
     var color = browzine.iconColor || "#639add";
 
@@ -515,28 +503,6 @@ browzine.summon = (function() {
     return featureEnabled;
   };
 
-  function showProblematicJournal() {
-    var featureEnabled = false;
-    var config = browzine.problematicJournalEnabled;
-
-    if (typeof config === "undefined" || config === null || config === true) {
-      featureEnabled = true;
-    }
-
-    return featureEnabled;
-  }
-
-  function showDocumentDeliveryFulfillment() {
-    var featureEnabled = false;
-    var config = browzine.documentDeliveryFulfillmentEnabled;
-
-    if (typeof config === "undefined" || config === null || config === true) {
-      featureEnabled = true;
-    }
-
-    return featureEnabled;
-  }
-
   function showFormatChoice() {
     var featureEnabled = false;
     var config = browzine.showFormatChoice;
@@ -604,15 +570,10 @@ browzine.summon = (function() {
   }
 
   function showProblematicJournalArticleNoticeUI(problematicJournalArticleNoticeUrl) {
-    return !!problematicJournalArticleNoticeUrl && showProblematicJournal();
+    return !!problematicJournalArticleNoticeUrl;
   }
 
-  function showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl) {
-    return !!documentDeliveryFulfillmentUrl && showDocumentDeliveryFulfillment();
-  }
-
-
-  function directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl, documentDeliveryFulfillmentUrl) {
+  function directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl) {
     var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
 
@@ -639,11 +600,6 @@ browzine.summon = (function() {
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.problematicJournalWording || "Problematic Journal";
       articlePDFDownloadLinkText = browzine.problematicJournalText || "More Info";
-    } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
-      directToPDFUrl = documentDeliveryFulfillmentUrl;
-      // pdfIcon can stay the same
-      articlePDFDownloadWording = browzine.documentDeliveryFulfillmentWording || "Request Now";
-      articlePDFDownloadLinkText = browzine.documentDeliveryFulfillmentText || "PDF";
     }
 
     var template = "<div class='browzine'>" +
@@ -660,7 +616,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function articleLinkTemplate(articleLinkUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl, documentDeliveryFulfillmentUrl) {
+  function articleLinkTemplate(articleLinkUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl) {
     var paperIcon = getPaperIconSvg();
 
     var articleLinkTextWording = "View Now";
@@ -678,19 +634,14 @@ browzine.summon = (function() {
       articleLinkText = browzine.articleRetractionWatchText || "More Info";
     } else if (showEocNoticeUI(articleEocNoticeUrl)) {
       articleLinkUrl = articleEocNoticeUrl;
-      paperIcon = getRetractionWatchIconSvg();
+      pdfIcon = getRetractionWatchIconSvg();
       articleLinkTextWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
       articleLinkText = browzine.articleExpressionOfConcernText || "More Info";
     } else if (showProblematicJournalArticleNoticeUI(problematicJournalArticleNoticeUrl)) {
       articleLinkUrl = problematicJournalArticleNoticeUrl;
-      paperIcon = getRetractionWatchIconSvg();
+      pdfIcon = getRetractionWatchIconSvg();
       articleLinkTextWording = browzine.problematicJournalWording || "Problematic Journal";
       articleLinkText = browzine.problematicJournalText || "More Info";
-    } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
-      articleLinkUrl = documentDeliveryFulfillmentUrl;
-      // paperIcon should stay the same
-      articleLinkTextWording = browzine.documentDeliveryFulfillmentWording || "Request Now";
-      articleLinkText = browzine.documentDeliveryFulfillmentText || "PDF";
     }
 
     var template = "<div class='browzine'>" +
@@ -771,26 +722,6 @@ browzine.summon = (function() {
     return template;
   };
 
-  function documentDeliveryFulfillmentLinkTemplate(documentDeliveryFulfillmentUrl) {
-    var articleLinkUrl = documentDeliveryFulfillmentUrl;
-    var paperIcon = getPaperIconSvg();
-
-   var articleLinkTextWording = browzine.documentDeliveryFulfillmentWording || "Request Now";
-   var articleLinkText = browzine.documentDeliveryFulfillmentText || "PDF";
-
-    var template = "<div class='browzine'>" +
-      "<span class='contentType' style='margin-right: 4.5px;'>{articleLinkTextWording}</span>" +
-      "<a class='browzine-article-link summonBtn customPrimaryLink' href='{articleLinkUrl}' target='_blank' onclick='browzine.summon.transition(event, this)'>{paperIcon}<span style='margin-left: 0px;'>{articleLinkText}</span></a>" +
-    "</div>";
-
-    template = template.replace(/{articleLinkTextWording}/g, articleLinkTextWording);
-    template = template.replace(/{articleLinkUrl}/g, articleLinkUrl);
-    template = template.replace(/{articleLinkText}/g, articleLinkText);
-    template = template.replace(/{paperIcon}/g, paperIcon);
-
-    return template;
-  };
-
   function browzineWebLinkTemplate(scope, browzineWebLink) {
     var wording = "";
     var browzineWebLinkText = "";
@@ -828,7 +759,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function unpaywallArticlePDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl, documentDeliveryFulfillmentUrl) {
+  function unpaywallArticlePDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl) {
     var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
 
@@ -855,11 +786,6 @@ browzine.summon = (function() {
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.problematicJournalWording || "Problematic Journal";
       articlePDFDownloadLinkText = browzine.problematicJournalText || "More Info";
-    } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
-      directToPDFUrl = documentDeliveryFulfillmentUrl;
-      // pdfIcon stays the same
-      articlePDFDownloadWording = browzine.documentDeliveryFulfillmentWording || "Request PDF";
-      articlePDFDownloadLinkText = browzine.documentDeliveryFulfillmentText || "More Info";
     }
 
     var template = "<div class='browzine'>" +
@@ -899,7 +825,7 @@ browzine.summon = (function() {
     return template;
   };
 
-  function unpaywallManuscriptPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl, documentDeliveryFulfillmentUrl) {
+  function unpaywallManuscriptPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl) {
     var pdfIcon = getPdfIconSvg();
     var pdfIconWidth = "13";
 
@@ -926,11 +852,6 @@ browzine.summon = (function() {
       pdfIcon = getRetractionWatchIconSvg();
       articlePDFDownloadWording = browzine.problematicJournalWording || "Problematic Journal";
       articlePDFDownloadLinkText = browzine.problematicJournalText || "More Info";
-    } else if (showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
-      directToPDFUrl = documentDeliveryFulfillmentUrl;
-      // pdfIcon stays the same
-      articlePDFDownloadWording = browzine.documentDeliveryFulfillmentWording || "Request PDF";
-      articlePDFDownloadLinkText = browzine.documentDeliveryFulfillmentText || "More Info";
     }
 
     var template = "<div class='browzine'>" +
@@ -1066,7 +987,6 @@ browzine.summon = (function() {
         var articleRetractionUrl = getArticleRetractionUrl(scope, data);
         var articleEocNoticeUrl = getArticleEOCNoticeUrl(scope, data);
         var problematicJournalArticleNoticeUrl = getProblematicJournalArticleNoticeUrl(scope, data);
-        var documentDeliveryFulfillmentUrl = getDocumentDeliveryFulfillmentUrl(scope, data);
         var unpaywallUsable = getUnpaywallUsable(scope, data);
 
         var libKeyLinkOptimizer = document.createElement("div");
@@ -1074,12 +994,12 @@ browzine.summon = (function() {
         libKeyLinkOptimizer.style = "display: flex; justify-content: flex-start;";
 
         if (directToPDFUrl && isArticle(scope) && showDirectToPDFLink()) {
-          var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl, documentDeliveryFulfillmentUrl);
+          var template = directToPDFTemplate(directToPDFUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 
         if ((!directToPDFUrl || (showFormatChoice() && !articleRetractionUrl && !articleEocNoticeUrl)) && articleLinkUrl && isArticle(scope) && showDirectToPDFLink() && showArticleLink()) {
-          var template = articleLinkTemplate(articleLinkUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl, documentDeliveryFulfillmentUrl);
+          var template = articleLinkTemplate(articleLinkUrl, articleRetractionUrl, articleEocNoticeUrl, problematicJournalArticleNoticeUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 
@@ -1093,15 +1013,11 @@ browzine.summon = (function() {
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (!directToPDFUrl && !articleLinkUrl && !articleRetractionUrl && !articleEocNoticeUrl && problematicJournalArticleNoticeUrl && isArticle(scope) && showProblematicJournal()) {
+        if (!directToPDFUrl && !articleLinkUrl && !articleRetractionUrl && !articleEocNoticeUrl && problematicJournalArticleNoticeUrl && isArticle(scope)) {
           var template = problematicJournalArticleNoticeLinkTemplate(problematicJournalArticleNoticeUrl);
           libKeyLinkOptimizer.innerHTML += template;
         }
 
-        if (!directToPDFUrl && !articleLinkUrl && !articleRetractionUrl && !articleEocNoticeUrl && !problematicJournalArticleNoticeUrl && documentDeliveryFulfillmentUrl && isArticle(scope) && showDocumentDeliveryFulfillment()) {
-          var template = documentDeliveryFulfillmentLinkTemplate(documentDeliveryFulfillmentUrl);
-          libKeyLinkOptimizer.innerHTML += template;
-        }
 
 
         if (libKeyLinkOptimizer.innerHTML) {
@@ -1184,7 +1100,6 @@ browzine.summon = (function() {
               var articleRetractionUrl = getArticleRetractionUrl(scope, data);
               var articleEocNoticeUrl = getArticleEOCNoticeUrl(scope, data);
               var problematicJournalArticleNoticeUrl = getProblematicJournalArticleNoticeUrl(scope, data);
-              // no need to check for unmediated document delivery here, because if it came from Unpaywall, it's Open Access
 
               var template;
               var pdfAvailable = false;
@@ -1274,10 +1189,8 @@ browzine.summon = (function() {
     showPrintRecords: showPrintRecords,
     showRetractionWatch: showRetractionWatch,
     showExpressionOfConcern: showExpressionOfConcern,
-    showProblematicJournal: showProblematicJournal,
     showFormatChoice: showFormatChoice,
     showLinkResolverLink: showLinkResolverLink,
-    showDocumentDeliveryFulfillment: showDocumentDeliveryFulfillment,
     enableLinkOptimizer: enableLinkOptimizer,
     isFiltered: isFiltered,
     transition: transition,
