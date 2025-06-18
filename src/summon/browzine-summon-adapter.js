@@ -1129,7 +1129,7 @@ browzine.summon = (function() {
         }
 
         if (!showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
-          var contentLinkElement = $(documentSummary).find(".availabilityContent");
+          var contentLinkElement = $(documentSummary).find(".availabilityFullText");
 
           if (contentLinkElement) {
             contentLinkElement.remove();
