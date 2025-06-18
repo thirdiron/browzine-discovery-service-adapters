@@ -1202,7 +1202,7 @@ browzine.summon = (function() {
               }
 
               if (template) {
-                $(documentSummary).find(".docFooter .availabilityFullText").prepend(template);
+                $(documentSummary).find(".availabilityContent").prepend(template);
               }
 
               if (!showLinkResolverLink() && template) {
