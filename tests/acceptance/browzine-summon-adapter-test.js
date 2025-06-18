@@ -1085,7 +1085,118 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
-    describe("document delivery fulfillment on an article link >", function() {
+    describe("article has a document delivery fulfillment link and neither an article link nor a direct-to-PDF link >", function() {
+      beforeEach(function() {
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1634/theoncologist.8-4-307"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "",
+              "availableThroughBrowzine": true,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "documentDeliveryFulfillmentUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572",
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show document delivery fulfillment link", function() {
+        console.log("documentSummary", documentSummary);
+        var template = documentSummary.find(".browzine");
+
+        console.log(template.text().trim());
+        expect(template).toBeDefined();
+
+        // expect(template.text().trim()).toContain("View in Context Browse Journal");
+        expect(template.text().trim()).toContain("Request Now PDF");
+
+        expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572");
+        expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
+
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+      });
+
+      it("should have an enhanced browzine journal cover", function() {
+        var coverImage = documentSummary.find(".coverImage img");
+        expect(coverImage).toBeDefined();
+        expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
+      });
+
+      it("should open a new window when a document delivery fulfillment link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-article-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572", "_blank");
+      });
+
+      it("should open a new window when a browzine web link is clicked", function() {
+        spyOn(window, "open");
+        documentSummary.find(".browzine .browzine-web-link").click();
+        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572", "_blank");
+      });
+    });
+
+    describe("article has both a document delivery fulfillment link and an article link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
@@ -1160,18 +1271,18 @@ describe("BrowZine Summon Adapter >", function() {
         jasmine.Ajax.uninstall();
       });
 
-      it("should show document delivery fulfillment link", function() {
+      it("should show article link", function() {
         var template = documentSummary.find(".browzine");
 
         expect(template).toBeDefined();
 
         expect(template.text().trim()).toContain("View in Context Browse Journal");
-        expect(template.text().trim()).toContain("Request Now PDF");
+        expect(template.text().trim()).toContain("View Now Article Page");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572");
         expect(template.find("a.browzine-web-link").attr("target")).toEqual("_blank");
 
-        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572");
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/articles/43816537/content-location");
         expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
       });
 
@@ -1180,21 +1291,9 @@ describe("BrowZine Summon Adapter >", function() {
         expect(coverImage).toBeDefined();
         expect(coverImage.attr("src")).toEqual("https://assets.thirdiron.com/images/covers/1083-7159.png");
       });
-
-      it("should open a new window when a document delivery fulfillment link is clicked", function() {
-        spyOn(window, "open");
-        documentSummary.find(".browzine .browzine-article-link").click();
-        expect(window.open).toHaveBeenCalledWith("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307/document-delivery-fulfillment?utm_source=api_572", "_blank");
-      });
-
-      it("should open a new window when a browzine web link is clicked", function() {
-        spyOn(window, "open");
-        documentSummary.find(".browzine .browzine-web-link").click();
-        expect(window.open).toHaveBeenCalledWith("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572", "_blank");
-      });
     });
 
-    describe("document delivery fulfillment with a custom label >", function() {
+    describe("article has only a document delivery fulfillment link, but has a custom document delivery fulfillment label >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
@@ -1233,7 +1332,7 @@ describe("BrowZine Summon Adapter >", function() {
               "doi": "10.1634/theoncologist.8-4-307",
               "openAccess": false,
               "fullTextFile": "",
-              "contentLocation": "https://develop.libkey.io/libraries/XXXX/articles/43816537/content-location",
+              "contentLocation": "",
               "availableThroughBrowzine": true,
               "startPage": "2382",
               "endPage": "2393",
