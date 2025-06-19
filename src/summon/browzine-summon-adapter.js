@@ -1111,17 +1111,17 @@ browzine.summon = (function() {
             secondaryTitle.remove();
           }
 
-          $(documentSummary).find(".docFooter .row:eq(0)").prepend(libKeyLinkOptimizer);
+          $(documentSummary).find(".docFooter .documentSummaryAvailability").prepend(libKeyLinkOptimizer);
         }
 
         if (browzineWebLink && browzineEnabled && isJournal(scope) && showJournalBrowZineWebLinkText()) {
           var template = browzineWebLinkTemplate(scope, browzineWebLink);
-          $(documentSummary).find(".docFooter .row:eq(0)").append(template);
+          $(documentSummary).find(".docFooter .documentSummaryAvailability").append(template);
         }
 
         if (browzineWebLink && browzineEnabled && isArticle(scope) && (directToPDFUrl || articleLinkUrl) && showArticleBrowZineWebLinkText()) {
           var template = browzineWebLinkTemplate(scope, browzineWebLink);
-          $(documentSummary).find(".docFooter .row:eq(0)").append(template);
+          $(documentSummary).find(".docFooter .documentSummaryAvailability").append(template);
         }
 
         if (coverImageUrl && !defaultCoverImage && showJournalCoverImages()) {
@@ -1129,7 +1129,7 @@ browzine.summon = (function() {
         }
 
         if (!showLinkResolverLink() && (directToPDFUrl || articleLinkUrl)) {
-          var contentLinkElement = $(documentSummary).find(".availabilityContent");
+          var contentLinkElement = $(documentSummary).find(".availabilityFullText");
 
           if (contentLinkElement) {
             contentLinkElement.remove();
@@ -1202,7 +1202,7 @@ browzine.summon = (function() {
               }
 
               if (template) {
-                $(documentSummary).find(".docFooter .row:eq(0)").prepend(template);
+                $(documentSummary).find(".availabilityContent").prepend(template);
               }
 
               if (!showLinkResolverLink() && template) {

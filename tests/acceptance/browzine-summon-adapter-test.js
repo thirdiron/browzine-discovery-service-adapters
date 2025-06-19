@@ -8,7 +8,51 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
+        // as of June 17, 2025, example code for this div is
+        /*
+        <div class="documentSummary document-grid" id="FETCH-LOGICAL-c6462-9522245962ea2b6dfa8a828caab3a8e1086280152262e3e416d21519f06e3b603" document-summary="" saveable="" document="::item.document" show-quicklook="true" show-related="true" result-number="true">
+        ...
+          <div class="cover">
+            <div class="coverImageContainer">
+              <div class="coverImage flex-justify-center" ng-class="{'isIcon': !document.display_thumbnail, 'flex-justify-center': !showVideoLink}" data-aid="cover-image-1" style="">
+                <!-- ngIf: !document.display_thumbnail -->
+                <!-- Cover image for web -->
+                <!-- ngIf: !isMobile --><div ng-if="!isMobile" class="ng-scope">
+                  <img toggle-image="::document" ng-class="::{videoLink: showVideoLink}" ng-show="document.display_thumbnail" ng-src="https://s3.amazonaws.com/thirdiron-assets/images/covers/1757-1146.png" alt="" class="ng-isolate-scope" src="https://s3.amazonaws.com/thirdiron-assets/images/covers/1757-1146.png" style="box-shadow: rgb(204, 204, 204) 1px 1px 2px;">
+                </div><!-- end ngIf: !isMobile -->
+                <!-- Cover image for mobile only -->
+                <!-- ngIf: isMobile -->
+                <!-- ngIf: ::showVideoLink -->
+              </div>
+            </div>
+    ...
+          </div>
+  ...
+          <!-- docFooter class is for Browzine selector -->
+          <div class="summary docFooter">
+            <!-- ngIf: ::summary && !journalTitleSearchLink --><div class="shortSummary ng-binding ng-scope" ng-if="::summary &amp;&amp; !journalTitleSearchLink" ng-bind-html="::summary">Journal of foot and ankle research, 12/2022, Volume 15, Issue 1</div><!-- end ngIf: ::summary && !journalTitleSearchLink -->
+            <!-- ngIf: ::summary && journalTitleSearchLink -->
+            <!-- ngIf: ::document.snippet && !limitedDisplay --><div class="snippet bottom-margin hidden-xs ng-binding ng-scope" ng-if="::document.snippet &amp;&amp; !limitedDisplay" ng-bind-html="::document.snippet" data-aid="snippet-1">.... This study aimed to address this gap by exploring perceptions of <mark>surgery</mark>, education, rehabilitation and outcomes among patients who had undergone TAR or <mark>ankle</mark> fusion...<div class="getftr:entitlement getftr:entitlement:summon getftr:entitlement:small"><span class="getftr:entitlement:button getftr:entitlement:button:joined getftr:entitlement:button:small" style="all: initial;"></span></div></div><!-- end ngIf: ::document.snippet && !limitedDisplay -->
+            <!-- ngIf: ::document.libguides.length -->
+
+            <!-- ngIf: !limitedDisplay --><div class="availability documentSummaryAvailability availabilityContent ng-scope" ng-if="!limitedDisplay" availability-block="" on-detail-page="false" doc="document" availability-docs="availabilityDocs" open-detail-page="openDetailPage(doc)" open-click-track-link="openClickTrackLink(link, doc)"><div class="libkey-link-optimizer" style="display: flex; justify-content: flex-start;"><div class="browzine"><span class="contentType" style="margin-right: 4.5px;">View Now</span><a class="browzine-direct-to-pdf-link summonBtn customPrimaryLink" href="https://libkey.io/libraries/1487/articles/540512060/full-text-file?utm_source=api_915" target="_blank" onclick="browzine.summon.transition(event, this)"><svg name="pdf" alt="pdf icon" class="browzine-pdf-icon" viewBox="0 0 16 16" width="15.5px"><path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"></path> <path fill="#639add" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"></path></svg><span style="margin-left: 3px;">PDF</span></a></div></div>
+          <!-- ngRepeat: contentType in contentTypes track by $index --><!-- ngIf: vm.showFullTextRow($first, contentType) --><div ng-repeat="contentType in contentTypes track by $index" ng-if="vm.showFullTextRow($first, contentType)" class="availabilityFullText availBlock ng-scope" data-aid="availability-content">
+            <div>
+              <span class="contentType ng-binding" ng-bind="i18n.translate(avDocs[contentType].fulltext[0].doc.content_type)" data-aid="content-type-Journal Article">Journal Article</span>
+              <!-- ngIf: ((displayPdfQuickLinks && vm.doc.link_to_pdf) || vm.doc.link_to_unpaywall) && $first -->
+              <!-- ngIf: avDocs[contentType].fulltext[0] && !additionalFullTextLinks.length --><a class="summonBtn customPrimaryLink ng-scope" ng-href="https://kenyon.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwnV3NbtNAEF41hQMXxD-GEpYDcEBO7F3bWUsVUlqIKGpFVIVDTqv1ek2rNnaUNEjc8g6ckOBNeJo8CTNrO8SlQggphyQzduzN_K5nviGEs47nXrIJwot1EHARxtqIDLKOUOlelChwIBkPjbZDI8SbER-Pe4dbJKxbY2wNv05OO_n5pJOfnthSy-lEd-uyse7waB9CYh6IuNsiLThznbGX1jhCB1Q3y4ioO_fxOZOLNezYdxm6OLCPQ5jCw2pWW-2bLIT_n4Z6w1NdrqLcjG6texrcIjeruJL2ywu-TbZMfoc838QQpqMSQIC-oMcNeO675Odq-f2Aapx2TU_UZ0MVneIm_YzuTtTs7DXOdTe7Xft-tfxBV8uvwFL2Y1rgcGpRammR0Qqndb5afqPT30UzSLooINC_4ox0ZmxlGO5TUpWnV7FkC9zVqyjzspW7ot0jHwdvR_vv3Gqsg6ujIGJuDCEfC3Dqj1EsidJMCQV5n1Yq4UoYHP3EwG9iYMgMNxAxphiXxJkXGZ5EHr9PtvMiNw8JFVHmh4aJKPaTQKVJ3MtE5GsvBclKM506xK__UKmrRcXRG-fS5j4ikqU8SJAHaeVBCoe8Wh8zLRE__sq9h3Ky5kS0bvtFMfskKyGVQikvA-tomMF0L1E-B91RQWgMS43gDnmKUibL1te1zZF9yHwgn4WQ0SEvLQdaHbgBrarmCVgGxO9qcO40OMFa6Ca5lmRZWau5ZL0QE0vhew55tibjkViBl5tiYXk4pLo-A54HpeCvb7rWH4f0GirRWJUmBXTZYplXuuuQwCrPP6y4fD_os70B7tSxR__9g4_JDYZGwMfXDtm-mC3ME3L9zORfirxNWiwYtu3-TJtcGx4cDcfw6fjDYdsal18Rk4B-" tabindex="0" title="Full Text Online National Library of Medicine" aria-label="Full Text Online National Library of Medicine" dot-code="'available'" ng-if="avDocs[contentType].fulltext[0] &amp;&amp; !additionalFullTextLinks.length" ng-click="$event.preventDefault();linkClickEvent(avDocs[contentType].fulltext[0].doc.link)" link="avDocs[contentType].fulltext[0].doc.link" display-text="avDocs[contentType].fulltext[0].displayText" data-aid="full text" hover-text="avDocs[contentType].fulltext[0].displayText + ' ' + avDocs[contentType].fulltext[0].linkInfo" href="https://kenyon.summon.serialssolutions.com/2.0.0/link/0/eLvHCXMwnV3NbtNAEF41hQMXxD-GEpYDcEBO7F3bWUsVUlqIKGpFVIVDTqv1ek2rNnaUNEjc8g6ckOBNeJo8CTNrO8SlQggphyQzduzN_K5nviGEs47nXrIJwot1EHARxtqIDLKOUOlelChwIBkPjbZDI8SbER-Pe4dbJKxbY2wNv05OO_n5pJOfnthSy-lEd-uyse7waB9CYh6IuNsiLThznbGX1jhCB1Q3y4ioO_fxOZOLNezYdxm6OLCPQ5jCw2pWW-2bLIT_n4Z6w1NdrqLcjG6texrcIjeruJL2ywu-TbZMfoc838QQpqMSQIC-oMcNeO675Odq-f2Aapx2TU_UZ0MVneIm_YzuTtTs7DXOdTe7Xft-tfxBV8uvwFL2Y1rgcGpRammR0Qqndb5afqPT30UzSLooINC_4ox0ZmxlGO5TUpWnV7FkC9zVqyjzspW7ot0jHwdvR_vv3Gqsg6ujIGJuDCEfC3Dqj1EsidJMCQV5n1Yq4UoYHP3EwG9iYMgMNxAxphiXxJkXGZ5EHr9PtvMiNw8JFVHmh4aJKPaTQKVJ3MtE5GsvBclKM506xK__UKmrRcXRG-fS5j4ikqU8SJAHaeVBCoe8Wh8zLRE__sq9h3Ky5kS0bvtFMfskKyGVQikvA-tomMF0L1E-B91RQWgMS43gDnmKUibL1te1zZF9yHwgn4WQ0SEvLQdaHbgBrarmCVgGxO9qcO40OMFa6Ca5lmRZWau5ZL0QE0vhew55tibjkViBl5tiYXk4pLo-A54HpeCvb7rWH4f0GirRWJUmBXTZYplXuuuQwCrPP6y4fD_os70B7tSxR__9g4_JDYZGwMfXDtm-mC3ME3L9zORfirxNWiwYtu3-TJtcGx4cDcfw6fjDYdsal18Rk4B-">
+                <!-- ngIf: sl.dotCode && sl.dotCode != 'unknown' --><span ng-if="sl.dotCode &amp;&amp; sl.dotCode != 'unknown'" class="dot ng-scope dot-available" ng-class="{'dot-available': sl.dotCode == 'available', 'uxf-icon uxf-close': sl.dotCode == 'not available' }"></span><!-- end ngIf: sl.dotCode && sl.dotCode != 'unknown' -->
+                <!-- ngIf: sl.icon -->
+                <!-- ngIf: sl.loadStatus && !sl.loadStatus.loaded -->
+                <span class="displayText ng-binding" ng-bind="sl.displayText">Full Text Online</span>
+        </a><!-- end ngIf: avDocs[contentType].fulltext[0] && !additionalFullTextLinks.length -->
+              <!-- ngIf: additionalFullTextLinks.length && (avDocs[contentType].fulltext[0] ? avDocs[contentType].fulltext[0].firstFullText : false) -->
+              <span class="Z3988" title="ctx_ver=Z39.88-2004&amp;ctx_enc=info%3Aofi%2Fenc%3AUTF-8&amp;rfr_id=info%3Asid%2Fsummon.serialssolutions.com&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=%E2%80%9CI+could+have+a+proper+ankle%E2%80%9D+%E2%80%93+a+qualitative+study+of+patients%27+perceptions+of+total+ankle+replacement+and+ankle+fusion+surgery&amp;rft.jtitle=Journal+of+foot+and+ankle+research&amp;rft.au=Anderson%2C+Anna+M.&amp;rft.au=Chapman%2C+Lara+S.&amp;rft.au=Siddle%2C+Heidi+J.&amp;rft.au=Watson%2C+Sue&amp;rft.date=2022-12-12&amp;rft.pub=BioMed+Central&amp;rft.issn=1757-1146&amp;rft.eissn=1757-1146&amp;rft.volume=15&amp;rft.issue=1&amp;rft.epage=n%2Fa&amp;rft_id=info:doi/10.1186%2Fs13047-022-00595-8&amp;rft.externalDBID=10.1186%252Fs13047-022-00595-8&amp;rft.externalDocID=JFA2BF01502&amp;paramdict=en-us" data-bookmark="eNqNks2O0zAUhSNUifmBF2CBIiEBmwz-iR1HSEhlRKFoJDawtm6TmzbFjTN2Mqi7rngBtvByfRLcZga1I4RQFk6uv3Pie33OolFjG4yiJ5RcUKrkK085SbOEMJYQInKRqAfRKc1EllCaytHB-0l05v2SEMmkpA-jEy4F4YKkp9H37ebnNC5sb8p4ATcYQ9w626KLoflqcLv5FW83P0L1ugdTd9DVgfFdX65jW8Vt-Mam8y_ioCiw7Wrb-N1GZzswg0XssDVQ4CqAoVLeVqveBzj2vZujWz-KRp3r8fGwnEdfJu8-X35Irj69n16Or5JCppIluWCMpSKXDIHNZFmBAsVUATDjoJASJZkiNFCB4JhSWTIqaF4RiXwmCT-PpoNvaWGpW1evwK21hVrvC9bNNbiuLgxqBUAqkjJkKFOmZkA5zhBSgchKVDx4vRm82n62wrII3TkwR6bHO0290HN7o_Ms5anKg8HLWwNnr3v0nV7VvkBjoEHbe80ywWW4LrY797N76NL2rgGzp4TIM0UPqDmEBuqmsuG_xc5UjzOWZ1TyPAvUxV-o8JS4qosQsKoO9SPB8wPBAsF0C29Nv7_rY_Dp4UT-jOIubAFQA1A4673DShf7RNndgGqjKdG7XOsh1zrkWu9zrVWQsnvSO_d_il4Pom-hpfV_KPTHyZi9nYQIEcZ_A4MRDK4" data-external-doc-id="oai_doaj_org_article_8aa0f042e2e6428ba13ebea45ee2de83" aria-hidden="true"><!-- COinS --></span>
+            </div>
+          </div><!-- end ngIf: vm.showFullTextRow($first, contentType) --><!-- end ngRepeat: contentType in contentTypes track by $index -->
+        ...
+        */
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -74,7 +118,7 @@ describe("BrowZine Summon Adapter >", function() {
         browzine.journalBrowZineWebLinkTextEnabled = false;
         browzine.printRecordsIntegrationEnabled = false;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -146,7 +190,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -241,7 +285,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -355,7 +399,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -465,7 +509,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -575,7 +619,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -693,7 +737,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -802,7 +846,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -914,7 +958,7 @@ describe("BrowZine Summon Adapter >", function() {
         browzine.problematicJournalWording = 'This Might Be Problematic';
         browzine.problematicJournalText = 'Even More Info';
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1003,7 +1047,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         browzine.problematicJournalEnabled = false;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1089,7 +1133,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1200,7 +1244,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         browzine.documentDeliveryFulfillmentWording = 'Request this!';
         browzine.documentDeliveryFulfillmentText = 'Get me that PDF';
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1287,7 +1331,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1393,7 +1437,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1492,7 +1536,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1592,7 +1636,7 @@ describe("BrowZine Summon Adapter >", function() {
         summon = browzine.summon;
         browzine.showFormatChoice = true;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1709,7 +1753,7 @@ describe("BrowZine Summon Adapter >", function() {
         summon = browzine.summon;
         browzine.showFormatChoice = true;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1824,7 +1868,7 @@ describe("BrowZine Summon Adapter >", function() {
         summon = browzine.summon;
         browzine.showFormatChoice = true;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1938,7 +1982,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -1994,7 +2038,7 @@ describe("BrowZine Summon Adapter >", function() {
         browzine.articleLinkEnabled = true;
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2080,7 +2124,7 @@ describe("BrowZine Summon Adapter >", function() {
         browzine.articleLinkEnabled = true;
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2161,7 +2205,7 @@ describe("BrowZine Summon Adapter >", function() {
         summon = browzine.summon;
         browzine.articlePDFDownloadLinkEnabled = false;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2245,7 +2289,7 @@ describe("BrowZine Summon Adapter >", function() {
         browzine.articlePDFDownloadLinkEnabled = false;
         browzine.enableLinkOptimizer = false;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2344,7 +2388,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2409,7 +2453,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2478,7 +2522,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2543,7 +2587,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2621,7 +2665,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -2721,7 +2765,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -3138,7 +3182,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -3540,7 +3584,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -3631,7 +3675,7 @@ describe("BrowZine Summon Adapter >", function() {
         summon = browzine.summon;
         browzine.showLinkResolverLink = false;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -3700,7 +3744,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -3782,7 +3826,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -4232,7 +4276,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
@@ -4295,7 +4339,7 @@ describe("BrowZine Summon Adapter >", function() {
 
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'><div class='availabilityContent'><div class='availabilityFullText'><span class='contentType'>Journal Article </span><a class='summonBtn' display-text='::i18n.translations.PDF'><span class='displayText'>PDF</span></a><span><a class='summonBtn'>Full Text Online</a></span></div></div></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
