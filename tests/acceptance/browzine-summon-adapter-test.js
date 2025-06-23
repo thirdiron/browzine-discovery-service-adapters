@@ -1161,13 +1161,10 @@ describe("BrowZine Summon Adapter >", function() {
       });
 
       it("should show document delivery fulfillment link", function() {
-        console.log("documentSummary", documentSummary);
         var template = documentSummary.find(".browzine");
-
-        console.log(template.text().trim());
         expect(template).toBeDefined();
 
-        // expect(template.text().trim()).toContain("View in Context Browse Journal");
+        expect(template.text().trim()).toContain("View in Context Browse Journal");
         expect(template.text().trim()).toContain("Request Now PDF");
 
         expect(template.find("a.browzine-web-link").attr("href")).toEqual("https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572");
