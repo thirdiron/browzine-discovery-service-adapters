@@ -1133,7 +1133,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         summon = browzine.summon;
 
-        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='docFooter'><div class='row'></div></div></div>");
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
 
         inject(function ($compile, $rootScope) {
           $scope = $rootScope.$new();
