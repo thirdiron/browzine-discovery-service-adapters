@@ -56,7 +56,7 @@ browzine.serSol360Core = (function() {
   };
 
   function getTarget(index) {
-    var elements = $(".results-identifier").closest(".results-title-row");
+    var elements = $(".results-title-row");
 
     if (index >= elements.length) {
       var target = undefined;
