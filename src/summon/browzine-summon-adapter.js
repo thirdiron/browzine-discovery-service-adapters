@@ -1173,6 +1173,10 @@ browzine.summon = (function() {
             if (requestUnpaywall.readyState == XMLHttpRequest.DONE && requestUnpaywall.status == 200) {
               var responseUnpaywall = JSON.parse(requestUnpaywall.response);
 
+              if (!responseUnpaywall.genre || responseUnpaywall.genre !== "journal-article") {
+                return;
+              }
+
               if (shouldIgnoreUnpaywallResponse(response, responseUnpaywall)) {
                 return;
               }

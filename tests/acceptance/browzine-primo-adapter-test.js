@@ -3350,6 +3350,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "open (via free pdf)",
@@ -3386,6 +3387,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "open (via free pdf)",
@@ -3422,6 +3424,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa journal (via observed oa rate)",
@@ -3458,6 +3461,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa journal (via observed oa rate)",
@@ -3494,6 +3498,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": "e32e740fde0998433a4",
                 "evidence": "oa repository (via OAI-PMH doi match)",
@@ -3530,6 +3535,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": "e32e740fde0998433a4",
                 "evidence": "oa repository (via OAI-PMH doi match)",
@@ -3566,6 +3572,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa repository (via pmcid lookup)",
@@ -3602,6 +3609,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa repository (via pmcid lookup)",
@@ -3638,6 +3646,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": "pubmedcentral.nih.gov",
                 "evidence": "oa repository (via OAI-PMH doi match)",
@@ -3674,6 +3683,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": "pubmedcentral.nih.gov",
                 "evidence": "oa repository (via OAI-PMH doi match)",
@@ -3711,6 +3721,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": null
             })
           });
@@ -3718,6 +3729,99 @@ describe("BrowZine Primo Adapter >", function () {
           var template = searchResult.find(".browzine");
 
           expect(template.length).toEqual(0);
+        });
+      });
+
+      describe("unpaywall response without journal-article genre >", function () {
+        it("should not enhance the article when genre is not journal-article", function () {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "genre": "book-chapter",
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "open (via free pdf)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": "cc-by-nc-nd",
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2019-10-11T20:52:04.790279",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+                "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template.length).toEqual(0);
+        });
+
+        it("should not enhance the article when genre is missing", function () {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "open (via free pdf)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": "cc-by-nc-nd",
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2019-10-11T20:52:04.790279",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+                "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template.length).toEqual(0);
+        });
+
+        it("should enhance the article when genre is journal-article", function () {
+          var request = jasmine.Ajax.requests.mostRecent();
+
+          request.respondWith({
+            status: 200,
+            contentType: "application/json",
+            response: JSON.stringify({
+              "genre": "journal-article",
+              "best_oa_location": {
+                "endpoint_id": null,
+                "evidence": "open (via free pdf)",
+                "host_type": "publisher",
+                "is_best": true,
+                "license": "cc-by-nc-nd",
+                "pmh_id": null,
+                "repository_institution": null,
+                "updated": "2019-10-11T20:52:04.790279",
+                "url": "http://jaha.org.ro/index.php/JAHA/article/download/142/119-do-not-use",
+                "url_for_landing_page": "https://doi.org/10.14795/j.v2i4.142",
+                "url_for_pdf": "http://jaha.org.ro/index.php/JAHA/article/download/142/119",
+                "version": "publishedVersion"
+              }
+            })
+          });
+
+          var template = searchResult.find(".browzine");
+
+          expect(template).toBeDefined();
+          expect(template.text().trim()).toContain("Download PDF (via Unpaywall)");
+          expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual("http://jaha.org.ro/index.php/JAHA/article/download/142/119");
         });
       });
     });
@@ -3817,6 +3921,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "open (via free pdf)",
@@ -3853,6 +3958,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "open (via free pdf)",
@@ -3889,6 +3995,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa journal (via observed oa rate)",
@@ -3925,6 +4032,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa journal (via observed oa rate)",
@@ -3961,6 +4069,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": "e32e740fde0998433a4",
                 "evidence": "oa repository (via OAI-PMH doi match)",
@@ -3997,6 +4106,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": "e32e740fde0998433a4",
                 "evidence": "oa repository (via OAI-PMH doi match)",
@@ -4033,6 +4143,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa repository (via pmcid lookup)",
@@ -4069,6 +4180,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": null,
                 "evidence": "oa repository (via pmcid lookup)",
@@ -4105,6 +4217,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": {
                 "endpoint_id": "pubmedcentral.nih.gov",
                 "evidence": "oa repository (via OAI-PMH doi match)",
@@ -4141,6 +4254,7 @@ describe("BrowZine Primo Adapter >", function () {
             status: 200,
             contentType: "application/json",
             response: JSON.stringify({
+              "genre": "journal-article",
               "best_oa_location": null
             })
           });
@@ -4324,6 +4438,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": null,
               "evidence": "open (via free pdf)",
@@ -4717,6 +4832,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": null,
               "evidence": "open (via free pdf)",
@@ -4756,6 +4872,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": null,
               "evidence": "open (via free pdf)",
@@ -4795,6 +4912,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": null,
               "evidence": "oa journal (via observed oa rate)",
@@ -4834,6 +4952,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": null,
               "evidence": "oa journal (via observed oa rate)",
@@ -4873,6 +4992,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": "e32e740fde0998433a4",
               "evidence": "oa repository (via OAI-PMH doi match)",
@@ -4912,6 +5032,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": "e32e740fde0998433a4",
               "evidence": "oa repository (via OAI-PMH doi match)",
@@ -4951,6 +5072,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": null,
               "evidence": "oa repository (via pmcid lookup)",
@@ -4990,6 +5112,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": null,
               "evidence": "oa repository (via pmcid lookup)",
@@ -5029,6 +5152,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": "pubmedcentral.nih.gov",
               "evidence": "oa repository (via OAI-PMH doi match)",
@@ -5068,6 +5192,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": {
               "endpoint_id": "pubmedcentral.nih.gov",
               "evidence": "oa repository (via OAI-PMH doi match)",
@@ -5107,6 +5232,7 @@ describe("BrowZine Primo Adapter >", function () {
           status: 200,
           contentType: "application/json",
           response: JSON.stringify({
+            "genre": "journal-article",
             "best_oa_location": null
           })
         });
@@ -5317,6 +5443,7 @@ describe("BrowZine Primo Adapter >", function () {
         status: 200,
         contentType: "application/json",
         response: JSON.stringify({
+          "genre": "journal-article",
           "best_oa_location": {
             "endpoint_id": "e32e740fde0998433a4",
             "evidence": "oa repository (via OAI-PMH doi match)",
