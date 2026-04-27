@@ -209,6 +209,44 @@ describe("Primo Model >", function() {
 
       expect(primo.isArticle(scope)).toEqual(false);
     });
+
+    it("should identify a review as an article type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["review"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isArticle(scope)).toEqual(true);
+    });
+
+    it("should identify a review with plural type as an article type", function() {
+      var scope = {
+        result: {
+          pnx: {
+            display: {
+              type: ["reviews"]
+            },
+
+            addata: {
+              issn: ["0028-4793"],
+              doi: ["10.1136/bmj.h2575"]
+            }
+          }
+        }
+      };
+
+      expect(primo.isArticle(scope)).toEqual(true);
+    });
   });
 
   describe("primo model getScope method >", function() {
