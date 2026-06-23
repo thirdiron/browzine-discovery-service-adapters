@@ -922,10 +922,8 @@ browzine.summon = (function() {
       articlePDFDownloadWording = browzine.articleExpressionOfConcernWording || "Expression of Concern";
       articlePDFDownloadLinkText = browzine.articleExpressionOfConcernText || "More Info";
     } else if (showProblematicJournalArticleNoticeUI(problematicJournalArticleNoticeUrl)) {
-      directToPDFUrl = problematicJournalArticleNoticeUrl;
-      pdfIcon = getRetractionWatchIconSvg();
-      articlePDFDownloadWording = browzine.problematicJournalWording || "Problematic Journal";
-      articlePDFDownloadLinkText = browzine.problematicJournalText || "More Info";
+      //We don't want to show the PDF link for problematic journal articles as we're already showing the problematic journal article notice
+      return null;
     } else if (!directToPDFUrl && showDocumentDeliveryFulfillmentUI(documentDeliveryFulfillmentUrl)) {
       directToPDFUrl = documentDeliveryFulfillmentUrl;
       // pdfIcon stays the same
