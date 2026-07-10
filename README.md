@@ -296,6 +296,7 @@ Care should be taken to validate JavaScript features used are available in IE11+
 * `git clone https://github.com/thirdiron/browzine-discovery-service-adapters.git` this repository
 * change into the new directory
 * `npm install`
+* Note that if you experience failures during the install phase it may be due to ngrok. Try 'npm install --ignore-scripts' and see if that works.
 
 ## Running / Development
 

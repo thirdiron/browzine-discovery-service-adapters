@@ -1731,6 +1731,7 @@ describe("BrowZine Summon Adapter >", function() {
       beforeEach(function() {
         browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
         browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
 
         summon = browzine.summon;
 
@@ -1804,6 +1805,7 @@ describe("BrowZine Summon Adapter >", function() {
       afterEach(function() {
         delete browzine.unpaywallEmailAddressKey;
         delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
 
         jasmine.Ajax.uninstall();
       });
@@ -1844,6 +1846,44 @@ describe("BrowZine Summon Adapter >", function() {
         expect(template.text().trim()).not.toContain("View Now (Accepted Manuscript via Unpaywall) PDF");
         expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual(undefined);
         expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual(undefined);
+      });
+
+      it("should show problematic journal notice and not show unpaywall article pdf link", function() {
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "genre": "journal-article",
+            "best_oa_location": {
+              "endpoint_id": "e32e740fde0998433a4",
+              "evidence": "oa journal (via publisher name)",
+              "host_type": "publisher",
+              "is_best": true,
+              "license": "cc-by",
+              "pmh_id": null,
+              "repository_institution": null,
+              "updated": "2020-02-20T17:30:21.829852",
+              "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+              "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+              "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+              "version": "publishedVersion"
+            }
+          })
+        });
+
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Problematic Journal More Info");
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+
+        expect(template.text().trim()).not.toContain("View Now (via Unpaywall) PDF");
+        expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual(undefined);
+        expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual(undefined);
       });
     });
 
