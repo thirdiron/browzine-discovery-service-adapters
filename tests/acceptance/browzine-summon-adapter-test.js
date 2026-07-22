@@ -1727,6 +1727,166 @@ describe("BrowZine Summon Adapter >", function() {
       });
     });
 
+    describe("problematic journal notice with unpaywall turned on >", function() {
+      beforeEach(function() {
+        browzine.unpaywallEmailAddressKey = "info@thirdiron.com";
+        browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled = true;
+        browzine.articlePDFDownloadViaUnpaywallEnabled = true;
+
+        summon = browzine.summon;
+
+        documentSummary = $("<div class='documentSummary' document-summary><div class='coverImage'><img src=''/></div><div class='summary docFooter'><div class='availability documentSummaryAvailability availabilityContent ng-scope'></div></div></div>");
+
+        inject(function ($compile, $rootScope) {
+          $scope = $rootScope.$new();
+
+          $scope.document = {
+            content_type: "Journal Article",
+            dois: ["10.1634/theoncologist.8-4-307"]
+          };
+
+          documentSummary = $compile(documentSummary)($scope);
+        });
+
+        jasmine.Ajax.install();
+
+        summon.adapter(documentSummary);
+
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "data": {
+              "id": 43816537,
+              "type": "articles",
+              "title": "The HER-2/ neu Gene and Protein in Breast Cancer 2003: Biomarker and Target of Therapy",
+              "date": "2003-08-01",
+              "authors": "Ross, Jeffrey S.; Fletcher, Jonathan A.; Linette, Gerald P.; Stec, James; Clark, Edward; Ayers, Mark; Symmans, W. Fraser; Pusztai, Lajos; Bloom, Kenneth J.",
+              "inPress": false,
+              "doi": "10.1634/theoncologist.8-4-307",
+              "openAccess": false,
+              "fullTextFile": "",
+              "contentLocation": "",
+              "availableThroughBrowzine": false,
+              "startPage": "2382",
+              "endPage": "2393",
+              "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343/issues/5876785?showArticleInContext=doi:10.1634%2Ftheoncologist.8-4-307&utm_source=api_572",
+              "relationships": {
+                "journal": {
+                  "data": {
+                    "type": "journals",
+                    "id": 31343
+                  }
+                }
+              },
+              "problematicJournalArticleNoticeUrl": "https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic"
+            },
+            "included": [
+              {
+                "id": 31343,
+                "type": "journals",
+                "title": "The Oncologist",
+                "issn": "10837159",
+                "sjrValue": 1.859,
+                "coverImageUrl": "https://assets.thirdiron.com/images/covers/1083-7159.png",
+                "browzineEnabled": true,
+                "browzineWebLink": "https://develop.browzine.com/libraries/XXXX/journals/31343?utm_source=api_572"
+              },
+            ]
+          })
+        });
+
+        expect(request.url).toMatch(/articles\/doi\/10.1634%2Ftheoncologist.8-4-307/);
+        expect(request.method).toBe('GET');
+      });
+
+      afterEach(function() {
+        delete browzine.unpaywallEmailAddressKey;
+        delete browzine.articleAcceptedManuscriptPDFViaUnpaywallEnabled;
+        delete browzine.articlePDFDownloadViaUnpaywallEnabled;
+
+        jasmine.Ajax.uninstall();
+      });
+
+      it("should show problematic journal notice and not show unpaywall manuscript pdf link", function() {
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "genre": "journal-article",
+            "best_oa_location": {
+              "endpoint_id": "e32e740fde0998433a4",
+              "evidence": "oa repository (via OAI-PMH doi match)",
+              "host_type": "repository",
+              "is_best": true,
+              "license": "cc0",
+              "pmh_id": "oai:diposit.ub.edu:2445/147225",
+              "repository_institution": "Universitat de Barcelona - Dipòsit Digital de la Universitat de Barcelona",
+              "updated": "2020-02-20T17:30:21.829852",
+              "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+              "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+              "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+              "version": "acceptedVersion"
+            }
+          })
+        });
+
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Problematic Journal More Info");
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+
+        expect(template.text().trim()).not.toContain("View Now (Accepted Manuscript via Unpaywall) PDF");
+        expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("href")).toEqual(undefined);
+        expect(template.find("a.unpaywall-manuscript-article-pdf-link").attr("target")).toEqual(undefined);
+      });
+
+      it("should show problematic journal notice and not show unpaywall article pdf link", function() {
+        var request = jasmine.Ajax.requests.mostRecent();
+
+        request.respondWith({
+          status: 200,
+          contentType: "application/json",
+          response: JSON.stringify({
+            "genre": "journal-article",
+            "best_oa_location": {
+              "endpoint_id": "e32e740fde0998433a4",
+              "evidence": "oa journal (via publisher name)",
+              "host_type": "publisher",
+              "is_best": true,
+              "license": "cc-by",
+              "pmh_id": null,
+              "repository_institution": null,
+              "updated": "2020-02-20T17:30:21.829852",
+              "url": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf-do-not-use",
+              "url_for_landing_page": "http://hdl.handle.net/2445/147225",
+              "url_for_pdf": "http://diposit.ub.edu/dspace/bitstream/2445/147225/1/681991.pdf",
+              "version": "publishedVersion"
+            }
+          })
+        });
+
+        var template = documentSummary.find(".browzine");
+
+        expect(template).toBeDefined();
+
+        expect(template.text().trim()).toContain("Problematic Journal More Info");
+        expect(template.find("a.browzine-article-link").attr("href")).toEqual("https://develop.libkey.io/libraries/XXXX/10.1634/theoncologist.8-4-307.problematic");
+        expect(template.find("a.browzine-article-link").attr("target")).toEqual("_blank");
+
+        expect(template.text().trim()).not.toContain("View Now (via Unpaywall) PDF");
+        expect(template.find("a.unpaywall-article-pdf-link").attr("href")).toEqual(undefined);
+        expect(template.find("a.unpaywall-article-pdf-link").attr("target")).toEqual(undefined);
+      });
+    });
+
     describe("search results article with both retracted article link and article link >", function() {
       beforeEach(function() {
         summon = browzine.summon;
