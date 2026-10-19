@@ -276,6 +276,8 @@ window.browzine = {
 
   documentDeliveryFulfillmentText: "Request PDF",
 
+  iconColor: "#000000",
+
   showFormatChoice: true,
   showLinkResolverLink: true,
 
