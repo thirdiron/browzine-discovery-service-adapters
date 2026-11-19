@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 settings: &settings
   shell: /bin/bash --login
@@ -166,7 +166,6 @@ jobs:
           command: npm run start -- browzine-discovery-service-adapters
 
 workflows:
-  version: 2
   build-test-deploy:
     jobs:
       - build
